@@ -91,23 +91,23 @@ void GameScene::Draw(DirectXCommon* dXCommon)
 	switch (scene) {
 		case Title:
 			// タイトルの描画
-			TitleDraw(dXCommon);
+			//TitleDraw(dXCommon);
 			break;
 		case Scene_1:
 			// 3Dオブジェクトの描画
-			ObjectDraw(dXCommon);
+			//ObjectDraw(dXCommon);
 			// パーティクルの描画
-			ParticleDraw(dXCommon);
+			//ParticleDraw(dXCommon);
 			// HP描画
-			GameDraw(dXCommon);
+			//GameDraw(dXCommon);
 			break;
 		case GameClear:
 			// ゲームクリアの描画
-			GameClearDraw(dXCommon);
+			//GameClearDraw(dXCommon);
 			break;
 		case GameOver:
 			//ゲームオーバーの描画
-			GameOverDraw(dXCommon);
+			//GameOverDraw(dXCommon);
 			break;
 	}
 
