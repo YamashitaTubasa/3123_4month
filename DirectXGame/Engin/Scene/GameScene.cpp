@@ -22,11 +22,9 @@ void GameScene::Initialize(DirectXCommon* dXCommon, WinApp* winApp, SpriteCommon
 	// ImGuiの初期化
 	imGuiManager = new ImGuiManager();
 	imGuiManager->Initialize(dXCommon, winApp);
-	
+
 	// オブジェクトの初期化
-	for (int i = 0; i < 5; i++) {
-		ObjectInitialize(object3d[i], model[i], "fighter");
-	}
+	ObjectInitialize();
 	// スプライトの初期化
 	SpriteInitialize(dXCommon, spriteCommon);
 	// パーティクルの初期化
@@ -43,42 +41,42 @@ void GameScene::Update()
 	static char buf[256]{};
 	static float f = 0.0f;
 	switch (scene) {
-		case Title:
-			if (input->TriggerKey(DIK_SPACE)) {
-				scene = Scene_1;
-			}
-			break;
-		case Scene_1:
-			time++;
-			if (time >= 1000) {
-				scene = GameClear;
-			}
-			ImGui::Text("Hello%d", 123);
-			if (ImGui::Button("Save")) {
-				imGuiManager->MySaveFunction();
+	case Title:
+		if (input->TriggerKey(DIK_SPACE)) {
+			scene = Scene_1;
+		}
+		break;
+	case Scene_1:
+		time++;
+		if (time >= 1000) {
+			scene = GameClear;
+		}
+		ImGui::Text("Hello%d", 123);
+		if (ImGui::Button("Save")) {
+			imGuiManager->MySaveFunction();
 
-				ImGui::InputText("string", buf, IM_ARRAYSIZE(buf));
-				ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
-			}
-			// オブジェクトの更新
-			ObjectUpdate();
-			// スプライトの更新
-			SpriteUpdate();
-			// パーティクルの更新
-			ParticleUpdate();
-			break;
-		case GameClear:
-			if (input->TriggerKey(DIK_SPACE)) {
-				GameReset();
-				scene = Title;
-			}
-			break;
-		case GameOver:
-			if (input->TriggerKey(DIK_SPACE)) {
-				GameReset();
-				scene = Title;
-			}
-			break;
+			ImGui::InputText("string", buf, IM_ARRAYSIZE(buf));
+			ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
+		}
+		// オブジェクトの更新
+		ObjectUpdate();
+		// スプライトの更新
+		SpriteUpdate();
+		// パーティクルの更新
+		ParticleUpdate();
+		break;
+	case GameClear:
+		if (input->TriggerKey(DIK_SPACE)) {
+			GameReset();
+			scene = Title;
+		}
+		break;
+	case GameOver:
+		if (input->TriggerKey(DIK_SPACE)) {
+			GameReset();
+			scene = Title;
+		}
+		break;
 	}
 
 	// ImGui受付終了
@@ -89,37 +87,35 @@ void GameScene::Draw(DirectXCommon* dXCommon)
 {
 	// 描画前処理
 	dXCommon->PreDraw();
-
 	// 3Dオブジェクト描画前処理
 	Object3d::PreDraw(dXCommon->GetCommandList());
 
 	switch (scene) {
-		case Title:
-			// タイトルの描画
-			//TitleDraw(dXCommon);
-			break;
-		case Scene_1:
-			object3d[0]->Draw();
-			// 3Dオブジェクトの描画
-			/*ObjectDraw(dXCommon);*/
-			// パーティクルの描画
-			//ParticleDraw(dXCommon);
-			// HP描画
-			//GameDraw(dXCommon);
-			break;
-		case GameClear:
-			// ゲームクリアの描画
-			//GameClearDraw(dXCommon);
-			break;
-		case GameOver:
-			//ゲームオーバーの描画
-			//GameOverDraw(dXCommon);
-			break;
+	case Title:
+		// タイトルの描画
+		//TitleDraw(dXCommon);
+		break;
+	case Scene_1:
+		object3d[0]-> Draw();
+		// 3Dオブジェクトの描画
+		//ObjectDraw(dXCommon);
+		// パーティクルの描画
+		//ParticleDraw(dXCommon);
+		// HP描画
+		//GameDraw(dXCommon);
+		break;
+	case GameClear:
+		// ゲームクリアの描画
+		//GameClearDraw(dXCommon);
+		break;
+	case GameOver:
+		//ゲームオーバーの描画
+		//GameOverDraw(dXCommon);
+		break;
 	}
 
 	// ImGui描画
 	imGuiManager->Draw(dXCommon);
-	
 
 	// 3Dオブジェクト描画後処理
 	Object3d::PostDraw();
@@ -147,16 +143,36 @@ void GameScene::Finalize()
 	SpriteFinalize();
 }
 
-void GameScene::ObjectInitialize(Object3d* object, Model* model, const string& filename)
+void GameScene::ObjectInitialize()
 {
 	// OBJからモデルデータを読み込む
-	model = Model::LoadFromOBJ(filename);
-
+	model[0] = Model::LoadFromOBJ("fighter");
+	/*model[0]->LoadTexture("effect1.png");*/
+	model[1] = Model::LoadFromOBJ("ironSphere");
+	//model[2] = Model::LoadFromOBJ("skydome", "skydome/skydome.jpg");
 	// 3Dオブジェクト生成
-	object = Object3d::Create();
-
+	for (int i = 0; i < 5; i++) {
+		object3d[i] = Object3d::Create();
+	}
 	// オブジェクトにモデルをひも付ける
-	object->SetModel(model);
+	object3d[0]->SetModel(model[0]);
+	object3d[1]->SetModel(model[1]);
+	object3d[2]->SetModel(model[2]);
+	// 3Dオブジェクトの位置を指定
+	position[0] = { -20,-5,0 };
+	rotation[0] = { 0,90,0 };
+	object3d[0]->SetPosition(position[0]);
+	object3d[0]->SetScale({ 5, 5, 5 });
+	object3d[0]->SetRotation(rotation[0]);
+
+	position[1] = { 0,0,50 };
+	object3d[1]->SetPosition(position[1]);
+	object3d[1]->SetScale({ 5,5,5 });
+	object3d[1]->SetRotation({ 0, 90, 0 });
+
+	object3d[2]->SetPosition({ 0,-40,0 });
+	object3d[2]->SetScale({ 100, 100, 100 });
+	object3d[2]->SetRotation({ 0,100,20 });
 }
 
 void GameScene::ObjectUpdate()
@@ -207,7 +223,8 @@ void GameScene::ObjectUpdate()
 	if (input->PushKey(DIK_D)) {
 		position[0].x += 0.4;
 		isPush_D = true;
-	}else {
+	}
+	else {
 		isPush_D = false;
 	}
 	if (isPush_A == false) {
@@ -274,7 +291,7 @@ void GameScene::SpriteInitialize(DirectXCommon* dXCommon, SpriteCommon& spriteCo
 	// タイトルの設定
 	title.LoadTexture(spriteCommon_, 0, L"Resources/gametitle.png", dXCommon->GetDevice());
 	title.SetColor(XMFLOAT4(1, 1, 1, 1));
-	title.SpriteCreate(dXCommon->GetDevice(), 1280, 720, 0 , spriteCommon, XMFLOAT2(0.0f, 0.0f), false, false);
+	title.SpriteCreate(dXCommon->GetDevice(), 1280, 720, 0, spriteCommon, XMFLOAT2(0.0f, 0.0f), false, false);
 	title.SetPosition(XMFLOAT3(0, 0, 0));
 	title.SetScale(XMFLOAT2(1280 * 1, 720 * 1));
 	title.SetRotation(0.0f);

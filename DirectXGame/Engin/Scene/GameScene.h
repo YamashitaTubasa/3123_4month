@@ -51,7 +51,7 @@ public:
 	/// オブジェクトの初期化
 	/// </summary>
 	/// <param name="dXCommon"></param>
-	void ObjectInitialize(Object3d* object,Model* model, const string& filename);
+	void ObjectInitialize();
 
 	/// <summary>
 	/// オブジェクトの更新
