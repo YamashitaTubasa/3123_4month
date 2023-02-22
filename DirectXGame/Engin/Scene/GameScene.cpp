@@ -24,7 +24,9 @@ void GameScene::Initialize(DirectXCommon* dXCommon, WinApp* winApp, SpriteCommon
 	imGuiManager->Initialize(dXCommon, winApp);
 	
 	// オブジェクトの初期化
-	ObjectInitialize(dXCommon);
+	for (int i = 0; i < 5; i++) {
+		ObjectInitialize(object3d[i], model[i], "fighter");
+	}
 	// スプライトの初期化
 	SpriteInitialize(dXCommon, spriteCommon);
 	// パーティクルの初期化
@@ -88,14 +90,18 @@ void GameScene::Draw(DirectXCommon* dXCommon)
 	// 描画前処理
 	dXCommon->PreDraw();
 
+	// 3Dオブジェクト描画前処理
+	Object3d::PreDraw(dXCommon->GetCommandList());
+
 	switch (scene) {
 		case Title:
 			// タイトルの描画
 			//TitleDraw(dXCommon);
 			break;
 		case Scene_1:
+			object3d[0]->Draw();
 			// 3Dオブジェクトの描画
-			//ObjectDraw(dXCommon);
+			/*ObjectDraw(dXCommon);*/
 			// パーティクルの描画
 			//ParticleDraw(dXCommon);
 			// HP描画
@@ -114,6 +120,9 @@ void GameScene::Draw(DirectXCommon* dXCommon)
 	// ImGui描画
 	imGuiManager->Draw(dXCommon);
 	
+
+	// 3Dオブジェクト描画後処理
+	Object3d::PostDraw();
 	// 描画後処理
 	dXCommon->PostDraw();
 }
@@ -138,36 +147,16 @@ void GameScene::Finalize()
 	SpriteFinalize();
 }
 
-void GameScene::ObjectInitialize(DirectXCommon* dXCommon) 
+void GameScene::ObjectInitialize(Object3d* object, Model* model, const string& filename)
 {
 	// OBJからモデルデータを読み込む
-	Model[0] = Model::LoadFromOBJ("fighter", "effect1.png");
-	//Model[0]->LoadTexture("effect1.png");
-	Model[1] = Model::LoadFromOBJ("ironSphere", "ironShpere/ironSphere.png");
-	//Model[2] = Model::LoadFromOBJ("skydome", "skydome/skydome.jpg");
+	model = Model::LoadFromOBJ(filename);
+
 	// 3Dオブジェクト生成
-	for (int i = 0; i < 5; i++) {
-		object3d[i] = Object3d::Create();
-	}
+	object = Object3d::Create();
+
 	// オブジェクトにモデルをひも付ける
-	object3d[0]->SetModel(Model[0]);
-	object3d[1]->SetModel(Model[1]);
-	object3d[2]->SetModel(Model[2]);
-	// 3Dオブジェクトの位置を指定
-	position[0] = { -20,-5,0 };
-	rotation[0] = { 0,90,0 };
-	object3d[0]->SetPosition(position[0]);
-	object3d[0]->SetScale({ 5, 5, 5 });
-	object3d[0]->SetRotation(rotation[0]);
-
-	position[1] = { 0,0,50 };
-	object3d[1]->SetPosition(position[1]);
-	object3d[1]->SetScale({ 5,5,5 });
-	object3d[1]->SetRotation({ 0, 90, 0 });
-
-	object3d[2]->SetPosition({ 0,-40,0 });
-	object3d[2]->SetScale({ 100, 100, 100 });
-	object3d[2]->SetRotation({0,100,20});
+	object->SetModel(model);
 }
 
 void GameScene::ObjectUpdate()
@@ -256,16 +245,12 @@ void GameScene::ObjectUpdate()
 
 void GameScene::ObjectDraw(DirectXCommon* dXCommon)
 {
-	// 3Dオブジェクト描画前処理
-	Object3d::PreDraw(dXCommon->GetCommandList());
 
 	// 3Dオブジェクトの描画
 	for (int i = 0; i < 5; i++) {
 		object3d[i]->Draw();
 	}
 
-	// 3Dオブジェクト描画後処理
-	Object3d::PostDraw();
 }
 
 void GameScene::ObjectFinalize()
@@ -276,7 +261,7 @@ void GameScene::ObjectFinalize()
 	}
 	// 3Dモデル解放
 	for (int i = 0; i < 5; i++) {
-		delete Model[i];
+		delete model[i];
 	}
 }
 

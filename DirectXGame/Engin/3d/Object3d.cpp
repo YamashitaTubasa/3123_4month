@@ -349,7 +349,7 @@ void Object3d::Update()
 	constBuffB0->Unmap(0, nullptr);
 }
 
-void Object3d::Draw()
+void Object3d::Draw(float alpha_)
 {
 	// nullptrチェック
 	assert(device);
@@ -362,5 +362,5 @@ void Object3d::Draw()
 	cmdList->SetGraphicsRootConstantBufferView(0, constBuffB0->GetGPUVirtualAddress());
 
 	// モデルを描画
-	model->Draw(cmdList, 1);
+	model->Draw(cmdList, 1,alpha_);
 }

@@ -138,7 +138,7 @@ public: // メンバ関数
 	/// <summary>
 	/// 描画
 	/// </summary>
-	void Draw();
+	void Draw(float alpha_ = 1);
 
 	// モデルの設定
 	void SetModel(Model* model) { this->model = model; }

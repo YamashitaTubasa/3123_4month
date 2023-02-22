@@ -51,7 +51,7 @@ public:
 	/// オブジェクトの初期化
 	/// </summary>
 	/// <param name="dXCommon"></param>
-	void ObjectInitialize(DirectXCommon* dXCommon);
+	void ObjectInitialize(Object3d* object,Model* model, const string& filename);
 
 	/// <summary>
 	/// オブジェクトの更新
@@ -112,7 +112,7 @@ private:
 	// 入力
 	Input* input = nullptr;
 	// モデル
-	Model* Model[5];
+	Model* model[5];
 	// オブジェクト
 	Object3d* object3d[5];
 	// スプライト
