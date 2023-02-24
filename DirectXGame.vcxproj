@@ -150,6 +150,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Collision.cpp" />
+    <ClCompile Include="CollisionPrimitive.cpp" />
     <ClCompile Include="DirectXGame\Engin\2d\Sprite.cpp" />
     <ClCompile Include="DirectXGame\Engin\3d\Model.cpp" />
     <ClCompile Include="DirectXGame\Engin\3d\Object3d.cpp" />
@@ -233,6 +235,8 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Collision.h" />
+    <ClInclude Include="CollisionPrimitive.h" />
     <ClInclude Include="DirectXGame\Engin\2d\Sprite.h" />
     <ClInclude Include="DirectXGame\Engin\3d\Model.h" />
     <ClInclude Include="DirectXGame\Engin\3d\Object3d.h" />
