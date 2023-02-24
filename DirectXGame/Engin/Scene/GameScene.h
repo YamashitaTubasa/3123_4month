@@ -108,13 +108,21 @@ public:
 	/// </summary>
 	int CheckCollision(XMFLOAT3 object, XMFLOAT3 scale);
 
+	//XMFLOAT3変換
+	XMFLOAT3 ConversionVec(Vector3 vec);
+	Vector3 ConversionVec(XMFLOAT3 xVec);
+	//正面ベクトル取得
+	XMFLOAT3 GetFront(XMFLOAT3 a, XMFLOAT3 b);
+	XMFLOAT3 GetRight(XMFLOAT3 a, XMFLOAT3 b);
+	XMFLOAT3 GetLeft(XMFLOAT3 a, XMFLOAT3 b);
+
 private:
 	// 入力
 	Input* input = nullptr;
 	// モデル
-	Model* model[5];
+	Model* playerModel;
 	// オブジェクト
-	Object3d* object3d[5];
+	Object3d* player;
 	// スプライト
 	Sprite* sprite = nullptr;
 	Sprite title;
@@ -131,13 +139,5 @@ private:
 
 	ImGuiManager* imGuiManager = nullptr;
 
-	XMFLOAT3 position[5]{};
-	XMFLOAT3 rotation[5]{};
-	XMFLOAT3 scale[5]{};
-
-	bool isPush_D = false;
-	bool isPush_A = false;
-
-	int playerHp = 3;
 	int time = 0;
 };

@@ -24,7 +24,19 @@ void GameScene::Initialize(DirectXCommon* dXCommon, WinApp* winApp, SpriteCommon
 	imGuiManager->Initialize(dXCommon, winApp);
 
 	// オブジェクトの初期化
-	ObjectInitialize();
+	/*ObjectInitialize();*/
+
+	// OBJからモデルデータを読み込む
+	playerModel = Model::LoadFromOBJ("fighter");
+	// 3Dオブジェクト生成
+	player = Object3d::Create();
+	// オブジェクトにモデルをひも付ける
+	player->SetModel(playerModel);
+	player->SetRotation(XMFLOAT3(0, 270, 0));
+	player->SetScale(XMFLOAT3(1, 1, 1));
+
+	player->SetEye(XMFLOAT3(0, 5, 10));
+
 	// スプライトの初期化
 	SpriteInitialize(dXCommon, spriteCommon);
 	// パーティクルの初期化
@@ -96,9 +108,7 @@ void GameScene::Draw(DirectXCommon* dXCommon)
 		//TitleDraw(dXCommon);
 		break;
 	case Scene_1:
-		object3d[0]-> Draw();
-		// 3Dオブジェクトの描画
-		//ObjectDraw(dXCommon);
+		player-> Draw();
 		// パーティクルの描画
 		//ParticleDraw(dXCommon);
 		// HP描画
@@ -145,141 +155,67 @@ void GameScene::Finalize()
 
 void GameScene::ObjectInitialize()
 {
-	// OBJからモデルデータを読み込む
-	model[0] = Model::LoadFromOBJ("fighter");
-	/*model[0]->LoadTexture("effect1.png");*/
-	model[1] = Model::LoadFromOBJ("ironSphere");
-	//model[2] = Model::LoadFromOBJ("skydome", "skydome/skydome.jpg");
-	// 3Dオブジェクト生成
-	for (int i = 0; i < 5; i++) {
-		object3d[i] = Object3d::Create();
-	}
-	// オブジェクトにモデルをひも付ける
-	object3d[0]->SetModel(model[0]);
-	object3d[1]->SetModel(model[1]);
-	object3d[2]->SetModel(model[2]);
-	// 3Dオブジェクトの位置を指定
-	position[0] = { -20,-5,0 };
-	rotation[0] = { 0,90,0 };
-	object3d[0]->SetPosition(position[0]);
-	object3d[0]->SetScale({ 5, 5, 5 });
-	object3d[0]->SetRotation(rotation[0]);
-
-	position[1] = { 0,0,50 };
-	object3d[1]->SetPosition(position[1]);
-	object3d[1]->SetScale({ 5,5,5 });
-	object3d[1]->SetRotation({ 0, 90, 0 });
-
-	object3d[2]->SetPosition({ 0,-40,0 });
-	object3d[2]->SetScale({ 100, 100, 100 });
-	object3d[2]->SetRotation({ 0,100,20 });
+	
 }
 
 void GameScene::ObjectUpdate()
 {
-	// 3Dオブジェクト更新
-	for (int i = 0; i < 5; i++) {
-		object3d[i]->Update();
-	}
-
-	object3d[0]->SetPosition(position[0]);
-	object3d[0]->SetRotation(rotation[0]);
-	object3d[1]->SetPosition(position[1]);
-
+	//移動
 	if (input->PushKey(DIK_W)) {
-		position[0].y += 0.4;
+		Vector3 playerTmp = ConversionVec(player->GetPosition());
+		Vector3 eye = ConversionVec(player->GetEye());
+		Vector3 target = ConversionVec(player->GetTarget());
+		XMFLOAT3 playerFront = ConversionVec(Vector3(playerTmp.x, playerTmp.y, playerTmp.z + (target.z - eye.z)));
+		XMFLOAT3 frontTmp = GetFront(player->GetPosition(), playerFront);
+		Vector3 frontTmp_ = ConversionVec(frontTmp);
+		XMFLOAT3 resultVec = ConversionVec(playerTmp + frontTmp_ * 0.5);
+		player->SetPosition(resultVec);
+	}
+	else if (input->PushKey(DIK_S)) {
+		Vector3 playerTmp = ConversionVec(player->GetPosition());
+		Vector3 eye = ConversionVec(player->GetEye());
+		Vector3 target = ConversionVec(player->GetTarget());
+		XMFLOAT3 playerFront = ConversionVec(Vector3(playerTmp.x, playerTmp.y, playerTmp.z + (target.z - eye.z)));
+		XMFLOAT3 frontTmp = GetFront(player->GetPosition(), playerFront);
+		Vector3 frontTmp_ = ConversionVec(frontTmp);
+		Vector3 behindVec = frontTmp_ * -1;
+		XMFLOAT3 resultVec = ConversionVec(playerTmp + behindVec * 0.5);
+		player->SetPosition(resultVec);
+	}
+	else if (input->PushKey(DIK_D)) {
+		Vector3 playerTmp = ConversionVec(player->GetPosition());
+		Vector3 eye = ConversionVec(player->GetEye());
+		Vector3 target = ConversionVec(player->GetTarget());
+		XMFLOAT3 playerFront = ConversionVec(Vector3(playerTmp.x, playerTmp.y, playerTmp.z + (target.z - eye.z)));
+		XMFLOAT3 rightTmp = GetRight(player->GetPosition(), playerFront);
+		Vector3  rightTmp_ = ConversionVec(rightTmp);
+		XMFLOAT3 resultVec = ConversionVec(playerTmp + rightTmp_ * 0.5);
+		player->SetPosition(resultVec);
+	}
+	else if (input->PushKey(DIK_A)) {
+		Vector3 playerTmp = ConversionVec(player->GetPosition());
+		Vector3 eye = ConversionVec(player->GetEye());
+		Vector3 target = ConversionVec(player->GetTarget());
+		XMFLOAT3 playerFront = ConversionVec(Vector3(playerTmp.x, playerTmp.y, playerTmp.z + (target.z - eye.z)));
+		XMFLOAT3 leftTmp = GetLeft(player->GetPosition(), playerFront);
+		Vector3  leftTmp_ = ConversionVec(leftTmp);
+		XMFLOAT3 resultVec = ConversionVec(playerTmp + leftTmp_ * 0.5);
+		player->SetPosition(resultVec);
 	}
 
-	if (input->PushKey(DIK_A)) {
-		position[0].x -= 0.4;
-		isPush_A = true;
-	}
-	else {
-		isPush_A = false;
-	}
-	if (isPush_D == false) {
-		if (isPush_A == true) {
-			if (rotation[0].x >= -20) {
-				rotation[0].x -= 1;
-			}
-			if (rotation[0].x <= -20) {
-				rotation[0].x = -20;
-			}
-		}
-		else {
-			if (rotation[0].x >= -20) {
-				rotation[0].x += 1;
-			}
-			if (rotation[0].x >= 0) {
-				rotation[0].x = 0;
-			}
-		}
-	}
 
-	if (input->PushKey(DIK_S)) {
-		position[0].y -= 0.4;
-	}
-
-	if (input->PushKey(DIK_D)) {
-		position[0].x += 0.4;
-		isPush_D = true;
-	}
-	else {
-		isPush_D = false;
-	}
-	if (isPush_A == false) {
-		if (isPush_D == true) {
-			if (rotation[0].x <= 20) {
-				rotation[0].x += 1;
-			}
-			if (rotation[0].x >= 20) {
-				rotation[0].x = 20;
-			}
-		}
-		else {
-			if (rotation[0].x <= 20) {
-				rotation[0].x -= 1;
-			}
-			if (rotation[0].x <= 0) {
-				rotation[0].x = 0;
-			}
-		}
-	}
-
-	position[1].z -= 1;
-	if (position[1].z < -100) {
-		position[1].z = 50;
-	}
-
-	// プレイヤーと鉄球の当たり判定
-	if (CheckCollision(object3d[1]->GetPosition(), object3d[1]->GetScale()) == true) {
-		playerHp -= 1;
-	}
-	if (playerHp == 0) {
-		scene = GameOver;
-	}
+	player->Update();
 }
 
 void GameScene::ObjectDraw(DirectXCommon* dXCommon)
 {
-
-	// 3Dオブジェクトの描画
-	for (int i = 0; i < 5; i++) {
-		object3d[i]->Draw();
-	}
-
+	player->Draw();
 }
 
 void GameScene::ObjectFinalize()
 {
-	// 3Dオブジェクト解放
-	for (int i = 0; i < 5; i++) {
-		delete object3d[i];
-	}
-	// 3Dモデル解放
-	for (int i = 0; i < 5; i++) {
-		delete model[i];
-	}
+	delete player;
+	delete playerModel;
 }
 
 void GameScene::SpriteInitialize(DirectXCommon* dXCommon, SpriteCommon& spriteCommon)
@@ -445,42 +381,110 @@ void GameScene::ParticleDraw(DirectXCommon* dXCommon)
 
 void GameScene::GameReset()
 {
-	// 3Dオブジェクトの位置を指定
-	position[0] = { -20,-5,0 };
-	rotation[0] = { 0,90,0 };
-	object3d[0]->SetPosition(position[0]);
-	object3d[0]->SetScale({ 5, 5, 5 });
-	object3d[0]->SetRotation(rotation[0]);
-	position[1] = { 0,5,50 };
-	object3d[1]->SetPosition(position[1]);
-	object3d[1]->SetRotation({ 0, 90, 0 });
-	object3d[1]->SetScale({ 5,5,5 });
-
-	playerHp = 3;
 	time = 0;
 }
 
 int GameScene::CheckCollision(XMFLOAT3 position, XMFLOAT3 scale) {
-	//オブジェクトの座標
-	float objLeftX = position.x - scale.x;
-	float objRightX = position.x + scale.x;
-	float objTopY = position.y + scale.y;
-	float objBottomY = position.y - scale.y;
-	float objFrontZ = position.z - scale.z;
-	float objBZ = position.z + scale.z;
+	///*オブジェクトの座標
+	//float objLeftX = position.x - scale.x;
+	//float objRightX = position.x + scale.x;
+	//float objTopY = position.y + scale.y;
+	//float objBottomY = position.y - scale.y;
+	//float objFrontZ = position.z - scale.z;
+	//float objBZ = position.z + scale.z;
 	//プレイヤーの座標
-	float playerLeftX = object3d[0]->GetPosition().x - object3d[0]->GetScale().x;
-	float playerRightX = object3d[0]->GetPosition().x + object3d[0]->GetScale().x;
-	float playerTopY = object3d[0]->GetPosition().y + object3d[0]->GetScale().y;
-	float playerBottomY = object3d[0]->GetPosition().y - object3d[0]->GetScale().y;
-	float playerFrontZ = object3d[0]->GetPosition().z - object3d[0]->GetScale().z;
-	float playerBZ = object3d[0]->GetPosition().z + object3d[0]->GetScale().z;
+	//float playerLeftX = object3d[0]->GetPosition().x - object3d[0]->GetScale().x;
+	//float playerRightX = object3d[0]->GetPosition().x + object3d[0]->GetScale().x;
+	//float playerTopY = object3d[0]->GetPosition().y + object3d[0]->GetScale().y;
+	//float playerBottomY = object3d[0]->GetPosition().y - object3d[0]->GetScale().y;
+	//float playerFrontZ = object3d[0]->GetPosition().z - object3d[0]->GetScale().z;
+	//float playerBZ = object3d[0]->GetPosition().z + object3d[0]->GetScale().z;
 
-	if (objLeftX < playerRightX && playerLeftX < objRightX) {
-		if (objBottomY < playerTopY && playerBottomY < objTopY) {
-			if (objFrontZ < playerBZ && playerFrontZ < objBZ) {
-				return true;
-			}
-		}
-	}
+	//if (objLeftX < playerRightX && playerLeftX < objRightX) {
+	//	if (objBottomY < playerTopY && playerBottomY < objTopY) {
+	//		if (objFrontZ < playerBZ && playerFrontZ < objBZ) {
+	//			return true;
+	//		}
+	//	}
+	//}*/
+	return true;
+}
+
+XMFLOAT3 GameScene::ConversionVec(Vector3 vec) {
+	XMFLOAT3 tmp(0, 0, 0);
+	tmp.x = vec.x;
+	tmp.y = vec.y;
+	tmp.z = vec.z;
+	return tmp;
+}
+
+Vector3 GameScene::ConversionVec(XMFLOAT3 vec) {
+	Vector3 tmp(0, 0, 0);
+	tmp.x = vec.x;
+	tmp.y = vec.y;
+	tmp.z = vec.z;
+	return tmp;
+}
+
+
+XMFLOAT3 GameScene::GetFront(XMFLOAT3 a, XMFLOAT3 b) {
+	Vector3 yTmpVec = { 0, 1, 0 };
+	Vector3 frontTmp = { 0, 0, 0 };
+	Vector3 rightVec = { 0, 0, 0 };
+	Vector3 leftVec = { 0, 0, 0 };
+	Vector3 frontVec = { 0, 0, 0 };
+	Vector3 a_ = { a.x,a.y,a.z };
+	Vector3 b_ = { b.x,b.y,b.z };
+
+	yTmpVec.normalize();
+	//正面仮ベクトル
+	frontTmp = b_ - a_;
+	frontTmp.normalize();
+	//右ベクトル
+	rightVec = yTmpVec.cross(frontTmp);
+	rightVec.normalize();
+	//左ベクトル
+	leftVec = frontTmp.cross(yTmpVec);
+	leftVec.normalize();
+	//正面ベクトル
+	frontVec = rightVec.cross(yTmpVec);
+	frontVec.normalize();
+	
+	return ConversionVec(frontVec);
+}
+
+XMFLOAT3 GameScene::GetRight(XMFLOAT3 a, XMFLOAT3 b) {
+	Vector3 yTmpVec = { 0, 1, 0 };
+	Vector3 frontTmp = { 0, 0, 0 };
+	Vector3 rightVec = { 0, 0, 0 };
+	Vector3 a_ = { a.x,a.y,a.z };
+	Vector3 b_ = { b.x,b.y,b.z };
+
+	yTmpVec.normalize();
+	//正面仮ベクトル
+	frontTmp = b_ - a_;
+	frontTmp.normalize();
+	//右ベクトル
+	rightVec = yTmpVec.cross(frontTmp);
+	rightVec.normalize();
+
+	return ConversionVec(rightVec);
+}
+
+XMFLOAT3 GameScene::GetLeft(XMFLOAT3 a, XMFLOAT3 b) {
+	Vector3 yTmpVec = { 0, 1, 0 };
+	Vector3 frontTmp = { 0, 0, 0 };
+	Vector3 leftVec = { 0, 0, 0 };
+	Vector3 a_ = { a.x,a.y,a.z };
+	Vector3 b_ = { b.x,b.y,b.z };
+
+	yTmpVec.normalize();
+	//正面仮ベクトル
+	frontTmp = b_ - a_;
+	frontTmp.normalize();
+	//左ベクトル
+	leftVec = frontTmp.cross(yTmpVec);
+	leftVec.normalize();
+
+	return ConversionVec(leftVec);
 }
