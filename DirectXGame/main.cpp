@@ -1,8 +1,8 @@
 #include "RideLight.h"
 
 // windowsアプリでのエントリーポイント(main関数)
-int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
-
+int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) 
+{
 	RLFramework* game = new RideLight();
 
 	game->Run();

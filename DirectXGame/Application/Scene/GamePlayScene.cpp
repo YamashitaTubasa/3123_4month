@@ -1,49 +1,18 @@
-#include "GameScene.h"
+#include "GamePlayScene.h"
 
-GameScene::GameScene()
+GamePlayScene::GamePlayScene()
 {
 }
 
-GameScene::~GameScene()
+GamePlayScene::~GamePlayScene()
 {
 }
 
-void GameScene::Initialize(DirectXCommon* dXCommon, WinApp* winApp, SpriteCommon& spriteCommon,Input* input_)
+void GamePlayScene::Initialize(DirectXCommon* dXCommon, WinApp* winApp, SpriteCommon& spriteCommon, Input* input_)
 {
 	this->input = input_;
 
 	// オブジェクトの初期化
-	ObjectInitialize(dXCommon);
-	// スプライトの初期化
-	SpriteInitialize(dXCommon, spriteCommon);
-}
-
-void GameScene::Update()
-{
-	// オブジェクトの更新
-	ObjectUpdate();
-}
-
-void GameScene::Draw(DirectXCommon* dXCommon)
-{
-	// 3Dオブジェクトの描画
-	ObjectDraw(dXCommon);
-	
-	// HP描画
-	GameDraw(dXCommon);
-}
-
-void GameScene::Finalize()
-{
-	// オブジェクトの解放
-	ObjectFinalize();
-
-	// スプライトの解放
-	SpriteFinalize();
-}
-
-void GameScene::ObjectInitialize(DirectXCommon* dXCommon) 
-{
 	// OBJからモデルデータを読み込む
 	Model[0] = Model::LoadFromOBJ("fighter", "effect1.png");
 	//Model[0]->LoadTexture("effect1.png");
@@ -71,11 +40,30 @@ void GameScene::ObjectInitialize(DirectXCommon* dXCommon)
 
 	object3d[2]->SetPosition({ 0,-40,0 });
 	object3d[2]->SetScale({ 100, 100, 100 });
-	object3d[2]->SetRotation({0,100,20});
+	object3d[2]->SetRotation({ 0,100,20 });
+
+	// スプライトの初期化
+	// スプライト
+	sprite = new Sprite();
+	spriteCommon_ = sprite->SpriteCommonCreate(dXCommon->GetDevice(), 1280, 720);
+	// スプライト用パイプライン生成呼び出し
+	PipelineSet spritePipelineSet = sprite->SpriteCreateGraphicsPipeline(dXCommon->GetDevice());
+
+	// HP
+	hP.LoadTexture(spriteCommon_, 3, L"Resources/hp.png", dXCommon->GetDevice());
+	hP.SetColor(XMFLOAT4(1, 1, 1, 1));
+	hP.SpriteCreate(dXCommon->GetDevice(), 50, 50, 3, spriteCommon, XMFLOAT2(0.0f, 0.0f), false, false);
+	hP.SetPosition(XMFLOAT3(0, 0, 0));
+	hP.SetScale(XMFLOAT2(50 * 1, 50 * 1));
+	hP.SetRotation(0.0f);
+	hP.SpriteTransferVertexBuffer(hP, spriteCommon, 3);
+	hP.SpriteUpdate(hP, spriteCommon_);
+
 }
 
-void GameScene::ObjectUpdate()
+void GamePlayScene::Update()
 {
+	// オブジェクトの更新
 	// 3Dオブジェクト更新
 	for (int i = 0; i < 5; i++) {
 		object3d[i]->Update();
@@ -122,7 +110,8 @@ void GameScene::ObjectUpdate()
 	if (input->PushKey(DIK_D)) {
 		position[0].x += 0.4;
 		isPush_D = true;
-	}else {
+	}
+	else {
 		isPush_D = false;
 	}
 	if (isPush_A == false) {
@@ -151,21 +140,51 @@ void GameScene::ObjectUpdate()
 
 }
 
-void GameScene::ObjectDraw(DirectXCommon* dXCommon)
+void GamePlayScene::Draw(DirectXCommon* dXCommon)
 {
+#pragma region 3Dオブジェクト描画
+
 	// 3Dオブジェクト描画前処理
 	Object3d::PreDraw(dXCommon->GetCommandList());
 
-	// 3Dオブジェクトの描画
+	///=== 3Dオブジェクト描画 ===///
 	for (int i = 0; i < 5; i++) {
 		object3d[i]->Draw();
 	}
 
 	// 3Dオブジェクト描画後処理
 	Object3d::PostDraw();
+
+#pragma endregion
+
+#pragma region パーティクル描画
+
+	// パーティクル描画前処理
+	ParticleManager::PreDraw(dXCommon->GetCommandList());
+
+	///==== パーティクル描画 ====///
+	
+
+	// パーティクル描画後処理
+	ParticleManager::PostDraw();
+
+#pragma endregion
+
+#pragma region スプライト描画
+
+	// スプライト描画前処理
+	sprite->PreDraw(dXCommon->GetCommandList(), spriteCommon_);
+
+	///=== スプライト描画 ===///
+	hP.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), hP.vbView);
+
+	// スプライト描画後処理
+	sprite->PostDraw();
+
+#pragma endregion
 }
 
-void GameScene::ObjectFinalize()
+void GamePlayScene::Finalize()
 {
 	// 3Dオブジェクト解放
 	for (int i = 0; i < 5; i++) {
@@ -175,39 +194,7 @@ void GameScene::ObjectFinalize()
 	for (int i = 0; i < 5; i++) {
 		delete Model[i];
 	}
-}
 
-void GameScene::SpriteInitialize(DirectXCommon* dXCommon, SpriteCommon& spriteCommon)
-{
-	// スプライト
-	sprite = new Sprite();
-	spriteCommon_ = sprite->SpriteCommonCreate(dXCommon->GetDevice(), 1280, 720);
-
-	// HP
-	hP.LoadTexture(spriteCommon_, 3, L"Resources/hp.png", dXCommon->GetDevice());
-	hP.SetColor(XMFLOAT4(1, 1, 1, 1));
-	hP.SpriteCreate(dXCommon->GetDevice(), 50, 50, 3, spriteCommon, XMFLOAT2(0.0f, 0.0f), false, false);
-	hP.SetPosition(XMFLOAT3(0, 0, 0));
-	hP.SetScale(XMFLOAT2(50 * 1, 50 * 1));
-	hP.SetRotation(0.0f);
-	hP.SpriteTransferVertexBuffer(hP, spriteCommon, 3);
-	hP.SpriteUpdate(hP, spriteCommon_);
-
-	// スプライト用パイプライン生成呼び出し
-	PipelineSet spritePipelineSet = sprite->SpriteCreateGraphicsPipeline(dXCommon->GetDevice());
-}
-
-void GameScene::GameDraw(DirectXCommon* dXCommon)
-{
-	sprite->PreDraw(dXCommon->GetCommandList(), spriteCommon_);
-
-	hP.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), hP.vbView);
-	
-	sprite->PostDraw();
-}
-
-void GameScene::SpriteFinalize()
-{
 	// スプライト解放
 	delete sprite;
 	sprite = nullptr;

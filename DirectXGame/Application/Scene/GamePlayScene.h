@@ -8,12 +8,13 @@
 #include "Sprite.h"
 #include "ImGuiManager.h"
 #include "Vector3.h"
+#include "ParticleManager.h"
 
-class GameScene
+class GamePlayScene
 {
 public:
-	GameScene();
-	~GameScene();
+	GamePlayScene();
+	~GamePlayScene();
 
 public:
 	/// <summary>
@@ -37,42 +38,6 @@ public:
 	/// </summary>
 	void Finalize();
 
-	/// <summary>
-	/// オブジェクトの初期化
-	/// </summary>
-	/// <param name="dXCommon"></param>
-	void ObjectInitialize(DirectXCommon* dXCommon);
-
-	/// <summary>
-	/// オブジェクトの更新
-	/// </summary>
-	void ObjectUpdate();
-
-	/// <summary>
-	/// オブジェクトの描画
-	/// </summary>
-	void ObjectDraw(DirectXCommon* dXCommon);
-
-	/// <summary>
-	/// オブジェクトの解放
-	/// </summary>
-	void ObjectFinalize();
-
-	/// <summary>
-	/// スプライト初期化
-	/// </summary>
-	void SpriteInitialize(DirectXCommon* dXCommon, SpriteCommon& spriteCommon);
-
-	/// <summary>
-	/// スプライトの描画
-	/// </summary>
-	void GameDraw(DirectXCommon* dXCommon);
-
-	/// <summary>
-	/// スプライトの解放
-	/// </summary>
-	void SpriteFinalize();
-
 private:
 	// 入力
 	Input* input = nullptr;
@@ -87,6 +52,7 @@ private:
 
 	DirectXCommon* dXCommon = nullptr;
 	ImGuiManager* imGuiManager = nullptr;
+	ParticleManager* ParticleMan = nullptr;
 
 	XMFLOAT3 position[5]{};
 	XMFLOAT3 rotation[5]{};

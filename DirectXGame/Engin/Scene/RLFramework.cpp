@@ -45,9 +45,8 @@ void RLFramework::Initialize()
 	// 3Dオブジェクト静的初期化
 	Object3d::StaticInitialize(dXCommon->GetDevice(), WinApp::window_width, WinApp::window_height);
 
-	// ゲームシーンの初期化
-	gameScene = new GameScene();
-	gameScene->Initialize(dXCommon, winApp, spriteCommon, input);
+	// パーティクル静的初期化
+	ParticleManager::StaticInitialize(dXCommon->GetDevice(), WinApp::window_width, WinApp::window_height);
 }
 
 void RLFramework::Update()
@@ -64,9 +63,6 @@ void RLFramework::Update()
 
 void RLFramework::Finalize()
 {
-	// ゲームシーンの解放
-	gameScene->Finalize();
-
 	// imguiの終了処理
 	imGuiManager->Finalize();
 	// imguiの解放
