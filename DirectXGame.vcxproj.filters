@@ -85,6 +85,12 @@
     <Filter Include="ヘッダー ファイル\Engin\Scene">
       <UniqueIdentifier>{f0d58c0f-172f-42ef-bfbc-3433e4501edb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Engin\Collision">
+      <UniqueIdentifier>{c1116098-5185-474f-b03d-b2c8db7f9299}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Engin\Collision">
+      <UniqueIdentifier>{6f5eb480-79f9-413a-b6e9-7ae84012855e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DirectXGame\Engin\Input\Input.cpp">
