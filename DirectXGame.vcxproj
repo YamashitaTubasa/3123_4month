@@ -122,7 +122,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)DirectXGame\Engin\2d;$(ProjectDir)DirectXGame\Engin\3d;$(ProjectDir)DirectXGame\Engin\Audio;$(ProjectDir)DirectXGame\Engin\Effect;$(ProjectDir)DirectXGame\Engin\Input;$(ProjectDir)DirectXGame\Engin\Math;$(ProjectDir)DirectXGame\Engin\Platform;$(ProjectDir)DirectXGame\Engin\Scene;$(ProjectDir)External\ImGui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)DirectXGame\Engin\2d;$(ProjectDir)DirectXGame\Engin\3d;$(ProjectDir)DirectXGame\Engin\Audio;$(ProjectDir)DirectXGame\Engin\Effect;$(ProjectDir)DirectXGame\Engin\Input;$(ProjectDir)DirectXGame\Engin\Math;$(ProjectDir)DirectXGame\Engin\Platform;$(ProjectDir)DirectXGame\Engin\Scene;$(ProjectDir)External\ImGui;$(ProjectDir)DirectXGame\Application\Scene;$(ProjectDir)DirectXGame\Application\Platform;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -138,7 +138,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)DirectXGame\Engin\2d;$(ProjectDir)DirectXGame\Engin\3d;$(ProjectDir)DirectXGame\Engin\Audio;$(ProjectDir)DirectXGame\Engin\Effect;$(ProjectDir)DirectXGame\Engin\Input;$(ProjectDir)DirectXGame\Engin\Math;$(ProjectDir)DirectXGame\Engin\Platform;$(ProjectDir)DirectXGame\Engin\Scene;$(ProjectDir)External\ImGui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)DirectXGame\Engin\2d;$(ProjectDir)DirectXGame\Engin\3d;$(ProjectDir)DirectXGame\Engin\Audio;$(ProjectDir)DirectXGame\Engin\Effect;$(ProjectDir)DirectXGame\Engin\Input;$(ProjectDir)DirectXGame\Engin\Math;$(ProjectDir)DirectXGame\Engin\Platform;$(ProjectDir)DirectXGame\Engin\Scene;$(ProjectDir)External\ImGui;$(ProjectDir)DirectXGame\Application\Scene;$(ProjectDir)DirectXGame\Application\Platform;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -150,6 +150,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DirectXGame\Application\Platform\RLFramework.cpp" />
+    <ClCompile Include="DirectXGame\Application\Scene\RideLight.cpp" />
     <ClCompile Include="DirectXGame\Engin\2d\Sprite.cpp" />
     <ClCompile Include="DirectXGame\Engin\3d\Model.cpp" />
     <ClCompile Include="DirectXGame\Engin\3d\Object3d.cpp" />
@@ -233,6 +235,8 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DirectXGame\Application\Platform\RLFramework.h" />
+    <ClInclude Include="DirectXGame\Application\Scene\RideLight.h" />
     <ClInclude Include="DirectXGame\Engin\2d\Sprite.h" />
     <ClInclude Include="DirectXGame\Engin\3d\Model.h" />
     <ClInclude Include="DirectXGame\Engin\3d\Object3d.h" />

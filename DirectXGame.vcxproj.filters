@@ -132,6 +132,12 @@
     <ClCompile Include="DirectXGame\main.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="DirectXGame\Application\Scene\RideLight.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\Application\Platform\RLFramework.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Basic.hlsli">
@@ -218,6 +224,12 @@
     </ClInclude>
     <ClInclude Include="External\ImGui\ImGuiManager.h">
       <Filter>ヘッダー ファイル\Engin\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Application\Scene\RideLight.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Application\Platform\RLFramework.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
