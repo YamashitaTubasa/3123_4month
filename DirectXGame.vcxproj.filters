@@ -111,9 +111,6 @@
     <ClCompile Include="DirectXGame\Engin\3d\Object3d.cpp">
       <Filter>ソース ファイル\Engin\3d</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\Engin\Scene\GameScene.cpp">
-      <Filter>ソース ファイル\Engin\Scene</Filter>
-    </ClCompile>
     <ClCompile Include="DirectXGame\Engin\3d\Model.cpp">
       <Filter>ソース ファイル\Engin\3d</Filter>
     </ClCompile>
@@ -138,6 +135,7 @@
     <ClCompile Include="DirectXGame\main.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+
     <ClCompile Include="DirectXGame\Engin\Collision\Collision.cpp">
       <Filter>ソース ファイル\Engin\Collision</Filter>
     </ClCompile>
@@ -146,6 +144,15 @@
     </ClCompile>
     <ClCompile Include="SphereCollider.cpp">
       <Filter>ソース ファイル\Engin\Collision</Filter>
+    <ClCompile Include="DirectXGame\Application\Scene\RideLight.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\Engin\Scene\RLFramework.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\Application\Scene\GamePlayScene.cpp">
+      <Filter>ソース ファイル</Filter>
+
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -210,9 +217,6 @@
     <ClInclude Include="DirectXGame\Engin\3d\Object3d.h">
       <Filter>ヘッダー ファイル\Engin\3d</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXGame\Engin\Scene\GameScene.h">
-      <Filter>ヘッダー ファイル\Engin\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="DirectXGame\Engin\3d\Model.h">
       <Filter>ヘッダー ファイル\Engin\3d</Filter>
     </ClInclude>
@@ -234,6 +238,7 @@
     <ClInclude Include="External\ImGui\ImGuiManager.h">
       <Filter>ヘッダー ファイル\Engin\ImGui</Filter>
     </ClInclude>
+
     <ClInclude Include="DirectXGame\Engin\Collision\BaseCollider.h">
       <Filter>ヘッダー ファイル\Engin\Collision</Filter>
     </ClInclude>
@@ -251,6 +256,15 @@
     </ClInclude>
     <ClInclude Include="SphereCollider.h">
       <Filter>ヘッダー ファイル\Engin\Collision</Filter>
+    <ClInclude Include="DirectXGame\Application\Scene\RideLight.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Engin\Scene\RLFramework.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Application\Scene\GamePlayScene.h">
+      <Filter>ヘッダー ファイル</Filter>
+
     </ClInclude>
   </ItemGroup>
 </Project>
