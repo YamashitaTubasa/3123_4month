@@ -8,6 +8,9 @@
 #include <string>
 
 #include "Model.h"
+#include "CollisionInfo.h"
+
+class BaseCollider;
 
 /// <summary>
 /// 3Dオブジェクト
@@ -129,16 +132,30 @@ private:// 静的メンバ関数
 	static void UpdateViewMatrix();
 
 public: // メンバ関数
-	bool Initialize();
-	/// <summary>
-	/// 毎フレーム処理
-	/// </summary>
-	void Update();
 
-	/// <summary>
+	//コンストラクタ
+	Object3d() = default;
+
+	//デストラクタ
+	virtual ~Object3d();
+
+	//初期化
+	virtual bool Initialize();
+
+	/// 毎フレーム処理
+	virtual void Update();
+
 	/// 描画
-	/// </summary>
-	void Draw();
+	virtual void Draw();
+
+	//ワールド行列の取得
+	const XMMATRIX& GetMatWorld() { return matWorld; }
+
+	//コライダーのセット
+	void SetCollider(BaseCollider* collider);
+
+	//衝突時コールバック関数
+	virtual void OnCollision(const CollisionInfo& info){}
 
 	// モデルの設定
 	void SetModel(Model* model) { this->model = model; }
@@ -153,7 +170,12 @@ public: // メンバ関数
 	void SetRotation(const XMFLOAT3& rotation) { this->rotation = rotation; }
 	const XMFLOAT3& GetRotation() const { return rotation; }
 
-private: // メンバ変数
+protected: // メンバ変数
+	//クラス名
+	const char* name = nullptr;
+	//コライダー
+	BaseCollider* collider = nullptr;
+
 	// モデル
 	Model* model = nullptr;
 	// 定数バッファ

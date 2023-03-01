@@ -122,7 +122,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)DirectXGame\Engin\2d;$(ProjectDir)DirectXGame\Engin\3d;$(ProjectDir)DirectXGame\Engin\Audio;$(ProjectDir)DirectXGame\Engin\Effect;$(ProjectDir)DirectXGame\Engin\Input;$(ProjectDir)DirectXGame\Engin\Math;$(ProjectDir)DirectXGame\Engin\Platform;$(ProjectDir)DirectXGame\Engin\Scene;$(ProjectDir)External\ImGui;$(ProjectDir)DirectXGame\Application\Scene;$(ProjectDir)DirectXGame\Application\Platform;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)DirectXGame\Engin\2d;$(ProjectDir)DirectXGame\Engin\3d;$(ProjectDir)DirectXGame\Engin\Audio;$(ProjectDir)DirectXGame\Engin\Collision;$(ProjectDir)DirectXGame\Engin\Effect;$(ProjectDir)DirectXGame\Engin\Input;$(ProjectDir)DirectXGame\Engin\Math;$(ProjectDir)DirectXGame\Engin\Platform;$(ProjectDir)DirectXGame\Engin\Scene;$(ProjectDir)External\ImGui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -138,7 +138,9 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)DirectXGame\Engin\2d;$(ProjectDir)DirectXGame\Engin\3d;$(ProjectDir)DirectXGame\Engin\Audio;$(ProjectDir)DirectXGame\Engin\Effect;$(ProjectDir)DirectXGame\Engin\Input;$(ProjectDir)DirectXGame\Engin\Math;$(ProjectDir)DirectXGame\Engin\Platform;$(ProjectDir)DirectXGame\Engin\Scene;$(ProjectDir)External\ImGui;$(ProjectDir)DirectXGame\Application\Scene;$(ProjectDir)DirectXGame\Application\Platform;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+
+      <AdditionalIncludeDirectories>$(ProjectDir)DirectXGame\Engin\2d;$(ProjectDir)DirectXGame\Engin\3d;$(ProjectDir)DirectXGame\Engin\Audio;$(ProjectDir)DirectXGame\Engin\Collision;$(ProjectDir)DirectXGame\Engin\Effect;$(ProjectDir)DirectXGame\Engin\Input;$(ProjectDir)DirectXGame\Engin\Math;$(ProjectDir)DirectXGame\Engin\Platform;$(ProjectDir)DirectXGame\Engin\Scene;$(ProjectDir)External\ImGui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -150,6 +152,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+
     <ClCompile Include="DirectXGame\Engin\Scene\RLFramework.cpp" />
     <ClCompile Include="DirectXGame\Application\Scene\GamePlayScene.cpp" />
     <ClCompile Include="DirectXGame\Application\Scene\RideLight.cpp" />
@@ -158,6 +161,8 @@
     <ClCompile Include="DirectXGame\Engin\3d\Model.cpp" />
     <ClCompile Include="DirectXGame\Engin\3d\Object3d.cpp" />
     <ClCompile Include="DirectXGame\Engin\Audio\Audio.cpp" />
+    <ClCompile Include="DirectXGame\Engin\Collision\Collision.cpp" />
+    <ClCompile Include="DirectXGame\Engin\Collision\CollisionPrimitive.cpp" />
     <ClCompile Include="DirectXGame\Engin\Effect\ParticleManager.cpp" />
     <ClCompile Include="DirectXGame\Engin\Input\Input.cpp" />
     <ClCompile Include="DirectXGame\main.cpp" />
@@ -168,6 +173,8 @@
     <ClCompile Include="DirectXGame\Engin\Platform\DirectXCommon.cpp" />
     <ClCompile Include="DirectXGame\Engin\Platform\FPSFixed.cpp" />
     <ClCompile Include="DirectXGame\Engin\Platform\WinApp.cpp" />
+    <ClCompile Include="DirectXGame\Engin\Scene\GameScene.cpp" />
+    <ClCompile Include="SphereCollider.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Basic.hlsli" />
@@ -236,6 +243,7 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
+
     <ClInclude Include="DirectXGame\Engin\Scene\RLFramework.h" />
     <ClInclude Include="DirectXGame\Application\Scene\GamePlayScene.h" />
     <ClInclude Include="DirectXGame\Application\Scene\RideLight.h" />
@@ -244,6 +252,11 @@
     <ClInclude Include="DirectXGame\Engin\3d\Model.h" />
     <ClInclude Include="DirectXGame\Engin\3d\Object3d.h" />
     <ClInclude Include="DirectXGame\Engin\Audio\Audio.h" />
+    <ClInclude Include="DirectXGame\Engin\Collision\BaseCollider.h" />
+    <ClInclude Include="DirectXGame\Engin\Collision\Collision.h" />
+    <ClInclude Include="DirectXGame\Engin\Collision\CollisionInfo.h" />
+    <ClInclude Include="DirectXGame\Engin\Collision\CollisionPrimitive.h" />
+    <ClInclude Include="DirectXGame\Engin\Collision\CollisionTypes.h" />
     <ClInclude Include="DirectXGame\Engin\Effect\ParticleManager.h" />
     <ClInclude Include="DirectXGame\Engin\Input\Input.h" />
     <ClInclude Include="DirectXGame\Engin\Math\Matrix4.h" />
@@ -253,6 +266,7 @@
     <ClInclude Include="DirectXGame\Engin\Platform\FPSFixed.h" />
     <ClInclude Include="DirectXGame\Engin\Platform\WinApp.h" />
     <ClInclude Include="External\ImGui\ImGuiManager.h" />
+    <ClInclude Include="SphereCollider.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="External\DirectXTex\DirectXTex_Desktop_2022_Win10.vcxproj">
