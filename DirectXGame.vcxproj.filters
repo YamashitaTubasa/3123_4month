@@ -138,10 +138,13 @@
     <ClCompile Include="DirectXGame\main.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Collision.cpp">
+    <ClCompile Include="DirectXGame\Engin\Collision\Collision.cpp">
       <Filter>ソース ファイル\Engin\Collision</Filter>
     </ClCompile>
-    <ClCompile Include="CollisionPrimitive.cpp">
+    <ClCompile Include="DirectXGame\Engin\Collision\CollisionPrimitive.cpp">
+      <Filter>ソース ファイル\Engin\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="SphereCollider.cpp">
       <Filter>ソース ファイル\Engin\Collision</Filter>
     </ClCompile>
   </ItemGroup>
@@ -231,10 +234,22 @@
     <ClInclude Include="External\ImGui\ImGuiManager.h">
       <Filter>ヘッダー ファイル\Engin\ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="CollisionPrimitive.h">
+    <ClInclude Include="DirectXGame\Engin\Collision\BaseCollider.h">
       <Filter>ヘッダー ファイル\Engin\Collision</Filter>
     </ClInclude>
-    <ClInclude Include="Collision.h">
+    <ClInclude Include="DirectXGame\Engin\Collision\Collision.h">
+      <Filter>ヘッダー ファイル\Engin\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Engin\Collision\CollisionInfo.h">
+      <Filter>ヘッダー ファイル\Engin\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Engin\Collision\CollisionPrimitive.h">
+      <Filter>ヘッダー ファイル\Engin\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Engin\Collision\CollisionTypes.h">
+      <Filter>ヘッダー ファイル\Engin\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="SphereCollider.h">
       <Filter>ヘッダー ファイル\Engin\Collision</Filter>
     </ClInclude>
   </ItemGroup>
