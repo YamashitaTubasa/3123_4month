@@ -132,6 +132,12 @@
     <ClCompile Include="DirectXGame\main.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="DirectXGame\Engin\Scene\Player.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\Engin\Math\Quaternion.cpp">
+      <Filter>ソース ファイル\Engin\Math</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Basic.hlsli">
@@ -218,6 +224,12 @@
     </ClInclude>
     <ClInclude Include="External\ImGui\ImGuiManager.h">
       <Filter>ヘッダー ファイル\Engin\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Engin\Scene\Player.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Engin\Math\Quaternion.h">
+      <Filter>ヘッダー ファイル\Engin\Math</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

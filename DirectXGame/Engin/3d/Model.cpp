@@ -30,6 +30,11 @@ Model* Model::LoadFromOBJ(const string& modelname)
 	// バッファ生成
 	model->CreateBuffers();
 
+	if (model == nullptr) {
+		int a = 0;
+		a++;
+	}
+
 	//model->LoadTexture(texname);
 	
 	return model;

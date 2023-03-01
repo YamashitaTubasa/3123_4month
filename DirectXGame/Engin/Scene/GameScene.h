@@ -9,6 +9,8 @@
 #include "ParticleManager.h"
 #include "ImGuiManager.h"
 #include "Vector3.h"
+#include "Player.h"
+#include "Quaternion.h"
 
 class GameScene
 {
@@ -121,8 +123,11 @@ private:
 	Input* input = nullptr;
 	// モデル
 	Model* playerModel;
+	Model* skyModel;
 	// オブジェクト
 	Object3d* player;
+	Object3d* tester;
+	Object3d* sky;
 	// スプライト
 	Sprite* sprite = nullptr;
 	Sprite title;
@@ -132,12 +137,18 @@ private:
 	Sprite hP1;
 	SpriteCommon spriteCommon_;
 
+	Player* pl = nullptr;
+
 	// パーティクル
 	ParticleManager* particleMan = nullptr;
 
 	DirectXCommon* dXCommon = nullptr;
 
 	ImGuiManager* imGuiManager = nullptr;
+
+	const float PI = 3.141592;
+
+	Quaternion playerRote;
 
 	int time = 0;
 };

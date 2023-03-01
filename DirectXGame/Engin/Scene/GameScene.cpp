@@ -27,6 +27,14 @@ void GameScene::Initialize(DirectXCommon* dXCommon, WinApp* winApp, SpriteCommon
 	/*ObjectInitialize();*/
 
 	// OBJからモデルデータを読み込む
+	skyModel = Model::LoadFromOBJ("skydome");
+	// 3Dオブジェクト生成
+	sky = Object3d::Create();
+	// オブジェクトにモデルをひも付ける
+	sky->SetModel(skyModel);
+	sky->SetScale(XMFLOAT3(80, 80, 80));
+
+	// OBJからモデルデータを読み込む
 	playerModel = Model::LoadFromOBJ("fighter");
 	// 3Dオブジェクト生成
 	player = Object3d::Create();
@@ -34,6 +42,14 @@ void GameScene::Initialize(DirectXCommon* dXCommon, WinApp* winApp, SpriteCommon
 	player->SetModel(playerModel);
 	player->SetRotation(XMFLOAT3(0, 270, 0));
 	player->SetScale(XMFLOAT3(1, 1, 1));
+	playerRote = { player->GetPositionX(),player->GetPositionY(),player->GetPositionZ(),1 };
+
+	tester = Object3d::Create();
+	// オブジェクトにモデルをひも付ける
+	tester->SetModel(playerModel);
+	tester->SetPosition(XMFLOAT3(-1, 0, -12));
+	tester->SetRotation(XMFLOAT3(0, 270, 0));
+	tester->SetScale(XMFLOAT3(2, 2, 2));
 
 	player->SetEye(XMFLOAT3(0, 5, 10));
 
@@ -59,10 +75,10 @@ void GameScene::Update()
 		}
 		break;
 	case Scene_1:
-		time++;
+		/*time++;
 		if (time >= 1000) {
 			scene = GameClear;
-		}
+		}*/
 		ImGui::Text("Hello%d", 123);
 		if (ImGui::Button("Save")) {
 			imGuiManager->MySaveFunction();
@@ -72,6 +88,7 @@ void GameScene::Update()
 		}
 		// オブジェクトの更新
 		ObjectUpdate();
+		/*pl->Update();*/
 		// スプライトの更新
 		SpriteUpdate();
 		// パーティクルの更新
@@ -108,7 +125,10 @@ void GameScene::Draw(DirectXCommon* dXCommon)
 		//TitleDraw(dXCommon);
 		break;
 	case Scene_1:
+		/*pl->Draw();*/
+		sky->Draw();
 		player-> Draw();
+		tester->Draw();
 		// パーティクルの描画
 		//ParticleDraw(dXCommon);
 		// HP描画
@@ -160,51 +180,84 @@ void GameScene::ObjectInitialize()
 
 void GameScene::ObjectUpdate()
 {
-	//移動
-	if (input->PushKey(DIK_W)) {
-		Vector3 playerTmp = ConversionVec(player->GetPosition());
-		Vector3 eye = ConversionVec(player->GetEye());
-		Vector3 target = ConversionVec(player->GetTarget());
-		XMFLOAT3 playerFront = ConversionVec(Vector3(playerTmp.x, playerTmp.y, playerTmp.z + (target.z - eye.z)));
-		XMFLOAT3 frontTmp = GetFront(player->GetPosition(), playerFront);
-		Vector3 frontTmp_ = ConversionVec(frontTmp);
-		XMFLOAT3 resultVec = ConversionVec(playerTmp + frontTmp_ * 0.5);
-		player->SetPosition(resultVec);
-	}
-	else if (input->PushKey(DIK_S)) {
-		Vector3 playerTmp = ConversionVec(player->GetPosition());
-		Vector3 eye = ConversionVec(player->GetEye());
-		Vector3 target = ConversionVec(player->GetTarget());
-		XMFLOAT3 playerFront = ConversionVec(Vector3(playerTmp.x, playerTmp.y, playerTmp.z + (target.z - eye.z)));
-		XMFLOAT3 frontTmp = GetFront(player->GetPosition(), playerFront);
-		Vector3 frontTmp_ = ConversionVec(frontTmp);
-		Vector3 behindVec = frontTmp_ * -1;
-		XMFLOAT3 resultVec = ConversionVec(playerTmp + behindVec * 0.5);
-		player->SetPosition(resultVec);
-	}
-	else if (input->PushKey(DIK_D)) {
-		Vector3 playerTmp = ConversionVec(player->GetPosition());
-		Vector3 eye = ConversionVec(player->GetEye());
-		Vector3 target = ConversionVec(player->GetTarget());
-		XMFLOAT3 playerFront = ConversionVec(Vector3(playerTmp.x, playerTmp.y, playerTmp.z + (target.z - eye.z)));
-		XMFLOAT3 rightTmp = GetRight(player->GetPosition(), playerFront);
-		Vector3  rightTmp_ = ConversionVec(rightTmp);
-		XMFLOAT3 resultVec = ConversionVec(playerTmp + rightTmp_ * 0.5);
-		player->SetPosition(resultVec);
-	}
-	else if (input->PushKey(DIK_A)) {
-		Vector3 playerTmp = ConversionVec(player->GetPosition());
-		Vector3 eye = ConversionVec(player->GetEye());
-		Vector3 target = ConversionVec(player->GetTarget());
-		XMFLOAT3 playerFront = ConversionVec(Vector3(playerTmp.x, playerTmp.y, playerTmp.z + (target.z - eye.z)));
-		XMFLOAT3 leftTmp = GetLeft(player->GetPosition(), playerFront);
-		Vector3  leftTmp_ = ConversionVec(leftTmp);
-		XMFLOAT3 resultVec = ConversionVec(playerTmp + leftTmp_ * 0.5);
-		player->SetPosition(resultVec);
-	}
+
+	////移動
+	//if (input->PushKey(DIK_W)) {
+	//	Vector3 playerTmp = ConversionVec(player->GetPosition());
+	//	Vector3 eye = ConversionVec(player->GetEye());
+	//	Vector3 target = ConversionVec(player->GetTarget());
+	//	XMFLOAT3 playerFront = ConversionVec(Vector3(playerTmp.x, playerTmp.y, playerTmp.z + (target.z - eye.z)));
+	//	XMFLOAT3 frontTmp = GetFront(player->GetPosition(), playerFront);
+	//	Vector3 frontTmp_ = ConversionVec(frontTmp);
+	//	XMFLOAT3 resultVec = ConversionVec(playerTmp + frontTmp_ * 0.5);
+	//	player->SetPosition(resultVec);
+	//}
+	//if (input->PushKey(DIK_S)) {
+	//	Vector3 playerTmp = ConversionVec(player->GetPosition());
+	//	Vector3 eye = ConversionVec(player->GetEye());
+	//	Vector3 target = ConversionVec(player->GetTarget());
+	//	XMFLOAT3 playerFront = ConversionVec(Vector3(playerTmp.x, playerTmp.y, playerTmp.z + (target.z - eye.z)));
+	//	XMFLOAT3 frontTmp = GetFront(player->GetPosition(), playerFront);
+	//	Vector3 frontTmp_ = ConversionVec(frontTmp);
+	//	Vector3 behindVec = frontTmp_ * -1;
+	//	XMFLOAT3 resultVec = ConversionVec(playerTmp + behindVec * 0.5);
+	//	player->SetPosition(resultVec);
+	//}
+	//if (input->PushKey(DIK_D)) {
+	//	Vector3 playerTmp = ConversionVec(player->GetPosition());
+	//	Vector3 eye = ConversionVec(player->GetEye());
+	//	Vector3 target = ConversionVec(player->GetTarget());
+	//	XMFLOAT3 playerFront = ConversionVec(Vector3(playerTmp.x, playerTmp.y, playerTmp.z + (target.z - eye.z)));
+	//	XMFLOAT3 rightTmp = GetRight(player->GetPosition(), playerFront);
+	//	Vector3  rightTmp_ = ConversionVec(rightTmp);
+	//	XMFLOAT3 resultVec = ConversionVec(playerTmp + rightTmp_ * 0.5);
+	//	player->SetPosition(resultVec);
+	//}
+	//if (input->PushKey(DIK_A)) {
+	//	Vector3 playerTmp = ConversionVec(player->GetPosition());
+	//	Vector3 eye = ConversionVec(player->GetEye());
+	//	Vector3 target = ConversionVec(player->GetTarget());
+	//	XMFLOAT3 playerFront = ConversionVec(Vector3(playerTmp.x, playerTmp.y, playerTmp.z + (target.z - eye.z)));
+	//	XMFLOAT3 leftTmp = GetLeft(player->GetPosition(), playerFront);
+	//	Vector3  leftTmp_ = ConversionVec(leftTmp);
+	//	XMFLOAT3 resultVec = ConversionVec(playerTmp + leftTmp_ * 0.5);
+	//	player->SetPosition(resultVec);
+	//}
+
+	Vector3 playerTmp = ConversionVec(player->GetPosition());
+	Vector3 eye = ConversionVec(player->GetEye());
+	Vector3 target = ConversionVec(player->GetTarget());
+	playerRote = { player->GetPositionX(),player->GetPositionY(),player->GetPositionZ(),1 };
 
 
+	Vector3 dist = eye - playerTmp;
+	dist.normalize();
+	if (dist.z < 0.8) {
+
+	}
+
+	if (input->PushKey(DIK_A)) {
+		player->SetTarget(XMFLOAT3(ConversionVec(Vector3(target.x,target.y * atan(180 * PI / 2), target.z))));
+		playerTmp.x += 0.7;
+	}
+	if (input->PushKey(DIK_D)) {
+		player->SetTarget(XMFLOAT3(ConversionVec(Vector3(target.x , target.y * -atan(180 * PI / 2), target.z))));
+		playerTmp.x -= 0.7;
+	}
+
+	target = ConversionVec(player->GetTarget());
+	
+
+	XMFLOAT3 cameraFronttmp = GetFront(ConversionVec(eye),ConversionVec(Vector3(target.x,eye.y,target.z)));
+	Vector3 cameraFronttmp_ = ConversionVec(cameraFronttmp);
+
+	player->SetTarget(ConversionVec(target + cameraFronttmp_ * 0.2));
+	player->SetEye(ConversionVec(eye + cameraFronttmp_ * 0.2));
+	player->SetPosition(ConversionVec((playerTmp * sinf(PI / 2)) + cameraFronttmp_ * 0.2));
+
+	sky->Update();
 	player->Update();
+	tester->Update();
 }
 
 void GameScene::ObjectDraw(DirectXCommon* dXCommon)

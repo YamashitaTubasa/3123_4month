@@ -146,6 +146,12 @@ public: // メンバ関数
 	// オブジェクトの座標
 	const XMFLOAT3& GetPosition() const { return position; }
 	void SetPosition(const XMFLOAT3& position) { this->position = position; }
+	const float& GetPositionX() const { return position.x; }
+	void SetPositionX(const float& position) { this->position.x = position; }
+	const float& GetPositionY() const { return position.y; }
+	void SetPositionY(const float& position) { this->position.y = position; }
+	const float& GetPositionZ() const { return position.z; }
+	void SetPositionZ(const float& position) { this->position.z = position; }
 	// オブジェクトの大きさ
 	void SetScale(const XMFLOAT3& scale) { this->scale = scale; }
 	const XMFLOAT3& GetScale() const { return scale; }
