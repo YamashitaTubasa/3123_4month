@@ -10,9 +10,10 @@
 #include "Vector3.h"
 #include "ParticleManager.h"
 #include "GameBaseScene.h"
+#include "ViewProjection.h"
 
 //====================//
-// ƒQ[ƒ€ƒvƒŒƒCƒV[ƒ“
+// ã‚²ãƒ¼ãƒ ãƒ—ãƒ¬ã‚¤ã‚·ãƒ¼ãƒ³
 //====================//
 class GamePlayScene
 {
@@ -22,34 +23,46 @@ public:
 
 public:
 	/// <summary>
-	/// ‰Šú‰»
+	/// åˆæœŸåŒ–
 	/// </summary>
 	/// <param name="dXCommon"></param>
 	void Initialize(SpriteCommon& spriteCommon) ;
 
 	/// <summary>
-	/// XV
+	/// æ›´æ–°
 	/// </summary>
 	void Update();
 
 	/// <summary>
-	/// •`‰æ
+	/// æç”»
 	/// </summary>
 	void Draw() ;
 
 	/// <summary>
-	/// ‰ğ•ú
+	/// è§£æ”¾
 	/// </summary>
 	void Finalize();
+	//XMFLOAT3å¤‰æ›
+	XMFLOAT3 ConversionVec(Vector3 vec);
+	Vector3 ConversionVec(XMFLOAT3 xVec);
+	//æ­£é¢ãƒ™ã‚¯ãƒˆãƒ«å–å¾—
+	XMFLOAT3 GetFront(XMFLOAT3 a, XMFLOAT3 b);
+	XMFLOAT3 GetRight(XMFLOAT3 a, XMFLOAT3 b);
+	XMFLOAT3 GetLeft(XMFLOAT3 a, XMFLOAT3 b);
 
 private:
-	// “ü—Í
+	// å…¥åŠ›
 	Input* input = nullptr;
-	// ƒ‚ƒfƒ‹
-	Model* Model[5];
-	// ƒIƒuƒWƒFƒNƒg
-	Object3d* object3d[5];
-	// ƒXƒvƒ‰ƒCƒg
+	// ãƒ¢ãƒ‡ãƒ«
+	Model* playerModel;
+	Model* skyModel;
+	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	Object3d* player;
+	Object3d* tester;
+	Object3d* sky;
+	//ã‚«ãƒ¡ãƒ©
+	ViewProjection* viewProjection = nullptr;
+	// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆ
 	Sprite* sprite = nullptr;
 	Sprite hP;
 	SpriteCommon spriteCommon_;
@@ -68,4 +81,6 @@ private:
 
 	int playerHp = 3;
 	int time = 0;
+
+	const float PI = 3.141592;
 };

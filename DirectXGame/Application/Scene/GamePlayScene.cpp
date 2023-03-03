@@ -14,25 +14,39 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon)
 	winApp = WinApp::GetInstance();
 	input = Input::GetInstance();
 
-	// OBJ‚©‚çƒ‚ƒfƒ‹ƒf[ƒ^‚ğ“Ç‚İ‚Ş
-	Model[0] = Model::LoadFromOBJ("fighter", "effect1.png");
-	// 3DƒIƒuƒWƒFƒNƒg¶¬
-	for (int i = 0; i < 5; i++) {
-		object3d[i] = Object3d::Create();
-	}
-	// ƒIƒuƒWƒFƒNƒg‚Éƒ‚ƒfƒ‹‚ğ‚Ğ‚à•t‚¯‚é
-	object3d[0]->SetModel(Model[0]);
-	// 3DƒIƒuƒWƒFƒNƒg‚ÌˆÊ’u‚ğw’è
-	position[0] = { -20,-5,0 };
-	rotation[0] = { 0,90,0 };
-	object3d[0]->SetPosition(position[0]);
-	object3d[0]->SetScale({ 5, 5, 5 });
-	object3d[0]->SetRotation(rotation[0]);
+	viewProjection->Initialize(WinApp::window_width, WinApp::window_height);
 
-	// ƒXƒvƒ‰ƒCƒg
+	// OBJã‹ã‚‰ãƒ¢ãƒ‡ãƒ«ãƒ‡ãƒ¼ã‚¿ã‚’èª­ã¿è¾¼ã‚€
+	skyModel = Model::LoadFromOBJ("skydome");
+
+	// 3Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆç”Ÿæˆ
+	sky = Object3d::Create();
+	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«ãƒ¢ãƒ‡ãƒ«ã‚’ã²ã‚‚ä»˜ã‘ã‚‹
+
+	sky->SetModel(skyModel);
+	sky->SetScale(XMFLOAT3(80, 80, 80));
+
+	// OBJã‹ã‚‰ãƒ¢ãƒ‡ãƒ«ãƒ‡ãƒ¼ã‚¿ã‚’èª­ã¿è¾¼ã‚€
+	playerModel = Model::LoadFromOBJ("fighter");
+	// 3Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆç”Ÿæˆ
+	player = Object3d::Create();
+	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«ãƒ¢ãƒ‡ãƒ«ã‚’ã²ã‚‚ä»˜ã‘ã‚‹
+	player->SetModel(playerModel);
+	player->SetRotation(XMFLOAT3(0, 270, 0));
+	player->SetScale(XMFLOAT3(1, 1, 1));
+
+	tester = Object3d::Create();
+	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«ãƒ¢ãƒ‡ãƒ«ã‚’ã²ã‚‚ä»˜ã‘ã‚‹
+	tester->SetModel(playerModel);
+	tester->SetPosition(XMFLOAT3(-1, 0, -12));
+	tester->SetRotation(XMFLOAT3(0, 270, 0));
+	tester->SetScale(XMFLOAT3(2, 2, 2));
+
+	// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã®åˆæœŸåŒ–
+	// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆ
 	sprite = new Sprite();
 	spriteCommon_ = sprite->SpriteCommonCreate(dXCommon->GetDevice(), 1280, 720);
-	// ƒXƒvƒ‰ƒCƒg—pƒpƒCƒvƒ‰ƒCƒ“¶¬ŒÄ‚Ño‚µ
+	// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆç”¨ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ç”Ÿæˆå‘¼ã³å‡ºã—
 	PipelineSet spritePipelineSet = sprite->SpriteCreateGraphicsPipeline(dXCommon->GetDevice());
 
 	// HP
@@ -48,84 +62,75 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon)
 
 void GamePlayScene::Update()
 {
-	// 3DƒIƒuƒWƒFƒNƒgXV
-	for (int i = 0; i < 5; i++) {
-		object3d[i]->Update();
+
+	Vector3 playerTmp = ConversionVec(player->GetPosition());
+	Vector3 eye = ConversionVec(viewProjection->GetEye());
+	Vector3 target = ConversionVec(viewProjection->GetTarget());
+
+
+	if (input->PushKey(DIK_A)) {
+		viewProjection->SetTarget(XMFLOAT3(ConversionVec(Vector3(target.x + 0.1, target.y, target.z))));
+		/*playerTmp.x += 0.7;*/
+	}
+	if (input->PushKey(DIK_D)) {
+		viewProjection->SetTarget(XMFLOAT3(ConversionVec(Vector3(target.x - 0.1, target.y, target.z))));
+		/*playerTmp.x -= 0.7;*/
 	}
 
-	object3d[0]->SetPosition(position[0]);
-	object3d[0]->SetRotation(rotation[0]);
+	target = ConversionVec(viewProjection->GetTarget());
 
-	if (input->PushKey(DIK_W)) { position[0].y += 0.4; }
 
-	if (input->PushKey(DIK_A)) { position[0].x -= 0.4; isPush_A = true; }
-	else { isPush_A = false; }
-	if (isPush_D == false) {
-		if (isPush_A == true) {
-			if (rotation[0].x >= -20) {rotation[0].x -= 1;}
-			if (rotation[0].x <= -20) {rotation[0].x = -20;}
-		}
-		else {
-			if (rotation[0].x >= -20) {rotation[0].x += 1;}
-			if (rotation[0].x >= 0) {rotation[0].x = 0;}
-		}
-	}
+	XMFLOAT3 cameraFronttmp = GetFront(ConversionVec(eye), ConversionVec(Vector3(target.x, eye.y, target.z)));
+	Vector3 cameraFronttmp_ = ConversionVec(cameraFronttmp);
 
-	if (input->PushKey(DIK_S)) {position[0].y -= 0.4;}
+	viewProjection->SetTarget(ConversionVec(target + cameraFronttmp_ * 0.2));
+	viewProjection->SetEye(ConversionVec(eye + cameraFronttmp_ * 0.2));
+	player->SetPosition(ConversionVec((playerTmp * sinf(PI / 2)) + cameraFronttmp_ * 0.2));
 
-	if (input->PushKey(DIK_D)) {position[0].x += 0.4; isPush_D = true;}
-	else {isPush_D = false;}
-	if (isPush_A == false) {
-		if (isPush_D == true) {
-			if (rotation[0].x <= 20) {rotation[0].x += 1;}
-			if (rotation[0].x >= 20) {rotation[0].x = 20;}
-		}
-		else {
-			if (rotation[0].x <= 20) {rotation[0].x -= 1;}
-			if (rotation[0].x <= 0) {rotation[0].x = 0;}
-		}
-	}
+	sky->Update();
+	player->Update();
+	tester->Update();
+
 }
 
 void GamePlayScene::Draw()
 {
-#pragma region 3DƒIƒuƒWƒFƒNƒg•`‰æ
+#pragma region 3Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆæç”»
 
-	// 3DƒIƒuƒWƒFƒNƒg•`‰æ‘Oˆ—
+	// 3Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆæç”»å‰å‡¦ç†
 	Object3d::PreDraw(dXCommon->GetCommandList());
 
-	///=== 3DƒIƒuƒWƒFƒNƒg•`‰æ ===///
-	for (int i = 0; i < 5; i++) {
-		object3d[i]->Draw();
-	}
+	sky->Draw();
+	player->Draw();
+	tester->Draw();
 
-	// 3DƒIƒuƒWƒFƒNƒg•`‰æŒãˆ—
+	// 3Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆæç”»å¾Œå‡¦ç†
 	Object3d::PostDraw();
 
 #pragma endregion
 
-#pragma region ƒp[ƒeƒBƒNƒ‹•`‰æ
+#pragma region ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«æç”»
 
-	// ƒp[ƒeƒBƒNƒ‹•`‰æ‘Oˆ—
+	// ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«æç”»å‰å‡¦ç†
 	ParticleManager::PreDraw(dXCommon->GetCommandList());
 
-	///==== ƒp[ƒeƒBƒNƒ‹•`‰æ ====///
+	///==== ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«æç”» ====///
 	
 
-	// ƒp[ƒeƒBƒNƒ‹•`‰æŒãˆ—
+	// ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«æç”»å¾Œå‡¦ç†
 	ParticleManager::PostDraw();
 
 #pragma endregion
 
-#pragma region ƒXƒvƒ‰ƒCƒg•`‰æ
+#pragma region ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆæç”»
 
-	// ƒXƒvƒ‰ƒCƒg•`‰æ‘Oˆ—
+	// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆæç”»å‰å‡¦ç†
 	Sprite::PreDraw(dXCommon->GetCommandList(), spriteCommon_);
 
-	///=== ƒXƒvƒ‰ƒCƒg•`‰æ ===///
+	///=== ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆæç”» ===///
 	hP.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), hP.vbView);
 
-	// ƒXƒvƒ‰ƒCƒg•`‰æŒãˆ—
+	// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆæç”»å¾Œå‡¦ç†
 	Sprite::PostDraw();
 
 #pragma endregion
@@ -133,16 +138,91 @@ void GamePlayScene::Draw()
 
 void GamePlayScene::Finalize()
 {
-	// 3DƒIƒuƒWƒFƒNƒg‰ğ•ú
-	for (int i = 0; i < 5; i++) {
-		delete object3d[i];
-	}
-	// 3Dƒ‚ƒfƒ‹‰ğ•ú
-	for (int i = 0; i < 5; i++) {
-		delete Model[i];
-	}
+	delete player;
+	delete playerModel;
+	delete sky;
+	delete skyModel;
 
-	// ƒXƒvƒ‰ƒCƒg‰ğ•ú
+	// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆè§£æ”¾
 	delete sprite;
 	sprite = nullptr;
+}
+
+XMFLOAT3 GamePlayScene::ConversionVec(Vector3 vec) {
+	XMFLOAT3 tmp(0, 0, 0);
+	tmp.x = vec.x;
+	tmp.y = vec.y;
+	tmp.z = vec.z;
+	return tmp;
+}
+
+Vector3 GamePlayScene::ConversionVec(XMFLOAT3 vec) {
+	Vector3 tmp(0, 0, 0);
+	tmp.x = vec.x;
+	tmp.y = vec.y;
+	tmp.z = vec.z;
+	return tmp;
+}
+
+
+XMFLOAT3 GamePlayScene::GetFront(XMFLOAT3 a, XMFLOAT3 b) {
+	Vector3 yTmpVec = { 0, 1, 0 };
+	Vector3 frontTmp = { 0, 0, 0 };
+	Vector3 rightVec = { 0, 0, 0 };
+	Vector3 leftVec = { 0, 0, 0 };
+	Vector3 frontVec = { 0, 0, 0 };
+	Vector3 a_ = { a.x,a.y,a.z };
+	Vector3 b_ = { b.x,b.y,b.z };
+
+	yTmpVec.normalize();
+	//æ­£é¢ä»®ãƒ™ã‚¯ãƒˆãƒ«
+	frontTmp = b_ - a_;
+	frontTmp.normalize();
+	//å³ãƒ™ã‚¯ãƒˆãƒ«
+	rightVec = yTmpVec.cross(frontTmp);
+	rightVec.normalize();
+	//å·¦ãƒ™ã‚¯ãƒˆãƒ«
+	leftVec = frontTmp.cross(yTmpVec);
+	leftVec.normalize();
+	//æ­£é¢ãƒ™ã‚¯ãƒˆãƒ«
+	frontVec = rightVec.cross(yTmpVec);
+	frontVec.normalize();
+
+	return ConversionVec(frontVec);
+}
+
+XMFLOAT3 GamePlayScene::GetRight(XMFLOAT3 a, XMFLOAT3 b) {
+	Vector3 yTmpVec = { 0, 1, 0 };
+	Vector3 frontTmp = { 0, 0, 0 };
+	Vector3 rightVec = { 0, 0, 0 };
+	Vector3 a_ = { a.x,a.y,a.z };
+	Vector3 b_ = { b.x,b.y,b.z };
+
+	yTmpVec.normalize();
+	//æ­£é¢ä»®ãƒ™ã‚¯ãƒˆãƒ«
+	frontTmp = b_ - a_;
+	frontTmp.normalize();
+	//å³ãƒ™ã‚¯ãƒˆãƒ«
+	rightVec = yTmpVec.cross(frontTmp);
+	rightVec.normalize();
+
+	return ConversionVec(rightVec);
+}
+
+XMFLOAT3 GamePlayScene::GetLeft(XMFLOAT3 a, XMFLOAT3 b) {
+	Vector3 yTmpVec = { 0, 1, 0 };
+	Vector3 frontTmp = { 0, 0, 0 };
+	Vector3 leftVec = { 0, 0, 0 };
+	Vector3 a_ = { a.x,a.y,a.z };
+	Vector3 b_ = { b.x,b.y,b.z };
+
+	yTmpVec.normalize();
+	//æ­£é¢ä»®ãƒ™ã‚¯ãƒˆãƒ«
+	frontTmp = b_ - a_;
+	frontTmp.normalize();
+	//å·¦ãƒ™ã‚¯ãƒˆãƒ«
+	leftVec = frontTmp.cross(yTmpVec);
+	leftVec.normalize();
+
+	return ConversionVec(leftVec);
 }
