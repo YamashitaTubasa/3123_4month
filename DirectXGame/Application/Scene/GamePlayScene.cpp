@@ -12,6 +12,8 @@ void GamePlayScene::Initialize(DirectXCommon* dXCommon, WinApp* winApp, SpriteCo
 {
 	this->input = input_;
 
+	viewProjection->Initialize(WinApp::window_width, WinApp::window_height);
+
 	// オブジェクトの初期化
 	// OBJからモデルデータを読み込む
 	Model[0] = Model::LoadFromOBJ("fighter", "effect1.png");

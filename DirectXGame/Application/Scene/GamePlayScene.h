@@ -9,6 +9,7 @@
 #include "ImGuiManager.h"
 #include "Vector3.h"
 #include "ParticleManager.h"
+#include "ViewProjection.h"
 
 class GamePlayScene
 {
@@ -45,6 +46,8 @@ private:
 	Model* Model[5];
 	// オブジェクト
 	Object3d* object3d[5];
+	//カメラ
+	ViewProjection* viewProjection = nullptr;
 	// スプライト
 	Sprite* sprite = nullptr;
 	Sprite hP;
