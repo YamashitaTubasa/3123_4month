@@ -10,67 +10,49 @@
 #include "Vector3.h"
 #include "ParticleManager.h"
 #include "GameBaseScene.h"
-#include "ViewProjection.h"
 
 //====================//
-// ã‚²ãƒ¼ãƒ ãƒ—ãƒ¬ã‚¤ã‚·ãƒ¼ãƒ³
+// ƒQ[ƒ€ƒ^ƒCƒgƒ‹ƒV[ƒ“
 //====================//
-class GamePlayScene
+class GameTitleScene 
 {
 public:
-	GamePlayScene();
-	~GamePlayScene();
+	GameTitleScene();
+	~GameTitleScene();
 
 public:
 	/// <summary>
-	/// åˆæœŸåŒ–
+	/// ‰Šú‰»
 	/// </summary>
 	/// <param name="dXCommon"></param>
-	void Initialize(SpriteCommon& spriteCommon) ;
+	void Initialize(DirectXCommon* dXCommon, WinApp* winApp, SpriteCommon& spriteCommon) ;
 
 	/// <summary>
-	/// æ›´æ–°
+	/// XV
 	/// </summary>
-	void Update();
+	void Update() ;
 
 	/// <summary>
-	/// æç”»
+	/// •`‰æ
 	/// </summary>
-	void Draw() ;
+	void Draw(DirectXCommon* dXCommon) ;
 
 	/// <summary>
-	/// è§£æ”¾
+	/// ‰ğ•ú
 	/// </summary>
-	void Finalize();
-	//XMFLOAT3å¤‰æ›
-	XMFLOAT3 ConversionVec(Vector3 vec);
-	Vector3 ConversionVec(XMFLOAT3 xVec);
-	//æ­£é¢ãƒ™ã‚¯ãƒˆãƒ«å–å¾—
-	XMFLOAT3 GetFront(XMFLOAT3 a, XMFLOAT3 b);
-	XMFLOAT3 GetRight(XMFLOAT3 a, XMFLOAT3 b);
-	XMFLOAT3 GetLeft(XMFLOAT3 a, XMFLOAT3 b);
+	void Finalize() ;
 
 private:
-	// å…¥åŠ›
+	// “ü—Í
 	Input* input = nullptr;
-	// ãƒ¢ãƒ‡ãƒ«
-	Model* playerModel;
-	Model* skyModel;
-	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
-	Object3d* player;
-	Object3d* tester;
-	Object3d* sky;
-	//ã‚«ãƒ¡ãƒ©
-	ViewProjection* viewProjection = nullptr;
-	// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆ
+	// ƒXƒvƒ‰ƒCƒg
 	Sprite* sprite = nullptr;
-	Sprite hP;
+	Sprite Title;
 	SpriteCommon spriteCommon_;
 
 	DirectXCommon* dXCommon = nullptr;
 	ImGuiManager* imGuiManager = nullptr;
 	ParticleManager* ParticleMan = nullptr;
-	WinApp* winApp = nullptr;
 
 	XMFLOAT3 position[5]{};
 	XMFLOAT3 rotation[5]{};
@@ -81,6 +63,4 @@ private:
 
 	int playerHp = 3;
 	int time = 0;
-
-	const float PI = 3.141592;
 };

@@ -88,11 +88,21 @@
     <ClCompile Include="DirectXGame\Engin\Collision\SphereCollider.cpp">
       <Filter>ソースファイル\Engine\Collision</Filter>
     </ClCompile>
+
+    <ClCompile Include="DirectXGame\Application\Scene\GameTitleScene.cpp">
+      <Filter>ソースファイル\Application\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\Application\Scene\GameBaseScene.cpp">
+      <Filter>ソースファイル\Application\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\Engin\2d\SpriteCommon.cpp">
+      <Filter>ソースファイル\Engine\2d</Filter>
     <ClCompile Include="DirectXGame\Engin\3d\ViewProjection.cpp">
       <Filter>ソースファイル\Engine\3d</Filter>
     </ClCompile>
     <ClCompile Include="DirectXGame\Engin\Math\Quaternion.cpp">
       <Filter>ソースファイル\Engine\Math</Filter>
+
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -162,11 +172,21 @@
     <ClInclude Include="DirectXGame\Application\Platform\RideLight.h">
       <Filter>ヘッダーファイル\Application\Platform</Filter>
     </ClInclude>
+
+    <ClInclude Include="DirectXGame\Application\Scene\GameTitleScene.h">
+      <Filter>ヘッダーファイル\Application\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Application\Scene\GameBaseScene.h">
+      <Filter>ヘッダーファイル\Application\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Engin\2d\SpriteCommon.h">
+      <Filter>ヘッダーファイル\Engine\2d</Filter>
     <ClInclude Include="DirectXGame\Engin\3d\ViewProjection.h">
       <Filter>ヘッダーファイル\Engine\3d</Filter>
     </ClInclude>
     <ClInclude Include="DirectXGame\Engin\Math\Quaternion.h">
       <Filter>ヘッダーファイル\Engine\Math</Filter>
+
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

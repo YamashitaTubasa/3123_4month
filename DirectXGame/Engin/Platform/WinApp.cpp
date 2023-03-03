@@ -5,6 +5,13 @@
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam); 
 
+WinApp* WinApp::GetInstance() 
+{
+	static WinApp instance;
+
+	return &instance;
+}
+
 LRESULT WinApp::WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 {
 	// ImGui用ウィンドウプロシージャ呼び出し

@@ -2,7 +2,7 @@
 #include <Windows.h>
 
 // WindowsAPI
-class WinApp
+class WinApp final
 {
 public: // 静的メンバ関数
 	static LRESULT WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
@@ -20,6 +20,15 @@ public: // メンバ関数
 
 	// メッセージの処理
 	bool ProcessMessage();
+
+public:
+	static WinApp* GetInstance();
+
+private:
+	WinApp() = default;
+	~WinApp() = default;
+	WinApp(const WinApp&) = delete;
+	WinApp& operator=(const WinApp&) = delete;
 
 public: // 定数
 	// ウィンドウ横幅

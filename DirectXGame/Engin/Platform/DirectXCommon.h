@@ -14,7 +14,7 @@
 using namespace Microsoft::WRL;
 
 // DirectXŠî”Õ
-class DirectXCommon
+class DirectXCommon final
 {
 public: // ƒƒ“ƒoŠÖ”
 	// ‰Šú‰»
@@ -44,6 +44,15 @@ private: // ƒƒ“ƒoŠÖ”
 		delete p;
 		p = nullptr;
 	}
+
+public:
+	static DirectXCommon* GetInstance();
+
+private:
+	DirectXCommon() = default;
+	~DirectXCommon() = default;
+	DirectXCommon(const DirectXCommon&) = delete;
+	DirectXCommon& operator=(const DirectXCommon&) = delete;
 	
 
 public: // Getter

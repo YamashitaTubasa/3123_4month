@@ -6,6 +6,13 @@
 
 //using namespace Microsoft::WRL;
 
+Input* Input::GetInstance()
+{
+	static Input instance;
+
+	return &instance;
+}
+
 void Input::Initialize(WinApp* winApp)
 {
 	// 借りてきたWinAppのインスタンスを記録

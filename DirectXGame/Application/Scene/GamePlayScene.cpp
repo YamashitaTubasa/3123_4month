@@ -8,41 +8,45 @@ GamePlayScene::~GamePlayScene()
 {
 }
 
-void GamePlayScene::Initialize(DirectXCommon* dXCommon, WinApp* winApp, SpriteCommon& spriteCommon, Input* input_)
+void GamePlayScene::Initialize(SpriteCommon& spriteCommon)
 {
-	this->input = input_;
+	dXCommon = DirectXCommon::GetInstance();
+	winApp = WinApp::GetInstance();
+	input = Input::GetInstance();
 
 	viewProjection->Initialize(WinApp::window_width, WinApp::window_height);
 
-	// OBJ‚©‚çƒ‚ƒfƒ‹ƒf[ƒ^‚ğ“Ç‚İ‚Ş
+	// OBJã‹ã‚‰ãƒ¢ãƒ‡ãƒ«ãƒ‡ãƒ¼ã‚¿ã‚’èª­ã¿è¾¼ã‚€
 	skyModel = Model::LoadFromOBJ("skydome");
-	// 3DƒIƒuƒWƒFƒNƒg¶¬
+
+	// 3Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆç”Ÿæˆ
 	sky = Object3d::Create();
-	// ƒIƒuƒWƒFƒNƒg‚Éƒ‚ƒfƒ‹‚ğ‚Ğ‚à•t‚¯‚é
+	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«ãƒ¢ãƒ‡ãƒ«ã‚’ã²ã‚‚ä»˜ã‘ã‚‹
+
 	sky->SetModel(skyModel);
 	sky->SetScale(XMFLOAT3(80, 80, 80));
 
-	// OBJ‚©‚çƒ‚ƒfƒ‹ƒf[ƒ^‚ğ“Ç‚İ‚Ş
+	// OBJã‹ã‚‰ãƒ¢ãƒ‡ãƒ«ãƒ‡ãƒ¼ã‚¿ã‚’èª­ã¿è¾¼ã‚€
 	playerModel = Model::LoadFromOBJ("fighter");
-	// 3DƒIƒuƒWƒFƒNƒg¶¬
+	// 3Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆç”Ÿæˆ
 	player = Object3d::Create();
-	// ƒIƒuƒWƒFƒNƒg‚Éƒ‚ƒfƒ‹‚ğ‚Ğ‚à•t‚¯‚é
+	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«ãƒ¢ãƒ‡ãƒ«ã‚’ã²ã‚‚ä»˜ã‘ã‚‹
 	player->SetModel(playerModel);
 	player->SetRotation(XMFLOAT3(0, 270, 0));
 	player->SetScale(XMFLOAT3(1, 1, 1));
 
 	tester = Object3d::Create();
-	// ƒIƒuƒWƒFƒNƒg‚Éƒ‚ƒfƒ‹‚ğ‚Ğ‚à•t‚¯‚é
+	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«ãƒ¢ãƒ‡ãƒ«ã‚’ã²ã‚‚ä»˜ã‘ã‚‹
 	tester->SetModel(playerModel);
 	tester->SetPosition(XMFLOAT3(-1, 0, -12));
 	tester->SetRotation(XMFLOAT3(0, 270, 0));
 	tester->SetScale(XMFLOAT3(2, 2, 2));
 
-	// ƒXƒvƒ‰ƒCƒg‚Ì‰Šú‰»
-	// ƒXƒvƒ‰ƒCƒg
+	// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã®åˆæœŸåŒ–
+	// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆ
 	sprite = new Sprite();
 	spriteCommon_ = sprite->SpriteCommonCreate(dXCommon->GetDevice(), 1280, 720);
-	// ƒXƒvƒ‰ƒCƒg—pƒpƒCƒvƒ‰ƒCƒ“¶¬ŒÄ‚Ño‚µ
+	// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆç”¨ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ç”Ÿæˆå‘¼ã³å‡ºã—
 	PipelineSet spritePipelineSet = sprite->SpriteCreateGraphicsPipeline(dXCommon->GetDevice());
 
 	// HP
@@ -54,11 +58,11 @@ void GamePlayScene::Initialize(DirectXCommon* dXCommon, WinApp* winApp, SpriteCo
 	hP.SetRotation(0.0f);
 	hP.SpriteTransferVertexBuffer(hP, spriteCommon, 3);
 	hP.SpriteUpdate(hP, spriteCommon_);
-
 }
 
 void GamePlayScene::Update()
 {
+
 	Vector3 playerTmp = ConversionVec(player->GetPosition());
 	Vector3 eye = ConversionVec(viewProjection->GetEye());
 	Vector3 target = ConversionVec(viewProjection->GetTarget());
@@ -86,47 +90,48 @@ void GamePlayScene::Update()
 	sky->Update();
 	player->Update();
 	tester->Update();
+
 }
 
-void GamePlayScene::Draw(DirectXCommon* dXCommon)
+void GamePlayScene::Draw()
 {
-#pragma region 3DƒIƒuƒWƒFƒNƒg•`‰æ
+#pragma region 3Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆæç”»
 
-	// 3DƒIƒuƒWƒFƒNƒg•`‰æ‘Oˆ—
+	// 3Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆæç”»å‰å‡¦ç†
 	Object3d::PreDraw(dXCommon->GetCommandList());
 
 	sky->Draw();
 	player->Draw();
 	tester->Draw();
 
-	// 3DƒIƒuƒWƒFƒNƒg•`‰æŒãˆ—
+	// 3Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆæç”»å¾Œå‡¦ç†
 	Object3d::PostDraw();
 
 #pragma endregion
 
-#pragma region ƒp[ƒeƒBƒNƒ‹•`‰æ
+#pragma region ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«æç”»
 
-	// ƒp[ƒeƒBƒNƒ‹•`‰æ‘Oˆ—
+	// ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«æç”»å‰å‡¦ç†
 	ParticleManager::PreDraw(dXCommon->GetCommandList());
 
-	///==== ƒp[ƒeƒBƒNƒ‹•`‰æ ====///
+	///==== ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«æç”» ====///
 	
 
-	// ƒp[ƒeƒBƒNƒ‹•`‰æŒãˆ—
+	// ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«æç”»å¾Œå‡¦ç†
 	ParticleManager::PostDraw();
 
 #pragma endregion
 
-#pragma region ƒXƒvƒ‰ƒCƒg•`‰æ
+#pragma region ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆæç”»
 
-	// ƒXƒvƒ‰ƒCƒg•`‰æ‘Oˆ—
-	sprite->PreDraw(dXCommon->GetCommandList(), spriteCommon_);
+	// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆæç”»å‰å‡¦ç†
+	Sprite::PreDraw(dXCommon->GetCommandList(), spriteCommon_);
 
-	///=== ƒXƒvƒ‰ƒCƒg•`‰æ ===///
+	///=== ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆæç”» ===///
 	hP.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), hP.vbView);
 
-	// ƒXƒvƒ‰ƒCƒg•`‰æŒãˆ—
-	sprite->PostDraw();
+	// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆæç”»å¾Œå‡¦ç†
+	Sprite::PostDraw();
 
 #pragma endregion
 }
@@ -138,7 +143,7 @@ void GamePlayScene::Finalize()
 	delete sky;
 	delete skyModel;
 
-	// ƒXƒvƒ‰ƒCƒg‰ğ•ú
+	// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆè§£æ”¾
 	delete sprite;
 	sprite = nullptr;
 }
@@ -170,16 +175,16 @@ XMFLOAT3 GamePlayScene::GetFront(XMFLOAT3 a, XMFLOAT3 b) {
 	Vector3 b_ = { b.x,b.y,b.z };
 
 	yTmpVec.normalize();
-	//³–Ê‰¼ƒxƒNƒgƒ‹
+	//æ­£é¢ä»®ãƒ™ã‚¯ãƒˆãƒ«
 	frontTmp = b_ - a_;
 	frontTmp.normalize();
-	//‰EƒxƒNƒgƒ‹
+	//å³ãƒ™ã‚¯ãƒˆãƒ«
 	rightVec = yTmpVec.cross(frontTmp);
 	rightVec.normalize();
-	//¶ƒxƒNƒgƒ‹
+	//å·¦ãƒ™ã‚¯ãƒˆãƒ«
 	leftVec = frontTmp.cross(yTmpVec);
 	leftVec.normalize();
-	//³–ÊƒxƒNƒgƒ‹
+	//æ­£é¢ãƒ™ã‚¯ãƒˆãƒ«
 	frontVec = rightVec.cross(yTmpVec);
 	frontVec.normalize();
 
@@ -194,10 +199,10 @@ XMFLOAT3 GamePlayScene::GetRight(XMFLOAT3 a, XMFLOAT3 b) {
 	Vector3 b_ = { b.x,b.y,b.z };
 
 	yTmpVec.normalize();
-	//³–Ê‰¼ƒxƒNƒgƒ‹
+	//æ­£é¢ä»®ãƒ™ã‚¯ãƒˆãƒ«
 	frontTmp = b_ - a_;
 	frontTmp.normalize();
-	//‰EƒxƒNƒgƒ‹
+	//å³ãƒ™ã‚¯ãƒˆãƒ«
 	rightVec = yTmpVec.cross(frontTmp);
 	rightVec.normalize();
 
@@ -212,10 +217,10 @@ XMFLOAT3 GamePlayScene::GetLeft(XMFLOAT3 a, XMFLOAT3 b) {
 	Vector3 b_ = { b.x,b.y,b.z };
 
 	yTmpVec.normalize();
-	//³–Ê‰¼ƒxƒNƒgƒ‹
+	//æ­£é¢ä»®ãƒ™ã‚¯ãƒˆãƒ«
 	frontTmp = b_ - a_;
 	frontTmp.normalize();
-	//¶ƒxƒNƒgƒ‹
+	//å·¦ãƒ™ã‚¯ãƒˆãƒ«
 	leftVec = frontTmp.cross(yTmpVec);
 	leftVec.normalize();
 

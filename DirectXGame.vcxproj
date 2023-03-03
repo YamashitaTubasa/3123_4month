@@ -151,6 +151,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="DirectXGame\Application\Platform\RideLight.cpp" />
+
+    <ClCompile Include="DirectXGame\Application\Scene\GameBaseScene.cpp" />
+    <ClCompile Include="DirectXGame\Application\Scene\GameTitleScene.cpp" />
+    <ClCompile Include="DirectXGame\Engin\2d\SpriteCommon.cpp" />
     <ClCompile Include="DirectXGame\Engin\3d\ViewProjection.cpp" />
     <ClCompile Include="DirectXGame\Engin\Collision\SphereCollider.cpp" />
     <ClCompile Include="DirectXGame\Engin\Math\Quaternion.cpp" />
@@ -241,6 +245,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectXGame\Application\Platform\RideLight.h" />
+
+    <ClInclude Include="DirectXGame\Application\Scene\GameBaseScene.h" />
+    <ClInclude Include="DirectXGame\Application\Scene\GameTitleScene.h" />
+    <ClInclude Include="DirectXGame\Engin\2d\SpriteCommon.h" />
     <ClInclude Include="DirectXGame\Engin\3d\ViewProjection.h" />
     <ClInclude Include="DirectXGame\Engin\Collision\SphereCollider.h" />
     <ClInclude Include="DirectXGame\Engin\Math\Quaternion.h" />

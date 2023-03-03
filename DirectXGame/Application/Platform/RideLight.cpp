@@ -5,10 +5,9 @@ void RideLight::Initialize()
 	// 基底クラスの初期化
 	RLFramework::Initialize();
 
-	// ゲームシーンの生成
-	gamePlayScene = new GamePlayScene();
-	// ゲームシーンの初期化
-	gamePlayScene->Initialize(dXCommon, winApp, spriteCommon, input);
+	// ゲームシーンの生成と初期化
+	scene_ = new GamePlayScene();
+	scene_->Initialize(spriteCommon);
 }
 
 void RideLight::Update()
@@ -20,7 +19,7 @@ void RideLight::Update()
 	imGuiManager->Begin();
 
 	// ゲームシーンの更新
-	gamePlayScene->Update();
+	scene_->Update();
 
 	// ImGui受付終了
 	imGuiManager->End();
@@ -32,7 +31,7 @@ void RideLight::Draw()
 	dXCommon->PreDraw();
 
 	// ゲームシーンの描画
-	gamePlayScene->Draw(dXCommon);
+	scene_->Draw();
 
 	// ImGui描画
 	imGuiManager->Draw(dXCommon);
@@ -44,9 +43,9 @@ void RideLight::Draw()
 void RideLight::Finalize()
 {
 	// ゲームシーンの終了処理
-	gamePlayScene->Finalize();
+	scene_->Finalize();
 	// ゲームシーンの解放
-	delete gamePlayScene;
+	delete scene_;
 
 	// 基底クラスの終了処理
 	RLFramework::Finalize();

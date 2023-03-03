@@ -27,15 +27,15 @@ void RLFramework::Run()
 void RLFramework::Initialize()
 {
 	// WindowsAPI‚Ì‰Šú‰»
-	winApp = new WinApp();
+	winApp = WinApp::GetInstance();
 	winApp->Initialize();
 
 	// DirectX‚Ì‰Šú‰»
-	dXCommon = new DirectXCommon();
+	dXCommon = DirectXCommon::GetInstance();
 	dXCommon->Initialize(winApp);
 
 	// “ü—Í‚Ì‰Šú‰»
-	input = new Input();
+	input = Input::GetInstance();
 	input->Initialize(winApp);
 
 	// ImGui‚Ì‰Šú‰»
@@ -69,18 +69,10 @@ void RLFramework::Finalize()
 	delete imGuiManager;
 	imGuiManager = nullptr;
 
-	// “ü—ÍŠJ•ú
-	delete input;
-	input = nullptr;
-
 	// WindowsAPI‚ÌI—¹ˆ—
 	winApp->Finalize();
-	// WindowsAPI‰ð•ú
-	delete winApp;
-	winApp = nullptr;
-
+	
 	// DirectX‰ð•ú
 	dXCommon->fpsFixedFinalize();
-	delete dXCommon;
-	dXCommon = nullptr;
+	
 }
