@@ -88,6 +88,15 @@
     <ClCompile Include="DirectXGame\Engin\Collision\SphereCollider.cpp">
       <Filter>ソースファイル\Engine\Collision</Filter>
     </ClCompile>
+    <ClCompile Include="DirectXGame\Application\Scene\GameTitleScene.cpp">
+      <Filter>ソースファイル\Application\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\Application\Scene\GameBaseScene.cpp">
+      <Filter>ソースファイル\Application\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\Engin\2d\SpriteCommon.cpp">
+      <Filter>ソースファイル\Engine\2d</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectXGame\Engin\Collision\CollisionTypes.h">
@@ -155,6 +164,15 @@
     </ClInclude>
     <ClInclude Include="DirectXGame\Application\Platform\RideLight.h">
       <Filter>ヘッダーファイル\Application\Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Application\Scene\GameTitleScene.h">
+      <Filter>ヘッダーファイル\Application\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Application\Scene\GameBaseScene.h">
+      <Filter>ヘッダーファイル\Application\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Engin\2d\SpriteCommon.h">
+      <Filter>ヘッダーファイル\Engine\2d</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

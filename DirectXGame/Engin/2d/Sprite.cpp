@@ -504,7 +504,7 @@ void Sprite::SpriteTransferVertexBuffer(const Sprite& sprite, const SpriteCommon
 
 		vertices[LB].uv = { tex_left,  tex_bottom }; // ç∂â∫
 		vertices[LT].uv = { tex_left,     tex_top }; // ç∂è„
-		vertices[RB].uv = { tex_right, tex_bottom }; // âEâ∫
+		vertices[RB].uv = { tex_right, tex_bottom }; // âEâ∫z
 		vertices[RT].uv = { tex_right,    tex_top }; // âEè„
 	}
 
@@ -517,5 +517,5 @@ void Sprite::SpriteTransferVertexBuffer(const Sprite& sprite, const SpriteCommon
 
 void Sprite::Finalize()
 {
-	delete dXCommon;
+	//delete dXCommon;
 }

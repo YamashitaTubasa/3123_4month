@@ -12,52 +12,47 @@
 #include "GameBaseScene.h"
 
 //====================//
-// ゲームプレイシーン
+// ゲームタイトルシーン
 //====================//
-class GamePlayScene
+class GameTitleScene 
 {
 public:
-	GamePlayScene();
-	~GamePlayScene();
+	GameTitleScene();
+	~GameTitleScene();
 
 public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
 	/// <param name="dXCommon"></param>
-	void Initialize(SpriteCommon& spriteCommon) ;
+	void Initialize(DirectXCommon* dXCommon, WinApp* winApp, SpriteCommon& spriteCommon) ;
 
 	/// <summary>
 	/// 更新
 	/// </summary>
-	void Update();
+	void Update() ;
 
 	/// <summary>
 	/// 描画
 	/// </summary>
-	void Draw() ;
+	void Draw(DirectXCommon* dXCommon) ;
 
 	/// <summary>
 	/// 解放
 	/// </summary>
-	void Finalize();
+	void Finalize() ;
 
 private:
 	// 入力
 	Input* input = nullptr;
-	// モデル
-	Model* Model[5];
-	// オブジェクト
-	Object3d* object3d[5];
 	// スプライト
 	Sprite* sprite = nullptr;
-	Sprite hP;
+	Sprite Title;
 	SpriteCommon spriteCommon_;
 
 	DirectXCommon* dXCommon = nullptr;
 	ImGuiManager* imGuiManager = nullptr;
 	ParticleManager* ParticleMan = nullptr;
-	WinApp* winApp = nullptr;
 
 	XMFLOAT3 position[5]{};
 	XMFLOAT3 rotation[5]{};

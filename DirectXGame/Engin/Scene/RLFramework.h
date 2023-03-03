@@ -7,6 +7,7 @@
 #include "Model.h"
 #include "Object3d.h"
 #include "GamePlayScene.h"
+#include "GameTitleScene.h"
 #include "ImGuiManager.h"
 
 class RLFramework
@@ -39,7 +40,7 @@ protected:
 	DirectXCommon* dXCommon = nullptr;
 	Input* input = nullptr;
 	ImGuiManager* imGuiManager = nullptr;
-	GamePlayScene* gamePlayScene = nullptr;
+	GamePlayScene* scene_ = nullptr;
 	SpriteCommon spriteCommon;
 
 private:
