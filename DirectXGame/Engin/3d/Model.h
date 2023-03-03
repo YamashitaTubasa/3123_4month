@@ -86,10 +86,12 @@ public: // 静的メンバ関数
 	// 描画
 	/// <param name="cmdList">描画コマンドリスト</param>
 	/// <param name="rootParamIndexMaterial">マテリアル用ルートパラメータ番号</param>
-	void Draw(ID3D12GraphicsCommandList* cmdList, UINT rootParamIndexMaterial);
+	void Draw(ID3D12GraphicsCommandList* cmdList, UINT rootParamIndexMaterial,float alpha_ = 1);
 
 	// setter
 	static void SetDevice(ID3D12Device* device) { Model::device = device; }
+
+	void SetAlpha(float alpha_);
 
 
 private: // 静的メンバ変数

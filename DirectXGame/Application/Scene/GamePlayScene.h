@@ -38,14 +38,24 @@ public:
 	/// 解放
 	/// </summary>
 	void Finalize();
+	//XMFLOAT3変換
+	XMFLOAT3 ConversionVec(Vector3 vec);
+	Vector3 ConversionVec(XMFLOAT3 xVec);
+	//正面ベクトル取得
+	XMFLOAT3 GetFront(XMFLOAT3 a, XMFLOAT3 b);
+	XMFLOAT3 GetRight(XMFLOAT3 a, XMFLOAT3 b);
+	XMFLOAT3 GetLeft(XMFLOAT3 a, XMFLOAT3 b);
 
 private:
 	// 入力
 	Input* input = nullptr;
 	// モデル
-	Model* Model[5];
+	Model* playerModel;
+	Model* skyModel;
 	// オブジェクト
-	Object3d* object3d[5];
+	Object3d* player;
+	Object3d* tester;
+	Object3d* sky;
 	//カメラ
 	ViewProjection* viewProjection = nullptr;
 	// スプライト
@@ -66,4 +76,6 @@ private:
 
 	int playerHp = 3;
 	int time = 0;
+
+	const float PI = 3.141592;
 };

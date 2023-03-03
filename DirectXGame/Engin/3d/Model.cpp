@@ -262,13 +262,14 @@ void Model::LoadTexture(const std::string& filename)
 
 }
 
-void Model::Draw(ID3D12GraphicsCommandList* cmdList, UINT rootParamIndexMaterial)
+void Model::Draw(ID3D12GraphicsCommandList* cmdList, UINT rootParamIndexMaterial,float alpha_)
 {
 	// 頂点バッファビューの設定
 	cmdList->IASetVertexBuffers(0, 1, &vbView);
 	// インデックスバッファの設定
 	cmdList->IASetIndexBuffer(&ibView);
-
+	//alpha値設定
+	SetAlpha(alpha_);
 	// 定数バッファビューをセット
 	cmdList->SetGraphicsRootConstantBufferView(rootParamIndexMaterial,
 		constBuffB1->GetGPUVirtualAddress());
@@ -513,3 +514,15 @@ void Model::CreateBuffers()
 	}
 }
 
+void Model::SetAlpha(float alpha_) {
+
+	HRESULT result = S_FALSE;
+
+	// 定数バッファへデータ転送
+	ConstBufferDataB1* constMap1 = nullptr;
+	result = constBuffB1->Map(0, nullptr, (void**)&constMap1);
+	if (SUCCEEDED(result)) {
+		constMap1->alpha = alpha_;
+		constBuffB1->Unmap(0, nullptr);
+	}
+}

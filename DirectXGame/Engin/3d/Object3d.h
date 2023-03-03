@@ -95,6 +95,7 @@ public: // メンバ関数
 
 	/// 描画
 	virtual void Draw();
+	virtual void Draw(float alpha_);
 
 	//ワールド行列の取得
 	const XMMATRIX& GetMatWorld() { return matWorld; }

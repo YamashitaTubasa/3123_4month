@@ -306,6 +306,22 @@ void Object3d::Draw()
 	// nullptrチェック
 	assert(device);
 	assert(Object3d::cmdList);
+
+	// モデルがセットされていなければ描画をスキップ
+	if (model == nullptr) return;
+
+	// 定数バッファビューをセット
+	cmdList->SetGraphicsRootConstantBufferView(0, constBuffB0->GetGPUVirtualAddress());
+
+	// モデルを描画
+	model->Draw(cmdList, 1,1);
+}
+
+void Object3d::Draw(float alpha_)
+{
+	// nullptrチェック
+	assert(device);
+	assert(Object3d::cmdList);
 		
 	// モデルがセットされていなければ描画をスキップ
 	if (model == nullptr) return;
@@ -314,7 +330,7 @@ void Object3d::Draw()
 	cmdList->SetGraphicsRootConstantBufferView(0, constBuffB0->GetGPUVirtualAddress());
 
 	// モデルを描画
-	model->Draw(cmdList, 1);
+	model->Draw(cmdList, 1,alpha_);
 }
 
 void Object3d::SetCollider(BaseCollider* collider)
