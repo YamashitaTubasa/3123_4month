@@ -88,6 +88,12 @@
     <ClCompile Include="DirectXGame\Engin\Collision\SphereCollider.cpp">
       <Filter>ソースファイル\Engine\Collision</Filter>
     </ClCompile>
+    <ClCompile Include="DirectXGame\Engin\3d\ViewProjection.cpp">
+      <Filter>ソースファイル\Engine\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\Engin\Math\Quaternion.cpp">
+      <Filter>ソースファイル\Engine\Math</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectXGame\Engin\Collision\CollisionTypes.h">
@@ -155,6 +161,12 @@
     </ClInclude>
     <ClInclude Include="DirectXGame\Application\Platform\RideLight.h">
       <Filter>ヘッダーファイル\Application\Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Engin\3d\ViewProjection.h">
+      <Filter>ヘッダーファイル\Engine\3d</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Engin\Math\Quaternion.h">
+      <Filter>ヘッダーファイル\Engine\Math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
