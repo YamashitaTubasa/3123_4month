@@ -132,11 +132,11 @@
     <ClCompile Include="DirectXGame\main.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\Engin\Scene\Player.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="DirectXGame\Engin\Math\Quaternion.cpp">
       <Filter>ソース ファイル\Engin\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\Engin\3d\ViewProjection.cpp">
+      <Filter>ソース ファイル\Engin\3d</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -225,11 +225,11 @@
     <ClInclude Include="External\ImGui\ImGuiManager.h">
       <Filter>ヘッダー ファイル\Engin\ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXGame\Engin\Scene\Player.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="DirectXGame\Engin\Math\Quaternion.h">
       <Filter>ヘッダー ファイル\Engin\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Engin\3d\ViewProjection.h">
+      <Filter>ヘッダー ファイル\Engin\3d</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

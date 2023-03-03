@@ -11,6 +11,7 @@ GameScene::~GameScene()
 
 void GameScene::Initialize(DirectXCommon* dXCommon, WinApp* winApp, SpriteCommon& spriteCommon)
 {
+	viewProjection->Initialize(WinApp::window_width,WinApp::window_height);
 	// 3Dオブジェクト生成
 	particleMan = ParticleManager::Create();
 	particleMan->Update();
@@ -51,7 +52,7 @@ void GameScene::Initialize(DirectXCommon* dXCommon, WinApp* winApp, SpriteCommon
 	tester->SetRotation(XMFLOAT3(0, 270, 0));
 	tester->SetScale(XMFLOAT3(2, 2, 2));
 
-	player->SetEye(XMFLOAT3(0, 5, 10));
+	/*player->SetEye(XMFLOAT3(0, 5, 10));*/
 
 	// スプライトの初期化
 	SpriteInitialize(dXCommon, spriteCommon);
@@ -86,6 +87,7 @@ void GameScene::Update()
 			ImGui::InputText("string", buf, IM_ARRAYSIZE(buf));
 			ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
 		}
+		
 		// オブジェクトの更新
 		ObjectUpdate();
 		/*pl->Update();*/
@@ -225,34 +227,29 @@ void GameScene::ObjectUpdate()
 	//}
 
 	Vector3 playerTmp = ConversionVec(player->GetPosition());
-	Vector3 eye = ConversionVec(player->GetEye());
-	Vector3 target = ConversionVec(player->GetTarget());
+	Vector3 eye = ConversionVec(viewProjection->GetEye());
+	Vector3 target = ConversionVec(viewProjection->GetTarget());
 	playerRote = { player->GetPositionX(),player->GetPositionY(),player->GetPositionZ(),1 };
 
 
-	Vector3 dist = eye - playerTmp;
-	dist.normalize();
-	if (dist.z < 0.8) {
-
-	}
 
 	if (input->PushKey(DIK_A)) {
-		player->SetTarget(XMFLOAT3(ConversionVec(Vector3(target.x,target.y * atan(180 * PI / 2), target.z))));
-		playerTmp.x += 0.7;
+		viewProjection->SetTarget(XMFLOAT3(ConversionVec(Vector3(target.x+0.1,target.y, target.z))));
+		/*playerTmp.x += 0.7;*/
 	}
 	if (input->PushKey(DIK_D)) {
-		player->SetTarget(XMFLOAT3(ConversionVec(Vector3(target.x , target.y * -atan(180 * PI / 2), target.z))));
-		playerTmp.x -= 0.7;
+		viewProjection->SetTarget(XMFLOAT3(ConversionVec(Vector3(target.x-0.1 , target.y, target.z))));
+		/*playerTmp.x -= 0.7;*/
 	}
 
-	target = ConversionVec(player->GetTarget());
+	target = ConversionVec(viewProjection->GetTarget());
 	
 
 	XMFLOAT3 cameraFronttmp = GetFront(ConversionVec(eye),ConversionVec(Vector3(target.x,eye.y,target.z)));
 	Vector3 cameraFronttmp_ = ConversionVec(cameraFronttmp);
 
-	player->SetTarget(ConversionVec(target + cameraFronttmp_ * 0.2));
-	player->SetEye(ConversionVec(eye + cameraFronttmp_ * 0.2));
+	viewProjection->SetTarget(ConversionVec(target + cameraFronttmp_ * 0.2));
+	viewProjection->SetEye(ConversionVec(eye + cameraFronttmp_ * 0.2));
 	player->SetPosition(ConversionVec((playerTmp * sinf(PI / 2)) + cameraFronttmp_ * 0.2));
 
 	sky->Update();

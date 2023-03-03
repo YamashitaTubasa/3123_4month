@@ -153,11 +153,11 @@
     <ClCompile Include="DirectXGame\Engin\2d\Sprite.cpp" />
     <ClCompile Include="DirectXGame\Engin\3d\Model.cpp" />
     <ClCompile Include="DirectXGame\Engin\3d\Object3d.cpp" />
+    <ClCompile Include="DirectXGame\Engin\3d\ViewProjection.cpp" />
     <ClCompile Include="DirectXGame\Engin\Audio\Audio.cpp" />
     <ClCompile Include="DirectXGame\Engin\Effect\ParticleManager.cpp" />
     <ClCompile Include="DirectXGame\Engin\Input\Input.cpp" />
     <ClCompile Include="DirectXGame\Engin\Math\Quaternion.cpp" />
-    <ClCompile Include="DirectXGame\Engin\Scene\Player.cpp" />
     <ClCompile Include="DirectXGame\main.cpp" />
     <ClCompile Include="External\ImGui\ImGuiManager.cpp" />
     <ClCompile Include="DirectXGame\Engin\Math\Matrix4.cpp" />
@@ -238,6 +238,7 @@
     <ClInclude Include="DirectXGame\Engin\2d\Sprite.h" />
     <ClInclude Include="DirectXGame\Engin\3d\Model.h" />
     <ClInclude Include="DirectXGame\Engin\3d\Object3d.h" />
+    <ClInclude Include="DirectXGame\Engin\3d\ViewProjection.h" />
     <ClInclude Include="DirectXGame\Engin\Audio\Audio.h" />
     <ClInclude Include="DirectXGame\Engin\Effect\ParticleManager.h" />
     <ClInclude Include="DirectXGame\Engin\Input\Input.h" />
@@ -249,7 +250,6 @@
     <ClInclude Include="DirectXGame\Engin\Platform\FPSFixed.h" />
     <ClInclude Include="DirectXGame\Engin\Platform\WinApp.h" />
     <ClInclude Include="DirectXGame\Engin\Scene\GameScene.h" />
-    <ClInclude Include="DirectXGame\Engin\Scene\Player.h" />
     <ClInclude Include="External\ImGui\ImGuiManager.h" />
   </ItemGroup>
   <ItemGroup>

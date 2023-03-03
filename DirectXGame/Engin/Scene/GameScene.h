@@ -9,8 +9,8 @@
 #include "ParticleManager.h"
 #include "ImGuiManager.h"
 #include "Vector3.h"
-#include "Player.h"
 #include "Quaternion.h"
+#include "ViewProjection.h"
 
 class GameScene
 {
@@ -128,6 +128,8 @@ private:
 	Object3d* player;
 	Object3d* tester;
 	Object3d* sky;
+	//カメラ
+	ViewProjection* viewProjection = nullptr;
 	// スプライト
 	Sprite* sprite = nullptr;
 	Sprite title;
@@ -136,8 +138,6 @@ private:
 	Sprite hP;
 	Sprite hP1;
 	SpriteCommon spriteCommon_;
-
-	Player* pl = nullptr;
 
 	// パーティクル
 	ParticleManager* particleMan = nullptr;
