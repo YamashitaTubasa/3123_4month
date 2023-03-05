@@ -105,6 +105,9 @@
     <ClCompile Include="DirectXGame\Application\Scene\GamePlayScene.cpp">
       <Filter>ソースファイル\Engine\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="CollisionManager.cpp">
+      <Filter>ソースファイル\Engine\Collision</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectXGame\Engin\2d\Sprite.h">
@@ -187,6 +190,9 @@
     </ClInclude>
     <ClInclude Include="DirectXGame\Engin\Scene\RLFramework.h">
       <Filter>ヘッダーファイル\Application\Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionManager.h">
+      <Filter>ヘッダーファイル\Engine\Collision</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

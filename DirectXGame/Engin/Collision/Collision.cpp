@@ -2,6 +2,11 @@
 using namespace DirectX;
 
 
+bool Collision::CheckSphere2Sphere(const Sphere& sphereA, const Sphere& sphereB, DirectX::XMVECTOR* inter)
+{
+	return true;
+}
+
 bool Collision::CheckSphere2Plane(const Sphere& sphere, const Plane& plane, DirectX::XMVECTOR* inter)
 {
 	// 座標系の原点から球の中心座標への距離

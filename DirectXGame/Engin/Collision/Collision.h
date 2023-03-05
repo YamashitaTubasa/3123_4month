@@ -5,6 +5,8 @@
 class Collision
 {
 public:
+	//‹…‚Æ‹…‚Ì“–‚½‚è”»’è
+	static bool CheckSphere2Sphere(const Sphere& sphereA, const Sphere& sphereB, DirectX::XMVECTOR* inter = nullptr);
 	//‹…‚Æ•½–Ê‚Ì“–‚½‚è”»’è
 	static bool CheckSphere2Plane(const Sphere& sphere, const Plane& plane, DirectX::XMVECTOR* inter = nullptr);
 
