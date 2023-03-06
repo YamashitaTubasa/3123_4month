@@ -74,5 +74,4 @@ void RLFramework::Finalize()
 	
 	// DirectX‰ð•ú
 	dXCommon->fpsFixedFinalize();
-	
 }
