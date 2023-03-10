@@ -1,30 +1,32 @@
 #pragma once
 
-#include <DirectXMath.h>
-
 #include "DirectXCommon.h"
+#include <DirectXMath.h>
+#include <d3dcompiler.h>
+#include <string>
+
+#pragma comment(lib, "d3dcompiler.lib")
 
 using namespace DirectX;
 
-// ===================
-// スプライト共通部
-// ===================
-class SpriteCommon
+//==================//
+// スプライト共通部 //
+//==================//
+class SpriteCommon final
 {
 public:
-	
-
-public: // メンバ関数
-	// 初期化
 	void Initialize();
-	// 更新
-	void Update();
-	// 描画
-	void Draw();
 
-public: // getter
-	DirectXCommon* GetDirectXCommon() const{ return directXCommon; }
+public:
+	static SpriteCommon* Instance();
 
 private:
-	DirectXCommon* directXCommon = nullptr;
+	SpriteCommon() = default;
+	~SpriteCommon() = default;
+	SpriteCommon(const SpriteCommon&) = delete;
+	SpriteCommon& operator=(const SpriteCommon&) = delete;
+
+private:
+	ComPtr<ID3D12Device> device;
+	ComPtr<ID3D12Resource> vertBuff;
 };
