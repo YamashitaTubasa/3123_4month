@@ -18,10 +18,10 @@ void GameTitleScene::Initialize(DirectXCommon* dXCommon, WinApp* winApp, SpriteC
 
 	// HP
 	Title.LoadTexture(spriteCommon_, 0, L"Resources/title.png", dXCommon->GetDevice());
-	Title.SetColor(XMFLOAT4(1, 1, 1, 1));
-	Title.SpriteCreate(dXCommon->GetDevice(), 1280, 720, 0, spriteCommon, XMFLOAT2(0.0f, 0.0f), false, false);
-	Title.SetPosition(XMFLOAT3(0, 0, 0));
-	Title.SetScale(XMFLOAT2(1280 * 1, 720 * 1));
+	Title.SetColor(Vector4(1, 1, 1, 1));
+	Title.SpriteCreate(dXCommon->GetDevice(), 1280, 720, 0, spriteCommon, Vector2(0.0f, 0.0f), false, false);
+	Title.SetPosition(Vector3(0, 0, 0));
+	Title.SetScale(Vector2(1280 * 1, 720 * 1));
 	Title.SetRotation(0.0f);
 	Title.SpriteTransferVertexBuffer(Title, spriteCommon, 0);
 	Title.SpriteUpdate(Title, spriteCommon_);

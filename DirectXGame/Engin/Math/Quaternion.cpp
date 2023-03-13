@@ -108,7 +108,8 @@ Vector3 Quaternion::RotateVector(const Vector3& vector)
 
 Matrix4 Quaternion::MakeRotateMatrix()
 {
-	Matrix4 result = identity();
+	Matrix4 result;
+	result.identity();
 
 	result.m[0][0] = this->w * this->w + this->x * this->x - this->y * this->y - this->z * this->z;
 	result.m[0][1] = 2 * (this->x * this->y + this->w * this->z);

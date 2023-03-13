@@ -24,9 +24,9 @@ Vector3& Vector3::normalize()
 	}
 	return*this;
 }
-float Vector3::dot(const Vector3& v)const
+float Vector3::dot(const Vector3& v, const Vector3& v2)
 {
-	return x * v.x + y * v.y + z * v.z;
+	return v.x * v2.x + v.y * v2.y + v.z * v2.z;
 }
 Vector3 Vector3::cross(const Vector3& v)const
 {
@@ -36,6 +36,12 @@ Vector3 Vector3::cross(const Vector3& v)const
 	temp.z = this->x * v.y - this->y * v.x;
 	return temp;
 }
+
+const Vector3 Vector3::lerp(const Vector3& start, const Vector3& end, const float t)
+{
+	return start * (1.0f - t) + end * t;
+}
+
 Vector3 Vector3::operator+()const
 {
 	return *this;
@@ -98,8 +104,4 @@ const Vector3 operator/(const Vector3& v, float s)
 	Vector3 temp(v);
 	return temp /= s;
 }
-const Vector3 lerp(const Vector3& start, const Vector3& end, const float t) {
-	// float y = t;
-	// return start * ( 1.0f - y) + end * y;
-	return start * (1.0f - t) + end * t;
-}
+

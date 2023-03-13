@@ -54,9 +54,9 @@ private:
 	ImGuiManager* imGuiManager = nullptr;
 	ParticleManager* ParticleMan = nullptr;
 
-	XMFLOAT3 position[5]{};
-	XMFLOAT3 rotation[5]{};
-	XMFLOAT3 scale[5]{};
+	Vector3 position[5]{};
+	Vector3 rotation[5]{};
+	Vector3 scale[5]{};
 
 	bool isPush_D = false;
 	bool isPush_A = false;

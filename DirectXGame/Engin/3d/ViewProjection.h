@@ -11,8 +11,6 @@
 
 using namespace DirectX;
 
-
-
 /// <summary>
 /// ビュープロジェクション変換データ
 /// </summary>
@@ -22,7 +20,63 @@ private:
 	// Microsoft::WRL::を省略
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
-#pragma endregion
+public:// サブクラス
+// 定数バッファ用データ構造体
+	struct ConstBufferDataViewProjection {
+		Matrix4 view;       // ワールド → ビュー変換行列
+		Matrix4 projection; // ビュー → プロジェクション変換行列
+		Vector3 cameraPos;  // カメラ座標（ワールド座標）
+	};
+public:
+
+	// 静的初期化
+	static void StaticInitialize(ID3D12Device* device);
+
+	/// 初期化
+	void Initialize();
+
+	/// 視点座標の取得
+	static const Vector3& GetEye() { return eye; }
+
+	// 定数バッファの取得
+	ID3D12Resource* GetBuff() { return constBuff.Get(); }
+
+	/// 視点座標の設定
+	static void SetEye(Vector3 eye);
+
+	/// 注視点座標の取得
+	static const Vector3& GetTarget() { return target; }
+
+	/// 注視点座標の設定
+	static void SetTarget(Vector3 target);
+
+	static const Matrix4& GetMatView() { return matView; }
+
+	static const Matrix4& GetMatProjection() { return matProjection; }
+
+	//定数バッファ生成
+	void CreateConstBuffer();
+
+	//マッピング
+	void Map();
+
+	/// 行列を更新する
+	void UpdateMatrix();
+	//座標更新
+	void Update();
+
+	//静的メンバ変数
+private:
+	static Matrix4 matView;
+	// 射影行列
+	static Matrix4 matProjection;
+	// 視点座標
+	static Vector3 eye;
+	// 注視点座標
+	static Vector3 target;
+	// 上方向ベクトル
+	static Vector3 up;
+
 private:
 #pragma region 射影行列の設定
 	float PI = 3.141592;
@@ -34,53 +88,15 @@ private:
 	float nearZ = 0.1f;
 	// 深度限界（奥側）
 	float farZ = 1000.0f;
-	// 定数バッファ
-	ComPtr<ID3D12Resource> constBuffB0;
 #pragma endregion
-	//静的メンバ変数
-private:
-	static XMMATRIX matView;
-	// 射影行列
-	static XMMATRIX matProjection;
-	// 視点座標
-	static XMFLOAT3 eye;
-	// 注視点座標
-	static XMFLOAT3 target;
-	// 上方向ベクトル
-	static XMFLOAT3 up;
-	//座標更新
-	static void Update();
 
-public:
-	/// <summary>
-	/// 初期化
-	/// </summary>
-	void Initialize(int window_width, int window_height);
-	/// <summary>
-	/// 視点座標の取得
-	/// </summary>
-	/// <returns>座標</returns>
-	static const XMFLOAT3& GetEye() { return eye; }
+	// デバイス（借りてくる）
+	static Microsoft::WRL::ComPtr<ID3D12Device> device_;
 
-	/// <summary>
-	/// 視点座標の設定
-	/// </summary>
-	/// <param name="position">座標</param>
-	static void SetEye(XMFLOAT3 eye);
+	// 定数バッファ
+	ComPtr<ID3D12Resource> constBuff;
 
-	/// <summary>
-	/// 注視点座標の取得
-	/// </summary>
-	/// <returns>座標</returns>
-	static const XMFLOAT3& GetTarget() { return target; }
+	// マッピング済みアドレス
+	ConstBufferDataViewProjection* constMap = nullptr;
 
-	/// <summary>
-	/// 注視点座標の設定
-	/// </summary>
-	/// <param name="position">座標</param>
-	static void SetTarget(XMFLOAT3 target);
-
-	static const XMMATRIX& GetMatView() { return matView; }
-
-	static const XMMATRIX& GetMatProjection() { return matProjection; }
 };

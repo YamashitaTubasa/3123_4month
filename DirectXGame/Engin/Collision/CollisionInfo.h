@@ -1,24 +1,24 @@
 #pragma once
-
-#include <DirectXMath.h>
+#include"Vector3.h"
 
 class Object3d;
 class BaseCollider;
 
-//衝突情報
+
 struct CollisionInfo
 {
 public:
-	CollisionInfo(Object3d* object, BaseCollider* collider, const DirectX::XMVECTOR& inter)
-	{
+	CollisionInfo(Object3d* object, BaseCollider* collider, const Vector3& inter) {
 		this->object = object;
 		this->collider = collider;
 		this->inter = inter;
 	}
-	//衝突相手のオブジェクト
+
+	// 衝突相手のオブジェクト
 	Object3d* object = nullptr;
-	//衝突相手のコライダー
+	// 衝突相手のコライダー
 	BaseCollider* collider = nullptr;
-	//衝突点
-	DirectX::XMVECTOR inter;
+	// 衝突点
+	Vector3 inter;
+
 };

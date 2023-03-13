@@ -5,6 +5,7 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
+#include <CollisionManager.h>
 
 #pragma comment(lib, "d3dcompiler.lib")
 
@@ -24,6 +25,9 @@ Object3d::~Object3d()
 {
 	if (collider)
 	{
+		//コリジョンマネージャから登録を解除する
+		CollisionManager::GetInstance()->RemoveCollider(collider);
+
 		delete collider;
 	}
 }
@@ -34,6 +38,9 @@ void Object3d::StaticInitialize(ID3D12Device * device, int window_width, int win
 	assert(device);
 
 	Object3d::device = device;
+
+	// ワールドトランスフォームにデバイスを貸す
+	WorldTransform::StaticInitialize(device);
 
 	// パイプライン初期化
 	InitializeGraphicsPipeline();
@@ -236,10 +243,9 @@ void Object3d::InitializeGraphicsPipeline()
 
 bool Object3d::Initialize()
 {
+
 	// nullptrチェック
 	assert(device);
-
-	HRESULT result;
 
 	// ヒーププロパティ
 	CD3DX12_HEAP_PROPERTIES heapProps = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
@@ -247,52 +253,33 @@ bool Object3d::Initialize()
 	CD3DX12_RESOURCE_DESC resourceDesc =
 		CD3DX12_RESOURCE_DESC::Buffer((sizeof(ConstBufferDataB0) + 0xff) & ~0xff);
 
+	HRESULT result;
 	// 定数バッファの生成
 	result = device->CreateCommittedResource(
-		&heapProps, // アップロード可能
-		D3D12_HEAP_FLAG_NONE, 
-		&resourceDesc, 
-		D3D12_RESOURCE_STATE_GENERIC_READ, 
-		nullptr,
-		IID_PPV_ARGS(&constBuffB0));
+		&heapProps, D3D12_HEAP_FLAG_NONE, &resourceDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
+		IID_PPV_ARGS(&constBuff));
 	assert(SUCCEEDED(result));
-	
-	return true;
+
+	// 定数バッファのマッピング
+	result = constBuff->Map(0, nullptr, (void**)&constMap);
+	assert(SUCCEEDED(result));
+
+
+	//worldTransform初期化
+	worldTransform_.Initialize();
+
 
 	//クラス名の文字列を取得
 	name = typeid(*this).name();
+
+	return true;
 }
 
 void Object3d::Update()
 {
-	HRESULT result;
-	XMMATRIX matScale, matRot, matTrans;
 
-	// スケール、回転、平行移動行列の計算
-	matScale = XMMatrixScaling(scale.x, scale.y, scale.z);
-	matRot = XMMatrixIdentity();
-	matRot *= XMMatrixRotationZ(XMConvertToRadians(rotation.z));
-	matRot *= XMMatrixRotationX(XMConvertToRadians(rotation.x));
-	matRot *= XMMatrixRotationY(XMConvertToRadians(rotation.y));
-	matTrans = XMMatrixTranslation(position.x, position.y, position.z);
-
-	// ワールド行列の合成
-	matWorld = XMMatrixIdentity(); // 変形をリセット
-	matWorld *= matScale; // ワールド行列にスケーリングを反映
-	matWorld *= matRot; // ワールド行列に回転を反映
-	matWorld *= matTrans; // ワールド行列に平行移動を反映
-
-	// 親オブジェクトがあれば
-	if (parent != nullptr) {
-		// 親オブジェクトのワールド行列を掛ける
-		matWorld *= parent->matWorld;
-	}
-
-	// 定数バッファへデータ転送
-	ConstBufferDataB0* constMap = nullptr;
-	result = constBuffB0->Map(0, nullptr, (void**)&constMap);
-	constMap->mat = matWorld * ViewProjection::GetMatView() * ViewProjection::GetMatProjection();	// 行列の合成
-	constBuffB0->Unmap(0, nullptr);
+	// ワールドトランスフォームの行列更新と転送
+	worldTransform_.UpdateMatrix();
 
 	//当たり判定更新
 	if (collider)
@@ -301,7 +288,7 @@ void Object3d::Update()
 	}
 }
 
-void Object3d::Draw()
+void Object3d::Draw(ViewProjection* viewProjection)
 {
 	// nullptrチェック
 	assert(device);
@@ -311,13 +298,16 @@ void Object3d::Draw()
 	if (model == nullptr) return;
 
 	// 定数バッファビューをセット
-	cmdList->SetGraphicsRootConstantBufferView(0, constBuffB0->GetGPUVirtualAddress());
+	cmdList->SetGraphicsRootConstantBufferView(0, worldTransform_.GetBuff()->GetGPUVirtualAddress());
+
+	// ビュープロジェクション変換データ定数バッファビューをセット
+	cmdList->SetGraphicsRootConstantBufferView(1, viewProjection->GetBuff()->GetGPUVirtualAddress());
 
 	// モデルを描画
 	model->Draw(cmdList, 1,1);
 }
 
-void Object3d::Draw(float alpha_)
+void Object3d::Draw(ViewProjection* viewProjection,float alpha_)
 {
 	// nullptrチェック
 	assert(device);
@@ -327,7 +317,10 @@ void Object3d::Draw(float alpha_)
 	if (model == nullptr) return;
 
 	// 定数バッファビューをセット
-	cmdList->SetGraphicsRootConstantBufferView(0, constBuffB0->GetGPUVirtualAddress());
+	cmdList->SetGraphicsRootConstantBufferView(0, worldTransform_.GetBuff()->GetGPUVirtualAddress());
+
+	// ビュープロジェクション変換データ定数バッファビューをセット
+	cmdList->SetGraphicsRootConstantBufferView(1, viewProjection->GetBuff()->GetGPUVirtualAddress());
 
 	// モデルを描画
 	model->Draw(cmdList, 1,alpha_);
@@ -337,4 +330,8 @@ void Object3d::SetCollider(BaseCollider* collider)
 {
 	collider->SetObject(this);
 	this->collider = collider;
+	//コリジョンマネージャに登録
+	CollisionManager::GetInstance()->AddCollider(collider);
+	//コライダーを更新しておく
+	collider->Update();
 }

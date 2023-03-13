@@ -43,12 +43,12 @@ public:
 	/// </summary>
 	void Finalize();
 	//XMFLOAT3変換
-	XMFLOAT3 ConversionVec(Vector3 vec);
-	Vector3 ConversionVec(XMFLOAT3 xVec);
+	//XMFLOAT3 ConversionVec(Vector3 vec);
+	//Vector3 ConversionVec(XMFLOAT3 xVec);
 	//正面ベクトル取得
-	XMFLOAT3 GetFront(XMFLOAT3 a, XMFLOAT3 b);
-	XMFLOAT3 GetRight(XMFLOAT3 a, XMFLOAT3 b);
-	XMFLOAT3 GetLeft(XMFLOAT3 a, XMFLOAT3 b);
+	Vector3 GetFront(Vector3 a, Vector3 b);
+	Vector3 GetRight(Vector3 a, Vector3 b);
+	Vector3  GetLeft(Vector3 a, Vector3 b);
 
 private:
 	// 入力
@@ -72,9 +72,9 @@ private:
 	ParticleManager* ParticleMan = nullptr;
 	WinApp* winApp = nullptr;
 
-	XMFLOAT3 position[5]{};
-	XMFLOAT3 rotation[5]{};
-	XMFLOAT3 scale[5]{};
+	Vector3 position[5]{};
+	Vector3 rotation[5]{};
+	Vector3 scale[5]{};
 
 	bool isPush_D = false;
 	bool isPush_A = false;
