@@ -1,15 +1,13 @@
 #include "GamePlayScene.h"
+#include "spline.h"
 
-GamePlayScene::GamePlayScene()
-{
+GamePlayScene::GamePlayScene() {
 }
 
-GamePlayScene::~GamePlayScene()
-{
+GamePlayScene::~GamePlayScene() {
 }
 
-void GamePlayScene::Initialize(SpriteCommon& spriteCommon)
-{
+void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	dXCommon = DirectXCommon::GetInstance();
 	winApp = WinApp::GetInstance();
 	input = Input::GetInstance();
@@ -26,14 +24,14 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon)
 	sky->SetModel(skyModel);
 	sky->SetScale(XMFLOAT3(80, 80, 80));
 
-	// OBJからモデルデータを読み込む
-	playerModel = Model::LoadFromOBJ("fighter");
-	// 3Dオブジェクト生成
-	player = Object3d::Create();
-	// オブジェクトにモデルをひも付ける
-	player->SetModel(playerModel);
-	player->SetRotation(XMFLOAT3(0, 270, 0));
-	player->SetScale(XMFLOAT3(1, 1, 1));
+	//// OBJからモデルデータを読み込む
+	//playerModel = Model::LoadFromOBJ("fighter");
+	//// 3Dオブジェクト生成
+	//player = Object3d::Create();
+	//// オブジェクトにモデルをひも付ける
+	//player->SetModel(playerModel);
+	//player->SetRotation(XMFLOAT3(0, 270, 0));
+	//player->SetScale(XMFLOAT3(1, 1, 1));
 
 	tester = Object3d::Create();
 	// オブジェクトにモデルをひも付ける
@@ -58,50 +56,38 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon)
 	hP.SetRotation(0.0f);
 	hP.SpriteTransferVertexBuffer(hP, spriteCommon, 3);
 	hP.SpriteUpdate(hP, spriteCommon_);
+
+	start = { -100.0f, 0.0f, 0.0f };		//スタート地点
+	p2 = { -20.0f, 50.0f, +50.0f };			//制御点その1
+	p3 = { 0.0f, -30.0f, -50.0f };			//制御点その2
+	p4 = { 50.0f, 0.0f, 0.0 };
+	end = { 100.0f, 0.0f, 0.0f };				//ゴール地点
+
+	points = { start,start,p2,p3,p4,end,end };
 }
 
-void GamePlayScene::Update()
-{
+void GamePlayScene::Update() {
+	Vector3 eye_ = spline_.Update(points,timeRate);
+	viewProjection->SetEye(ConversionVec(eye_));
 
-	Vector3 playerTmp = ConversionVec(player->GetPosition());
-	Vector3 eye = ConversionVec(viewProjection->GetEye());
-	Vector3 target = ConversionVec(viewProjection->GetTarget());
-
-
-	if (input->PushKey(DIK_A)) {
-		viewProjection->SetTarget(XMFLOAT3(ConversionVec(Vector3(target.x + 0.1, target.y, target.z))));
-		/*playerTmp.x += 0.7;*/
+	if (input->TriggerKey(DIK_SPACE)) {
+		int a = 0;
 	}
-	if (input->PushKey(DIK_D)) {
-		viewProjection->SetTarget(XMFLOAT3(ConversionVec(Vector3(target.x - 0.1, target.y, target.z))));
-		/*playerTmp.x -= 0.7;*/
-	}
-
-	target = ConversionVec(viewProjection->GetTarget());
-
-
-	XMFLOAT3 cameraFronttmp = GetFront(ConversionVec(eye), ConversionVec(Vector3(target.x, eye.y, target.z)));
-	Vector3 cameraFronttmp_ = ConversionVec(cameraFronttmp);
-
-	viewProjection->SetTarget(ConversionVec(target + cameraFronttmp_ * 0.2));
-	viewProjection->SetEye(ConversionVec(eye + cameraFronttmp_ * 0.2));
-	player->SetPosition(ConversionVec((playerTmp * sinf(PI / 2)) + cameraFronttmp_ * 0.2));
 
 	sky->Update();
-	player->Update();
+	//player->Update();
 	tester->Update();
 
 }
 
-void GamePlayScene::Draw()
-{
+void GamePlayScene::Draw() {
 #pragma region 3Dオブジェクト描画
 
 	// 3Dオブジェクト描画前処理
 	Object3d::PreDraw(dXCommon->GetCommandList());
 
 	sky->Draw();
-	player->Draw();
+	//player->Draw();
 	tester->Draw();
 
 	// 3Dオブジェクト描画後処理
@@ -115,7 +101,7 @@ void GamePlayScene::Draw()
 	ParticleManager::PreDraw(dXCommon->GetCommandList());
 
 	///==== パーティクル描画 ====///
-	
+
 
 	// パーティクル描画後処理
 	ParticleManager::PostDraw();
@@ -136,9 +122,8 @@ void GamePlayScene::Draw()
 #pragma endregion
 }
 
-void GamePlayScene::Finalize()
-{
-	delete player;
+void GamePlayScene::Finalize() {
+	//delete player;
 	delete playerModel;
 	delete sky;
 	delete skyModel;

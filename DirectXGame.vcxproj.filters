@@ -108,6 +108,9 @@
     <ClCompile Include="DirectXGame\Engin\Collision\CollisionManager.cpp">
       <Filter>ソースファイル\Engine\Collision</Filter>
     </ClCompile>
+    <ClCompile Include="DirectXGame\Engin\Math\Spline.cpp">
+      <Filter>ソースファイル\Engine\Math</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectXGame\Engin\2d\Sprite.h">
@@ -196,6 +199,9 @@
     </ClInclude>
     <ClInclude Include="DirectXGame\Engin\Collision\RaycastHit.h">
       <Filter>ヘッダーファイル\Engine\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Engin\Math\Spline.h">
+      <Filter>ヘッダーファイル\Engine\Math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
