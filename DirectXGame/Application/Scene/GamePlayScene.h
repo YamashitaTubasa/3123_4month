@@ -11,6 +11,7 @@
 #include "ParticleManager.h"
 #include "GameBaseScene.h"
 #include "ViewProjection.h"
+#include "Spline.h"
 
 //====================//
 // ゲームプレイシーン
@@ -50,6 +51,21 @@ public:
 	XMFLOAT3 GetRight(XMFLOAT3 a, XMFLOAT3 b);
 	XMFLOAT3 GetLeft(XMFLOAT3 a, XMFLOAT3 b);
 
+	//補間で使うデータ
+	//start → end を5秒で完了させる
+	Vector3 start;		//スタート地点
+	Vector3 p2;	//制御点その1
+	Vector3 p3;	//制御点その2
+	Vector3 p4;
+	Vector3 end;	//ゴール地点
+
+	//				p1 - p2 - p3 - p4 を通るスプライン曲線を考える
+	//					先頭(p0)と最後(p5)に制御点を追加している
+	//								p0	p1	p2	p3	p4	p5
+	std::vector<Vector3> points{ start,start,p2,p3,p4,end,end };
+
+	float timeRate;						//何％時間が進んだか
+
 private:
 	// 入力
 	Input* input = nullptr;
@@ -57,7 +73,7 @@ private:
 	Model* playerModel;
 	Model* skyModel;
 	// オブジェクト
-	Object3d* player;
+	//Object3d* player;
 	Object3d* tester;
 	Object3d* sky;
 	//カメラ
@@ -71,6 +87,9 @@ private:
 	ImGuiManager* imGuiManager = nullptr;
 	ParticleManager* ParticleMan = nullptr;
 	WinApp* winApp = nullptr;
+
+	//スプライン
+	Spline spline_;
 
 	XMFLOAT3 position[5]{};
 	XMFLOAT3 rotation[5]{};
