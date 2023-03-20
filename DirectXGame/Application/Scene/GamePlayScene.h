@@ -6,6 +6,7 @@
 #include "Object3d.h"
 #include "Model.h"
 #include "Sprite.h"
+#include "SpriteCommon.h"
 #include "ImGuiManager.h"
 #include "Vector3.h"
 #include "ParticleManager.h"
@@ -26,7 +27,7 @@ public:
 	/// 初期化
 	/// </summary>
 	/// <param name="dXCommon"></param>
-	void Initialize(SpriteCommon& spriteCommon) ;
+	void Initialize();
 
 	/// <summary>
 	/// 更新
@@ -63,9 +64,7 @@ private:
 	//カメラ
 	ViewProjection* viewProjection = nullptr;
 	// スプライト
-	Sprite* sprite = nullptr;
-	Sprite hP;
-	SpriteCommon spriteCommon_;
+	SpriteCommon* spriteCommon_ = nullptr;
 
 	DirectXCommon* dXCommon = nullptr;
 	ImGuiManager* imGuiManager = nullptr;

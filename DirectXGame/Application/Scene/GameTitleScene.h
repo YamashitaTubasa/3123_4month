@@ -25,7 +25,7 @@ public:
 	/// 初期化
 	/// </summary>
 	/// <param name="dXCommon"></param>
-	void Initialize(DirectXCommon* dXCommon, WinApp* winApp, SpriteCommon& spriteCommon) ;
+	void Initialize() ;
 
 	/// <summary>
 	/// 更新
@@ -35,7 +35,7 @@ public:
 	/// <summary>
 	/// 描画
 	/// </summary>
-	void Draw(DirectXCommon* dXCommon) ;
+	void Draw() ;
 
 	/// <summary>
 	/// 解放
@@ -43,24 +43,11 @@ public:
 	void Finalize() ;
 
 private:
-	// 入力
 	Input* input = nullptr;
-	// スプライト
 	Sprite* sprite = nullptr;
-	Sprite Title;
-	SpriteCommon spriteCommon_;
-
 	DirectXCommon* dXCommon = nullptr;
 	ImGuiManager* imGuiManager = nullptr;
 	ParticleManager* ParticleMan = nullptr;
-
-	XMFLOAT3 position[5]{};
-	XMFLOAT3 rotation[5]{};
-	XMFLOAT3 scale[5]{};
-
-	bool isPush_D = false;
-	bool isPush_A = false;
-
-	int playerHp = 3;
-	int time = 0;
+	Object3d* object3d = nullptr;
+	Model* model = nullptr;
 };

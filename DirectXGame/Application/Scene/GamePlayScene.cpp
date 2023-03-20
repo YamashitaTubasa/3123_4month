@@ -8,7 +8,7 @@ GamePlayScene::~GamePlayScene()
 {
 }
 
-void GamePlayScene::Initialize(SpriteCommon& spriteCommon)
+void GamePlayScene::Initialize()
 {
 	dXCommon = DirectXCommon::GetInstance();
 	winApp = WinApp::GetInstance();
@@ -42,22 +42,8 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon)
 	tester->SetRotation(XMFLOAT3(0, 270, 0));
 	tester->SetScale(XMFLOAT3(2, 2, 2));
 
-	// スプライトの初期化
 	// スプライト
-	sprite = new Sprite();
-	spriteCommon_ = sprite->SpriteCommonCreate(dXCommon->GetDevice(), 1280, 720);
-	// スプライト用パイプライン生成呼び出し
-	PipelineSet spritePipelineSet = sprite->SpriteCreateGraphicsPipeline(dXCommon->GetDevice());
-
-	// HP
-	hP.LoadTexture(spriteCommon_, 3, L"Resources/hp.png", dXCommon->GetDevice());
-	hP.SetColor(XMFLOAT4(1, 1, 1, 1));
-	hP.SpriteCreate(dXCommon->GetDevice(), 50, 50, 3, spriteCommon, XMFLOAT2(0.0f, 0.0f), false, false);
-	hP.SetPosition(XMFLOAT3(0, 0, 0));
-	hP.SetScale(XMFLOAT2(50 * 1, 50 * 1));
-	hP.SetRotation(0.0f);
-	hP.SpriteTransferVertexBuffer(hP, spriteCommon, 3);
-	hP.SpriteUpdate(hP, spriteCommon_);
+	spriteCommon_ = SpriteCommon::GetInstance();
 }
 
 void GamePlayScene::Update()
@@ -124,14 +110,14 @@ void GamePlayScene::Draw()
 
 #pragma region スプライト描画
 
-	// スプライト描画前処理
-	Sprite::PreDraw(dXCommon->GetCommandList(), spriteCommon_);
+	//// スプライト描画前処理
+	//Sprite::PreDraw(dXCommon->GetCommandList(), spriteCommon_);
 
-	///=== スプライト描画 ===///
-	hP.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), hP.vbView);
+	/////=== スプライト描画 ===///
+	//hP.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), hP.vbView);
 
-	// スプライト描画後処理
-	Sprite::PostDraw();
+	//// スプライト描画後処理
+	//Sprite::PostDraw();
 
 #pragma endregion
 }
@@ -143,9 +129,6 @@ void GamePlayScene::Finalize()
 	delete sky;
 	delete skyModel;
 
-	// スプライト解放
-	delete sprite;
-	sprite = nullptr;
 }
 
 XMFLOAT3 GamePlayScene::ConversionVec(Vector3 vec) {

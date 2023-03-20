@@ -6,8 +6,8 @@ void RideLight::Initialize()
 	RLFramework::Initialize();
 
 	// ƒQ[ƒ€ƒV[ƒ“‚Ì¶¬‚Æ‰Šú‰»
-	scene_ = new GamePlayScene();
-	scene_->Initialize(spriteCommon);
+	scene_ = new GameTitleScene();
+	scene_->Initialize();
 }
 
 void RideLight::Update()

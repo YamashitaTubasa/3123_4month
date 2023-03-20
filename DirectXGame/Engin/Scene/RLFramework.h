@@ -3,7 +3,7 @@
 #include "Input.h"
 #include "WinApp.h"
 #include "DirectXCommon.h"
-#include "Sprite.h"
+#include "SpriteCommon.h"
 #include "Model.h"
 #include "Object3d.h"
 #include "GamePlayScene.h"
@@ -40,8 +40,9 @@ protected:
 	DirectXCommon* dXCommon = nullptr;
 	Input* input = nullptr;
 	ImGuiManager* imGuiManager = nullptr;
-	GamePlayScene* scene_ = nullptr;
-	SpriteCommon spriteCommon;
+	GameTitleScene* scene_ = nullptr;
+	SpriteCommon* spriteCommon = nullptr;
+
 
 private:
 	// ゲーム終了フラグ
