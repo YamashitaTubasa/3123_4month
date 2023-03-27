@@ -165,6 +165,7 @@
     <ClCompile Include="DirectXGame\Engin\Math\Vector2.cpp" />
     <ClCompile Include="DirectXGame\Engin\Math\Vector3.cpp" />
     <ClCompile Include="DirectXGame\Engin\Math\Vector4.cpp" />
+
     <ClCompile Include="DirectXGame\Engin\Scene\RLFramework.cpp" />
     <ClCompile Include="DirectXGame\Application\Scene\GamePlayScene.cpp" />
     <ClCompile Include="DirectXGame\Engin\2d\Sprite.cpp" />
@@ -265,6 +266,7 @@
     <ClInclude Include="DirectXGame\Engin\Math\Vector2.h" />
     <ClInclude Include="DirectXGame\Engin\Math\Vector3.h" />
     <ClInclude Include="DirectXGame\Engin\Math\Vector4.h" />
+
     <ClInclude Include="DirectXGame\Engin\Scene\RLFramework.h" />
     <ClInclude Include="DirectXGame\Application\Scene\GamePlayScene.h" />
     <ClInclude Include="DirectXGame\Engin\2d\Sprite.h" />

@@ -1,15 +1,13 @@
 #include "GamePlayScene.h"
+#include "spline.h"
 
-GamePlayScene::GamePlayScene()
-{
+GamePlayScene::GamePlayScene() {
 }
 
-GamePlayScene::~GamePlayScene()
-{
+GamePlayScene::~GamePlayScene() {
 }
 
-void GamePlayScene::Initialize(SpriteCommon& spriteCommon)
-{
+void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	dXCommon = DirectXCommon::GetInstance();
 	winApp = WinApp::GetInstance();
 	input = Input::GetInstance();
@@ -61,28 +59,41 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon)
 	hP.SetRotation(0.0f);
 	hP.SpriteTransferVertexBuffer(hP, spriteCommon, 3);
 	hP.SpriteUpdate(hP, spriteCommon_);
+
+	start = { -100.0f, 0.0f, 0.0f };		//スタート地点
+	p2 = { -20.0f, 50.0f, +50.0f };			//制御点その1
+	p3 = { 0.0f, -30.0f, -50.0f };			//制御点その2
+	p4 = { 50.0f, 0.0f, 0.0 };
+	end = { 100.0f, 0.0f, 0.0f };				//ゴール地点
+
+	points = { start,start,p2,p3,p4,end,end };
 }
 
-void GamePlayScene::Update()
-{
-	viewProjection->UpdateMatrix();
+void GamePlayScene::Update() {
+	Vector3 eye_ = spline_.Update(points,timeRate);
+	viewProjection->SetEye(ConversionVec(eye_));
+
+	if (input->TriggerKey(DIK_SPACE)) {
+		int a = 0;
+	}
+
+viewProjection->UpdateMatrix();
 
 	sky->Update();
-	player->Update();
-	/*tester->Update();*/
+	//player->Update();
+	tester->Update();
 
 }
 
-void GamePlayScene::Draw()
-{
+void GamePlayScene::Draw() {
 #pragma region 3Dオブジェクト描画
 
 	// 3Dオブジェクト描画前処理
 	Object3d::PreDraw(dXCommon->GetCommandList());
 
-	sky->Draw(viewProjection);
-	player->Draw(viewProjection);
-	/*tester->Draw(viewProjection);*/
+	sky->Draw();
+	//player->Draw();
+	tester->Draw();
 
 	// 3Dオブジェクト描画後処理
 	Object3d::PostDraw();
@@ -95,7 +106,7 @@ void GamePlayScene::Draw()
 	ParticleManager::PreDraw(dXCommon->GetCommandList());
 
 	///==== パーティクル描画 ====///
-	
+
 
 	// パーティクル描画後処理
 	ParticleManager::PostDraw();
@@ -116,9 +127,8 @@ void GamePlayScene::Draw()
 #pragma endregion
 }
 
-void GamePlayScene::Finalize()
-{
-	delete player;
+void GamePlayScene::Finalize() {
+	//delete player;
 	delete playerModel;
 	delete sky;
 	delete skyModel;
