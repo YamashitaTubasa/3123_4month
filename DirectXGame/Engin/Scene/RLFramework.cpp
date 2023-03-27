@@ -47,6 +47,10 @@ void RLFramework::Initialize()
 
 	// パーティクル静的初期化
 	ParticleManager::StaticInitialize(dXCommon->GetDevice(), WinApp::window_width, WinApp::window_height);
+
+	// ビュープロジェクションの初期化
+	ViewProjection::StaticInitialize(dXCommon->GetDevice());
+
 }
 
 void RLFramework::Update()

@@ -26,19 +26,18 @@ void CollisionManager::CheckAllCollisions()
 			BaseCollider* colA = *itA;
 			BaseCollider* colB = *itB;
 
-			//ここで当たり判定の呼び出しを行う？
-			////球と球
-			//if (colA->GetShapeType() == COLLISIONSHAPE_SPHERE && colB->GetShapeType() == COLLISIONSHAPE_SPHERE)
-			//{
-			//	Sphere* SphereA = dynamic_cast<Sphere*>(colA);
-			//	Sphere* SphereB = dynamic_cast<Sphere*>(colB);
-			//	DirectX::XMVECTOR inter;
-			//	if (Collision::CheckSphere2Sphere(*SphereA, *SphereB, &inter))
-			//	{
-			//		colA->OnCollision(CollisionInfo(colB->GetObject3d(), colB, inter));
-			//		colB->OnCollision(CollisionInfo(colA->GetObject3d(), colA, inter));
-			//	}
-			//}
+			// ともに球
+			if (colA->GetShapeType() == COLLISIONSHAPE_SPHERE &&
+				colB->GetShapeType() == COLLISIONSHAPE_SPHERE) {
+				Sphere* SphereA = dynamic_cast<Sphere*>(colA);
+				Sphere* SphereB = dynamic_cast<Sphere*>(colB);
+				Vector3 inter;
+				Vector3 reject;
+				if (Collision::CheckSphere2Sphere(*SphereA, *SphereB, &inter,&reject)) {
+					colA->OnCollision(CollisionInfo(colB->GetObject3d(), colB, inter));
+					colB->OnCollision(CollisionInfo(colA->GetObject3d(), colA, inter));
+				}
+			}
 		}
 	}
 }
@@ -53,7 +52,7 @@ bool CollisionManager::Raycast(const Ray& ray, RaycastHit* hitInfo, float maxDis
 	//今までで最も近いコライダーの距離を記録する変数
 	float distance = maxDistance;
 	//今までで最も近いコライダーとの交点を記録する変数
-	XMVECTOR inter;
+	Vector3 inter;
 
 	//全てのコライダーと総当たりチェック
 	it = colliders.begin();
@@ -65,7 +64,7 @@ bool CollisionManager::Raycast(const Ray& ray, RaycastHit* hitInfo, float maxDis
 		{
 			Sphere* sphere = dynamic_cast<Sphere*>(colA);
 			float tempDistance;
-			XMVECTOR tempInter;
+			Vector3 tempInter;
 			//当たらなければ除外
 			if (!Collision::CheckRay2Sphere(ray, *sphere, &tempDistance, &tempInter))continue;
 			//距離が最小出なければ除外

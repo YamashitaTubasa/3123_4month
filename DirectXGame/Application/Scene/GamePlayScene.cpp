@@ -12,33 +12,36 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	winApp = WinApp::GetInstance();
 	input = Input::GetInstance();
 
-	viewProjection->Initialize(WinApp::window_width, WinApp::window_height);
+	viewProjection = new ViewProjection;
+	viewProjection->Initialize();
+	viewProjection->eye = { 0, 0, -10 };
+	viewProjection->target = { 0, 0, 0 };
 
 	// OBJからモデルデータを読み込む
 	skyModel = Model::LoadFromOBJ("skydome");
 
 	// 3Dオブジェクト生成
 	sky = Object3d::Create();
-	// オブジェクトにモデルをひも付ける
 
+	// オブジェクトにモデルをひも付ける
 	sky->SetModel(skyModel);
-	sky->SetScale(XMFLOAT3(80, 80, 80));
+	sky->SetScale(Vector3({80, 80, 80}));
 
-	//// OBJからモデルデータを読み込む
-	//playerModel = Model::LoadFromOBJ("fighter");
-	//// 3Dオブジェクト生成
-	//player = Object3d::Create();
-	//// オブジェクトにモデルをひも付ける
-	//player->SetModel(playerModel);
-	//player->SetRotation(XMFLOAT3(0, 270, 0));
-	//player->SetScale(XMFLOAT3(1, 1, 1));
-
-	tester = Object3d::Create();
+	// OBJからモデルデータを読み込む
+	playerModel = Model::LoadFromOBJ("fighter");
+	// 3Dオブジェクト生成
+	player = Object3d::Create();
 	// オブジェクトにモデルをひも付ける
-	tester->SetModel(playerModel);
-	tester->SetPosition(XMFLOAT3(-1, 0, -12));
-	tester->SetRotation(XMFLOAT3(0, 270, 0));
-	tester->SetScale(XMFLOAT3(2, 2, 2));
+	player->SetModel(playerModel);
+	player->SetRotation(Vector3({ 0, 90, 0 }));
+	player->SetScale(Vector3(1.5, 1, 1));
+
+	//tester = Object3d::Create();
+	//// オブジェクトにモデルをひも付ける
+	//tester->SetModel(playerModel);
+	//tester->SetPosition(Vector3(-1, 0, -12));
+	//tester->SetRotation(Vector3(0, 20, 0));
+	//tester->SetScale(Vector3(2, 2, 2));
 
 	// スプライトの初期化
 	// スプライト
@@ -49,10 +52,10 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 
 	// HP
 	hP.LoadTexture(spriteCommon_, 3, L"Resources/hp.png", dXCommon->GetDevice());
-	hP.SetColor(XMFLOAT4(1, 1, 1, 1));
-	hP.SpriteCreate(dXCommon->GetDevice(), 50, 50, 3, spriteCommon, XMFLOAT2(0.0f, 0.0f), false, false);
-	hP.SetPosition(XMFLOAT3(0, 0, 0));
-	hP.SetScale(XMFLOAT2(50 * 1, 50 * 1));
+	hP.SetColor(Vector4(1, 1, 1, 1));
+	hP.SpriteCreate(dXCommon->GetDevice(), 50, 50, 3, spriteCommon, Vector2(0.0f, 0.0f), false, false);
+	hP.SetPosition(Vector3(0, 0, 0));
+	hP.SetScale(Vector2(50 * 1, 50 * 1));
 	hP.SetRotation(0.0f);
 	hP.SpriteTransferVertexBuffer(hP, spriteCommon, 3);
 	hP.SpriteUpdate(hP, spriteCommon_);
@@ -73,6 +76,8 @@ void GamePlayScene::Update() {
 	if (input->TriggerKey(DIK_SPACE)) {
 		int a = 0;
 	}
+
+viewProjection->UpdateMatrix();
 
 	sky->Update();
 	//player->Update();
@@ -133,24 +138,24 @@ void GamePlayScene::Finalize() {
 	sprite = nullptr;
 }
 
-XMFLOAT3 GamePlayScene::ConversionVec(Vector3 vec) {
-	XMFLOAT3 tmp(0, 0, 0);
-	tmp.x = vec.x;
-	tmp.y = vec.y;
-	tmp.z = vec.z;
-	return tmp;
-}
+//XMFLOAT3 GamePlayScene::ConversionVec(Vector3 vec) {
+//	XMFLOAT3 tmp(0, 0, 0);
+//	tmp.x = vec.x;
+//	tmp.y = vec.y;
+//	tmp.z = vec.z;
+//	return tmp;
+//}
+//
+//Vector3 GamePlayScene::ConversionVec(XMFLOAT3 vec) {
+//	Vector3 tmp(0, 0, 0);
+//	tmp.x = vec.x;
+//	tmp.y = vec.y;
+//	tmp.z = vec.z;
+//	return tmp;
+//}
 
-Vector3 GamePlayScene::ConversionVec(XMFLOAT3 vec) {
-	Vector3 tmp(0, 0, 0);
-	tmp.x = vec.x;
-	tmp.y = vec.y;
-	tmp.z = vec.z;
-	return tmp;
-}
 
-
-XMFLOAT3 GamePlayScene::GetFront(XMFLOAT3 a, XMFLOAT3 b) {
+Vector3 GamePlayScene::GetFront(Vector3 a, Vector3 b) {
 	Vector3 yTmpVec = { 0, 1, 0 };
 	Vector3 frontTmp = { 0, 0, 0 };
 	Vector3 rightVec = { 0, 0, 0 };
@@ -173,10 +178,10 @@ XMFLOAT3 GamePlayScene::GetFront(XMFLOAT3 a, XMFLOAT3 b) {
 	frontVec = rightVec.cross(yTmpVec);
 	frontVec.normalize();
 
-	return ConversionVec(frontVec);
+	return frontVec;
 }
 
-XMFLOAT3 GamePlayScene::GetRight(XMFLOAT3 a, XMFLOAT3 b) {
+Vector3 GamePlayScene::GetRight(Vector3 a, Vector3 b) {
 	Vector3 yTmpVec = { 0, 1, 0 };
 	Vector3 frontTmp = { 0, 0, 0 };
 	Vector3 rightVec = { 0, 0, 0 };
@@ -191,10 +196,10 @@ XMFLOAT3 GamePlayScene::GetRight(XMFLOAT3 a, XMFLOAT3 b) {
 	rightVec = yTmpVec.cross(frontTmp);
 	rightVec.normalize();
 
-	return ConversionVec(rightVec);
+	return rightVec;
 }
 
-XMFLOAT3 GamePlayScene::GetLeft(XMFLOAT3 a, XMFLOAT3 b) {
+Vector3 GamePlayScene::GetLeft(Vector3 a, Vector3 b) {
 	Vector3 yTmpVec = { 0, 1, 0 };
 	Vector3 frontTmp = { 0, 0, 0 };
 	Vector3 leftVec = { 0, 0, 0 };
@@ -209,5 +214,5 @@ XMFLOAT3 GamePlayScene::GetLeft(XMFLOAT3 a, XMFLOAT3 b) {
 	leftVec = frontTmp.cross(yTmpVec);
 	leftVec.normalize();
 
-	return ConversionVec(leftVec);
+	return leftVec;
 }

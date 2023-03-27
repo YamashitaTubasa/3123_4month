@@ -1,51 +1,57 @@
 #include "ViewProjection.h"
-#include <d3dcompiler.h>
-#include <DirectXTex.h>
-#include <fstream>
-#include <sstream>
-#include <vector>
+#include <d3dx12.h>
+#include <cassert>
+#include "WinApp.h"
 
-XMMATRIX ViewProjection::matView{};
-XMMATRIX ViewProjection::matProjection{};
-XMFLOAT3 ViewProjection::eye = { 0, 5, 10.0f };
-XMFLOAT3 ViewProjection::target = { 0, 0, 0 };
-XMFLOAT3 ViewProjection::up = { 0, 1, 0 };
+Microsoft::WRL::ComPtr<ID3D12Device> ViewProjection::device_ = nullptr;
 
-void ViewProjection::Initialize(int window_width, int window_height) {
-	// ビュー行列の生成
-	matView = XMMatrixLookAtLH(
-		XMLoadFloat3(&eye),
-		XMLoadFloat3(&target),
-		XMLoadFloat3(&up));
-
-	// 平行投影による射影行列の生成
-	//constMap->mat = XMMatrixOrthographicOffCenterLH(
-	//	0, window_width,
-	//	window_height, 0,
-	//	0, 1);
-	// 透視投影による射影行列の生成
-	matProjection = XMMatrixPerspectiveFovLH(
-		XMConvertToRadians(60.0f),
-		(float)window_width / window_height,
-		0.1f, 1000.0f
-	);
-}
-
-void ViewProjection::Update() {
-	// ビュー行列の更新
-	matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
-}
-
-void ViewProjection::SetEye(XMFLOAT3 eye)
+void ViewProjection::StaticInitialize(ID3D12Device* device)
 {
-	ViewProjection::eye = eye;
-
-	Update();
+	assert(device);
+	device_ = device;
 }
 
-void ViewProjection::SetTarget(XMFLOAT3 target)
+void ViewProjection::Initialize()
 {
-	ViewProjection::target = target;
+	CreateConstBuffer();
+	Map();
+	UpdateMatrix();
+}
 
-	Update();
+void ViewProjection::CreateConstBuffer()
+{
+	HRESULT result;
+
+	// ヒーププロパティ
+	CD3DX12_HEAP_PROPERTIES heapProps = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
+	// リソース設定
+	CD3DX12_RESOURCE_DESC resourceDesc =
+		CD3DX12_RESOURCE_DESC::Buffer((sizeof(ConstBufferDataViewProjection) + 0xff) & ~0xff);
+
+	// 定数バッファの生成
+	result = device_->CreateCommittedResource(
+		&heapProps, // アップロード可能
+		D3D12_HEAP_FLAG_NONE, &resourceDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
+		IID_PPV_ARGS(&constBuff));
+	assert(SUCCEEDED(result));
+}
+
+void ViewProjection::Map()
+{
+	// 定数バッファとのデータリンク
+	HRESULT result = constBuff->Map(0, nullptr, (void**)&constMap);
+	assert(SUCCEEDED(result));
+}
+
+void ViewProjection::UpdateMatrix()
+{
+	// ビュー行列の作成
+	matView.ViewMat(eye, target, up);
+	// 射影行列の作成
+	matProjection.ProjectionMat(fovAngleY, aspectRatio, nearZ, farZ);
+
+	// 定数バッファへの書き込み
+	constMap->view = matView;
+	constMap->projection = matProjection;
+	constMap->cameraPos = eye;
 }

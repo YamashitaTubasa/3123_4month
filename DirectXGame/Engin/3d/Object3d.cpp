@@ -5,6 +5,7 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
+#include <CollisionManager.h>
 
 #pragma comment(lib, "d3dcompiler.lib")
 
@@ -24,6 +25,9 @@ Object3d::~Object3d()
 {
 	if (collider)
 	{
+		//コリジョンマネージャから登録を解除する
+		CollisionManager::GetInstance()->RemoveCollider(collider);
+
 		delete collider;
 	}
 }
@@ -35,11 +39,14 @@ void Object3d::StaticInitialize(ID3D12Device * device, int window_width, int win
 
 	Object3d::device = device;
 
-	// パイプライン初期化
-	InitializeGraphicsPipeline();
-
 	// モデルにデバイスをセット
 	Model::SetDevice(device);
+
+	// ワールドトランスフォームにデバイスを貸す
+	WorldTransform::StaticInitialize(device);
+
+	// パイプライン初期化
+	InitializeGraphicsPipeline();
 }
 
 void Object3d::PreDraw(ID3D12GraphicsCommandList * cmdList)
@@ -66,7 +73,6 @@ void Object3d::PostDraw()
 
 Object3d * Object3d::Create()
 {
-
 	// 3Dオブジェクトのインスタンスを生成
 	Object3d* object3d = new Object3d();
 	if (object3d == nullptr) {
@@ -80,9 +86,6 @@ Object3d * Object3d::Create()
 		return nullptr;
 	}
 
-	// スケールをセット
-	float scale_val = 20;
-	object3d->scale = { scale_val,scale_val,scale_val };
 
 	return object3d;
 }
@@ -207,10 +210,11 @@ void Object3d::InitializeGraphicsPipeline()
 	descRangeSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0); // t0 レジスタ
 
 	// ルートパラメータ
-	CD3DX12_ROOT_PARAMETER rootparams[3];
+	CD3DX12_ROOT_PARAMETER rootparams[4];
 	rootparams[0].InitAsConstantBufferView(0, 0, D3D12_SHADER_VISIBILITY_ALL);
 	rootparams[1].InitAsConstantBufferView(1, 0, D3D12_SHADER_VISIBILITY_ALL);
-	rootparams[2].InitAsDescriptorTable(1, &descRangeSRV, D3D12_SHADER_VISIBILITY_ALL);
+	rootparams[2].InitAsConstantBufferView(2, 0, D3D12_SHADER_VISIBILITY_ALL);
+	rootparams[3].InitAsDescriptorTable(1, &descRangeSRV, D3D12_SHADER_VISIBILITY_ALL);
 
 	// スタティックサンプラー
 	CD3DX12_STATIC_SAMPLER_DESC samplerDesc = CD3DX12_STATIC_SAMPLER_DESC(0);
@@ -236,63 +240,19 @@ void Object3d::InitializeGraphicsPipeline()
 
 bool Object3d::Initialize()
 {
-	// nullptrチェック
-	assert(device);
-
-	HRESULT result;
-
-	// ヒーププロパティ
-	CD3DX12_HEAP_PROPERTIES heapProps = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
-	// リソース設定
-	CD3DX12_RESOURCE_DESC resourceDesc =
-		CD3DX12_RESOURCE_DESC::Buffer((sizeof(ConstBufferDataB0) + 0xff) & ~0xff);
-
-	// 定数バッファの生成
-	result = device->CreateCommittedResource(
-		&heapProps, // アップロード可能
-		D3D12_HEAP_FLAG_NONE, 
-		&resourceDesc, 
-		D3D12_RESOURCE_STATE_GENERIC_READ, 
-		nullptr,
-		IID_PPV_ARGS(&constBuffB0));
-	assert(SUCCEEDED(result));
-	
-	return true;
+	//worldTransform初期化
+	worldTransform_.Initialize();
 
 	//クラス名の文字列を取得
 	name = typeid(*this).name();
+
+	return true;
 }
 
 void Object3d::Update()
 {
-	HRESULT result;
-	XMMATRIX matScale, matRot, matTrans;
-
-	// スケール、回転、平行移動行列の計算
-	matScale = XMMatrixScaling(scale.x, scale.y, scale.z);
-	matRot = XMMatrixIdentity();
-	matRot *= XMMatrixRotationZ(XMConvertToRadians(rotation.z));
-	matRot *= XMMatrixRotationX(XMConvertToRadians(rotation.x));
-	matRot *= XMMatrixRotationY(XMConvertToRadians(rotation.y));
-	matTrans = XMMatrixTranslation(position.x, position.y, position.z);
-
-	// ワールド行列の合成
-	matWorld = XMMatrixIdentity(); // 変形をリセット
-	matWorld *= matScale; // ワールド行列にスケーリングを反映
-	matWorld *= matRot; // ワールド行列に回転を反映
-	matWorld *= matTrans; // ワールド行列に平行移動を反映
-
-	// 親オブジェクトがあれば
-	if (parent != nullptr) {
-		// 親オブジェクトのワールド行列を掛ける
-		matWorld *= parent->matWorld;
-	}
-
-	// 定数バッファへデータ転送
-	ConstBufferDataB0* constMap = nullptr;
-	result = constBuffB0->Map(0, nullptr, (void**)&constMap);
-	constMap->mat = matWorld * ViewProjection::GetMatView() * ViewProjection::GetMatProjection();	// 行列の合成
-	constBuffB0->Unmap(0, nullptr);
+	// ワールドトランスフォームの行列更新と転送
+	worldTransform_.UpdateMatrix();
 
 	//当たり判定更新
 	if (collider)
@@ -301,7 +261,7 @@ void Object3d::Update()
 	}
 }
 
-void Object3d::Draw()
+void Object3d::Draw(ViewProjection* viewProjection)
 {
 	// nullptrチェック
 	assert(device);
@@ -311,13 +271,16 @@ void Object3d::Draw()
 	if (model == nullptr) return;
 
 	// 定数バッファビューをセット
-	cmdList->SetGraphicsRootConstantBufferView(0, constBuffB0->GetGPUVirtualAddress());
+	cmdList->SetGraphicsRootConstantBufferView(0, worldTransform_.GetBuff()->GetGPUVirtualAddress());
+
+	// ビュープロジェクション変換データ定数バッファビューをセット
+	cmdList->SetGraphicsRootConstantBufferView(1, viewProjection->GetBuff()->GetGPUVirtualAddress());
 
 	// モデルを描画
-	model->Draw(cmdList, 1,1);
+	model->Draw(cmdList, 2,1);
 }
 
-void Object3d::Draw(float alpha_)
+void Object3d::Draw(ViewProjection* viewProjection,float alpha_)
 {
 	// nullptrチェック
 	assert(device);
@@ -327,7 +290,10 @@ void Object3d::Draw(float alpha_)
 	if (model == nullptr) return;
 
 	// 定数バッファビューをセット
-	cmdList->SetGraphicsRootConstantBufferView(0, constBuffB0->GetGPUVirtualAddress());
+	cmdList->SetGraphicsRootConstantBufferView(0, worldTransform_.GetBuff()->GetGPUVirtualAddress());
+
+	// ビュープロジェクション変換データ定数バッファビューをセット
+	cmdList->SetGraphicsRootConstantBufferView(1, viewProjection->GetBuff()->GetGPUVirtualAddress());
 
 	// モデルを描画
 	model->Draw(cmdList, 1,alpha_);
@@ -337,4 +303,8 @@ void Object3d::SetCollider(BaseCollider* collider)
 {
 	collider->SetObject(this);
 	this->collider = collider;
+	//コリジョンマネージャに登録
+	CollisionManager::GetInstance()->AddCollider(collider);
+	//コライダーを更新しておく
+	collider->Update();
 }

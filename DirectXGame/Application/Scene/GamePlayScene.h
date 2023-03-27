@@ -11,6 +11,7 @@
 #include "ParticleManager.h"
 #include "GameBaseScene.h"
 #include "ViewProjection.h"
+#include "WorldTransform.h"
 #include "Spline.h"
 
 //====================//
@@ -44,12 +45,12 @@ public:
 	/// </summary>
 	void Finalize();
 	//XMFLOAT3変換
-	XMFLOAT3 ConversionVec(Vector3 vec);
-	Vector3 ConversionVec(XMFLOAT3 xVec);
+	//XMFLOAT3 ConversionVec(Vector3 vec);
+	//Vector3 ConversionVec(XMFLOAT3 xVec);
 	//正面ベクトル取得
-	XMFLOAT3 GetFront(XMFLOAT3 a, XMFLOAT3 b);
-	XMFLOAT3 GetRight(XMFLOAT3 a, XMFLOAT3 b);
-	XMFLOAT3 GetLeft(XMFLOAT3 a, XMFLOAT3 b);
+	Vector3 GetFront(Vector3 a, Vector3 b);
+	Vector3 GetRight(Vector3 a, Vector3 b);
+	Vector3  GetLeft(Vector3 a, Vector3 b);
 
 	//補間で使うデータ
 	//start → end を5秒で完了させる
@@ -78,6 +79,8 @@ private:
 	Object3d* sky;
 	//カメラ
 	ViewProjection* viewProjection = nullptr;
+	//座標
+	WorldTransform* worldTransform = nullptr;
 	// スプライト
 	Sprite* sprite = nullptr;
 	Sprite hP;
