@@ -5,7 +5,6 @@
 #include<d3d12.h>
 #include<wrl.h>
 
-
 class WorldTransform
 {
 private:
@@ -15,8 +14,7 @@ private:
 
 public:// サブクラス
 	//定数バッファ用データ構造体
-	struct ConstBufferDataWorldTransform {
-		Vector4 color;
+	struct ConstBufferDataB0 {
 		Matrix4 matWorld;// 行列
 	};
 public:// メンバ関数
@@ -30,13 +28,18 @@ public:// メンバ関数
 	void UpdateMatrix();
 
 	// 定数バッファのゲッター
-	ID3D12Resource* GetBuff() { return constBuff.Get(); }
+	ID3D12Resource* GetBuff() { return constBuffB0.Get(); }
 
 	/// 定数バッファ生成
 	void CreateConstBuffer();
 
 	/// マッピングする
 	void Map();
+
+	const Vector3& GetPosition()const { return position_; }
+
+	// 度数からラジアンに変換
+	float ToRadian(float angle) { return angle * (PI / 180); }
 
 public:// パブリック変数
 	// ローカルスケール
@@ -57,14 +60,17 @@ public:// パブリック変数
 	// 親となるワールド変換へのポインタ
 	const WorldTransform* parent_ = nullptr;
 
+	// 円周率
+	const float PI = 3.141592f;
+
 private:// メンバ変数
 	// デバイス
 	static ComPtr<ID3D12Device> device_;
 
 	// 定数バッファ
-	ComPtr<ID3D12Resource> constBuff;
+	ComPtr<ID3D12Resource> constBuffB0;
 
 	// マッピング済みアドレス
-	ConstBufferDataWorldTransform* constMap = nullptr;
+	ConstBufferDataB0* constMap = nullptr;
 };
 

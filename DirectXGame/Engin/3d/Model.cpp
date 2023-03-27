@@ -264,6 +264,10 @@ void Model::LoadTexture(const std::string& filename)
 
 void Model::Draw(ID3D12GraphicsCommandList* cmdList, UINT rootParamIndexMaterial,float alpha_)
 {
+	// nullptrチェック
+	assert(device);
+	assert(cmdList);
+
 	// 頂点バッファビューの設定
 	cmdList->IASetVertexBuffers(0, 1, &vbView);
 	// インデックスバッファの設定
@@ -280,7 +284,7 @@ void Model::Draw(ID3D12GraphicsCommandList* cmdList, UINT rootParamIndexMaterial
 
 	if (material.textureFilename.size() > 0) {
 		// シェーダリソースビューをセット
-		cmdList->SetGraphicsRootDescriptorTable(2, gpuDescHandleSRV);
+		cmdList->SetGraphicsRootDescriptorTable(3, gpuDescHandleSRV);
 	}
 
 	// 描画コマンド

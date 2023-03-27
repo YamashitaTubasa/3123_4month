@@ -16,18 +16,18 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon)
 
 	viewProjection = new ViewProjection;
 	viewProjection->Initialize();
-	viewProjection->SetTarget(Vector3{ 0, 0, 0 });
-	viewProjection->SetEye(Vector3{ 0, 0, -10 });
+	viewProjection->eye = { 0, 0, -10 };
+	viewProjection->target = { 0, 0, 0 };
 
 	// OBJからモデルデータを読み込む
 	skyModel = Model::LoadFromOBJ("skydome");
 
 	// 3Dオブジェクト生成
 	sky = Object3d::Create();
-	// オブジェクトにモデルをひも付ける
 
+	// オブジェクトにモデルをひも付ける
 	sky->SetModel(skyModel);
-	sky->SetScale(Vector3(80, 80, 80));
+	sky->SetScale(Vector3({80, 80, 80}));
 
 	// OBJからモデルデータを読み込む
 	playerModel = Model::LoadFromOBJ("fighter");
@@ -35,15 +35,15 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon)
 	player = Object3d::Create();
 	// オブジェクトにモデルをひも付ける
 	player->SetModel(playerModel);
-	player->SetRotation(Vector3(0, 270, 0));
-	player->SetScale(Vector3(1, 1, 1));
+	player->SetRotation(Vector3({ 0, 90, 0 }));
+	player->SetScale(Vector3(1.5, 1, 1));
 
-	tester = Object3d::Create();
-	// オブジェクトにモデルをひも付ける
-	tester->SetModel(playerModel);
-	tester->SetPosition(Vector3(-1, 0, -12));
-	tester->SetRotation(Vector3(0, 270, 0));
-	tester->SetScale(Vector3(2, 2, 2));
+	//tester = Object3d::Create();
+	//// オブジェクトにモデルをひも付ける
+	//tester->SetModel(playerModel);
+	//tester->SetPosition(Vector3(-1, 0, -12));
+	//tester->SetRotation(Vector3(0, 20, 0));
+	//tester->SetScale(Vector3(2, 2, 2));
 
 	// スプライトの初期化
 	// スプライト
@@ -65,36 +65,11 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon)
 
 void GamePlayScene::Update()
 {
-
-	Vector3 playerTmp = player->GetPosition();
-	Vector3 eye = viewProjection->GetEye();
-	Vector3 target = viewProjection->GetTarget();
-
-
-	if (input->PushKey(DIK_A)) {
-		viewProjection->SetTarget(Vector3(target.x + 0.1, target.y, target.z));
-		/*playerTmp.x += 0.7;*/
-	}
-	if (input->PushKey(DIK_D)) {
-		viewProjection->SetTarget(Vector3(target.x - 0.1, target.y, target.z));
-		/*playerTmp.x -= 0.7;*/
-	}
-
-	target = viewProjection->GetTarget();
-
-
-	Vector3 cameraFronttmp = GetFront(eye, Vector3(target.x, eye.y, target.z));
-	Vector3 cameraFronttmp_ = cameraFronttmp;
-
-	viewProjection->SetTarget(target + cameraFronttmp_ * 0.2);
-	viewProjection->SetEye(eye + cameraFronttmp_ * 0.2);
-	player->SetPosition((playerTmp * sinf(PI / 2)) + cameraFronttmp_ * 0.2);
-
-	viewProjection->Update();
+	viewProjection->UpdateMatrix();
 
 	sky->Update();
 	player->Update();
-	tester->Update();
+	/*tester->Update();*/
 
 }
 
@@ -107,7 +82,7 @@ void GamePlayScene::Draw()
 
 	sky->Draw(viewProjection);
 	player->Draw(viewProjection);
-	tester->Draw(viewProjection);
+	/*tester->Draw(viewProjection);*/
 
 	// 3Dオブジェクト描画後処理
 	Object3d::PostDraw();

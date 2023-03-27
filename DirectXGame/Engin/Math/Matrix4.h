@@ -23,7 +23,7 @@ public:
 		float m30, float m31, float m32, float m33);
 
 	// ’PˆÊs—ñ‚ğ‹‚ß‚é
-	Matrix4 identity();
+	static Matrix4 identity();
 
 	// ‹ts—ñ‚ğ‹‚ß‚é
 	Matrix4 MakeInverse();

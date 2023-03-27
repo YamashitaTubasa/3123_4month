@@ -69,9 +69,6 @@
     <ClCompile Include="DirectXGame\main.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\Engin\Scene\RLFramework.cpp">
-      <Filter>ソースファイル\Application\Platform</Filter>
-    </ClCompile>
     <ClCompile Include="DirectXGame\Application\Platform\RideLight.cpp">
       <Filter>ソースファイル\Application\Scene</Filter>
     </ClCompile>
@@ -102,9 +99,6 @@
     <ClCompile Include="DirectXGame\Engin\Collision\Collision.cpp">
       <Filter>ソースファイル\Engine\Collision</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\Engin\Collision\CollisionManager.cpp">
-      <Filter>ソースファイル\Engine\Collision</Filter>
-    </ClCompile>
     <ClCompile Include="DirectXGame\Engin\Collision\CollisionPrimitive.cpp">
       <Filter>ソースファイル\Engine\Collision</Filter>
     </ClCompile>
@@ -113,6 +107,12 @@
     </ClCompile>
     <ClCompile Include="DirectXGame\Engin\3d\WorldTransform.cpp">
       <Filter>ソースファイル\Engine\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\Engin\Scene\RLFramework.cpp">
+      <Filter>ソースファイル\Application\Platform</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\Engin\Collision\CollisionManager.cpp">
+      <Filter>ソースファイル\Engine\Collision</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

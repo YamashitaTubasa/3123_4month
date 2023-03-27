@@ -6,17 +6,19 @@
 #include <DirectXMath.h>
 #include <map>
 #include <string>
+#include "Matrix4.h"
+#include "Vector4.h"
 
 #pragma comment(lib, "xaudio2.lib")
 
 //定数バッファ用データ構造体(マテリアル)
 struct ConstBufferDataMaterial {
-	DirectX::XMFLOAT4 color;//色(RGBA)
+	Vector4 color;//色(RGBA)
 };
 
 //定数バッファ用データ構造体(3D変換行列)
 struct ConstBufferDataTransform {
-	DirectX::XMMATRIX mat; //3D変換行列
+	Matrix4 mat; //3D変換行列
 };
 
 // チャンクヘッダ
@@ -56,10 +58,6 @@ class Audio final
 {
 public:
 	template<class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
-
-	using XMFLOAT3 = DirectX::XMFLOAT3;
-	using XMFLOAT4 = DirectX::XMFLOAT4;
-	using XMMATRIX = DirectX::XMMATRIX;
 
 private:
 	Audio() = default;

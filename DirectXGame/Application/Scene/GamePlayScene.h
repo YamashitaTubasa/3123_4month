@@ -11,6 +11,7 @@
 #include "ParticleManager.h"
 #include "GameBaseScene.h"
 #include "ViewProjection.h"
+#include "WorldTransform.h"
 
 //====================//
 // ゲームプレイシーン
@@ -62,6 +63,8 @@ private:
 	Object3d* sky;
 	//カメラ
 	ViewProjection* viewProjection = nullptr;
+	//座標
+	WorldTransform* worldTransform = nullptr;
 	// スプライト
 	Sprite* sprite = nullptr;
 	Sprite hP;

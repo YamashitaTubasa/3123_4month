@@ -1,102 +1,84 @@
 #pragma once
+#include"Vector3.h"
+#include "Vector4.h"
+#include"Matrix4.h"
+#include "WinApp.h"
+#include<d3d12.h>
+#include<wrl.h>
 
-#include <d3dx12.h>
-#include <d3d12.h>
-#include <wrl.h>
-#include "Matrix4.h"
-#include "Vector3.h"
-#include <DirectXMath.h>
-#include <Windows.h>
-#include <string>
-
-using namespace DirectX;
-
-/// <summary>
-/// ビュープロジェクション変換データ
-/// </summary>
-class ViewProjection {
-
-private:
-	// Microsoft::WRL::を省略
-	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
-
+class ViewProjection
+{
 public:// サブクラス
-// 定数バッファ用データ構造体
+	// 定数バッファ用データ構造体
 	struct ConstBufferDataViewProjection {
 		Matrix4 view;       // ワールド → ビュー変換行列
 		Matrix4 projection; // ビュー → プロジェクション変換行列
 		Vector3 cameraPos;  // カメラ座標（ワールド座標）
 	};
-public:
-
+public:// メンバ関数
 	// 静的初期化
 	static void StaticInitialize(ID3D12Device* device);
 
 	/// 初期化
 	void Initialize();
 
-	/// 視点座標の取得
-	static const Vector3& GetEye() { return eye; }
-
-	// 定数バッファの取得
-	ID3D12Resource* GetBuff() { return constBuff.Get(); }
-
-	/// 視点座標の設定
-	static void SetEye(Vector3 eye);
-
-	/// 注視点座標の取得
-	static const Vector3& GetTarget() { return target; }
-
-	/// 注視点座標の設定
-	static void SetTarget(Vector3 target);
-
-	static const Matrix4& GetMatView() { return matView; }
-
-	static const Matrix4& GetMatProjection() { return matProjection; }
-
-	//定数バッファ生成
-	void CreateConstBuffer();
-
-	//マッピング
-	void Map();
-
 	/// 行列を更新する
 	void UpdateMatrix();
-	//座標更新
-	void Update();
 
-	//静的メンバ変数
-private:
-	static Matrix4 matView;
-	// 射影行列
-	static Matrix4 matProjection;
+	// バッファのゲッター
+	ID3D12Resource* GetBuff() { return constBuff.Get(); }
+
+
+private:// プライベート関数
+	// 円周率
+	const float PI = 3.141592f;
+
+	/// 定数バッファ生成
+	void CreateConstBuffer();
+
+	/// マッピングする
+	void Map();
+
+	// 度数からラジアンに変換
+	float ToRadian(float angle) { return angle * (PI / 180); }
+
+
+public:// パブリック変数
+#pragma region ビュー行列の設定
 	// 視点座標
-	static Vector3 eye;
+	Vector3 eye = { 0, 5, -10.0f };
 	// 注視点座標
-	static Vector3 target;
+	Vector3 target = { 0, 0, 0 };
 	// 上方向ベクトル
-	static Vector3 up;
+	Vector3 up = { 0, 1, 0 };
+#pragma endregion
 
-private:
 #pragma region 射影行列の設定
-	float PI = 3.141592;
 	// 垂直方向視野角
-	float fovAngleY = 45.0f * PI / 180.0f;
+	float fovAngleY = ToRadian(45.0f);
 	// ビューポートのアスペクト比
-	float aspectRatio = (float)16 / 9;
+	float aspectRatio = (float)WinApp::window_width / WinApp::window_height;
 	// 深度限界（手前側）
 	float nearZ = 0.1f;
 	// 深度限界（奥側）
 	float farZ = 1000.0f;
 #pragma endregion
 
+	// ビュー行列
+	Matrix4 matView;
+	// 射影行列
+	Matrix4 matProjection;
+
+private:// メンバ変数
+
 	// デバイス（借りてくる）
 	static Microsoft::WRL::ComPtr<ID3D12Device> device_;
 
 	// 定数バッファ
-	ComPtr<ID3D12Resource> constBuff;
+	Microsoft::WRL::ComPtr<ID3D12Resource> constBuff;
 
 	// マッピング済みアドレス
 	ConstBufferDataViewProjection* constMap = nullptr;
 
 };
+

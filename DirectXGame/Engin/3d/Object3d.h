@@ -89,14 +89,14 @@ public: // メンバ関数
 	void SetModel(Model* model) { this->model = model; }
 
 	// オブジェクトの座標
-	const Vector3& GetPosition() const { return position; }
-	void SetPosition(const Vector3& position) { this->position = position; }
+	const Vector3& GetPosition() const { return worldTransform_.position_; }
+	void SetPosition(const Vector3& position) { this->worldTransform_.position_ = position; }
 	// オブジェクトの大きさ
-	void SetScale(const Vector3& scale) { this->scale = scale; }
-	const Vector3& GetScale() const { return scale; }
+	void SetScale(const Vector3& scale) { this->worldTransform_.scale_ = scale; }
+	const Vector3& GetScale() const { return worldTransform_.scale_; }
 	// オブジェクトの回転
-	void SetRotation(const Vector3& rotation) { this->rotation = rotation; }
-	const Vector3& GetRotation() const { return rotation; }
+	void SetRotation(const Vector3& rotation) { this->worldTransform_.rotation_ = rotation; }
+	const Vector3& GetRotation() const { return worldTransform_.rotation_; }
 
 public:
 	// ワールド変換データ
@@ -111,15 +111,11 @@ protected: // メンバ変数
 	// モデル
 	Model* model = nullptr;
 	// 定数バッファ
-	ComPtr<ID3D12Resource> constBuff; 
+	ComPtr<ID3D12Resource> constBuffB0; 
 	// 定数バッファのマップ
 	ConstBufferDataB0* constMap = nullptr;
-	// ローカルスケール
-	Vector3 scale = { 1,1,1 };
-	// X,Y,Z軸回りのローカル回転角
-	Vector3 rotation = { 0,0,0 };
-	// ローカル座標
-	Vector3 position = { 0,0,0 };
+	//色
+	Vector4 color = { 1,1,1,1 };
 	// ローカルワールド変換行列
 	Matrix4 matWorld;
 	// 親オブジェクト

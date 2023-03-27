@@ -1,15 +1,7 @@
 #include "ViewProjection.h"
-#include <d3dcompiler.h>
-#include <DirectXTex.h>
-#include <fstream>
-#include <sstream>
-#include <vector>
-
-Matrix4 ViewProjection::matView{};
-Matrix4 ViewProjection::matProjection{};
-Vector3 ViewProjection::eye = { 0, 5, 10.0f };
-Vector3 ViewProjection::target = { 0, 0, 0 };
-Vector3 ViewProjection::up = { 0, 1, 0 };
+#include <d3dx12.h>
+#include <cassert>
+#include "WinApp.h"
 
 Microsoft::WRL::ComPtr<ID3D12Device> ViewProjection::device_ = nullptr;
 
@@ -19,7 +11,8 @@ void ViewProjection::StaticInitialize(ID3D12Device* device)
 	device_ = device;
 }
 
-void ViewProjection::Initialize() {
+void ViewProjection::Initialize()
+{
 	CreateConstBuffer();
 	Map();
 	UpdateMatrix();
@@ -57,28 +50,8 @@ void ViewProjection::UpdateMatrix()
 	// 射影行列の作成
 	matProjection.ProjectionMat(fovAngleY, aspectRatio, nearZ, farZ);
 
-	//定数バッファに転送
+	// 定数バッファへの書き込み
 	constMap->view = matView;
 	constMap->projection = matProjection;
 	constMap->cameraPos = eye;
-}
-
-void ViewProjection::Update() {
-	// ビュー行列の更新
-	matView.ViewMat(eye, target, up);
-
-	//定数バッファに転送
-	constMap->view = matView;
-	constMap->projection = matProjection;
-	constMap->cameraPos = eye;
-}
-
-void ViewProjection::SetEye(Vector3 eye)
-{
-	ViewProjection::eye = eye;
-}
-
-void ViewProjection::SetTarget(Vector3 target)
-{
-	ViewProjection::target = target;
 }

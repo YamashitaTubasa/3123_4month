@@ -1,9 +1,16 @@
 cbuffer cbuff0 : register(b0)
 {
-	matrix mat; // ３Ｄ変換行列
+	matrix matWorld; // ３Ｄ変換行列
 };
 
-cbuffer cbuff1:register(b1)
+cbuffer cbuff1 : register(b1)
+{
+	matrix view;       // ワールド → ビュー変換行列
+	matrix projection; // ビュー → プロジェクション変換行列
+	vector cameraPos;  // カメラ座標（ワールド座標）
+};
+
+cbuffer cbuff2:register(b2)
 {
 	float3 m_ambient:packoffset(c0);  // アンビエント係数
 	float3 m_diffuse:packoffset(c1);  // ディふぃーず係数

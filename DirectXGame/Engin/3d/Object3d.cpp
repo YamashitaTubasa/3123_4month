@@ -39,14 +39,14 @@ void Object3d::StaticInitialize(ID3D12Device * device, int window_width, int win
 
 	Object3d::device = device;
 
+	// モデルにデバイスをセット
+	Model::SetDevice(device);
+
 	// ワールドトランスフォームにデバイスを貸す
 	WorldTransform::StaticInitialize(device);
 
 	// パイプライン初期化
 	InitializeGraphicsPipeline();
-
-	// モデルにデバイスをセット
-	Model::SetDevice(device);
 }
 
 void Object3d::PreDraw(ID3D12GraphicsCommandList * cmdList)
@@ -73,7 +73,6 @@ void Object3d::PostDraw()
 
 Object3d * Object3d::Create()
 {
-
 	// 3Dオブジェクトのインスタンスを生成
 	Object3d* object3d = new Object3d();
 	if (object3d == nullptr) {
@@ -87,9 +86,6 @@ Object3d * Object3d::Create()
 		return nullptr;
 	}
 
-	// スケールをセット
-	float scale_val = 20;
-	object3d->scale = { scale_val,scale_val,scale_val };
 
 	return object3d;
 }
@@ -214,10 +210,11 @@ void Object3d::InitializeGraphicsPipeline()
 	descRangeSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0); // t0 レジスタ
 
 	// ルートパラメータ
-	CD3DX12_ROOT_PARAMETER rootparams[3];
+	CD3DX12_ROOT_PARAMETER rootparams[4];
 	rootparams[0].InitAsConstantBufferView(0, 0, D3D12_SHADER_VISIBILITY_ALL);
 	rootparams[1].InitAsConstantBufferView(1, 0, D3D12_SHADER_VISIBILITY_ALL);
-	rootparams[2].InitAsDescriptorTable(1, &descRangeSRV, D3D12_SHADER_VISIBILITY_ALL);
+	rootparams[2].InitAsConstantBufferView(2, 0, D3D12_SHADER_VISIBILITY_ALL);
+	rootparams[3].InitAsDescriptorTable(1, &descRangeSRV, D3D12_SHADER_VISIBILITY_ALL);
 
 	// スタティックサンプラー
 	CD3DX12_STATIC_SAMPLER_DESC samplerDesc = CD3DX12_STATIC_SAMPLER_DESC(0);
@@ -243,31 +240,8 @@ void Object3d::InitializeGraphicsPipeline()
 
 bool Object3d::Initialize()
 {
-
-	// nullptrチェック
-	assert(device);
-
-	// ヒーププロパティ
-	CD3DX12_HEAP_PROPERTIES heapProps = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
-	// リソース設定
-	CD3DX12_RESOURCE_DESC resourceDesc =
-		CD3DX12_RESOURCE_DESC::Buffer((sizeof(ConstBufferDataB0) + 0xff) & ~0xff);
-
-	HRESULT result;
-	// 定数バッファの生成
-	result = device->CreateCommittedResource(
-		&heapProps, D3D12_HEAP_FLAG_NONE, &resourceDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
-		IID_PPV_ARGS(&constBuff));
-	assert(SUCCEEDED(result));
-
-	// 定数バッファのマッピング
-	result = constBuff->Map(0, nullptr, (void**)&constMap);
-	assert(SUCCEEDED(result));
-
-
 	//worldTransform初期化
 	worldTransform_.Initialize();
-
 
 	//クラス名の文字列を取得
 	name = typeid(*this).name();
@@ -277,7 +251,6 @@ bool Object3d::Initialize()
 
 void Object3d::Update()
 {
-
 	// ワールドトランスフォームの行列更新と転送
 	worldTransform_.UpdateMatrix();
 
@@ -304,7 +277,7 @@ void Object3d::Draw(ViewProjection* viewProjection)
 	cmdList->SetGraphicsRootConstantBufferView(1, viewProjection->GetBuff()->GetGPUVirtualAddress());
 
 	// モデルを描画
-	model->Draw(cmdList, 1,1);
+	model->Draw(cmdList, 2,1);
 }
 
 void Object3d::Draw(ViewProjection* viewProjection,float alpha_)
