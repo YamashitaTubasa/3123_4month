@@ -20,7 +20,7 @@ void RailCamera::Initialize(Object3d* player_) {
 	player_->SetParent3d(camera);
 	player_->SetScale(Vector3(0.4, 0.4, 0.4));
 	player_->SetRotation(Vector3(0, 90, 0));
-	player_->SetPosition(Vector3(0, 0, 2.5));
+	player_->SetPosition(Vector3(0, -2, 2.5));
 	velo = 0.8f;
 }
 
