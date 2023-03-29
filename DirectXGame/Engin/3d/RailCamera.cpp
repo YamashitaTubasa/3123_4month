@@ -36,17 +36,17 @@ void RailCamera::Update(Object3d* player_, std::vector<Vector3>& point) {
 	//‹Èü•âŠ®
 	camera_ = spline_.Update(point, timeRate);
 
-	camera->SetPosition(Vector3(0,0,10));
-	//camera->SetRotationY(std::atan2(frontTmp.z, frontTmp.x) + frontTmp.x * 70);
-	//Vector3 rotaVec = { frontTmp.x,0,frontTmp.z };
-	//rotaVec.length();
-	//camera->SetRotationX(std::atan2(-frontTmp.y, rotaVec.z) + frontTmp.y * 70);
-	//Vector3 answer = camera->GetRotation();
+	camera->SetPosition(camera_ + frontTmp * 0.5);
+	camera->SetRotationY(std::atan2(frontTmp.z, frontTmp.x) + frontTmp.x * 70);
+	Vector3 rotaVec = { frontTmp.x,0,frontTmp.z };
+	rotaVec.length();
+	camera->SetRotationX(std::atan2(-frontTmp.y, rotaVec.z) + frontTmp.y * 70);
+	Vector3 answer = camera->GetRotation();
 
 	//XV
 	camera->Update();
 	viewProjection->target = ( camera->GetPosition() );
-	/*viewProjection->eye = ( camera_ - frontTmp );*/
+	viewProjection->eye = ( camera_ - frontTmp );
 	viewProjection->UpdateMatrix();
 
 
