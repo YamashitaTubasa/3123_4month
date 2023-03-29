@@ -114,8 +114,8 @@
     <ClCompile Include="DirectXGame\Engin\Collision\CollisionManager.cpp">
       <Filter>ソースファイル\Engine\Collision</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\Engin\Math\Spline.cpp">
-      <Filter>ソースファイル\Engine\Math</Filter>
+    <ClCompile Include="DirectXGame\Engin\3d\RailCamera.cpp">
+      <Filter>ソースファイル\Engine\Camera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -211,6 +211,9 @@
     </ClInclude>
     <ClInclude Include="DirectXGame\Engin\3d\WorldTransform.h">
       <Filter>ヘッダーファイル\Engine\3d</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Engin\3d\RailCamera.h">
+      <Filter>ヘッダーファイル\Engine\Camera</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
