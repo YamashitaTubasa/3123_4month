@@ -27,7 +27,7 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 
 	// オブジェクトにモデルをひも付ける
 	sky->SetModel(skyModel);
-	sky->SetScale(Vector3({80, 80, 80}));
+	sky->SetScale(Vector3({1000, 1000, 1000}));
 
 	// OBJからモデルデータを読み込む
 	playerModel = Model::LoadFromOBJ("fighter");
@@ -70,11 +70,8 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 void GamePlayScene::Update() {
 
 	railCamera->Update(player, points);
-
-
-	sky->Update();
 	player->Update();
-
+	sky->Update();
 }
 
 void GamePlayScene::Draw() {

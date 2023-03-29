@@ -14,11 +14,11 @@ void RailCamera::Initialize(Object3d* player_) {
 	input = Input::GetInstance();
 	viewProjection->Initialize();
 	camera = Object3d::Create();
-	viewProjection->eye = { 0, 5, -500 };
-	camera->SetPosition(viewProjection->eye + Vector3(0, 0, 20));
+	viewProjection->eye = { 0, 0, 0 };
+	camera->SetPosition(viewProjection->eye);
 	camera->SetRotation(viewProjection->target);
 	player_->SetParent3d(camera);
-	player_->SetScale(Vector3(0.4, 0.4, 0.4));
+	player_->SetScale(Vector3(3, 3, 3));
 	player_->SetRotation(Vector3(0, 90, 0));
 	player_->SetPosition(Vector3(0, 0, 2.5));
 	velo = 0.8f;
@@ -36,18 +36,19 @@ void RailCamera::Update(Object3d* player_, std::vector<Vector3>& point) {
 	//‹Èü•âŠ®
 	camera_ = spline_.Update(point, timeRate);
 
-	camera->SetPosition(camera_ + frontTmp * 0.5);
-	camera->SetRotationY(std::atan2(frontTmp.z, frontTmp.x) + frontTmp.x * 70);
-	Vector3 rotaVec = { frontTmp.x,0,frontTmp.z };
-	rotaVec.length();
-	camera->SetRotationX(std::atan2(-frontTmp.y, rotaVec.z) + frontTmp.y * 70);
-	Vector3 answer = camera->GetRotation();
+	camera->SetPosition(Vector3(0,0,10));
+	//camera->SetRotationY(std::atan2(frontTmp.z, frontTmp.x) + frontTmp.x * 70);
+	//Vector3 rotaVec = { frontTmp.x,0,frontTmp.z };
+	//rotaVec.length();
+	//camera->SetRotationX(std::atan2(-frontTmp.y, rotaVec.z) + frontTmp.y * 70);
+	//Vector3 answer = camera->GetRotation();
 
 	//XV
 	camera->Update();
-	viewProjection->target = ( camera_ + frontTmp * 0.5 );
-	viewProjection->eye = ( camera_ - frontTmp );
+	viewProjection->target = ( camera->GetPosition() );
+	/*viewProjection->eye = ( camera_ - frontTmp );*/
 	viewProjection->UpdateMatrix();
+
 
 }
 
