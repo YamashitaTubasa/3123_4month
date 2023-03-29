@@ -43,7 +43,6 @@ protected:
 	GameTitleScene* scene_ = nullptr;
 	SpriteCommon* spriteCommon = nullptr;
 
-
 private:
 	// ゲーム終了フラグ
 	bool endRequest_ = false;

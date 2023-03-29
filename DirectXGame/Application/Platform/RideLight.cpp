@@ -5,6 +5,10 @@ void RideLight::Initialize()
 	// 基底クラスの初期化
 	RLFramework::Initialize();
 
+	// スプライト共通部の初期化
+	spriteCommon = SpriteCommon::GetInstance();
+	spriteCommon->Initialize();
+
 	// ゲームシーンの生成と初期化
 	scene_ = new GameTitleScene();
 	scene_->Initialize();
@@ -29,6 +33,9 @@ void RideLight::Draw()
 {
 	// 描画前処理
 	dXCommon->PreDraw();
+
+	// スプライト共通部の描画
+	spriteCommon->Draw();
 
 	// ゲームシーンの描画
 	scene_->Draw();

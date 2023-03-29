@@ -1,6 +1,8 @@
 #include "Sprite.h"
 
 void Sprite::Initialize(){
+	spriteCommon = SpriteCommon::GetInstance();
+
 	HRESULT result;
 
 	// 頂点データ全体のサイズ　＝　頂点データ一つ分のサイズ　＊　頂点データの要素数
@@ -18,9 +20,8 @@ void Sprite::Initialize(){
 	resDesc.MipLevels = 1;
 	resDesc.SampleDesc.Count = 1;
 	resDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
-	// 頂点バッファの生成
-	//ComPtr<ID3D12Resource> vertBuff;
-	result = dXCommon_->GetDevice()->CreateCommittedResource(
+	
+	result = spriteCommon->GetDXCommon()->GetDevice()->CreateCommittedResource(
 		&heapProp, // ヒープ設定
 		D3D12_HEAP_FLAG_NONE,
 		&resDesc, // リソース設定
@@ -40,8 +41,6 @@ void Sprite::Initialize(){
 	// 繋がりを解除
 	vertBuff->Unmap(0, nullptr);
 
-	// 頂点バッファビューの作成
-	//D3D12_VERTEX_BUFFER_VIEW vbView{};
 	// GPU仮想アドレス
 	vbView.BufferLocation = vertBuff->GetGPUVirtualAddress();
 	// 頂点バッファのサイズ
@@ -56,6 +55,9 @@ void Sprite::Update()
 
 void Sprite::Draw()
 {
+	// 頂点バッファビューの設定コマンド
+	spriteCommon->GetDXCommon()->GetCommandList()->IASetVertexBuffers(0, 1, &vbView);
+
 	// 描画コマンド
 	spriteCommon->GetDXCommon()->GetCommandList()->DrawInstanced(_countof(vertices), 1, 0, 0); // すべての頂点を使って描画
 }

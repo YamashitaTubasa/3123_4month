@@ -43,8 +43,8 @@ void RLFramework::Initialize()
 	imGuiManager->Initialize(dXCommon, winApp);
 
 	// スプライト共通部の初期化
-	spriteCommon = SpriteCommon::GetInstance();
-	spriteCommon->Initialize();
+	//spriteCommon = SpriteCommon::GetInstance();
+	//spriteCommon->Initialize();
 
 	// 3Dオブジェクト静的初期化
 	Object3d::StaticInitialize(dXCommon->GetDevice(), WinApp::window_width, WinApp::window_height);

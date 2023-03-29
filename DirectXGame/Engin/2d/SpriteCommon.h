@@ -52,10 +52,6 @@ private:
 
 	ComPtr<ID3D12RootSignature> rootSignature;
 	ComPtr<ID3D12PipelineState> pipelineState;
-	ComPtr<ID3D12Resource> vertBuff;
-
-	// 頂点バッファビューの作成
-	D3D12_VERTEX_BUFFER_VIEW vbView{};
 
 public:
 	DirectXCommon* GetDXCommon() const { return dXCommon_; }

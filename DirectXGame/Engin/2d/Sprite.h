@@ -33,5 +33,10 @@ private:
 	};
 
 private:
+	ComPtr<ID3D12Resource> vertBuff;
+
+	D3D12_VERTEX_BUFFER_VIEW vbView{};
+
+private:
 	SpriteCommon* spriteCommon = nullptr;
 };
