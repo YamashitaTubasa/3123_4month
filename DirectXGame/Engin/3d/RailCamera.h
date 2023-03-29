@@ -20,6 +20,8 @@ public:
 	//³–ÊƒxƒNƒgƒ‹‚ğæ“¾
 	Vector3 GetFront(Vector3 a, Vector3 b);
 
+	ViewProjection* GetView() { return viewProjection; }
+
 private:
 	ViewProjection* viewProjection = nullptr;
 	Object3d* camera = nullptr;

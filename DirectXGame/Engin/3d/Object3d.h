@@ -73,8 +73,8 @@ public: // メンバ関数
 	virtual void Update();
 
 	/// 描画
-	virtual void Draw(ViewProjection* viewProjection);
-	virtual void Draw(ViewProjection* viewProjection, float alpha_);
+	void Draw(ViewProjection* viewProjection);
+	void Draw(ViewProjection* viewProjection, float alpha_);
 
 	//ワールド行列の取得
 	const Matrix4& GetMatWorld() { return matWorld; }
@@ -97,6 +97,10 @@ public: // メンバ関数
 	// オブジェクトの回転
 	void SetRotation(const Vector3& rotation) { this->worldTransform_.rotation_ = rotation; }
 	const Vector3& GetRotation() const { return worldTransform_.rotation_; }
+	void SetRotationX(const float& rotation) { this->worldTransform_.rotation_.x = rotation; }
+	void SetRotationY(const float& rotation) { this->worldTransform_.rotation_.y = rotation; }
+
+	void SetParent3d(Object3d* parent_) { this->parent = parent_; }
 
 public:
 	// ワールド変換データ

@@ -12,7 +12,7 @@
 #include "GameBaseScene.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
-#include "Spline.h"
+#include "RailCamera.h"
 
 //====================//
 // ゲームプレイシーン
@@ -75,10 +75,11 @@ private:
 	Model* skyModel;
 	// オブジェクト
 	//Object3d* player;
-	Object3d* tester;
+	Object3d* player;
 	Object3d* sky;
 	//カメラ
 	ViewProjection* viewProjection = nullptr;
+	RailCamera* railCamera = nullptr;
 	//座標
 	WorldTransform* worldTransform = nullptr;
 	// スプライト
@@ -90,9 +91,6 @@ private:
 	ImGuiManager* imGuiManager = nullptr;
 	ParticleManager* ParticleMan = nullptr;
 	WinApp* winApp = nullptr;
-
-	//スプライン
-	Spline spline_;
 
 	XMFLOAT3 position[5]{};
 	XMFLOAT3 rotation[5]{};

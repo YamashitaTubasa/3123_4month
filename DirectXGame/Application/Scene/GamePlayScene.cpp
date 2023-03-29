@@ -12,10 +12,12 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	winApp = WinApp::GetInstance();
 	input = Input::GetInstance();
 
-	viewProjection = new ViewProjection;
-	viewProjection->Initialize();
-	viewProjection->eye = { 0, 0, -10 };
-	viewProjection->target = { 0, 0, 0 };
+	//viewProjection = new ViewProjection;
+	//viewProjection->Initialize();
+	//viewProjection->eye = { 0, 0, -10 };
+	//viewProjection->target = { 0, 0, 0 };
+
+	railCamera = new RailCamera;
 
 	// OBJからモデルデータを読み込む
 	skyModel = Model::LoadFromOBJ("skydome");
@@ -36,19 +38,14 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	player->SetRotation(Vector3({ 0, 90, 0 }));
 	player->SetScale(Vector3(1.5, 1, 1));
 
-	//tester = Object3d::Create();
-	//// オブジェクトにモデルをひも付ける
-	//tester->SetModel(playerModel);
-	//tester->SetPosition(Vector3(-1, 0, -12));
-	//tester->SetRotation(Vector3(0, 20, 0));
-	//tester->SetScale(Vector3(2, 2, 2));
-
 	// スプライトの初期化
 	// スプライト
 	sprite = new Sprite();
 	spriteCommon_ = sprite->SpriteCommonCreate(dXCommon->GetDevice(), 1280, 720);
 	// スプライト用パイプライン生成呼び出し
 	PipelineSet spritePipelineSet = sprite->SpriteCreateGraphicsPipeline(dXCommon->GetDevice());
+
+	railCamera->Initialize(player);
 
 	// HP
 	hP.LoadTexture(spriteCommon_, 3, L"Resources/hp.png", dXCommon->GetDevice());
@@ -60,28 +57,24 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	hP.SpriteTransferVertexBuffer(hP, spriteCommon, 3);
 	hP.SpriteUpdate(hP, spriteCommon_);
 
-	start = { -100.0f, 0.0f, 0.0f };		//スタート地点
-	p2 = { -20.0f, 50.0f, +50.0f };			//制御点その1
-	p3 = { 0.0f, -30.0f, -50.0f };			//制御点その2
-	p4 = { 50.0f, 0.0f, 0.0 };
-	end = { 100.0f, 0.0f, 0.0f };				//ゴール地点
+
+	start = { 0.0f, 0.0f, -800.0f };		//スタート地点
+	p2 = { 100.0f, 600.0f, -400.0f };			//制御点その1
+	p3 = { -200.0f, 0.0f, 0.0f };			//制御点その2
+	p4 = { 500.0f, -300.0f, 400.0 };
+	end = { -300.0f, 0.0f, 800.0f };				//ゴール地点
 
 	points = { start,start,p2,p3,p4,end,end };
 }
 
 void GamePlayScene::Update() {
-	Vector3 eye_ = spline_.Update(points,timeRate);
-	viewProjection->SetEye(ConversionVec(eye_));
 
-	if (input->TriggerKey(DIK_SPACE)) {
-		int a = 0;
-	}
+	railCamera->Update(player, points);
 
-viewProjection->UpdateMatrix();
+	viewProjection->UpdateMatrix();
 
 	sky->Update();
-	//player->Update();
-	tester->Update();
+	player->Update();
 
 }
 
@@ -91,9 +84,8 @@ void GamePlayScene::Draw() {
 	// 3Dオブジェクト描画前処理
 	Object3d::PreDraw(dXCommon->GetCommandList());
 
-	sky->Draw();
-	//player->Draw();
-	tester->Draw();
+	sky->Draw(railCamera->GetView());
+	player->Draw(railCamera->GetView());
 
 	// 3Dオブジェクト描画後処理
 	Object3d::PostDraw();
@@ -137,23 +129,6 @@ void GamePlayScene::Finalize() {
 	delete sprite;
 	sprite = nullptr;
 }
-
-//XMFLOAT3 GamePlayScene::ConversionVec(Vector3 vec) {
-//	XMFLOAT3 tmp(0, 0, 0);
-//	tmp.x = vec.x;
-//	tmp.y = vec.y;
-//	tmp.z = vec.z;
-//	return tmp;
-//}
-//
-//Vector3 GamePlayScene::ConversionVec(XMFLOAT3 vec) {
-//	Vector3 tmp(0, 0, 0);
-//	tmp.x = vec.x;
-//	tmp.y = vec.y;
-//	tmp.z = vec.z;
-//	return tmp;
-//}
-
 
 Vector3 GamePlayScene::GetFront(Vector3 a, Vector3 b) {
 	Vector3 yTmpVec = { 0, 1, 0 };
