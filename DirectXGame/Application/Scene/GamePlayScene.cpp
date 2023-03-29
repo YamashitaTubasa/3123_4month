@@ -71,7 +71,6 @@ void GamePlayScene::Update() {
 
 	railCamera->Update(player, points);
 
-	viewProjection->UpdateMatrix();
 
 	sky->Update();
 	player->Update();

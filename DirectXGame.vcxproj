@@ -179,6 +179,7 @@
     <ClCompile Include="DirectXGame\Engin\Platform\DirectXCommon.cpp" />
     <ClCompile Include="DirectXGame\Engin\Platform\FPSFixed.cpp" />
     <ClCompile Include="DirectXGame\Engin\Platform\WinApp.cpp" />
+    <ClCompile Include="Spline.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Basic.hlsli" />
@@ -279,6 +280,7 @@
     <ClInclude Include="DirectXGame\Engin\Platform\FPSFixed.h" />
     <ClInclude Include="DirectXGame\Engin\Platform\WinApp.h" />
     <ClInclude Include="External\ImGui\ImGuiManager.h" />
+    <ClInclude Include="Spline.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="External\DirectXTex\DirectXTex_Desktop_2022_Win10.vcxproj">

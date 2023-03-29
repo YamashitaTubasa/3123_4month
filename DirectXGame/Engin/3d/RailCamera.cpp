@@ -47,6 +47,7 @@ void RailCamera::Update(Object3d* player_, std::vector<Vector3>& point) {
 	camera->Update();
 	viewProjection->target = ( camera_ + frontTmp * 0.5 );
 	viewProjection->eye = ( camera_ - frontTmp );
+	viewProjection->UpdateMatrix();
 
 }
 
