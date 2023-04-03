@@ -71,7 +71,9 @@ void WorldTransform::UpdateMatrix()
 	matWorld_ *= matRot;
 	matWorld_ *= matTrans;
 
-	if (parent_ != nullptr) {
+	//eŽq\‘¢
+	if (parent_ != nullptr) 
+	{
 		matWorld_ *= parent_->matWorld_;
 	}
 

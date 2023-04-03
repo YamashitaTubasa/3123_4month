@@ -100,8 +100,6 @@ public: // メンバ関数
 	void SetRotationX(const float& rotation) { this->worldTransform_.rotation_.x = rotation; }
 	void SetRotationY(const float& rotation) { this->worldTransform_.rotation_.y = rotation; }
 
-	void SetParent3d(Object3d* parent_) { this->parent = parent_; }
-
 public:
 	// ワールド変換データ
 	WorldTransform worldTransform_;
@@ -122,7 +120,6 @@ protected: // メンバ変数
 	Vector4 color = { 1,1,1,1 };
 	// ローカルワールド変換行列
 	Matrix4 matWorld;
-	// 親オブジェクト
-	Object3d* parent = nullptr;
+	
 };
 

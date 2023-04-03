@@ -41,6 +41,8 @@ public:// メンバ関数
 	// 度数からラジアンに変換
 	float ToRadian(float angle) { return angle * (PI / 180); }
 
+	void SetParent3d(WorldTransform* parent) { this->parent_ = parent; }
+
 public:// パブリック変数
 	// ローカルスケール
 	Vector3 scale_ = { 1.0f, 1.0f, 1.0f };

@@ -251,12 +251,6 @@ bool Object3d::Initialize()
 
 void Object3d::Update()
 {
-	// 親オブジェクトがあれば
-	if (parent != nullptr) {
-		// 親オブジェクトのワールド行列を掛ける
-		matWorld *= parent->matWorld;
-	}
-
 	// ワールドトランスフォームの行列更新と転送
 	worldTransform_.UpdateMatrix();
 
