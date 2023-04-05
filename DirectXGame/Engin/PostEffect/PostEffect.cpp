@@ -361,6 +361,7 @@ void PostEffect::CreateGraphicsPipelineState()
 		assert(0);
 	}
 
+
 	// 頂点レイアウト
 	D3D12_INPUT_ELEMENT_DESC inputLayout[] = {
 		{ // xy座標
