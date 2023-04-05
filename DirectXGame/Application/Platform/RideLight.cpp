@@ -27,17 +27,30 @@ void RideLight::Update()
 
 void RideLight::Draw()
 {
+#pragma region ゲームシーン描画
+	// レンダーテクスチャの前処理
+	postEffect->PreDrawScene(dXCommon->GetCommandList());
+
+	//=== ゲームシーンの描画 ===//
+	scene_->Draw();
+
+	// レンダーテクスチャの後処理
+	postEffect->PostDrawScene(dXCommon->GetCommandList());
+#pragma endregion ゲームシーン描画
+
+#pragma region 描画
 	// 描画前処理
 	dXCommon->PreDraw();
 
-	// ゲームシーンの描画
-	scene_->Draw();
+	//=== ポストエフェクトの描画 ===//
+	postEffect->Draw(dXCommon->GetCommandList());
 
-	// ImGui描画
+	//=== ImGui描画 ===//
 	imGuiManager->Draw(dXCommon);
 
 	// 描画後処理
 	dXCommon->PostDraw();
+#pragma endregion 描画
 }
 
 void RideLight::Finalize()

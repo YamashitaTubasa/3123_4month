@@ -1,7 +1,13 @@
 #include "Sprite.h"
 
-Sprite::Sprite() {
-
+Sprite::Sprite(UINT texNumber, Vector3 position, Vector2 scale, Vector4 color_, Vector2 anchorpoint, bool isFlipX_, bool isFlipY_) {
+	this->texNumber = texNumber;
+	this->position = position;
+	this->scale = scale;
+	this->color_ = color_;
+	this->anchorpoint = anchorpoint;
+	this->isFlipX_ = isFlipX_;
+	this->isFlipY_ = isFlipY_;
 }
 
 Sprite::~Sprite() {
@@ -368,7 +374,7 @@ void Sprite::SpriteUpdate(Sprite& sprite, const SpriteCommon& spriteCommon)
 	Matrix4 matTrans;
 
 	// ワールド行列の更新
-	sprite.matWorld.identity();
+	sprite.matWorld.Identity();
 	// Z軸回転
 	sprite.matWorld *= matRot;
 	// 平行移動

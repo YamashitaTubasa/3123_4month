@@ -38,7 +38,7 @@ Matrix4::Matrix4(float m00, float m01, float m02, float m03,
 }
 
 // ’PˆÊs—ñ‚ğ‹‚ß‚é
-Matrix4 Matrix4::identity()
+Matrix4 Matrix4::Identity()
 {
 	static const Matrix4 result
 	{

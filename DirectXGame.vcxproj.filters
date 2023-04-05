@@ -28,6 +28,12 @@
     <FxCompile Include="Resources\shaders\SpriteVS.hlsl">
       <Filter>シェーダーファイル</Filter>
     </FxCompile>
+    <FxCompile Include="Resources\shaders\PostEffectPS.hlsl">
+      <Filter>シェーダーファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\PostEffectVS.hlsl">
+      <Filter>シェーダーファイル</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DirectXGame\Engin\Audio\Audio.cpp">
@@ -122,6 +128,9 @@
     </ClCompile>
     <ClCompile Include="DirectXGame\Engin\3d\Player.cpp">
       <Filter>ソースファイル\Engine\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\Engin\Effect\PostEffect.cpp">
+      <Filter>ソースファイル\Engine\Effect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -227,6 +236,9 @@
     <ClInclude Include="DirectXGame\Engin\3d\Player.h">
       <Filter>ヘッダーファイル\Engine\GameObject</Filter>
     </ClInclude>
+    <ClInclude Include="DirectXGame\Engin\Effect\PostEffect.h">
+      <Filter>ヘッダーファイル\Engine\Effect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Basic.hlsli">
@@ -239,6 +251,9 @@
       <Filter>シェーダーファイル</Filter>
     </None>
     <None Include="Resources\shaders\Sprite.hlsli">
+      <Filter>シェーダーファイル</Filter>
+    </None>
+    <None Include="Resources\shaders\PostEffect.hlsli">
       <Filter>シェーダーファイル</Filter>
     </None>
   </ItemGroup>

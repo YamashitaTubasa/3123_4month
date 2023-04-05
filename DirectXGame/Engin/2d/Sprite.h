@@ -55,7 +55,8 @@ struct SpriteCommon {
 class Sprite
 {
 public:
-	Sprite();
+	Sprite() = default;
+	Sprite(UINT texNumber, Vector3 position, Vector2 scale, Vector4 color_, Vector2 anchorpoint, bool isFlipX_, bool isFlipY_);
 	~Sprite();
 
 private:
@@ -165,7 +166,7 @@ public:
 	D3D12_VERTEX_BUFFER_VIEW vbView{};
 	D3D12_RESOURCE_DESC resDesc;
 
-private:
+protected:
 	// DirectXCommonのインスタンス
 	DirectXCommon* dXCommon = nullptr;
 	SpriteCommon spriteCommon_;
