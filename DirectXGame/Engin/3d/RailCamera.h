@@ -18,7 +18,7 @@ public:
 	void Update(Object3d* player_, std::vector<Vector3>& point);
 
 	//正面ベクトルを取得
-	Vector3 GetFront(Vector3 a, Vector3 b);
+	void GetVec(Vector3 a, Vector3 b);
 
 	ViewProjection* GetView() { return viewProjection; }
 
@@ -39,6 +39,10 @@ private:
 
 	//スプライン
 	Spline spline_;
+
+	Vector3 rightVec = { 0, 0, 0 };
+	Vector3 leftVec = { 0, 0, 0 };
+	Vector3 frontVec = { 0, 0, 0 };
 
 	float timeRate;
 };

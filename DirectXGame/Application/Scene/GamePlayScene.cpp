@@ -61,7 +61,7 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	start = { 0.0f, 0.0f, -800.0f };		//スタート地点
 	p2 = { 100.0f, 600.0f, -400.0f };		//制御点その1
 	p3 = { -200.0f, 0.0f, 0.0f };			//制御点その2
-	p4 = { 500.0f, -300.0f, 400.0 };
+	p4 = { 500.0f, -300.0f, -400.0 };
 	end = { -300.0f, 0.0f, 800.0f };		//ゴール地点
 
 	points = { start,start,p2,p3,p4,end,end };
@@ -72,11 +72,6 @@ void GamePlayScene::Update() {
 	railCamera->Update(player, points);
 	player->Update();
 	sky->Update();
-
-	if (input->PushKey(DIK_SPACE))
-	{
-		int a = 0;
-	}
 
 }
 

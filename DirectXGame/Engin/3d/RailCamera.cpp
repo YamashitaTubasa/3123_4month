@@ -30,7 +30,7 @@ void RailCamera::Initialize(Object3d* player_) {
 //更新
 void RailCamera::Update(Object3d* player_, std::vector<Vector3>& point) {
 	Vector3 target_ = spline_.Update(point, timeRate,val);
-	Vector3 frontTmp = GetFront(viewProjection->eye, target_);
+	GetVec(viewProjection->eye, target_);
 	Vector3 move;
 	//一定速度の達したらFever!
 	if (val == 600) {
@@ -40,20 +40,20 @@ void RailCamera::Update(Object3d* player_, std::vector<Vector3>& point) {
 	//曲線補完
 	move = spline_.Update(point, timeRate,val);
 	//親(カメラオブジェクト)の移動
-	camera->SetPosition(move + frontTmp * 0.5);
+	camera->SetPosition(move + frontVec * 0.5);
 	//カメラ方向に合わせてY軸の回転
-	float radY = std::atan2(frontTmp.x, frontTmp.z);
+	float radY = std::atan2(frontVec.x, frontVec.z);
 	camera->SetRotationY(radY * 180.0f / 3.1415f);
 	//カメラ方向に合わせてX軸の回転
-	Vector3 rotaVec = { frontTmp.x,0,frontTmp.z };
+	Vector3 rotaVec = { frontVec.x,0,frontVec.z };
 	float length = rotaVec.length();
-	float radX = std::atan2(-frontTmp.y, length);
+	float radX = std::atan2(-frontVec.y, length);
 	camera->SetRotationX(radX * 180.0f / 3.1415f);
 
 	//更新
 	camera->Update();
-	viewProjection->target = (move + frontTmp * 0.5);
-	viewProjection->eye = ( move - frontTmp );
+	viewProjection->target = (move + frontVec * 0.5);
+	viewProjection->eye = ( move - frontVec );
 	viewProjection->UpdateMatrix();
 }
 
@@ -79,12 +79,9 @@ void RailCamera::GoesFever(Object3d* player_) {
 ////////////////////--------クラス内便利関数--------///////////////////////
 
 //方向ベクトルを取得
-Vector3 RailCamera::GetFront(Vector3 a, Vector3 b) {
+void RailCamera::GetVec(Vector3 a, Vector3 b) {
 	Vector3 yTmpVec = { 0, 1, 0 };
 	Vector3 frontTmp = { 0, 0, 0 };
-	Vector3 rightVec = { 0, 0, 0 };
-	Vector3 leftVec = { 0, 0, 0 };
-	Vector3 frontVec = { 0, 0, 0 };
 	Vector3 a_ = { a.x,a.y,a.z };
 	Vector3 b_ = { b.x,b.y,b.z };
 
@@ -99,9 +96,7 @@ Vector3 RailCamera::GetFront(Vector3 a, Vector3 b) {
 	//左ベクトル
 	leftVec = frontTmp.cross(yTmpVec);
 	leftVec.normalize();
-	//正面ベクトル
+	//正面ベクトル(Y座標を0にした)
 	frontVec = rightVec.cross(yTmpVec);
 	frontVec.normalize();
-
-	return frontVec;
 }
