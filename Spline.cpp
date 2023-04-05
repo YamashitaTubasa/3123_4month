@@ -6,12 +6,12 @@ void Spline::Initialize() {
 	startCount = GetTickCount64();
 }
 
-Vector3 Spline::Update(std::vector<Vector3>& points, float timeRate) {
+Vector3 Spline::Update(std::vector<Vector3>& points, float timeRate, float val) {
 
 	//Œo‰ßŽžŠÔ‚ÌŒvŽZ
 	nowCount = GetTickCount64();
 	elapsedCount = nowCount - startCount;
-	float elapsedTime = static_cast<float> (elapsedCount) / 1000.0f;
+	float elapsedTime = static_cast<float> (elapsedCount) / val;
 
 	timeRate = elapsedTime / maxTime;
 

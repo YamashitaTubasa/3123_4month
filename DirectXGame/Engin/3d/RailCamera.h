@@ -22,19 +22,20 @@ public:
 
 	ViewProjection* GetView() { return viewProjection; }
 
+	//feverタイム
+	void GoesFever(Object3d* player_);
+
+	bool GetFever() { return isFever; }
+
+	float val;
 private:
+	Input* input_ = nullptr;
 	ViewProjection* viewProjection = nullptr;
 	Object3d* camera = nullptr;
 	Input* input = nullptr;
-	enum rane {
-		LEFT,
-		MID,
-		RIGHT
-	};
-	rane raneNum = MID;
-	float velo;
-	Vector3 angle = { 0,0,0 };
-
+	//fever
+	int feverTime;
+	bool isFever = false;
 
 	//スプライン
 	Spline spline_;

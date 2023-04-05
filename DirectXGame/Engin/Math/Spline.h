@@ -10,7 +10,7 @@ public:
 	void Initialize();
 
 	//XV
-	Vector3 Update(std::vector<Vector3>& points,float t);
+	Vector3 Update(std::vector<Vector3>& points,float t,float val);
 
 	//•`‰æ
 	void Draw();

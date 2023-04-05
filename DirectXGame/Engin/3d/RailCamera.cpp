@@ -19,46 +19,62 @@ void RailCamera::Initialize(Object3d* player_) {
 	camera->SetRotation(viewProjection->target);
 	//拡大回転座標変換
 	player_->SetScale(Vector3(0.4, 0.4, 0.4));
-	//player_->SetRotation(Vector3(0, 90, 0));
 	player_->SetPosition(Vector3(0, 0, 2.5));
-	velo = 0.8f;
+	//変数初期化
+	val = 1000.0f;
+	feverTime = 0;
 	//親子構造のセット
 	player_->worldTransform_.SetParent3d(&camera->worldTransform_);
 }
 
 //更新
 void RailCamera::Update(Object3d* player_, std::vector<Vector3>& point) {
-	Vector3 target_ = spline_.Update(point, timeRate);
-	Vector3 eye_ = viewProjection->eye;
-	Vector3 frontTmp = GetFront(Vector3(eye_.x, 0, eye_.z), target_);
-	Vector3 camera_;// = camera->GetPosition();
-	Vector3 yTmpVec = { 0,1,0 };
-
+	Vector3 target_ = spline_.Update(point, timeRate,val);
+	Vector3 frontTmp = GetFront(viewProjection->eye, target_);
+	Vector3 move;
+	//一定速度の達したらFever!
+	if (val == 600) {
+		GoesFever(player_);
+	}
 
 	//曲線補完
-	camera_ = spline_.Update(point, timeRate);
-
-	//frontTmp = { 2, 1 ,0 };
-
-	camera->SetPosition(camera_ + frontTmp * 0.5);
-
-	float rad = std::atan2(frontTmp.x, frontTmp.z);
-	camera->SetRotationY(rad * 180.0f / 3.1415f);
-
-
+	move = spline_.Update(point, timeRate,val);
+	//親(カメラオブジェクト)の移動
+	camera->SetPosition(move + frontTmp * 0.5);
+	//カメラ方向に合わせてY軸の回転
+	float radY = std::atan2(frontTmp.x, frontTmp.z);
+	camera->SetRotationY(radY * 180.0f / 3.1415f);
+	//カメラ方向に合わせてX軸の回転
 	Vector3 rotaVec = { frontTmp.x,0,frontTmp.z };
 	float length = rotaVec.length();
-	float radddd = std::atan2(-frontTmp.y, length);
-	camera->SetRotationX(radddd * 180.0f / 3.1415f);
-	Vector3 answer = camera->GetRotation();
+	float radX = std::atan2(-frontTmp.y, length);
+	camera->SetRotationX(radX * 180.0f / 3.1415f);
 
 	//更新
 	camera->Update();
-	viewProjection->target = (camera_ + frontTmp * 0.5);
-	viewProjection->eye = ( camera_ - frontTmp );
+	viewProjection->target = (move + frontTmp * 0.5);
+	viewProjection->eye = ( move - frontTmp );
 	viewProjection->UpdateMatrix();
 }
 
+void RailCamera::GoesFever(Object3d* player_) {
+	if (isFever == false) {
+		isFever = true;
+	}
+	//fever!!
+	if (isFever == true) {
+		feverTime++;
+
+		player_->SetScale(Vector3(3, 3, 3));
+
+		if (feverTime == 300) {
+			val = 1000.0f;
+			feverTime = 0;
+			player_->SetScale(Vector3(0.4, 0.4, 0.4));
+			isFever = false;
+		}
+	}
+}
 
 ////////////////////--------クラス内便利関数--------///////////////////////
 
