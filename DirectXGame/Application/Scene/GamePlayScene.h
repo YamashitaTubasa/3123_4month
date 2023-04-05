@@ -13,6 +13,7 @@
 #include "ViewProjection.h"
 #include "WorldTransform.h"
 #include "RailCamera.h"
+#include "Player.h"
 
 //====================//
 // ゲームプレイシーン
@@ -44,13 +45,6 @@ public:
 	/// 解放
 	/// </summary>
 	void Finalize();
-	//XMFLOAT3変換
-	//XMFLOAT3 ConversionVec(Vector3 vec);
-	//Vector3 ConversionVec(XMFLOAT3 xVec);
-	//正面ベクトル取得
-	Vector3 GetFront(Vector3 a, Vector3 b);
-	Vector3 GetRight(Vector3 a, Vector3 b);
-	Vector3  GetLeft(Vector3 a, Vector3 b);
 
 	//補間で使うデータ
 	//start → end を5秒で完了させる
@@ -71,11 +65,10 @@ private:
 	// 入力
 	Input* input = nullptr;
 	// モデル
-	Model* playerModel;
 	Model* skyModel;
+	Model* playerModel;
 	// オブジェクト
-	//Object3d* player;
-	Object3d* player;
+	Player* player;
 	Object3d* sky;
 	//カメラ
 	ViewProjection* viewProjection = nullptr;

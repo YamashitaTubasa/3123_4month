@@ -12,11 +12,6 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	winApp = WinApp::GetInstance();
 	input = Input::GetInstance();
 
-	//viewProjection = new ViewProjection;
-	//viewProjection->Initialize();
-	//viewProjection->eye = { 0, 0, -10 };
-	//viewProjection->target = { 0, 0, 0 };
-
 	railCamera = new RailCamera;
 
 	// OBJからモデルデータを読み込む
@@ -31,12 +26,9 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 
 	// OBJからモデルデータを読み込む
 	playerModel = Model::LoadFromOBJ("fighter");
-	// 3Dオブジェクト生成
-	player = Object3d::Create();
-	// オブジェクトにモデルをひも付ける
-	player->SetModel(playerModel);
-	player->SetRotation(Vector3({ 0, 90, 0 }));
-	player->SetScale(Vector3(1.5, 1, 1));
+	//player初期化
+	player = new Player;
+	player->Initialize(playerModel);
 
 	// スプライトの初期化
 	// スプライト
@@ -57,7 +49,7 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	hP.SpriteTransferVertexBuffer(hP, spriteCommon, 3);
 	hP.SpriteUpdate(hP, spriteCommon_);
 
-
+	//レーン
 	start = { 0.0f, 0.0f, -800.0f };		//スタート地点
 	p2 = { 100.0f, 600.0f, -400.0f };		//制御点その1
 	p3 = { -200.0f, 0.0f, 0.0f };			//制御点その2
@@ -117,74 +109,11 @@ void GamePlayScene::Draw() {
 }
 
 void GamePlayScene::Finalize() {
-	//delete player;
-	delete playerModel;
+	delete player;
 	delete sky;
 	delete skyModel;
 
 	// スプライト解放
 	delete sprite;
 	sprite = nullptr;
-}
-
-Vector3 GamePlayScene::GetFront(Vector3 a, Vector3 b) {
-	Vector3 yTmpVec = { 0, 1, 0 };
-	Vector3 frontTmp = { 0, 0, 0 };
-	Vector3 rightVec = { 0, 0, 0 };
-	Vector3 leftVec = { 0, 0, 0 };
-	Vector3 frontVec = { 0, 0, 0 };
-	Vector3 a_ = { a.x,a.y,a.z };
-	Vector3 b_ = { b.x,b.y,b.z };
-
-	yTmpVec.normalize();
-	//正面仮ベクトル
-	frontTmp = b_ - a_;
-	frontTmp.normalize();
-	//右ベクトル
-	rightVec = yTmpVec.cross(frontTmp);
-	rightVec.normalize();
-	//左ベクトル
-	leftVec = frontTmp.cross(yTmpVec);
-	leftVec.normalize();
-	//正面ベクトル
-	frontVec = rightVec.cross(yTmpVec);
-	frontVec.normalize();
-
-	return frontVec;
-}
-
-Vector3 GamePlayScene::GetRight(Vector3 a, Vector3 b) {
-	Vector3 yTmpVec = { 0, 1, 0 };
-	Vector3 frontTmp = { 0, 0, 0 };
-	Vector3 rightVec = { 0, 0, 0 };
-	Vector3 a_ = { a.x,a.y,a.z };
-	Vector3 b_ = { b.x,b.y,b.z };
-
-	yTmpVec.normalize();
-	//正面仮ベクトル
-	frontTmp = b_ - a_;
-	frontTmp.normalize();
-	//右ベクトル
-	rightVec = yTmpVec.cross(frontTmp);
-	rightVec.normalize();
-
-	return rightVec;
-}
-
-Vector3 GamePlayScene::GetLeft(Vector3 a, Vector3 b) {
-	Vector3 yTmpVec = { 0, 1, 0 };
-	Vector3 frontTmp = { 0, 0, 0 };
-	Vector3 leftVec = { 0, 0, 0 };
-	Vector3 a_ = { a.x,a.y,a.z };
-	Vector3 b_ = { b.x,b.y,b.z };
-
-	yTmpVec.normalize();
-	//正面仮ベクトル
-	frontTmp = b_ - a_;
-	frontTmp.normalize();
-	//左ベクトル
-	leftVec = frontTmp.cross(yTmpVec);
-	leftVec.normalize();
-
-	return leftVec;
 }

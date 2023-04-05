@@ -5,6 +5,7 @@
 #include "Vector3.h"
 #include "input.h"
 #include "Spline.h"
+#include "Player.h"
 
 
 class RailCamera {
@@ -13,11 +14,11 @@ public:
 	RailCamera();
 	~RailCamera();
 	//初期化
-	void Initialize(Object3d* player_);
+	void Initialize(Player* player_);
 	//更新
-	void Update(Object3d* player_, std::vector<Vector3>& point);
+	void Update(Player* player_, std::vector<Vector3>& point);
 
-	//正面ベクトルを取得
+	//ベクトルを取得
 	void GetVec(Vector3 a, Vector3 b);
 
 	ViewProjection* GetView() { return viewProjection; }
@@ -27,7 +28,6 @@ public:
 
 	bool GetFever() { return isFever; }
 
-	float val;
 private:
 	Input* input_ = nullptr;
 	ViewProjection* viewProjection = nullptr;
@@ -43,6 +43,8 @@ private:
 	Vector3 rightVec = { 0, 0, 0 };
 	Vector3 leftVec = { 0, 0, 0 };
 	Vector3 frontVec = { 0, 0, 0 };
+
+	float val;
 
 	float timeRate;
 };

@@ -120,6 +120,9 @@
     <ClCompile Include="Spline.cpp">
       <Filter>ソースファイル\Engine\Math</Filter>
     </ClCompile>
+    <ClCompile Include="DirectXGame\Engin\3d\Player.cpp">
+      <Filter>ソースファイル\Engine\GameObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectXGame\Engin\2d\Sprite.h">
@@ -162,9 +165,6 @@
       <Filter>ヘッダーファイル\Engine\Scene</Filter>
     </ClInclude>
     <ClInclude Include="DirectXGame\Application\Scene\GamePlayScene.h">
-      <Filter>ヘッダーファイル\Engine\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXGame\Application\Scene\GameTitleScene.h">
       <Filter>ヘッダーファイル\Engine\Scene</Filter>
     </ClInclude>
     <ClInclude Include="DirectXGame\Application\Platform\RideLight.h">
@@ -220,6 +220,12 @@
     </ClInclude>
     <ClInclude Include="Spline.h">
       <Filter>ヘッダーファイル\Engine\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Application\Scene\GameTitleScene.h">
+      <Filter>ヘッダーファイル\Engine\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Engin\3d\Player.h">
+      <Filter>ヘッダーファイル\Engine\GameObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -335,6 +341,12 @@
     </Filter>
     <Filter Include="ヘッダーファイル\Engine\Platform">
       <UniqueIdentifier>{53fe1e58-7dd3-4632-aa51-26829db8546a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダーファイル\Engine\GameObject">
+      <UniqueIdentifier>{b4352ba0-dbee-40d8-b320-a22d06946147}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソースファイル\Engine\GameObject">
+      <UniqueIdentifier>{46b7a177-ed8f-439c-b7ad-ff8384fb9e89}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

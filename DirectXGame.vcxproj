@@ -154,6 +154,7 @@
     <ClCompile Include="DirectXGame\Application\Scene\GameBaseScene.cpp" />
     <ClCompile Include="DirectXGame\Application\Scene\GameTitleScene.cpp" />
     <ClCompile Include="DirectXGame\Engin\2d\SpriteCommon.cpp" />
+    <ClCompile Include="DirectXGame\Engin\3d\Player.cpp" />
     <ClCompile Include="DirectXGame\Engin\3d\RailCamera.cpp" />
     <ClCompile Include="DirectXGame\Engin\3d\ViewProjection.cpp" />
     <ClCompile Include="DirectXGame\Engin\3d\WorldTransform.cpp" />
@@ -252,6 +253,7 @@
     <ClInclude Include="DirectXGame\Application\Scene\GameBaseScene.h" />
     <ClInclude Include="DirectXGame\Application\Scene\GameTitleScene.h" />
     <ClInclude Include="DirectXGame\Engin\2d\SpriteCommon.h" />
+    <ClInclude Include="DirectXGame\Engin\3d\Player.h" />
     <ClInclude Include="DirectXGame\Engin\3d\RailCamera.h" />
     <ClInclude Include="DirectXGame\Engin\3d\ViewProjection.h" />
     <ClInclude Include="DirectXGame\Engin\3d\WorldTransform.h" />
