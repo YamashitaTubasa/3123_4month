@@ -42,6 +42,10 @@ void RLFramework::Initialize()
 	imGuiManager = new ImGuiManager();
 	imGuiManager->Initialize(dXCommon, winApp);
 
+	// ポストエフェクトの初期化
+	postEffect = new PostEffect();
+	postEffect->Initialize();
+
 	// 3Dオブジェクト静的初期化
 	Object3d::StaticInitialize(dXCommon->GetDevice(), WinApp::window_width, WinApp::window_height);
 
@@ -72,6 +76,9 @@ void RLFramework::Finalize()
 	// imguiの解放
 	delete imGuiManager;
 	imGuiManager = nullptr;
+
+	// PostEffectの解放
+	delete postEffect;
 
 	// WindowsAPIの終了処理
 	winApp->Finalize();

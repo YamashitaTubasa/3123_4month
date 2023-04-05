@@ -56,17 +56,17 @@ void WorldTransform::UpdateMatrix()
 	Matrix4 matRotX, matRotY, matRotZ;
 
 	//各行列計算
-	matScale = Matrix4::identity();
+	matScale = Matrix4::Identity();
 	matScale.scale(scale_);
-	matRot = Matrix4::identity();
+	matRot = Matrix4::Identity();
 	matRot *= matRotZ.rotateZ(ToRadian(rotation_.z));
 	matRot *= matRotX.rotateX(ToRadian(rotation_.x));
 	matRot *= matRotY.rotateY(ToRadian(rotation_.y));
-	matTrans = Matrix4::identity();
+	matTrans = Matrix4::Identity();
 	matTrans.translate(position_);
 
 	//ワールド行列の合成
-	matWorld_ = Matrix4::identity();
+	matWorld_ = Matrix4::Identity();
 	matWorld_ *= matScale;
 	matWorld_ *= matRot;
 	matWorld_ *= matTrans;
