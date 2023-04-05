@@ -7,11 +7,14 @@ Player::~Player() {
 }
 
 //初期化
-void Player::Initialize(Model* model) {
+void Player::Initialize() {
+	input_ = Input::GetInstance();
+	// OBJからモデルデータを読み込む
+	playerModel = Model::LoadFromOBJ("fighter");
 	// 3Dオブジェクト生成
 	obj = Object3d::Create();
 	// オブジェクトにモデルをひも付ける
-	obj->SetModel(model);
+	obj->SetModel(playerModel);
 	obj->SetRotation(Vector3({ 0, 90, 0 }));
 	obj->SetScale(Vector3(1.5, 1, 1));
 	//変数
@@ -22,6 +25,12 @@ void Player::Initialize(Model* model) {
 
 //更新
 void Player::Update() {
+	if (input_->TriggerKey(DIK_D)) {
+		obj->SetPosition(obj->GetPosition() + Vector3(1, 0, 0));
+	}
+	if (input_->TriggerKey(DIK_A)) {
+		obj->SetPosition(obj->GetPosition() + Vector3(-1, 0, 0));
+	}
 	//feverTaime
 	if (val == 600) {
 		GoesFever();

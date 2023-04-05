@@ -66,10 +66,11 @@ private:
 	Input* input = nullptr;
 	// モデル
 	Model* skyModel;
-	Model* playerModel;
+	Model* stageModel;
 	// オブジェクト
 	Player* player;
 	Object3d* sky;
+	Object3d* stage;
 	//カメラ
 	ViewProjection* viewProjection = nullptr;
 	RailCamera* railCamera = nullptr;

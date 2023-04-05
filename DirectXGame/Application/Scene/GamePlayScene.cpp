@@ -24,11 +24,10 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	sky->SetModel(skyModel);
 	sky->SetScale(Vector3({1000, 1000, 1000}));
 
-	// OBJからモデルデータを読み込む
-	playerModel = Model::LoadFromOBJ("fighter");
+	
 	//player初期化
 	player = new Player;
-	player->Initialize(playerModel);
+	player->Initialize();
 
 	// スプライトの初期化
 	// スプライト

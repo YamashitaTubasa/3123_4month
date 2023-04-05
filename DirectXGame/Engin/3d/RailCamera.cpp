@@ -19,7 +19,7 @@ void RailCamera::Initialize(Player* player_) {
 	camera->SetRotation(viewProjection->target);
 	//拡大回転座標変換
 	player_->obj->SetScale(Vector3(0.4, 0.4, 0.4));
-	player_->obj->SetPosition(Vector3(0, 0, 2.5));
+	player_->obj->SetPosition(Vector3(0, -0.5, 1.5));
 	//親子構造のセット
 	player_->obj->worldTransform_.SetParent3d(&camera->worldTransform_);
 }
@@ -27,14 +27,11 @@ void RailCamera::Initialize(Player* player_) {
 //更新
 void RailCamera::Update(Player* player_, std::vector<Vector3>& point) {
 	Vector3 target_ = spline_.Update(point, timeRate,player_->GetVal());
+	//方向ベクトルの取得
 	GetVec(viewProjection->eye, target_);
-	Vector3 move;
 
-
-	//曲線補完
-	move = spline_.Update(point, timeRate, player_->GetVal());
 	//親(カメラオブジェクト)の移動
-	camera->SetPosition(move + frontVec * 0.5);
+	camera->SetPosition(target_ + frontVec * 0.5);
 	//カメラ方向に合わせてY軸の回転
 	float radY = std::atan2(frontVec.x, frontVec.z);
 	camera->SetRotationY(radY * 180.0f / 3.1415f);
@@ -46,8 +43,8 @@ void RailCamera::Update(Player* player_, std::vector<Vector3>& point) {
 
 	//更新
 	camera->Update();
-	viewProjection->target = (move + frontVec * 0.5);
-	viewProjection->eye = ( move - frontVec );
+	viewProjection->target = (target_ + frontVec * 0.5);
+	viewProjection->eye = (target_ - frontVec );
 	viewProjection->UpdateMatrix();
 }
 
