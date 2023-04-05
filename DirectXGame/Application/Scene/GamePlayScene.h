@@ -46,37 +46,28 @@ public:
 	/// </summary>
 	void Finalize();
 
-	//補間で使うデータ
-	//start → end を5秒で完了させる
-	Vector3 start;		//スタート地点
-	Vector3 p2;	//制御点その1
-	Vector3 p3;	//制御点その2
+	
+	Vector3 start;
+	Vector3 p2;
+	Vector3 p3;
 	Vector3 p4;
-	Vector3 end;	//ゴール地点
+	Vector3 end;
 
-	//				p1 - p2 - p3 - p4 を通るスプライン曲線を考える
-	//					先頭(p0)と最後(p5)に制御点を追加している
-	//								p0	p1	p2	p3	p4	p5
+	
 	std::vector<Vector3> points{ start,start,p2,p3,p4,end,end };
 
-	float timeRate;						//何％時間が進んだか
+	float timeRate;
 
 private:
-	// 入力
 	Input* input = nullptr;
-	// モデル
 	Model* skyModel;
 	Model* stageModel;
-	// オブジェクト
 	Player* player;
 	Object3d* sky;
 	Object3d* stage;
-	//カメラ
 	ViewProjection* viewProjection = nullptr;
 	RailCamera* railCamera = nullptr;
-	//座標
 	WorldTransform* worldTransform = nullptr;
-	// スプライト
 	Sprite* sprite = nullptr;
 	Sprite hP;
 	SpriteCommon spriteCommon_;
