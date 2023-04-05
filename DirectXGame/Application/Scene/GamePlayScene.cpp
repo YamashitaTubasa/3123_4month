@@ -19,7 +19,6 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 
 	// 3Dオブジェクト生成
 	sky = Object3d::Create();
-
 	// オブジェクトにモデルをひも付ける
 	sky->SetModel(skyModel);
 	sky->SetScale(Vector3({1000, 1000, 1000}));
@@ -28,6 +27,18 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	//player初期化
 	player = new Player;
 	player->Initialize();
+
+	//ステージ
+	// OBJからモデルデータを読み込む
+	stageModel = Model::LoadFromOBJ("triangle_mat");
+
+	// 3Dオブジェクト生成
+	stage = Object3d::Create();
+	// オブジェクトにモデルをひも付ける
+	stage->SetModel(stageModel);
+	stage->SetScale(Vector3({ 80, 20, 20 }));
+	stage->SetPosition(Vector3(0, -26, -775));
+
 
 	// スプライトの初期化
 	// スプライト
@@ -50,10 +61,10 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 
 	//レーン
 	start = { 0.0f, 0.0f, -800.0f };		//スタート地点
-	p2 = { 100.0f, 600.0f, -400.0f };		//制御点その1
+	p2 = { 100.0f, 0.0f, -750.0f };		//制御点その1
 	p3 = { -200.0f, 0.0f, 0.0f };			//制御点その2
 	p4 = { 500.0f, -300.0f, -400.0 };
-	end = { -300.0f, 0.0f, 800.0f };		//ゴール地点
+	end = { -300.0f, 300.0f, 800.0f };		//ゴール地点
 
 	points = { start,start,p2,p3,p4,end,end };
 }
@@ -62,6 +73,7 @@ void GamePlayScene::Update() {
 
 	railCamera->Update(player, points);
 	player->Update();
+	stage->Update();
 	sky->Update();
 
 }
@@ -73,6 +85,7 @@ void GamePlayScene::Draw() {
 	Object3d::PreDraw(dXCommon->GetCommandList());
 
 	sky->Draw(railCamera->GetView());
+	stage->Draw(railCamera->GetView());
 	player->Draw(railCamera->GetView());
 
 	// 3Dオブジェクト描画後処理

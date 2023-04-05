@@ -41,9 +41,4 @@ private:
 	float val = 1000.0f;
 	//レールに乗っている状態
 	bool isOnRail = false;
-
-	//移動用方向ベクトル
-	Vector3 rightVec = { 0, 0, 0 };
-	Vector3 leftVec = { 0, 0, 0 };
-	Vector3 frontVec = { 0, 0, 0 };
 };

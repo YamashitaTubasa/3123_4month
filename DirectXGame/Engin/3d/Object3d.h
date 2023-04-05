@@ -90,6 +90,7 @@ public: // メンバ関数
 
 	// オブジェクトの座標
 	const Vector3& GetPosition() const { return worldTransform_.position_; }
+	const float& GetPositionZ() const { return worldTransform_.position_.z; }
 	void SetPosition(const Vector3& position) { this->worldTransform_.position_ = position; }
 	// オブジェクトの大きさ
 	void SetScale(const Vector3& scale) { this->worldTransform_.scale_ = scale; }
