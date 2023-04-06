@@ -20,16 +20,6 @@ private: // エイリアス
 	// Microsoft::WRL::を省略
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
-
-public: // サブクラス
-	
-	// 定数バッファ用データ構造体B0
-	struct ConstBufferDataB0
-	{
-		Vector4 color;	// 色 (RGBA)
-		Matrix4 mat;	// ３Ｄ変換行列
-	};
-
 public: // 静的メンバ関数
 	/// 静的初期化
 	static void StaticInitialize(ID3D12Device* device, int window_width, int window_height);
@@ -109,15 +99,8 @@ protected: // メンバ変数
 	const char* name = nullptr;
 	//コライダー
 	BaseCollider* collider = nullptr;
-
 	// モデル
 	Model* model = nullptr;
-	// 定数バッファ
-	ComPtr<ID3D12Resource> constBuffB0; 
-	// 定数バッファのマップ
-	ConstBufferDataB0* constMap = nullptr;
-	//色
-	Vector4 color = { 1,1,1,1 };
 	// ローカルワールド変換行列
 	Matrix4 matWorld;
 	

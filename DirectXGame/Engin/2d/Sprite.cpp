@@ -268,7 +268,7 @@ void Sprite::SpriteCreate(ID3D12Device* dev, int window_width, int window_height
 	CD3DX12_HEAP_PROPERTIES heapPropsConstantBuffer = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
 	// リソース設定
 	CD3DX12_RESOURCE_DESC resourceDescConstantBuffer =
-		CD3DX12_RESOURCE_DESC::Buffer((sizeof(ConstBufferData) + 0xff) & ~0xff);
+		CD3DX12_RESOURCE_DESC::Buffer((sizeof(ConstBufferDataB0) + 0xff) & ~0xff);
 
 	// 定数バッファの生成
 	result = dev->CreateCommittedResource(
@@ -277,18 +277,23 @@ void Sprite::SpriteCreate(ID3D12Device* dev, int window_width, int window_height
 		&resourceDescConstantBuffer, // リソース設定
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
-		IID_PPV_ARGS(&constBuff));
+		IID_PPV_ARGS(&constBuffB0));
 	assert(SUCCEEDED(result));
 
 	// 定数バッファにデータ転送
-	ConstBufferData* constMap = nullptr;
-	result = constBuff->Map(0, nullptr, (void**)&constMap); // マッピング
-	constMap->color = color_;
+	result = constBuffB0->Map(0, nullptr, (void**)&constMap); // マッピング
 	assert(SUCCEEDED(result));
 
-	//平行投影行列
-	constMap->mat.ProjectionMat(0.0f, window_width, window_height, 1.0f);
-	constBuff->Unmap(0, nullptr);
+	constMap->color = color_;
+
+	// 単位行列を代入
+	constMap->mat.identity();
+
+	// 座標変換
+	constMap->mat.m[0][0] = 2.0f / WinApp::window_width;
+	constMap->mat.m[1][1] = -2.0f / WinApp::window_height;
+	constMap->mat.m[3][0] = -1.0f;
+	constMap->mat.m[3][1] = 1.0f;
 }
 
 void Sprite::PreDraw(ID3D12GraphicsCommandList* cmdList, const SpriteCommon& spriteCommon) {
@@ -324,7 +329,7 @@ void Sprite::SpriteDraw(ID3D12GraphicsCommandList* cmdList_, const SpriteCommon&
 	cmdList->IASetVertexBuffers(0, 1, &vbView);
 
 	// 定数バッファ(CBV)をセット
-	cmdList->SetGraphicsRootConstantBufferView(0, constBuff->GetGPUVirtualAddress());
+	cmdList->SetGraphicsRootConstantBufferView(0, constBuffB0->GetGPUVirtualAddress());
 
 	//シェーダーリソースビューをセット
 	cmdList->SetGraphicsRootDescriptorTable(
@@ -347,8 +352,13 @@ SpriteCommon Sprite::SpriteCommonCreate(ID3D12Device* dev, int window_width, int
 	// スプライト用パイプライン生成
 	spriteCommon.pipelineSet = SpriteCreateGraphicsPipeline(dev);
 
-	// 平行投影行列生成
-	spriteCommon.matProjection.ProjectionMat(0.0f, window_width, window_height, 1.0f);
+	spriteCommon.matProjection.identity();
+
+	// 座標変換
+	spriteCommon.matProjection.m[0][0] = 2.0f / WinApp::window_width;
+	spriteCommon.matProjection.m[1][1] = -2.0f / WinApp::window_height;
+	spriteCommon.matProjection.m[3][0] = -1.0f;
+	spriteCommon.matProjection.m[3][1] = 1.0f;
 
 	// デスクリプタヒープを生成
 	D3D12_DESCRIPTOR_HEAP_DESC descHeapDesc = {};
@@ -375,10 +385,9 @@ void Sprite::SpriteUpdate(Sprite& sprite, const SpriteCommon& spriteCommon)
 	sprite.matWorld *= matTrans;
 
 	// 定数バッファの転送
-	ConstBufferData* constMap = nullptr;
-	HRESULT result = sprite.constBuff->Map(0, nullptr, (void**)&constMap);
+	HRESULT result = sprite.constBuffB0->Map(0, nullptr, (void**)&constMap);
 	constMap->mat = sprite.matWorld * spriteCommon.matProjection;
-	sprite.constBuff->Unmap(0, nullptr);
+	sprite.constBuffB0->Unmap(0, nullptr);
 }
 
 void Sprite::LoadTexture(SpriteCommon& spriteCommon, UINT texnumber, const wchar_t* filename, ID3D12Device* dev) {
