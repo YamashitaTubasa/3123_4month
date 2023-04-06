@@ -74,36 +74,17 @@ public:
 	void Initialize(const std::string& directoryPath = "Resources/BGM/");
 	// 解放
 	void Finalize();
-	/// <summary>
 	/// 音声データの読み込み
-	/// </summary>
-	/// <param name="filename">WAVファイル名</param>
 	void LoadWave(const std::string& filename);
-	/// <summary>
 	/// 音声データ解放
-	/// </summary>
-	/// <param name="soundData">サウンドデータ</param>
 	void Unload(SoundData* soundData);
-	/// <summary>
 	/// 音声再生
-	/// </summary>
-	/// <param name="filename">WAVファイル名</param>
 	void PlayWave(const std::string& filename);
-	/// <summary>
 	/// 音声のループ再生
-	/// </summary>
-	/// <param name="filename">WAVファイル名</param>
 	void LoopPlayWave(const std::string& filename);
-	/// <summary>
 	/// 音声停止
-	/// </summary>
-	/// <param name="filename">WAVファイル名</param>
 	void StopWave(const std::string& filename);
-	/// <summary>
 	/// 音量調節
-	/// </summary>
-	/// <param name="filename">WAVファイル名</param>
-	/// <param name="volume">音量</param>
 	void SetVolume(const std::string& filename, float volume);
 
 public:
