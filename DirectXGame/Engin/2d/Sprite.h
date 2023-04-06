@@ -21,11 +21,7 @@ using namespace DirectX;
 using namespace Microsoft::WRL;
 using namespace std;
 
-// 頂点データ
-struct VertexPosUv {
-	Vector3 pos;
-	Vector2 uv;
-};
+
 
 // パイプラインセット
 struct PipelineSet {
@@ -54,70 +50,54 @@ struct SpriteCommon {
 // スプライト
 class Sprite
 {
+public://サブクラス
+	// 定数バッファ用データ構造体B0
+	struct ConstBufferDataB0
+	{
+		Vector4 color;
+		Matrix4 mat;	// ３Ｄ変換行列
+	};
+
+	// 頂点データ
+	struct VertexPosUv {
+		Vector3 pos;
+		Vector2 uv;
+	};
 public:
 	Sprite();
 	~Sprite();
 
-private:
-	struct ConstBufferData {
-		Vector4 color; // 色 (RGBA)
-		Matrix4 mat; //座標
-	};
-
-public:
-	/// <summary>
 	/// スプライト共通データ生成
-	/// </summary>
 	SpriteCommon SpriteCommonCreate(ID3D12Device* dev, int window_width, int window_height);
 
-	/// <summary>
 	/// 3Dオブジェクト用パイプライン生成
-	/// </summary>
-	/// <param name="device"></param>
-	/// <returns></returns>
 	PipelineSet SpriteCreateGraphicsPipeline(ID3D12Device* device);
 
-	/// <summary>
 	/// スプライト共通テクスチャ読み込み
-	/// </summary>
 	void LoadTexture(SpriteCommon& spriteCommon, UINT texnumber, 
 		const wchar_t* filename, ID3D12Device* dev);
 
-	/// <summary>
 	/// スプライト生成
-	/// </summary>
 	void SpriteCreate(ID3D12Device* dev, int window_width, int window_height, 
 		UINT texNumber, const SpriteCommon& spriteCommon, Vector2 anchorpoint, bool isFlipX, bool FlipY);
 
-	/// <summary>
 	/// スプライト単体頂点バッファの転送
-	/// </summary>
 	void SpriteTransferVertexBuffer(const Sprite& sprite, const SpriteCommon& spriteCommon, uint32_t texIndex_ = UINT32_MAX);
 
-	/// <summary>
 	/// スプライト単体更新
-	/// </summary>
 	void SpriteUpdate(Sprite& sprite, const SpriteCommon& spriteCommon);
 
-	/// <summary>
 	/// 描画前処理
-	/// </summary>
 	static void PreDraw(ID3D12GraphicsCommandList* cmdList, const SpriteCommon& spriteCommon);
 
-	/// <summary>
 	/// 描画後処理
-	/// </summary>
 	static void PostDraw();
 
-	/// <summary>
 	/// スプライト単体描画
-	/// </summary>
 	void SpriteDraw(ID3D12GraphicsCommandList* cmdList_, const SpriteCommon& spriteCommon, 
 		ID3D12Device* dev,D3D12_VERTEX_BUFFER_VIEW& vbView);
 
-	/// <summary>
 	/// 終了処理
-	/// </summary>
 	void Finalize();
 
 public: // セッター
@@ -172,7 +152,10 @@ private:
 
 	ComPtr<ID3D12GraphicsCommandList> cmdList;
 	ComPtr<ID3D12DescriptorHeap> descHeap;
-	ComPtr<ID3D12Resource> constBuff;
+	//定数バッファ
+	ComPtr<ID3D12Resource> constBuffB0 = nullptr;
+	// マッピング済みアドレス
+	ConstBufferDataB0* constMap = nullptr;
 	D3D12_DESCRIPTOR_HEAP_DESC srvHeapDesc = {};
 	static const size_t kMaxSRVCount = 2056;
 	// テクスチャバッファ
