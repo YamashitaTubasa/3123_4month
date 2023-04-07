@@ -15,6 +15,7 @@
 #include "RailCamera.h"
 #include "Player.h"
 #include "Enemy.h"
+#include <sstream>
 
 //====================//
 // ゲームプレイシーン
@@ -46,6 +47,15 @@ public:
 	/// 解放
 	/// </summary>
 	void Finalize();
+
+	/// 敵発生
+	void EnemyOcurrence(const Vector3& v);
+
+	//敵発生データの読み込み
+	void LoadEnemyPopData();
+
+	//敵発生コマンドの更新
+	void UpdateEnemyPopCommands();
 
 	void LoadEffect(SpriteCommon& spriteCommon);
 
@@ -92,9 +102,22 @@ private:
 	ParticleManager* ParticleMan = nullptr;
 	WinApp* winApp = nullptr;
 
-	XMFLOAT3 position[5]{};
-	XMFLOAT3 rotation[5]{};
-	XMFLOAT3 scale[5]{};
+	Vector3 position[5]{};
+	Vector3 rotation[5]{};
+	Vector3 scale[5]{};
+
+	//敵
+	std::list<std::unique_ptr<Enemy>> enemys_;
+
+	//敵の打ち出すまでの時間
+	float enemyDalayTimer = 0.0f;
+
+	bool isWait_ = false;
+
+	int waitTimer = 300;
+
+	//敵発生コマンド
+	std::stringstream enemyPopCommands;
 
 	bool isPush_D = false;
 	bool isPush_A = false;
