@@ -1,4 +1,5 @@
 #include "Enemy.h"
+#include "GamePlayScene.h"
 
 //デストラクタ
 Enemy::~Enemy() {
@@ -7,16 +8,15 @@ Enemy::~Enemy() {
 }
 
 //初期化
-void Enemy::Initialize() {
+void Enemy::Initialize(const Vector3& v)
+{
 	// OBJからモデルデータを読み込む
-	enemyModel = Model::LoadFromOBJ("sphere");
+	enemyModel = Model::LoadFromOBJ("ironSphere");
 	// 3Dオブジェクト生成
 	obj = Object3d::Create();
 	// オブジェクトにモデルをひも付ける
 	obj->SetModel(enemyModel);
-	obj->SetRotation(Vector3({ 0, 90, 0 }));
-	obj->SetPosition(Vector3(0, 0, -790));
-
+	obj->SetPosition(Vector3(v.x, v.y, v.z));
 }
 
 //更新
