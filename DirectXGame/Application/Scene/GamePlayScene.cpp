@@ -70,6 +70,13 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 }
 
 void GamePlayScene::Update() {
+	//透過実験
+	if (input->TriggerKey(DIK_SPACE)) {
+		if (alpha > 0) {
+			alpha -= 0.1f;
+			hP.SetAlpha(hP, alpha);
+		}
+	}
 
 	railCamera->Update(player, points);
 	player->Update();

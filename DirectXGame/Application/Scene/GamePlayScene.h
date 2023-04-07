@@ -97,4 +97,6 @@ private:
 	int time = 0;
 
 	const float PI = 3.141592;
+
+	float alpha = 1;
 };
