@@ -17,10 +17,10 @@ public:
 		Matrix4 color; // 色(RGBA)
 	};
 
-	////定数バッファ用データ構造体(Material)
-	//struct ConstBufferDataTransform {
-	//	XMMATRIX mat; //3D変換行列
-	//};
+	//定数バッファ用データ構造体(Material)
+	struct ConstBufferDataTransform {
+		XMMATRIX mat; //3D変換行列
+	};
 
 public:
 	// 初期化
@@ -51,7 +51,7 @@ private:
 
 	//定数バッファの生成(準備)
 	ComPtr<ID3D12Resource> constBuffTransform;
-	//ComPtr<ConstBufferDataTransform> constMapTransform;
+	ComPtr<ConstBufferDataTransform> constMapTransform;
 
 	// 頂点バッファビューの作成
 	D3D12_VERTEX_BUFFER_VIEW vbView{};

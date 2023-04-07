@@ -38,36 +38,36 @@ void Line::Initialize() {
 		IID_PPV_ARGS(&vertBuff));
 	assert(SUCCEEDED(result));
 
-	////定数バッファの生成(設定)
-	////ヒープ設定
-	//D3D12_HEAP_PROPERTIES cbHeapProp{};
-	//cbHeapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
-	////リソース設定
-	//D3D12_RESOURCE_DESC cbResourceDesc{};
-	//cbResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
-	//cbResourceDesc.Width = (sizeof(ConstBufferDataTransform) + 0xff) & ~0xff;	//256バイトアラインメント
-	//cbResourceDesc.Height = 1;
-	//cbResourceDesc.DepthOrArraySize = 1;
-	//cbResourceDesc.MipLevels = 1;
-	//cbResourceDesc.SampleDesc.Count = 1;
-	//cbResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+	//定数バッファの生成(設定)
+	//ヒープ設定
+	D3D12_HEAP_PROPERTIES cbHeapProp{};
+	cbHeapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
+	//リソース設定
+	D3D12_RESOURCE_DESC cbResourceDesc{};
+	cbResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
+	cbResourceDesc.Width = (sizeof(ConstBufferDataTransform) + 0xff) & ~0xff;	//256バイトアラインメント
+	cbResourceDesc.Height = 1;
+	cbResourceDesc.DepthOrArraySize = 1;
+	cbResourceDesc.MipLevels = 1;
+	cbResourceDesc.SampleDesc.Count = 1;
+	cbResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
-	////定数バッファの生成
-	//result = dXCommon_->GetDevice()->CreateCommittedResource(
-	//	&cbHeapProp,
-	//	D3D12_HEAP_FLAG_NONE,
-	//	&cbResourceDesc,
-	//	D3D12_RESOURCE_STATE_GENERIC_READ,
-	//	nullptr,
-	//	IID_PPV_ARGS(&constBuffTransform));
-	//assert(SUCCEEDED(result));
+	//定数バッファの生成
+	result = dXCommon_->GetDevice()->CreateCommittedResource(
+		&cbHeapProp,
+		D3D12_HEAP_FLAG_NONE,
+		&cbResourceDesc,
+		D3D12_RESOURCE_STATE_GENERIC_READ,
+		nullptr,
+		IID_PPV_ARGS(&constBuffTransform));
+	assert(SUCCEEDED(result));
 
-	////定数バッファのマッピング
-	//result = constBuffTransform->Map(0, nullptr, (void**)&constMapTransform);	//マッピング
-	//assert(SUCCEEDED(result));
+	//定数バッファのマッピング
+	result = constBuffTransform->Map(0, nullptr, (void**)&constMapTransform);	//マッピング
+	assert(SUCCEEDED(result));
 
-	////単位行列を代入
-	//constMapTransform->mat = XMMatrixIdentity();
+	//単位行列を代入
+	constMapTransform->mat = XMMatrixIdentity();
 
 	// GPU上のバッファに対した仮想メモリ(メインメモリ上)を取得
 	Vector3* vertMap = nullptr;
@@ -147,6 +147,22 @@ void Line::Initialize() {
 			"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,D3D12_APPEND_ALIGNED_ELEMENT,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
 		},
 	};
+
+	//ルートパラメータの設定
+	D3D12_ROOT_PARAMETER rootParams[2] = {};
+	//定数バッファ0番
+	rootParams[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
+	rootParams[0].Descriptor.ShaderRegister = 0;
+	rootParams[0].Descriptor.RegisterSpace = 0;
+	rootParams[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
+	//テクスチャレジスタ0番
+	/*rootParams[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
+	rootParams[1].DescriptorTable.pDescriptorRanges = &descriptorRange;
+	rootParams[1].DescriptorTable.NumDescriptorRanges = 0;
+	rootParams[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;*/
+
+	//定数バッファ1番
+	rootParams[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
 
 	// グラフィックスパイプライン設定
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineDesc{};
