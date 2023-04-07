@@ -25,7 +25,7 @@ private:
 #pragma endregion
 private:
 #pragma region 射影行列の設定
-	float PI = 3.141592;
+	float PI = 3.141592f;
 	// 垂直方向視野角
 	float fovAngleY = 45.0f * PI / 180.0f;
 	// ビューポートのアスペクト比

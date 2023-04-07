@@ -12,6 +12,7 @@
 #include "GameBaseScene.h"
 #include "ViewProjection.h"
 #include "Spline.h"
+#include "Line.h"
 
 //====================//
 // ゲームプレイシーン
@@ -73,14 +74,17 @@ private:
 	Model* playerModel;
 	Model* skyModel;
 	// オブジェクト
-	//Object3d* player;
+	Object3d* player;
 	Object3d* tester;
 	Object3d* sky;
 	//カメラ
 	ViewProjection* viewProjection = nullptr;
 	// スプライト
 	Sprite* sprite = nullptr;
-	Sprite hP;
+	Sprite hp;
+	
+	Line* line = nullptr;
+
 	SpriteCommon spriteCommon_;
 
 	DirectXCommon* dXCommon = nullptr;
@@ -101,5 +105,5 @@ private:
 	int playerHp = 3;
 	int time = 0;
 
-	const float PI = 3.141592;
+	const float PI = 3.141592f;
 };

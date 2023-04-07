@@ -28,6 +28,12 @@
     <FxCompile Include="Resources\shaders\SpriteVS.hlsl">
       <Filter>シェーダーファイル</Filter>
     </FxCompile>
+    <FxCompile Include="Resources\shaders\LinePS.hlsl">
+      <Filter>シェーダーファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\LineVS.hlsl">
+      <Filter>シェーダーファイル</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DirectXGame\Engin\Audio\Audio.cpp">
@@ -110,6 +116,9 @@
     </ClCompile>
     <ClCompile Include="DirectXGame\Engin\Math\Spline.cpp">
       <Filter>ソースファイル\Engine\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\Engin\Line\Line.cpp">
+      <Filter>ソースファイル\Engine\Line</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -203,6 +212,9 @@
     <ClInclude Include="DirectXGame\Engin\Math\Spline.h">
       <Filter>ヘッダーファイル\Engine\Math</Filter>
     </ClInclude>
+    <ClInclude Include="DirectXGame\Engin\Line\Line.h">
+      <Filter>ヘッダーファイル\Engine\Line</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Basic.hlsli">
@@ -215,6 +227,9 @@
       <Filter>シェーダーファイル</Filter>
     </None>
     <None Include="Resources\shaders\Sprite.hlsli">
+      <Filter>シェーダーファイル</Filter>
+    </None>
+    <None Include="Resources\shaders\Line.hlsli">
       <Filter>シェーダーファイル</Filter>
     </None>
   </ItemGroup>
@@ -317,6 +332,12 @@
     </Filter>
     <Filter Include="ヘッダーファイル\Engine\Platform">
       <UniqueIdentifier>{53fe1e58-7dd3-4632-aa51-26829db8546a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソースファイル\Engine\Line">
+      <UniqueIdentifier>{099a6155-d6d9-41ea-8d6f-11302d11e0d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダーファイル\Engine\Line">
+      <UniqueIdentifier>{a912f50a-2f6f-40e7-8882-b66898c0d346}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -11,7 +11,7 @@ Vector3 Spline::Update(std::vector<Vector3>& points,float timeRate) {
 	//Œo‰ßŽžŠÔ‚ÌŒvŽZ
 	nowCount = GetTickCount64();
 	elapsedCount = nowCount - startCount;
-	float elapsedTime = static_cast<float> (elapsedCount) / 1000.0f;
+	float elapsedTime = static_cast<float> (elapsedCount) / (1000.0f - speedUp);
 
 	timeRate = elapsedTime / maxTime;
 
@@ -20,6 +20,8 @@ Vector3 Spline::Update(std::vector<Vector3>& points,float timeRate) {
 		if (startIndex < points.size() - 3) {
 
 			startIndex++;
+
+			speedUp += 250.0f;
 
 			timeRate -= 1.0f;
 			startCount = GetTickCount64();

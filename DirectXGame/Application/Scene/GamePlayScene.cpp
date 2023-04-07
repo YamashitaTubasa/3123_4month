@@ -1,5 +1,6 @@
 #include "GamePlayScene.h"
 #include "spline.h"
+#include "Line.h"
 
 GamePlayScene::GamePlayScene() {
 }
@@ -12,6 +13,7 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	winApp = WinApp::GetInstance();
 	input = Input::GetInstance();
 
+	viewProjection = new ViewProjection;
 	viewProjection->Initialize(WinApp::window_width, WinApp::window_height);
 
 	// OBJからモデルデータを読み込む
@@ -25,13 +27,13 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	sky->SetScale(XMFLOAT3(80, 80, 80));
 
 	//// OBJからモデルデータを読み込む
-	//playerModel = Model::LoadFromOBJ("fighter");
+	playerModel = Model::LoadFromOBJ("fighter");
 	//// 3Dオブジェクト生成
-	//player = Object3d::Create();
+	player = Object3d::Create();
 	//// オブジェクトにモデルをひも付ける
-	//player->SetModel(playerModel);
-	//player->SetRotation(XMFLOAT3(0, 270, 0));
-	//player->SetScale(XMFLOAT3(1, 1, 1));
+	player->SetModel(playerModel);
+	player->SetRotation(XMFLOAT3(0, 270, 0));
+	player->SetScale(XMFLOAT3(1, 1, 1));
 
 	tester = Object3d::Create();
 	// オブジェクトにモデルをひも付ける
@@ -48,14 +50,17 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	PipelineSet spritePipelineSet = sprite->SpriteCreateGraphicsPipeline(dXCommon->GetDevice());
 
 	// HP
-	hP.LoadTexture(spriteCommon_, 3, L"Resources/hp.png", dXCommon->GetDevice());
-	hP.SetColor(XMFLOAT4(1, 1, 1, 1));
-	hP.SpriteCreate(dXCommon->GetDevice(), 50, 50, 3, spriteCommon, XMFLOAT2(0.0f, 0.0f), false, false);
-	hP.SetPosition(XMFLOAT3(0, 0, 0));
-	hP.SetScale(XMFLOAT2(50 * 1, 50 * 1));
-	hP.SetRotation(0.0f);
-	hP.SpriteTransferVertexBuffer(hP, spriteCommon, 3);
-	hP.SpriteUpdate(hP, spriteCommon_);
+	hp.LoadTexture(spriteCommon_, 3, L"Resources/hp.png", dXCommon->GetDevice());
+	hp.SetColor(XMFLOAT4(1, 1, 1, 1));
+	hp.SpriteCreate(dXCommon->GetDevice(), 50, 50, 3, spriteCommon, XMFLOAT2(0.0f, 0.0f), false, false);
+	hp.SetPosition(XMFLOAT3(0, 0, 0));
+	hp.SetScale(XMFLOAT2(50 * 1, 50 * 1));
+	hp.SetRotation(0.0f);
+	hp.SpriteTransferVertexBuffer(hp, spriteCommon, 3);
+	hp.SpriteUpdate(hp, spriteCommon_);
+
+	line = new Line();
+	line->Initialize();
 
 	start = { -100.0f, 0.0f, 0.0f };		//スタート地点
 	p2 = { -20.0f, 50.0f, +50.0f };			//制御点その1
@@ -64,18 +69,16 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	end = { 100.0f, 0.0f, 0.0f };				//ゴール地点
 
 	points = { start,start,p2,p3,p4,end,end };
+
+	
 }
 
 void GamePlayScene::Update() {
 	Vector3 eye_ = spline_.Update(points,timeRate);
 	viewProjection->SetEye(ConversionVec(eye_));
 
-	if (input->TriggerKey(DIK_SPACE)) {
-		int a = 0;
-	}
-
 	sky->Update();
-	//player->Update();
+	player->Update();
 	tester->Update();
 
 }
@@ -87,8 +90,9 @@ void GamePlayScene::Draw() {
 	Object3d::PreDraw(dXCommon->GetCommandList());
 
 	sky->Draw();
-	//player->Draw();
+	player->Draw();
 	tester->Draw();
+	line->Draw();
 
 	// 3Dオブジェクト描画後処理
 	Object3d::PostDraw();
@@ -114,7 +118,7 @@ void GamePlayScene::Draw() {
 	Sprite::PreDraw(dXCommon->GetCommandList(), spriteCommon_);
 
 	///=== スプライト描画 ===///
-	hP.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), hP.vbView);
+	hp.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), hp.vbView);
 
 	// スプライト描画後処理
 	Sprite::PostDraw();
@@ -123,7 +127,7 @@ void GamePlayScene::Draw() {
 }
 
 void GamePlayScene::Finalize() {
-	//delete player;
+	delete player;
 	delete playerModel;
 	delete sky;
 	delete skyModel;

@@ -24,6 +24,8 @@ private:
 	long long nowCount;
 	double elapsedCount = 0;
 
+	float speedUp = 100.0f;
+
 	float maxTime = 5.0f;				//全体時間[s]
 
 	//P1からスタートする
