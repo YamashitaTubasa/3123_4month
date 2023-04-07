@@ -20,6 +20,7 @@ public:
 	//feverタイム
 	void GoesFever();
 	bool GetFever() { return isFever; }
+	int GetFeverNum() { return feverNum; }
 
 	//ベクトルを取得
 	void GetVec(Vector3 a, Vector3 b);
@@ -38,6 +39,7 @@ private:
 	//fever
 	int feverTime;
 	bool isFever = false;
+	int feverNum = 0;
 	float val = 1000.0f;
 	//レールに乗っている状態
 	bool isOnRail = false;

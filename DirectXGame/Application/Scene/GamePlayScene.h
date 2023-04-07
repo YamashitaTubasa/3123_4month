@@ -47,6 +47,8 @@ public:
 	/// </summary>
 	void Finalize();
 
+	void LoadEffect(SpriteCommon& spriteCommon);
+
 	//補間で使うデータ
 	//start → end を5秒で完了させる
 	Vector3 start;		//スタート地点
@@ -81,6 +83,8 @@ private:
 	// スプライト
 	Sprite* sprite = nullptr;
 	Sprite hP;
+	Sprite effectL[6];
+	Sprite effectR[6];
 	SpriteCommon spriteCommon_;
 
 	DirectXCommon* dXCommon = nullptr;
@@ -96,7 +100,8 @@ private:
 	bool isPush_A = false;
 
 	int playerHp = 3;
-	int time = 0;
 
 	const float PI = 3.141592;
+
+	float alpha = 1;
 };

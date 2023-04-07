@@ -376,6 +376,15 @@ void Sprite::SpriteUpdate(Sprite& sprite, const SpriteCommon& spriteCommon)
 	// 行列の設定
 	Matrix4 matRot;
 	Matrix4 matTrans;
+	Matrix4 matRotX, matRotY, matRotZ;
+
+	//各行列計算
+	matRot = Matrix4::identity();
+	matRot *= matRotZ.rotateZ(rotation_.z * 180.0f / 3.1415f);
+	matRot *= matRotX.rotateX(rotation_.x * 180.0f / 3.1415f);
+	matRot *= matRotY.rotateY(rotation_.y * 180.0f / 3.1415f);
+	matTrans = Matrix4::identity();
+	matTrans.translate(position);
 
 	// ワールド行列の更新
 	sprite.matWorld.identity();
@@ -530,4 +539,13 @@ void Sprite::SpriteTransferVertexBuffer(const Sprite& sprite, const SpriteCommon
 void Sprite::Finalize()
 {
 	//delete dXCommon;
+}
+
+void Sprite::SetAlpha(Sprite sprite,float alpha_) {
+
+	// 定数バッファの転送
+	HRESULT result = sprite.constBuffB0->Map(0, nullptr, (void**)&constMap);
+	constMap->color.w = alpha_;
+	sprite.constBuffB0->Unmap(0, nullptr);
+	assert(SUCCEEDED(result));
 }

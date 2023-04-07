@@ -40,7 +40,6 @@ void Player::Update() {
 			obj->SetPosition(obj->GetPosition() + Vector3(0, 0, -0.2));
 		}
 	}
-
 	//ƒŒ[ƒ‹Œãˆ—
 	if (isOnRail == true) {
 		//feverTaime
@@ -67,12 +66,19 @@ void Player::GoesFever() {
 	if (isFever == true) {
 		feverTime++;
 
-		obj->SetScale(Vector3(3, 3, 3));
+		if (feverTime % 2 == 0) {
+			if (feverNum < 5) {
+				feverNum++;
+			}
+			else {
+				feverNum = 0;
+			}
+		}
+
 		//ˆê’èŽžŠÔ‚µ‚½‚ç’Êíƒ‚[ƒh‚Ö
 		if (feverTime == 300) {
 			val = 1000.0f;
 			feverTime = 0;
-			obj->SetScale(Vector3(0.4, 0.4, 0.4));
 			isFever = false;
 		}
 	}
