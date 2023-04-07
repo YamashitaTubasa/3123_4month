@@ -154,6 +154,7 @@
     <ClCompile Include="DirectXGame\Application\Scene\GameBaseScene.cpp" />
     <ClCompile Include="DirectXGame\Application\Scene\GameTitleScene.cpp" />
     <ClCompile Include="DirectXGame\Engin\2d\SpriteCommon.cpp" />
+    <ClCompile Include="DirectXGame\Engin\3d\Enemy.cpp" />
     <ClCompile Include="DirectXGame\Engin\3d\Player.cpp" />
     <ClCompile Include="DirectXGame\Engin\3d\RailCamera.cpp" />
     <ClCompile Include="DirectXGame\Engin\3d\ViewProjection.cpp" />
@@ -164,6 +165,7 @@
     <ClCompile Include="DirectXGame\Engin\Collision\SphereCollider.cpp" />
     <ClCompile Include="DirectXGame\Engin\Math\Matrix4.cpp" />
     <ClCompile Include="DirectXGame\Engin\Math\Quaternion.cpp" />
+    <ClCompile Include="DirectXGame\Engin\Math\Spline.cpp" />
     <ClCompile Include="DirectXGame\Engin\Math\Vector2.cpp" />
     <ClCompile Include="DirectXGame\Engin\Math\Vector3.cpp" />
     <ClCompile Include="DirectXGame\Engin\Math\Vector4.cpp" />
@@ -180,7 +182,6 @@
     <ClCompile Include="DirectXGame\Engin\Platform\DirectXCommon.cpp" />
     <ClCompile Include="DirectXGame\Engin\Platform\FPSFixed.cpp" />
     <ClCompile Include="DirectXGame\Engin\Platform\WinApp.cpp" />
-    <ClCompile Include="Spline.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Basic.hlsli" />
@@ -253,6 +254,7 @@
     <ClInclude Include="DirectXGame\Application\Scene\GameBaseScene.h" />
     <ClInclude Include="DirectXGame\Application\Scene\GameTitleScene.h" />
     <ClInclude Include="DirectXGame\Engin\2d\SpriteCommon.h" />
+    <ClInclude Include="DirectXGame\Engin\3d\Enemy.h" />
     <ClInclude Include="DirectXGame\Engin\3d\Player.h" />
     <ClInclude Include="DirectXGame\Engin\3d\RailCamera.h" />
     <ClInclude Include="DirectXGame\Engin\3d\ViewProjection.h" />
@@ -267,6 +269,7 @@
     <ClInclude Include="DirectXGame\Engin\Collision\SphereCollider.h" />
     <ClInclude Include="DirectXGame\Engin\Math\Matrix4.h" />
     <ClInclude Include="DirectXGame\Engin\Math\Quaternion.h" />
+    <ClInclude Include="DirectXGame\Engin\Math\Spline.h" />
     <ClInclude Include="DirectXGame\Engin\Math\Vector2.h" />
     <ClInclude Include="DirectXGame\Engin\Math\Vector3.h" />
     <ClInclude Include="DirectXGame\Engin\Math\Vector4.h" />
@@ -282,7 +285,6 @@
     <ClInclude Include="DirectXGame\Engin\Platform\FPSFixed.h" />
     <ClInclude Include="DirectXGame\Engin\Platform\WinApp.h" />
     <ClInclude Include="External\ImGui\ImGuiManager.h" />
-    <ClInclude Include="Spline.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="External\DirectXTex\DirectXTex_Desktop_2022_Win10.vcxproj">

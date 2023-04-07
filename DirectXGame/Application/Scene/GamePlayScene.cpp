@@ -28,6 +28,10 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	player = new Player;
 	player->Initialize();
 
+	//enemy初期化
+	enemy = new Enemy;
+	enemy->Initialize();
+
 	//ステージ
 	// OBJからモデルデータを読み込む
 	stageModel = Model::LoadFromOBJ("triangle_mat");
@@ -83,6 +87,7 @@ void GamePlayScene::Update() {
 
 	railCamera->Update(player, points);
 	player->Update();
+	enemy->Update();
 	stage->Update();
 	sky->Update();
 }
@@ -95,6 +100,8 @@ void GamePlayScene::Draw() {
 
 	sky->Draw(railCamera->GetView());
 	stage->Draw(railCamera->GetView());
+	player->Draw(railCamera->GetView());
+	enemy->Draw(railCamera->GetView());
 
 	// 3Dオブジェクト描画後処理
 	Object3d::PostDraw();
@@ -147,6 +154,7 @@ void GamePlayScene::Draw() {
 
 void GamePlayScene::Finalize() {
 	delete player;
+	delete enemy;
 	delete sky;
 	delete skyModel;
 

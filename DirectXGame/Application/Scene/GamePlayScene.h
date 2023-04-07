@@ -14,6 +14,7 @@
 #include "WorldTransform.h"
 #include "RailCamera.h"
 #include "Player.h"
+#include "Enemy.h"
 
 //====================//
 // ゲームプレイシーン
@@ -71,6 +72,7 @@ private:
 	Model* stageModel;
 	// オブジェクト
 	Player* player;
+	Enemy* enemy;
 	Object3d* sky;
 	Object3d* stage;
 	//カメラ
