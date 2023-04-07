@@ -123,6 +123,9 @@
     <ClCompile Include="DirectXGame\Engin\3d\Player.cpp">
       <Filter>ソースファイル\Engine\GameObject</Filter>
     </ClCompile>
+    <ClCompile Include="DirectXGame\Engin\Line\Line.cpp">
+      <Filter>ソースファイル\Engine\Line</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectXGame\Engin\2d\Sprite.h">
@@ -226,6 +229,9 @@
     </ClInclude>
     <ClInclude Include="DirectXGame\Engin\3d\Player.h">
       <Filter>ヘッダーファイル\Engine\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Engin\Line\Line.h">
+      <Filter>ヘッダーファイル\Engine\Line</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -347,6 +353,12 @@
     </Filter>
     <Filter Include="ソースファイル\Engine\GameObject">
       <UniqueIdentifier>{46b7a177-ed8f-439c-b7ad-ff8384fb9e89}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソースファイル\Engine\Line">
+      <UniqueIdentifier>{227789bf-ee6b-44c3-9f2a-2550b0af135a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダーファイル\Engine\Line">
+      <UniqueIdentifier>{8f4b7e7d-fda4-48ed-8718-98a162af1b61}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
