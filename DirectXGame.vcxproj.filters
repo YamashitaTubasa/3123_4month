@@ -117,10 +117,13 @@
     <ClCompile Include="DirectXGame\Engin\3d\RailCamera.cpp">
       <Filter>ソースファイル\Engine\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="Spline.cpp">
+    <ClCompile Include="DirectXGame\Engin\3d\Player.cpp">
+      <Filter>ソースファイル\Engine\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\Engin\Math\Spline.cpp">
       <Filter>ソースファイル\Engine\Math</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\Engin\3d\Player.cpp">
+    <ClCompile Include="DirectXGame\Engin\3d\Enemy.cpp">
       <Filter>ソースファイル\Engine\GameObject</Filter>
     </ClCompile>
   </ItemGroup>
@@ -218,13 +221,16 @@
     <ClInclude Include="DirectXGame\Engin\3d\RailCamera.h">
       <Filter>ヘッダーファイル\Engine\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="Spline.h">
-      <Filter>ヘッダーファイル\Engine\Math</Filter>
-    </ClInclude>
     <ClInclude Include="DirectXGame\Application\Scene\GameTitleScene.h">
       <Filter>ヘッダーファイル\Engine\Scene</Filter>
     </ClInclude>
     <ClInclude Include="DirectXGame\Engin\3d\Player.h">
+      <Filter>ヘッダーファイル\Engine\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Engin\Math\Spline.h">
+      <Filter>ヘッダーファイル\Engine\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Engin\3d\Enemy.h">
       <Filter>ヘッダーファイル\Engine\GameObject</Filter>
     </ClInclude>
   </ItemGroup>
