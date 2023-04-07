@@ -376,6 +376,15 @@ void Sprite::SpriteUpdate(Sprite& sprite, const SpriteCommon& spriteCommon)
 	// 行列の設定
 	Matrix4 matRot;
 	Matrix4 matTrans;
+	Matrix4 matRotX, matRotY, matRotZ;
+
+	//各行列計算
+	matRot = Matrix4::identity();
+	matRot *= matRotZ.rotateZ(rotation_.z * 180.0f / 3.1415f);
+	matRot *= matRotX.rotateX(rotation_.x * 180.0f / 3.1415f);
+	matRot *= matRotY.rotateY(rotation_.y * 180.0f / 3.1415f);
+	matTrans = Matrix4::identity();
+	matTrans.translate(position);
 
 	// ワールド行列の更新
 	sprite.matWorld.identity();
