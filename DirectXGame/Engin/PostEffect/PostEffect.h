@@ -2,11 +2,9 @@
 
 #include "Sprite.h"
 #include "WinApp.h"
-#include "Matrix4.h"
 
 class PostEffect : public Sprite
 {
-
 private:
 	struct ConstBufferData {
 		Vector4 color; // 色 (RGBA)
@@ -47,6 +45,10 @@ public:
 	/// </summary>
 	void CreateGraphicsPipelineState();
 
+public:
+	void SetColor(const Vector4& color) { this->color_ = color; }
+	Vector4 GetColor() const { return color_; }
+
 private:
 	// テクスチャバッファ
 	ComPtr<ID3D12Resource> texBuff;
@@ -65,10 +67,12 @@ private:
 	ComPtr<ID3D12Device> device;
 	ComPtr<ID3D12GraphicsCommandList> cmdList;
 
-private:
+protected:
 	// 画面クリアカラー
 	static const float clearColor[4];
-
+	// 頂点数
 	static const int vertNum = 4; 
+	// 色
+	Vector4 color_ = { 1,1,1,1 };
 };
 
