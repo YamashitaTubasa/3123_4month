@@ -2,20 +2,20 @@
 
 #include "RLFramework.h"
 
-// ƒQ[ƒ€‘S‘Ì
+// ã‚²ãƒ¼ãƒ å…¨ä½“
 class RideLight : public RLFramework
 {
 public:
-	// ‰Šú‰»
+	// åˆæœŸåŒ–
 	void Initialize() override;
 
-	// XV
+	// æ›´æ–°
 	void Update() override;
 
-	// •`‰æ
+	// æç”»
 	void Draw() override;
 
-	// I—¹
+	// çµ‚äº†
 	void Finalize() override;
 
 };

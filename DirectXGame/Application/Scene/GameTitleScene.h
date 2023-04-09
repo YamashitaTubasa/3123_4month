@@ -12,7 +12,7 @@
 #include "GameBaseScene.h"
 
 //====================//
-// ƒQ[ƒ€ƒ^ƒCƒgƒ‹ƒV[ƒ“
+// ã‚²ãƒ¼ãƒ ã‚¿ã‚¤ãƒˆãƒ«ã‚·ãƒ¼ãƒ³
 //====================//
 class GameTitleScene 
 {
@@ -22,30 +22,30 @@ public:
 
 public:
 	/// <summary>
-	/// ‰Šú‰»
+	/// åˆæœŸåŒ–
 	/// </summary>
 	/// <param name="dXCommon"></param>
 	void Initialize(DirectXCommon* dXCommon, WinApp* winApp, SpriteCommon& spriteCommon) ;
 
 	/// <summary>
-	/// XV
+	/// æ›´æ–°
 	/// </summary>
 	void Update() ;
 
 	/// <summary>
-	/// •`‰æ
+	/// æç”»
 	/// </summary>
 	void Draw(DirectXCommon* dXCommon) ;
 
 	/// <summary>
-	/// ‰ğ•ú
+	/// è§£æ”¾
 	/// </summary>
 	void Finalize() ;
 
 private:
-	// “ü—Í
+	// å…¥åŠ›
 	Input* input = nullptr;
-	// ƒXƒvƒ‰ƒCƒg
+	// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆ
 	Sprite* sprite = nullptr;
 	Sprite Title;
 	SpriteCommon spriteCommon_;

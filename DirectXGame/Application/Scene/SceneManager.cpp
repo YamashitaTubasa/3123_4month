@@ -2,29 +2,29 @@
 
 SceneManager::~SceneManager()
 {
-	// ÅŒã‚ÌƒV[ƒ“‚ÌI—¹‚Æ‰ð•ú
+	// æœ€å¾Œã®ã‚·ãƒ¼ãƒ³ã®çµ‚äº†ã¨è§£æ”¾
 	scene_->Finalize();
 	delete scene_;
 }
 
 void SceneManager::Update()
 {
-	// TODO:ƒV[ƒ“Ø‚è‘Ö‚¦‹@\
+	// TODO:ã‚·ãƒ¼ãƒ³åˆ‡ã‚Šæ›¿ãˆæ©Ÿæ§‹
 	if (nextScene_) {
-		// ‹ŒƒV[ƒ“‚ÌI—¹
+		// æ—§ã‚·ãƒ¼ãƒ³ã®çµ‚äº†
 		if (scene_) {
 			scene_->Finalize();
 			delete scene_;
 		}
 
-		// ƒV[ƒ“Ø‚è‘Ö‚¦
+		// ã‚·ãƒ¼ãƒ³åˆ‡ã‚Šæ›¿ãˆ
 		scene_ = nextScene_;
 		nextScene_ = nullptr;
-		// ŽŸƒV[ƒ“‚ð‰Šú‰»‚·‚é
+		// æ¬¡ã‚·ãƒ¼ãƒ³ã‚’åˆæœŸåŒ–ã™ã‚‹
 		scene_->Initialize();
 	} 
 
-	// ŽÀs’†ƒV[ƒ“‚ÌXV
+	// å®Ÿè¡Œä¸­ã‚·ãƒ¼ãƒ³ã®æ›´æ–°
 	scene_->Update();
 }
 

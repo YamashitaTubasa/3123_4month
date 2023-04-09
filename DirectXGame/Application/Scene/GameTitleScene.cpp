@@ -10,10 +10,10 @@ GameTitleScene::~GameTitleScene()
 
 void GameTitleScene::Initialize(DirectXCommon* dXCommon, WinApp* winApp, SpriteCommon& spriteCommon)
 {
-	// ƒXƒvƒ‰ƒCƒg
+	// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆ
 	sprite = new Sprite();
 	spriteCommon_ = sprite->SpriteCommonCreate(dXCommon->GetDevice(), 1280, 720);
-	// ƒXƒvƒ‰ƒCƒg—pƒpƒCƒvƒ‰ƒCƒ“¶¬ŒÄ‚Ño‚µ
+	// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆç”¨ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ç”Ÿæˆå‘¼ã³å‡ºã—
 	PipelineSet spritePipelineSet = sprite->SpriteCreateGraphicsPipeline(dXCommon->GetDevice());
 
 	// HP
@@ -33,40 +33,40 @@ void GameTitleScene::Update()
 
 void GameTitleScene::Draw(DirectXCommon* dXCommon)
 {
-#pragma region 3DƒIƒuƒWƒFƒNƒg•`‰æ
+#pragma region 3Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆæç”»
 
-	// 3DƒIƒuƒWƒFƒNƒg•`‰æ‘Oˆ—
+	// 3Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆæç”»å‰å‡¦ç†
 	Object3d::PreDraw(dXCommon->GetCommandList());
 
-	///=== 3DƒIƒuƒWƒFƒNƒg•`‰æ ===///
+	///=== 3Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆæç”» ===///
 	
-	// 3DƒIƒuƒWƒFƒNƒg•`‰æŒãˆ—
+	// 3Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆæç”»å¾Œå‡¦ç†
 	Object3d::PostDraw();
 
 #pragma endregion
 
-#pragma region ƒp[ƒeƒBƒNƒ‹•`‰æ
+#pragma region ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«æç”»
 
-	// ƒp[ƒeƒBƒNƒ‹•`‰æ‘Oˆ—
+	// ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«æç”»å‰å‡¦ç†
 	ParticleManager::PreDraw(dXCommon->GetCommandList());
 
-	///==== ƒp[ƒeƒBƒNƒ‹•`‰æ ====///
+	///==== ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«æç”» ====///
 
 
-	// ƒp[ƒeƒBƒNƒ‹•`‰æŒãˆ—
+	// ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«æç”»å¾Œå‡¦ç†
 	ParticleManager::PostDraw();
 
 #pragma endregion
 
-#pragma region ƒXƒvƒ‰ƒCƒg•`‰æ
+#pragma region ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆæç”»
 
-	// ƒXƒvƒ‰ƒCƒg•`‰æ‘Oˆ—
+	// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆæç”»å‰å‡¦ç†
 	Sprite::PreDraw(dXCommon->GetCommandList(), spriteCommon_);
 
-	///=== ƒXƒvƒ‰ƒCƒg•`‰æ ===///
+	///=== ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆæç”» ===///
 	Title.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), Title.vbView);
 
-	// ƒXƒvƒ‰ƒCƒg•`‰æŒãˆ—
+	// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆæç”»å¾Œå‡¦ç†
 	Sprite::PostDraw();
 
 #pragma endregion
@@ -74,7 +74,7 @@ void GameTitleScene::Draw(DirectXCommon* dXCommon)
 
 void GameTitleScene::Finalize()
 {
-	// ƒXƒvƒ‰ƒCƒg‰ğ•ú
+	// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆè§£æ”¾
 	delete sprite;
 	sprite = nullptr;
 }

@@ -22,15 +22,15 @@ void ViewProjection::CreateConstBuffer()
 {
 	HRESULT result;
 
-	// ƒq[ƒvƒvƒƒpƒeƒB
+	// ãƒ’ãƒ¼ãƒ—ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£
 	CD3DX12_HEAP_PROPERTIES heapProps = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
-	// ƒŠƒ\[ƒXÝ’è
+	// ãƒªã‚½ãƒ¼ã‚¹è¨­å®š
 	CD3DX12_RESOURCE_DESC resourceDesc =
 		CD3DX12_RESOURCE_DESC::Buffer((sizeof(ConstBufferDataViewProjection) + 0xff) & ~0xff);
 
-	// ’è”ƒoƒbƒtƒ@‚Ì¶¬
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡ã®ç”Ÿæˆ
 	result = device_->CreateCommittedResource(
-		&heapProps, // ƒAƒbƒvƒ[ƒh‰Â”\
+		&heapProps, // ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰å¯èƒ½
 		D3D12_HEAP_FLAG_NONE, &resourceDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
 		IID_PPV_ARGS(&constBuff));
 	assert(SUCCEEDED(result));
@@ -38,19 +38,19 @@ void ViewProjection::CreateConstBuffer()
 
 void ViewProjection::Map()
 {
-	// ’è”ƒoƒbƒtƒ@‚Æ‚Ìƒf[ƒ^ƒŠƒ“ƒN
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡ã¨ã®ãƒ‡ãƒ¼ã‚¿ãƒªãƒ³ã‚¯
 	HRESULT result = constBuff->Map(0, nullptr, (void**)&constMap);
 	assert(SUCCEEDED(result));
 }
 
 void ViewProjection::UpdateMatrix()
 {
-	// ƒrƒ…[s—ñ‚Ìì¬
+	// ãƒ“ãƒ¥ãƒ¼è¡Œåˆ—ã®ä½œæˆ
 	matView.ViewMat(eye, target, up);
-	// ŽË‰es—ñ‚Ìì¬
+	// å°„å½±è¡Œåˆ—ã®ä½œæˆ
 	matProjection.ProjectionMat(fovAngleY, aspectRatio, nearZ, farZ);
 
-	// ’è”ƒoƒbƒtƒ@‚Ö‚Ì‘‚«ž‚Ý
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡ã¸ã®æ›¸ãè¾¼ã¿
 	constMap->view = matView;
 	constMap->projection = matProjection;
 	constMap->cameraPos = eye;

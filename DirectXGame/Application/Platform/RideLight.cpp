@@ -2,64 +2,64 @@
 
 void RideLight::Initialize()
 {
-	// Šî’êƒNƒ‰ƒX‚Ì‰Šú‰»
+	// åŸºåº•ã‚¯ãƒ©ã‚¹ã®åˆæœŸåŒ–
 	RLFramework::Initialize();
 
-	// ƒQ[ƒ€ƒV[ƒ“‚Ì¶¬‚Æ‰Šú‰»
+	// ã‚²ãƒ¼ãƒ ã‚·ãƒ¼ãƒ³ã®ç”Ÿæˆã¨åˆæœŸåŒ–
 	scene_ = new GamePlayScene();
 	scene_->Initialize(spriteCommon);
 }
 
 void RideLight::Update()
 {
-	// Šî’êƒNƒ‰ƒX‚ÌXVˆ—
+	// åŸºåº•ã‚¯ãƒ©ã‚¹ã®æ›´æ–°å‡¦ç†
 	RLFramework::Update();
 
-	// ImGuiŽó•tŠJŽn
+	// ImGuiå—ä»˜é–‹å§‹
 	imGuiManager->Begin();
 
-	// ƒQ[ƒ€ƒV[ƒ“‚ÌXV
+	// ã‚²ãƒ¼ãƒ ã‚·ãƒ¼ãƒ³ã®æ›´æ–°
 	scene_->Update();
 
-	// ImGuiŽó•tI—¹
+	// ImGuiå—ä»˜çµ‚äº†
 	imGuiManager->End();
 }
 
 void RideLight::Draw()
 {
-#pragma region ƒQ[ƒ€ƒV[ƒ“•`‰æ
-	// ƒŒƒ“ƒ_[ƒeƒNƒXƒ`ƒƒ‚Ì‘Oˆ—
+#pragma region ã‚²ãƒ¼ãƒ ã‚·ãƒ¼ãƒ³æç”»
+	// ãƒ¬ãƒ³ãƒ€ãƒ¼ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®å‰å‡¦ç†
 	postEffect->PreDrawScene(dXCommon->GetCommandList());
 
-	//=== ƒQ[ƒ€ƒV[ƒ“‚Ì•`‰æ ===//
+	//=== ã‚²ãƒ¼ãƒ ã‚·ãƒ¼ãƒ³ã®æç”» ===//
 	scene_->Draw();
 
-	// ƒŒƒ“ƒ_[ƒeƒNƒXƒ`ƒƒ‚ÌŒãˆ—
+	// ãƒ¬ãƒ³ãƒ€ãƒ¼ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®å¾Œå‡¦ç†
 	postEffect->PostDrawScene(dXCommon->GetCommandList());
-#pragma endregion ƒQ[ƒ€ƒV[ƒ“•`‰æ
+#pragma endregion ã‚²ãƒ¼ãƒ ã‚·ãƒ¼ãƒ³æç”»
 
-#pragma region •`‰æ
-	// •`‰æ‘Oˆ—
+#pragma region æç”»
+	// æç”»å‰å‡¦ç†
 	dXCommon->PreDraw();
 
-	//=== ƒ|ƒXƒgƒGƒtƒFƒNƒg‚Ì•`‰æ ===//
+	//=== ãƒã‚¹ãƒˆã‚¨ãƒ•ã‚§ã‚¯ãƒˆã®æç”» ===//
 	postEffect->Draw(dXCommon->GetCommandList());
 
-	//=== ImGui•`‰æ ===//
+	//=== ImGuiæç”» ===//
 	imGuiManager->Draw(dXCommon);
 
-	// •`‰æŒãˆ—
+	// æç”»å¾Œå‡¦ç†
 	dXCommon->PostDraw();
-#pragma endregion •`‰æ
+#pragma endregion æç”»
 }
 
 void RideLight::Finalize()
 {
-	// ƒQ[ƒ€ƒV[ƒ“‚ÌI—¹ˆ—
+	// ã‚²ãƒ¼ãƒ ã‚·ãƒ¼ãƒ³ã®çµ‚äº†å‡¦ç†
 	scene_->Finalize();
-	// ƒQ[ƒ€ƒV[ƒ“‚Ì‰ð•ú
+	// ã‚²ãƒ¼ãƒ ã‚·ãƒ¼ãƒ³ã®è§£æ”¾
 	delete scene_;
 
-	// Šî’êƒNƒ‰ƒX‚ÌI—¹ˆ—
+	// åŸºåº•ã‚¯ãƒ©ã‚¹ã®çµ‚äº†å‡¦ç†
 	RLFramework::Finalize();
 }
