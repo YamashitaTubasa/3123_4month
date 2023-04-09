@@ -9,15 +9,15 @@
 
 class RailCamera {
 public:
-	//ƒCƒ“ƒXƒ^ƒ“ƒX
+	//ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹
 	RailCamera();
 	~RailCamera();
-	//‰Šú‰»
+	//åˆæœŸåŒ–
 	void Initialize(Object3d* player_);
-	//XV
+	//æ›´æ–°
 	void Update(Object3d* player_, std::vector<Vector3>& point);
 
-	//³–ÊƒxƒNƒgƒ‹‚ğæ“¾
+	//æ­£é¢ãƒ™ã‚¯ãƒˆãƒ«ã‚’å–å¾—
 	Vector3 GetFront(Vector3 a, Vector3 b);
 
 	ViewProjection* GetView() { return viewProjection; }
@@ -36,7 +36,7 @@ private:
 	Vector3 angle = { 0,0,0 };
 
 
-	//ƒXƒvƒ‰ƒCƒ“
+	//ã‚¹ãƒ—ãƒ©ã‚¤ãƒ³
 	Spline spline_;
 
 	float timeRate;

@@ -21,17 +21,17 @@ void WorldTransform::CreateConstBuffer()
 {
 	assert(device_);
 
-	// ƒq[ƒvƒvƒƒpƒeƒB
+	// ãƒ’ãƒ¼ãƒ—ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£
 	CD3DX12_HEAP_PROPERTIES heapProps = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
-	// ƒŠƒ\[ƒXÝ’è
+	// ãƒªã‚½ãƒ¼ã‚¹è¨­å®š
 	CD3DX12_RESOURCE_DESC resourceDesc =
 		CD3DX12_RESOURCE_DESC::Buffer((sizeof(ConstBufferDataB0) + 0xff) & ~0xff);
 
 	HRESULT result;
 
-	// ’è”ƒoƒbƒtƒ@‚Ì¶¬
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡ã®ç”Ÿæˆ
 	result = device_->CreateCommittedResource(
-		&heapProps, // ƒAƒbƒvƒ[ƒh‰Â”\
+		&heapProps, // ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰å¯èƒ½
 		D3D12_HEAP_FLAG_NONE,
 		&resourceDesc,
 		D3D12_RESOURCE_STATE_GENERIC_READ,
@@ -43,8 +43,8 @@ void WorldTransform::CreateConstBuffer()
 
 void WorldTransform::Map()
 {
-	//’è”ƒoƒbƒtƒ@‚Ìƒ}ƒbƒsƒ“ƒO
-	HRESULT result = constBuffB0->Map(0, nullptr, (void**)&constMap);//ƒ}ƒbƒsƒ“ƒO
+	//å®šæ•°ãƒãƒƒãƒ•ã‚¡ã®ãƒžãƒƒãƒ”ãƒ³ã‚°
+	HRESULT result = constBuffB0->Map(0, nullptr, (void**)&constMap);//ãƒžãƒƒãƒ”ãƒ³ã‚°
 	assert(SUCCEEDED(result));
 }
 
@@ -55,7 +55,7 @@ void WorldTransform::UpdateMatrix()
 	Matrix4 matScale, matRot, matTrans;
 	Matrix4 matRotX, matRotY, matRotZ;
 
-	//Šes—ñŒvŽZ
+	//å„è¡Œåˆ—è¨ˆç®—
 	matScale = Matrix4::Identity();
 	matScale.scale(scale_);
 	matRot = Matrix4::Identity();
@@ -65,7 +65,7 @@ void WorldTransform::UpdateMatrix()
 	matTrans = Matrix4::Identity();
 	matTrans.translate(position_);
 
-	//ƒ[ƒ‹ƒhs—ñ‚Ì‡¬
+	//ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã®åˆæˆ
 	matWorld_ = Matrix4::Identity();
 	matWorld_ *= matScale;
 	matWorld_ *= matRot;
@@ -75,6 +75,6 @@ void WorldTransform::UpdateMatrix()
 		matWorld_ *= parent_->matWorld_;
 	}
 
-	//’è”ƒoƒbƒtƒ@‚É“]‘—
+	//å®šæ•°ãƒãƒƒãƒ•ã‚¡ã«è»¢é€
 	constMap->matWorld = matWorld_;
 }

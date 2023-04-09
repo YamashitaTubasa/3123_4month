@@ -11,48 +11,48 @@
 
 #pragma comment(lib, "xaudio2.lib")
 
-//’è”ƒoƒbƒtƒ@—pƒf[ƒ^\‘¢‘Ì(ƒ}ƒeƒŠƒAƒ‹)
+//å®šæ•°ãƒãƒƒãƒ•ã‚¡ç”¨ãƒ‡ãƒ¼ã‚¿æ§‹é€ ä½“(ãƒãƒ†ãƒªã‚¢ãƒ«)
 struct ConstBufferDataMaterial {
-	Vector4 color;//F(RGBA)
+	Vector4 color;//è‰²(RGBA)
 };
 
-//’è”ƒoƒbƒtƒ@—pƒf[ƒ^\‘¢‘Ì(3D•ÏŠ·s—ñ)
+//å®šæ•°ãƒãƒƒãƒ•ã‚¡ç”¨ãƒ‡ãƒ¼ã‚¿æ§‹é€ ä½“(3Då¤‰æ›è¡Œåˆ—)
 struct ConstBufferDataTransform {
-	Matrix4 mat; //3D•ÏŠ·s—ñ
+	Matrix4 mat; //3Då¤‰æ›è¡Œåˆ—
 };
 
-// ƒ`ƒƒƒ“ƒNƒwƒbƒ_
+// ãƒãƒ£ãƒ³ã‚¯ãƒ˜ãƒƒãƒ€
 struct ChunkHeader
 {
-	char id[4]; // ƒ`ƒƒƒ“ƒN‘O‚ÌID
-	int32_t size; // ƒ`ƒƒƒ“ƒNƒTƒCƒY
+	char id[4]; // ãƒãƒ£ãƒ³ã‚¯å‰ã®ID
+	int32_t size; // ãƒãƒ£ãƒ³ã‚¯ã‚µã‚¤ã‚º
 };
 
-// RIFFƒwƒbƒ_ƒ`ƒƒƒ“ƒN
+// RIFFãƒ˜ãƒƒãƒ€ãƒãƒ£ãƒ³ã‚¯
 struct RiffHeader
 {
 	ChunkHeader chunk; // "RIFF"
 	char type[4]; // "WAVE"
 };
 
-// FMTƒ`ƒƒƒ“ƒN
+// FMTãƒãƒ£ãƒ³ã‚¯
 struct FormatChunk {
 	ChunkHeader chunk; // "fmt"
-	WAVEFORMATEX fmt; // ”gŒ`ƒtƒH[ƒ}ƒbƒg
+	WAVEFORMATEX fmt; // æ³¢å½¢ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆ
 };
 
-// ‰¹ºƒf[ƒ^
+// éŸ³å£°ãƒ‡ãƒ¼ã‚¿
 struct SoundData {
-	// ”gŒ`ƒtƒH[ƒ}ƒbƒg
+	// æ³¢å½¢ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆ
 	WAVEFORMATEX wfex;
-	// ƒoƒbƒtƒ@‚Ìæ“ªƒAƒhƒŒƒX
+	// ãƒãƒƒãƒ•ã‚¡ã®å…ˆé ­ã‚¢ãƒ‰ãƒ¬ã‚¹
 	BYTE* pBuffer;
-	// ƒoƒbƒtƒ@‚ÌƒTƒCƒY
+	// ãƒãƒƒãƒ•ã‚¡ã®ã‚µã‚¤ã‚º
 	unsigned int bufferSize;
 };
 
 // =============
-// ƒI[ƒfƒBƒIƒNƒ‰ƒX
+// ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªã‚¯ãƒ©ã‚¹
 // =============
 class Audio final
 {
@@ -67,43 +67,43 @@ public:
 	Audio(const Audio& obj) = delete;
 	Audio& operator=(const Audio& obj) = delete;
 
-	// ƒCƒ“ƒXƒ^ƒ“ƒX‚ğ¶¬
+	// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ç”Ÿæˆ
 	static Audio* GetInstance();
 
-	// ‰Šú‰»
+	// åˆæœŸåŒ–
 	void Initialize(const std::string& directoryPath = "Resources/BGM/");
-	// ‰ğ•ú
+	// è§£æ”¾
 	void Finalize();
 	/// <summary>
-	/// ‰¹ºƒf[ƒ^‚Ì“Ç‚İ‚İ
+	/// éŸ³å£°ãƒ‡ãƒ¼ã‚¿ã®èª­ã¿è¾¼ã¿
 	/// </summary>
-	/// <param name="filename">WAVƒtƒ@ƒCƒ‹–¼</param>
+	/// <param name="filename">WAVãƒ•ã‚¡ã‚¤ãƒ«å</param>
 	void LoadWave(const std::string& filename);
 	/// <summary>
-	/// ‰¹ºƒf[ƒ^‰ğ•ú
+	/// éŸ³å£°ãƒ‡ãƒ¼ã‚¿è§£æ”¾
 	/// </summary>
-	/// <param name="soundData">ƒTƒEƒ“ƒhƒf[ƒ^</param>
+	/// <param name="soundData">ã‚µã‚¦ãƒ³ãƒ‰ãƒ‡ãƒ¼ã‚¿</param>
 	void Unload(SoundData* soundData);
 	/// <summary>
-	/// ‰¹ºÄ¶
+	/// éŸ³å£°å†ç”Ÿ
 	/// </summary>
-	/// <param name="filename">WAVƒtƒ@ƒCƒ‹–¼</param>
+	/// <param name="filename">WAVãƒ•ã‚¡ã‚¤ãƒ«å</param>
 	void PlayWave(const std::string& filename);
 	/// <summary>
-	/// ‰¹º‚Ìƒ‹[ƒvÄ¶
+	/// éŸ³å£°ã®ãƒ«ãƒ¼ãƒ—å†ç”Ÿ
 	/// </summary>
-	/// <param name="filename">WAVƒtƒ@ƒCƒ‹–¼</param>
+	/// <param name="filename">WAVãƒ•ã‚¡ã‚¤ãƒ«å</param>
 	void LoopPlayWave(const std::string& filename);
 	/// <summary>
-	/// ‰¹º’â~
+	/// éŸ³å£°åœæ­¢
 	/// </summary>
-	/// <param name="filename">WAVƒtƒ@ƒCƒ‹–¼</param>
+	/// <param name="filename">WAVãƒ•ã‚¡ã‚¤ãƒ«å</param>
 	void StopWave(const std::string& filename);
 	/// <summary>
-	/// ‰¹—Ê’²ß
+	/// éŸ³é‡èª¿ç¯€
 	/// </summary>
-	/// <param name="filename">WAVƒtƒ@ƒCƒ‹–¼</param>
-	/// <param name="volume">‰¹—Ê</param>
+	/// <param name="filename">WAVãƒ•ã‚¡ã‚¤ãƒ«å</param>
+	/// <param name="volume">éŸ³é‡</param>
 	void SetVolume(const std::string& filename, float volume);
 
 public:
@@ -112,14 +112,14 @@ public:
 
 private:
 	HRESULT result;
-	ComPtr<IXAudio2> xAudio2; // XAudio2ƒCƒ“ƒ^[ƒtƒFƒCƒX
-	IXAudio2MasteringVoice* mVoice; // ƒ}ƒXƒ^[ƒ{ƒCƒX
-	IXAudio2SourceVoice* sVoice; // ƒ\[ƒXƒ{ƒCƒX
+	ComPtr<IXAudio2> xAudio2; // XAudio2ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ã‚¤ã‚¹
+	IXAudio2MasteringVoice* mVoice; // ãƒã‚¹ã‚¿ãƒ¼ãƒœã‚¤ã‚¹
+	IXAudio2SourceVoice* sVoice; // ã‚½ãƒ¼ã‚¹ãƒœã‚¤ã‚¹
 	XAUDIO2_BUFFER buf{};
 
-	// ƒTƒEƒ“ƒhƒf[ƒ^‚Ì˜A‘z”z—ñ
+	// ã‚µã‚¦ãƒ³ãƒ‰ãƒ‡ãƒ¼ã‚¿ã®é€£æƒ³é…åˆ—
 	std::map<std::string, SoundData> soundDatas_;
-	// ƒTƒEƒ“ƒhŠi”[ƒfƒBƒŒƒNƒgƒŠ
+	// ã‚µã‚¦ãƒ³ãƒ‰æ ¼ç´ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª
 	std::string directoryPath_;
 
 	float mVolume;

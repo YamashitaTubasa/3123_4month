@@ -86,7 +86,7 @@ Vector4& Vector4::operator/=(float s)
 	return *this;
 }
 
-//Vector4 ƒNƒ‰ƒX‚É‘®‚³‚È‚¢ŠÖ”ŒQ
+//Vector4 ã‚¯ãƒ©ã‚¹ã«å±ã•ãªã„é–¢æ•°ç¾¤
 
 
 const Vector4 operator+(const Vector4& v1, const Vector4& v2)

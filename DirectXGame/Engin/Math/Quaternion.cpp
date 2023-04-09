@@ -141,7 +141,7 @@ Quaternion& Quaternion::operator+=(const Quaternion& v)
 	this->z += v.z;
 	this->w += v.w;
 	return *this;
-	// TODO: return ƒXƒe[ƒgƒƒ“ƒg‚ğ‚±‚±‚É‘}“ü‚µ‚Ü‚·
+	// TODO: return ã‚¹ãƒ†ãƒ¼ãƒˆãƒ¡ãƒ³ãƒˆã‚’ã“ã“ã«æŒ¿å…¥ã—ã¾ã™
 }
 
 Quaternion& Quaternion::operator-=(const Quaternion& v)
@@ -151,7 +151,7 @@ Quaternion& Quaternion::operator-=(const Quaternion& v)
 	this->z -= v.z;
 	this->w -= v.w;
 	return *this;
-	// TODO: return ƒXƒe[ƒgƒƒ“ƒg‚ğ‚±‚±‚É‘}“ü‚µ‚Ü‚·
+	// TODO: return ã‚¹ãƒ†ãƒ¼ãƒˆãƒ¡ãƒ³ãƒˆã‚’ã“ã“ã«æŒ¿å…¥ã—ã¾ã™
 }
 
 Quaternion& Quaternion::operator*=(float s)
@@ -161,7 +161,7 @@ Quaternion& Quaternion::operator*=(float s)
 	this->z *= s;
 	this->w *= s;
 	return *this;
-	// TODO: return ƒXƒe[ƒgƒƒ“ƒg‚ğ‚±‚±‚É‘}“ü‚µ‚Ü‚·
+	// TODO: return ã‚¹ãƒ†ãƒ¼ãƒˆãƒ¡ãƒ³ãƒˆã‚’ã“ã“ã«æŒ¿å…¥ã—ã¾ã™
 }
 
 Quaternion& Quaternion::operator/=(float s)
@@ -171,7 +171,7 @@ Quaternion& Quaternion::operator/=(float s)
 	this->z /= s;
 	this->w /= s;
 	return *this;
-	// TODO: return ƒXƒe[ƒgƒƒ“ƒg‚ğ‚±‚±‚É‘}“ü‚µ‚Ü‚·
+	// TODO: return ã‚¹ãƒ†ãƒ¼ãƒˆãƒ¡ãƒ³ãƒˆã‚’ã“ã“ã«æŒ¿å…¥ã—ã¾ã™
 }
 
 
@@ -214,24 +214,24 @@ Quaternion Slerp(const Quaternion& q0, const Quaternion& q1, float t)
 	Quaternion r1 = q1;
 	float epsilon = 0.0005f;
 
-	//“àÏ
+	//å†…ç©
 	float dot = (r0.x * r1.x) + (r0.y * r1.y) + (r0.z * r1.z) + (r0.w * r1.w);
-	//”½“]ˆ—
+	//åè»¢å‡¦ç†
 	if (dot < 0)
 	{
-		r0 = -r0;//‚à‚¤•Ğ•û‚Ì‰ñ“]‚ğ—˜—p‚·‚é
-		dot = -dot;//“àÏ‚à”½“]
+		r0 = -r0;//ã‚‚ã†ç‰‡æ–¹ã®å›è»¢ã‚’åˆ©ç”¨ã™ã‚‹
+		dot = -dot;//å†…ç©ã‚‚åè»¢
 	}
-	//‚È‚·Šp‚ğ‹‚ß‚é
+	//ãªã™è§’ã‚’æ±‚ã‚ã‚‹
 	float theta = std::acos(dot);
 
 	float scale0;
 	float scale1;
 
 
-	//”Šw‚ÌŒö® sin(1-t)*ƒ¦ / sinƒ¦*q0 + sin(tƒ¦) / sinƒ¦ * q1;
+	//æ•°å­¦ã®å…¬å¼ sin(1-t)*Î˜ / sinÎ˜*q0 + sin(tÎ˜) / sinÎ˜ * q1;
 
-	//theta‚Æsin‚ğg‚Á‚Ä•âŠÔŒW”‚ğ‹‚ß‚é
+	//thetaã¨sinã‚’ä½¿ã£ã¦è£œé–“ä¿‚æ•°ã‚’æ±‚ã‚ã‚‹
 	scale0 = sinf((1 - t) * theta) / sinf(theta);
 
 	scale1 = sinf(t * theta) / sinf(theta);
@@ -241,7 +241,7 @@ Quaternion Slerp(const Quaternion& q0, const Quaternion& q1, float t)
 		return (1.0 - t) * r0 + t * r1;
 	}
 
-	//•âŠÔŒã‚ÌQuaternion‚ğ‹‚ß‚é
+	//è£œé–“å¾Œã®Quaternionã‚’æ±‚ã‚ã‚‹
 	return scale0 * r0 + scale1 * r1;
 }
 

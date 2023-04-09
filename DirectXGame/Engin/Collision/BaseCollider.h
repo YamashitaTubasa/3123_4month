@@ -4,12 +4,12 @@
 #include "Object3d.h"
 #include "CollisionInfo.h"
 
-//ƒRƒ‰ƒCƒ_[Šî’êƒNƒ‰ƒX
+//ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼åŸºåº•ã‚¯ãƒ©ã‚¹
 class BaseCollider
 {
 public:
 	BaseCollider() = default;
-	//‰¼‘zƒfƒXƒgƒ‰ƒNƒ^
+	//ä»®æƒ³ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	virtual ~BaseCollider() = default;
 
 	inline void SetObject(Object3d* object)
@@ -21,16 +21,16 @@ public:
 		return object3d;
 	}
 
-	//XV
+	//æ›´æ–°
 	virtual void Update() = 0;
 
-	//Œ`óƒ^ƒCƒvæ“¾
+	//å½¢çŠ¶ã‚¿ã‚¤ãƒ—å–å¾—
 	inline CollisionShapeType GetShapeType()
 	{
 		return shapeType;
 	}
 
-	//Õ“ËƒR[ƒ‹ƒoƒbƒNŠÖ”
+	//è¡çªæ™‚ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°
 	inline void OnCollision(const CollisionInfo& info)
 	{
 		object3d->OnCollision(info);
@@ -38,6 +38,6 @@ public:
 
 protected:
 	Object3d* object3d = nullptr;
-	//Œ`óƒ^ƒCƒv
+	//å½¢çŠ¶ã‚¿ã‚¤ãƒ—
 	CollisionShapeType shapeType = SHAPE_UNKNOWN;
 };

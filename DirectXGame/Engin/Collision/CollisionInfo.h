@@ -14,11 +14,11 @@ public:
 		this->inter = inter;
 	}
 
-	// Õ“Ë‘Šè‚ÌƒIƒuƒWƒFƒNƒg
+	// è¡çªç›¸æ‰‹ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	Object3d* object = nullptr;
-	// Õ“Ë‘Šè‚ÌƒRƒ‰ƒCƒ_[
+	// è¡çªç›¸æ‰‹ã®ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼
 	BaseCollider* collider = nullptr;
-	// Õ“Ë“_
+	// è¡çªç‚¹
 	Vector3 inter;
 
 };

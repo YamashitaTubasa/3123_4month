@@ -4,21 +4,21 @@
 // WindowsAPI
 class WinApp final
 {
-public: // Ã“Iƒƒ“ƒoŠÖ”
+public: // é™çš„ãƒ¡ãƒ³ãƒé–¢æ•°
 	static LRESULT WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 
-public: // ƒƒ“ƒoŠÖ”
-	// WindowsAPI‚Ì‰Šú‰»
+public: // ãƒ¡ãƒ³ãƒé–¢æ•°
+	// WindowsAPIã®åˆæœŸåŒ–
 	void Initialize();
 
-	// I—¹
+	// çµ‚äº†
 	void Finalize();
 
 	// getter
 	HWND GetHwnd() const { return hwnd; }
 	HINSTANCE GetHInstance() const { return wc.hInstance; }
 
-	// ƒƒbƒZ[ƒW‚Ìˆ—
+	// ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®å‡¦ç†
 	bool ProcessMessage();
 
 public:
@@ -30,15 +30,15 @@ private:
 	WinApp(const WinApp&) = delete;
 	WinApp& operator=(const WinApp&) = delete;
 
-public: // ’è”
-	// ƒEƒBƒ“ƒhƒE‰¡•
+public: // å®šæ•°
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦æ¨ªå¹…
 	static const int window_width = 1280;
-	// ƒEƒBƒ“ƒhƒEc•
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ç¸¦å¹…
 	static const int window_height = 720;
 
 private:
-	// ƒEƒBƒ“ƒhƒEƒnƒ“ƒhƒ‹
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒãƒ³ãƒ‰ãƒ«
 	HWND hwnd = nullptr;
-	// ƒEƒBƒ“ƒhƒEƒNƒ‰ƒX‚Ìİ’è
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ã®è¨­å®š
 	WNDCLASSEX wc{};
 };

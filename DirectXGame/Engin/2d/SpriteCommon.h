@@ -7,19 +7,19 @@
 using namespace DirectX;
 
 // ===================
-// ƒXƒvƒ‰ƒCƒg‹¤’Ê•”
+// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆå…±é€šéƒ¨
 // ===================
 class SpriteCommon
 {
 public:
 	
 
-public: // ƒƒ“ƒoŠÖ”
-	// ‰Šú‰»
+public: // ãƒ¡ãƒ³ãƒé–¢æ•°
+	// åˆæœŸåŒ–
 	void Initialize();
-	// XV
+	// æ›´æ–°
 	void Update();
-	// •`‰æ
+	// æç”»
 	void Draw();
 
 public: // getter

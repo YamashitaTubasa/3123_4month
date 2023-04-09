@@ -11,21 +11,21 @@ void Audio::Initialize(const std::string& directoryPath)
 {	
 	directoryPath_ = directoryPath;
 
-	// XAudioƒGƒ“ƒWƒ“‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ğ¶¬
+	// XAudioã‚¨ãƒ³ã‚¸ãƒ³ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ç”Ÿæˆ
 	result = XAudio2Create(&xAudio2, 0, XAUDIO2_DEFAULT_PROCESSOR);
 	assert(SUCCEEDED(result));
 
-	// ƒ}ƒXƒ^[ƒ{ƒCƒX‚ğ¶¬
+	// ãƒã‚¹ã‚¿ãƒ¼ãƒœã‚¤ã‚¹ã‚’ç”Ÿæˆ
 	result = xAudio2->CreateMasteringVoice(&mVoice);
 	assert(SUCCEEDED(result));
 }
 
 void Audio::Finalize()
 {
-	// XAudio2‰ğ•ú
+	// XAudio2è§£æ”¾
 	xAudio2.Reset();
 
-	// ‰¹ºƒf[ƒ^‰ğ•ú
+	// éŸ³å£°ãƒ‡ãƒ¼ã‚¿è§£æ”¾
 	std::map<std::string, SoundData>::iterator it = soundDatas_.begin();
 	for (; it != soundDatas_.end(); ++it) {
 		Unload(&it->second);
@@ -36,80 +36,80 @@ void Audio::Finalize()
 void Audio::LoadWave(const std::string& filename)
 {
 	if (soundDatas_.find(filename) != soundDatas_.end()) {
-		// d•¡“Ç‚İ‚İ‚È‚Ì‚ÅA‰½‚à‚¹‚¸”²‚¯‚é
+		// é‡è¤‡èª­ã¿è¾¼ã¿ãªã®ã§ã€ä½•ã‚‚ã›ãšæŠœã‘ã‚‹
 		return;
 	}
 
-	// ƒfƒBƒŒƒNƒgƒŠƒpƒX‚Æƒtƒ@ƒCƒ‹–¼‚ğ˜AŒ‹‚µ‚Äƒtƒ‹ƒpƒX‚ğ“¾‚é
+	// ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªãƒ‘ã‚¹ã¨ãƒ•ã‚¡ã‚¤ãƒ«åã‚’é€£çµã—ã¦ãƒ•ãƒ«ãƒ‘ã‚¹ã‚’å¾—ã‚‹
 	std::string fullpath = directoryPath_ + filename;
 
-	// ‡@ƒtƒ@ƒCƒ‹ƒI[ƒvƒ“
-	// ƒtƒ@ƒCƒ‹“ü—ÍƒXƒgƒŠ[ƒ€‚ÌƒCƒ“ƒXƒ^ƒ“ƒX
+	// â‘ ãƒ•ã‚¡ã‚¤ãƒ«ã‚ªãƒ¼ãƒ—ãƒ³
+	// ãƒ•ã‚¡ã‚¤ãƒ«å…¥åŠ›ã‚¹ãƒˆãƒªãƒ¼ãƒ ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹
 	std::ifstream file;
-	// .wavƒtƒ@ƒCƒ‹ƒoƒCƒiƒŠƒ‚[ƒh‚ÅŠJ‚­
+	// .wavãƒ•ã‚¡ã‚¤ãƒ«ãƒã‚¤ãƒŠãƒªãƒ¢ãƒ¼ãƒ‰ã§é–‹ã
 	file.open(fullpath, std::ios_base::binary);
-	// ƒtƒ@ƒCƒ‹ƒI[ƒvƒ“¸”s‚ğŒŸo
+	// ãƒ•ã‚¡ã‚¤ãƒ«ã‚ªãƒ¼ãƒ—ãƒ³å¤±æ•—ã‚’æ¤œå‡º
 	assert(file.is_open());
 
-	// ‡A.WAVƒf[ƒ^“Ç‚İ‚İ
-	// RIFFƒwƒbƒ_[‚Ì“Ç‚İ‚İ
+	// â‘¡.WAVãƒ‡ãƒ¼ã‚¿èª­ã¿è¾¼ã¿
+	// RIFFãƒ˜ãƒƒãƒ€ãƒ¼ã®èª­ã¿è¾¼ã¿
 	RiffHeader riff;
 	file.read((char*)&riff, sizeof(riff));
-	// ƒtƒ@ƒCƒ‹‚ªRIFF‚ªƒ`ƒFƒbƒN
+	// ãƒ•ã‚¡ã‚¤ãƒ«ãŒRIFFãŒãƒã‚§ãƒƒã‚¯
 	if (strncmp(riff.chunk.id, "RIFF", 4) != 0) {
 		assert(0);
 	}
-	// ƒ^ƒCƒv‚ªWAVE‚©ƒ`ƒFƒbƒN
+	// ã‚¿ã‚¤ãƒ—ãŒWAVEã‹ãƒã‚§ãƒƒã‚¯
 	if (strncmp(riff.type, "WAVE", 4) != 0) {
 		assert(0);
 	}
-	// Formatƒ`ƒƒƒ“ƒN‚Ì“Ç‚İ‚İ
+	// Formatãƒãƒ£ãƒ³ã‚¯ã®èª­ã¿è¾¼ã¿
 	FormatChunk format = {};
-	// ƒ`ƒƒƒ“ƒNƒwƒbƒ_[‚ÌŠm”F
+	// ãƒãƒ£ãƒ³ã‚¯ãƒ˜ãƒƒãƒ€ãƒ¼ã®ç¢ºèª
 	file.read((char*)&format, sizeof(ChunkHeader));
 	if (strncmp(format.chunk.id, "fmt ", 4) != 0) {
 		assert(0);
 	}
 
-	// ƒ`ƒƒƒ“ƒN–{‘Ì‚Ì“Ç‚İ‚İ
+	// ãƒãƒ£ãƒ³ã‚¯æœ¬ä½“ã®èª­ã¿è¾¼ã¿
 	assert(format.chunk.size <= sizeof(format.fmt));
 	file.read((char*)&format.fmt, format.chunk.size);
 
-	// Dataƒ`ƒƒƒ“ƒN‚Ì“Ç‚İ‚İ
+	// Dataãƒãƒ£ãƒ³ã‚¯ã®èª­ã¿è¾¼ã¿
 	ChunkHeader data;;
 	file.read((char*)&data, sizeof(data));
-	// JUNKƒ`ƒƒƒ“ƒN‚ğŒŸo‚µ‚½ê‡
+	// JUNKãƒãƒ£ãƒ³ã‚¯ã‚’æ¤œå‡ºã—ãŸå ´åˆ
 	if (strncmp(data.id, "JUNK", 4) == 0) {
-		// “Ç‚İæ‚èˆÊ’u‚ğJUNKƒ`ƒƒƒ“ƒN‚ÌI‚í‚è‚Ü‚Åi‚ß‚é
+		// èª­ã¿å–ã‚Šä½ç½®ã‚’JUNKãƒãƒ£ãƒ³ã‚¯ã®çµ‚ã‚ã‚Šã¾ã§é€²ã‚ã‚‹
 		file.seekg(data.size, std::ios_base::cur);
-		// Ä“Ç‚İ‚İ
+		// å†èª­ã¿è¾¼ã¿
 		file.read((char*)&data, sizeof(data));
 	}
 	if (strncmp(data.id, "data", 4) != 0) {
 		assert(0);
 	}
 
-	// DATAƒ`ƒƒƒ“ƒN‚Ìƒf[ƒ^•”(”gŒ`ƒf[ƒ^)‚Ì“Ç‚İ‚İ
+	// DATAãƒãƒ£ãƒ³ã‚¯ã®ãƒ‡ãƒ¼ã‚¿éƒ¨(æ³¢å½¢ãƒ‡ãƒ¼ã‚¿)ã®èª­ã¿è¾¼ã¿
 	char* pBuffer = new char[data.size];
 	file.read(pBuffer, data.size);
 
-	// WAVEƒtƒ@ƒCƒ‹‚Æ•Â‚¶‚é
+	// WAVEãƒ•ã‚¡ã‚¤ãƒ«ã¨é–‰ã˜ã‚‹
 	file.close();
 
-	// ‡C“Ç‚İ‚ñ‚¾‰¹ºƒf[ƒ^‚ğreturn
-	// return‚·‚éˆ×‚Ì‰¹ºƒf[ƒ^
+	// â‘£èª­ã¿è¾¼ã‚“ã éŸ³å£°ãƒ‡ãƒ¼ã‚¿ã‚’return
+	// returnã™ã‚‹ç‚ºã®éŸ³å£°ãƒ‡ãƒ¼ã‚¿
 	SoundData soundData = {};
 
 	soundData.wfex = format.fmt;
 	soundData.pBuffer = reinterpret_cast<BYTE*>(pBuffer);
 	soundData.bufferSize = data.size;
 
-	// ƒTƒEƒ“ƒhƒf[ƒ^‚ğ˜A‘z”z—ñ‚ÉŠi”[
+	// ã‚µã‚¦ãƒ³ãƒ‰ãƒ‡ãƒ¼ã‚¿ã‚’é€£æƒ³é…åˆ—ã«æ ¼ç´
 	soundDatas_.insert(std::make_pair(filename, soundData));
 }
 
 void Audio::Unload(SoundData* soundData) {
-	// ƒoƒbƒtƒ@‚Ìƒƒ‚ƒŠ‚ğ‰ğ•ú
+	// ãƒãƒƒãƒ•ã‚¡ã®ãƒ¡ãƒ¢ãƒªã‚’è§£æ”¾
 	delete[] soundData->pBuffer;
 
 	soundData->pBuffer = 0;
@@ -119,24 +119,24 @@ void Audio::Unload(SoundData* soundData) {
 
 void Audio::PlayWave(const std::string& filename) {
 	std::map<std::string, SoundData>::iterator it = soundDatas_.find(filename);
-	// –¢“Ç‚İ‚İ‚ÌŒŸo
+	// æœªèª­ã¿è¾¼ã¿ã®æ¤œå‡º
 	assert(it != soundDatas_.end());
 
-	// ƒTƒEƒ“ƒhƒf[ƒ^‚ÌQÆ‚ğæ“¾
+	// ã‚µã‚¦ãƒ³ãƒ‰ãƒ‡ãƒ¼ã‚¿ã®å‚ç…§ã‚’å–å¾—
 	SoundData& soundData = it->second;;
 
-	// ”gŒ`ƒtƒH[ƒ}ƒbƒg‚ğŒ³‚ÉSourceVoice‚Ì¶¬
+	// æ³¢å½¢ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã‚’å…ƒã«SourceVoiceã®ç”Ÿæˆ
 	IXAudio2SourceVoice* pSourceVoice = nullptr;
 	result = xAudio2->CreateSourceVoice(&pSourceVoice, &soundData.wfex);
 	assert(SUCCEEDED(result));
 
-	// Ä¶‚·‚é”gŒ`ƒf[ƒ^‚Ìİ’è
+	// å†ç”Ÿã™ã‚‹æ³¢å½¢ãƒ‡ãƒ¼ã‚¿ã®è¨­å®š
 	XAUDIO2_BUFFER buf{};
 	buf.pAudioData = soundData.pBuffer;
 	buf.AudioBytes = soundData.bufferSize;
 	buf.Flags = XAUDIO2_END_OF_STREAM;
 
-	// ”gŒ`ƒf[ƒ^‚ÌÄ¶
+	// æ³¢å½¢ãƒ‡ãƒ¼ã‚¿ã®å†ç”Ÿ
 	result = pSourceVoice->SubmitSourceBuffer(&buf);
 	result = pSourceVoice->Start();
 }
@@ -144,24 +144,24 @@ void Audio::PlayWave(const std::string& filename) {
 void Audio::LoopPlayWave(const std::string& filename)
 {
 	std::map<std::string, SoundData>::iterator it = soundDatas_.find(filename);
-	// –¢“Ç‚İ‚İ‚ÌŒŸo
+	// æœªèª­ã¿è¾¼ã¿ã®æ¤œå‡º
 	assert(it != soundDatas_.end());
-	// ƒTƒEƒ“ƒhƒf[ƒ^‚ÌQÆ‚ğæ“¾
+	// ã‚µã‚¦ãƒ³ãƒ‰ãƒ‡ãƒ¼ã‚¿ã®å‚ç…§ã‚’å–å¾—
 	SoundData& soundData = it->second;
 
-	// ”gŒ`ƒtƒH[ƒ}ƒbƒg‚ğ‚à‚Æ‚ÉSoundVoice‚Ì¶¬
+	// æ³¢å½¢ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã‚’ã‚‚ã¨ã«SoundVoiceã®ç”Ÿæˆ
 	result = xAudio2->CreateSourceVoice(&sVoice, &soundData.wfex);
 	assert((SUCCEEDED(result)));
 
-	// Ä¶‚·‚é”gŒ`ƒf[ƒ^‚Ìİ’è
+	// å†ç”Ÿã™ã‚‹æ³¢å½¢ãƒ‡ãƒ¼ã‚¿ã®è¨­å®š
 	buf.pAudioData = soundData.pBuffer;
 	buf.AudioBytes = soundData.bufferSize;
 	buf.Flags = XAUDIO2_END_OF_STREAM;
 
-	// ‰¹ºƒ‹[ƒv
+	// éŸ³å£°ãƒ«ãƒ¼ãƒ—
 	buf.LoopCount = XAUDIO2_LOOP_INFINITE;
 
-	// ”gŒ`ƒf[ƒ^‚ÌÄ¶
+	// æ³¢å½¢ãƒ‡ãƒ¼ã‚¿ã®å†ç”Ÿ
 	result = sVoice->SubmitSourceBuffer(&buf);
 	result = sVoice->Start();
 }
@@ -169,21 +169,21 @@ void Audio::LoopPlayWave(const std::string& filename)
 void Audio::StopWave(const std::string& filename)
 {
 	std::map<std::string, SoundData>::iterator it = soundDatas_.find(filename);
-	// –¢“Ç‚İ‚İ‚ÌŒŸo
+	// æœªèª­ã¿è¾¼ã¿ã®æ¤œå‡º
 	assert(it != soundDatas_.end());
-	// ƒTƒEƒ“ƒhƒf[ƒ^‚ÌQÆ‚ğæ“¾
+	// ã‚µã‚¦ãƒ³ãƒ‰ãƒ‡ãƒ¼ã‚¿ã®å‚ç…§ã‚’å–å¾—
 	SoundData& soundData = it->second;
 
-	// ”gŒ`ƒtƒH[ƒ}ƒbƒg‚ğ‚à‚Æ‚ÉSoundVoice‚Ì¶¬
+	// æ³¢å½¢ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã‚’ã‚‚ã¨ã«SoundVoiceã®ç”Ÿæˆ
 	result = xAudio2->CreateSourceVoice(&sVoice, &soundData.wfex);
 	assert((SUCCEEDED(result)));
 
-	// Ä¶‚·‚é”gŒ`ƒf[ƒ^‚Ìİ’è
+	// å†ç”Ÿã™ã‚‹æ³¢å½¢ãƒ‡ãƒ¼ã‚¿ã®è¨­å®š
 	buf.pAudioData = soundData.pBuffer;
 	buf.AudioBytes = soundData.bufferSize;
 	buf.Flags = XAUDIO2_END_OF_STREAM;
 
-	// ”gŒ`ƒf[ƒ^‚ÌÄ¶
+	// æ³¢å½¢ãƒ‡ãƒ¼ã‚¿ã®å†ç”Ÿ
 	result = sVoice->SubmitSourceBuffer(&buf);
 	result = sVoice->Stop();
 	result = sVoice->FlushSourceBuffers();
@@ -193,21 +193,21 @@ void Audio::StopWave(const std::string& filename)
 void Audio::SetVolume(const std::string& filename, float volume)
 {
 	std::map<std::string, SoundData>::iterator it = soundDatas_.find(filename);
-	// –¢“Ç‚İ‚İ‚ÌŒŸo
+	// æœªèª­ã¿è¾¼ã¿ã®æ¤œå‡º
 	assert(it != soundDatas_.end());
-	// ƒTƒEƒ“ƒhƒf[ƒ^‚ÌQÆ‚ğæ“¾
+	// ã‚µã‚¦ãƒ³ãƒ‰ãƒ‡ãƒ¼ã‚¿ã®å‚ç…§ã‚’å–å¾—
 	SoundData& soundData = it->second;
 
-	// ”gŒ`ƒtƒH[ƒ}ƒbƒg‚ğ‚à‚Æ‚ÉSoundVoice‚Ì¶¬
+	// æ³¢å½¢ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã‚’ã‚‚ã¨ã«SoundVoiceã®ç”Ÿæˆ
 	result = xAudio2->CreateSourceVoice(&sVoice, &soundData.wfex);
 	assert((SUCCEEDED(result)));
 
-	// Ä¶‚·‚é”gŒ`ƒf[ƒ^‚Ìİ’è
+	// å†ç”Ÿã™ã‚‹æ³¢å½¢ãƒ‡ãƒ¼ã‚¿ã®è¨­å®š
 	buf.pAudioData = soundData.pBuffer;
 	buf.AudioBytes = soundData.bufferSize;
 	buf.Flags = XAUDIO2_END_OF_STREAM;
 
-	// ”gŒ`ƒf[ƒ^‚ÌÄ¶
+	// æ³¢å½¢ãƒ‡ãƒ¼ã‚¿ã®å†ç”Ÿ
 	result = sVoice->SubmitSourceBuffer(&buf);
 	result = sVoice->SetVolume(volume);
 }

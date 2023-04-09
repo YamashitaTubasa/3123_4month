@@ -8,7 +8,7 @@ RailCamera::~RailCamera() {
 	delete camera;
 }
 
-//‰Šú‰»
+//åˆæœŸåŒ–
 void RailCamera::Initialize(Object3d* player_) {
 	viewProjection = new ViewProjection;
 	input = Input::GetInstance();
@@ -24,7 +24,7 @@ void RailCamera::Initialize(Object3d* player_) {
 	velo = 0.8f;
 }
 
-//XV
+//æ›´æ–°
 void RailCamera::Update(Object3d* player_, std::vector<Vector3>& point) {
 	Vector3 target_ = spline_.Update(point, timeRate);
 	Vector3 eye_ = viewProjection->eye;
@@ -33,7 +33,7 @@ void RailCamera::Update(Object3d* player_, std::vector<Vector3>& point) {
 	Vector3 yTmpVec = { 0,1,0 };
 
 
-	//‹Èü•âŠ®
+	//æ›²ç·šè£œå®Œ
 	camera_ = spline_.Update(point, timeRate);
 
 	camera->SetPosition(camera_ + frontTmp * 0.5);
@@ -44,7 +44,7 @@ void RailCamera::Update(Object3d* player_, std::vector<Vector3>& point) {
 	player_->SetRotationX(std::atan2(-frontTmp.y, rotaVec.z) + frontTmp.y * 70);
 	Vector3 answer = camera->GetRotation();
 
-	//XV
+	//æ›´æ–°
 	camera->Update();
 	viewProjection->target = (camera_ + frontTmp * 0.5);
 	viewProjection->eye = ( camera_ - frontTmp );
@@ -54,9 +54,9 @@ void RailCamera::Update(Object3d* player_, std::vector<Vector3>& point) {
 }
 
 
-////////////////////--------ƒNƒ‰ƒX“à•Ö—˜ŠÖ”--------///////////////////////
+////////////////////--------ã‚¯ãƒ©ã‚¹å†…ä¾¿åˆ©é–¢æ•°--------///////////////////////
 
-//•ûŒüƒxƒNƒgƒ‹‚ğæ“¾
+//æ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«ã‚’å–å¾—
 Vector3 RailCamera::GetFront(Vector3 a, Vector3 b) {
 	Vector3 yTmpVec = { 0, 1, 0 };
 	Vector3 frontTmp = { 0, 0, 0 };
@@ -66,18 +66,18 @@ Vector3 RailCamera::GetFront(Vector3 a, Vector3 b) {
 	Vector3 a_ = { a.x,a.y,a.z };
 	Vector3 b_ = { b.x,b.y,b.z };
 
-	//Y²‰¼ƒxƒNƒgƒ‹
+	//Yè»¸ä»®ãƒ™ã‚¯ãƒˆãƒ«
 	yTmpVec.normalize();
-	//³–Ê‰¼ƒxƒNƒgƒ‹
+	//æ­£é¢ä»®ãƒ™ã‚¯ãƒˆãƒ«
 	frontTmp = b_ - a_;
 	frontTmp.normalize();
-	//‰EƒxƒNƒgƒ‹
+	//å³ãƒ™ã‚¯ãƒˆãƒ«
 	rightVec = yTmpVec.cross(frontTmp);
 	rightVec.normalize();
-	//¶ƒxƒNƒgƒ‹
+	//å·¦ãƒ™ã‚¯ãƒˆãƒ«
 	leftVec = frontTmp.cross(yTmpVec);
 	leftVec.normalize();
-	//³–ÊƒxƒNƒgƒ‹
+	//æ­£é¢ãƒ™ã‚¯ãƒˆãƒ«
 	frontVec = rightVec.cross(yTmpVec);
 	frontVec.normalize();
 

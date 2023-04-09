@@ -21,37 +21,37 @@ using namespace DirectX;
 using namespace Microsoft::WRL;
 using namespace std;
 
-// ’¸“_ƒf[ƒ^
+// é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿
 struct VertexPosUv {
 	Vector3 pos;
 	Vector2 uv;
 };
 
-// ƒpƒCƒvƒ‰ƒCƒ“ƒZƒbƒg
+// ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã‚»ãƒƒãƒˆ
 struct PipelineSet {
-	// ƒpƒCƒvƒ‰ƒCƒ“ƒXƒe[ƒgƒIƒuƒWƒFƒNƒg
+	// ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã‚¹ãƒ†ãƒ¼ãƒˆã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	ComPtr<ID3D12PipelineState> pipelinestate;
-	// ƒ‹[ƒgƒVƒOƒlƒ`ƒƒ
+	// ãƒ«ãƒ¼ãƒˆã‚·ã‚°ãƒãƒãƒ£
 	ComPtr<ID3D12RootSignature> rootsignature;
 };
 
-// ƒXƒvƒ‰ƒCƒg‚Ì‹¤’Êƒf[ƒ^
+// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã®å…±é€šãƒ‡ãƒ¼ã‚¿
 struct SpriteCommon {
-	// ƒpƒCƒvƒ‰ƒCƒ“ƒZƒbƒg
+	// ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã‚»ãƒƒãƒˆ
 	PipelineSet pipelineSet;
-	// Ë‰es—ñ
+	// å°„å½±è¡Œåˆ—
 	Matrix4 matProjection{};
-	// ƒeƒNƒXƒ`ƒƒ—pƒfƒXƒNƒŠƒvƒ^ƒq[ƒv‚Ì¶¬
+	// ãƒ†ã‚¯ã‚¹ãƒãƒ£ç”¨ãƒ‡ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ’ãƒ¼ãƒ—ã®ç”Ÿæˆ
 	ComPtr<ID3D12DescriptorHeap> descHeap;
-	// SRV‚ÌÅ‘å–‡”
+	// SRVã®æœ€å¤§æšæ•°
 	static const size_t kMaxSRVCount = 512;
-	// ƒeƒNƒXƒ`ƒƒƒ\[ƒX(ƒeƒNƒXƒ`ƒƒƒoƒbƒtƒ@)‚Ì”z—ñ
+	// ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚½ãƒ¼ã‚¹(ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒãƒƒãƒ•ã‚¡)ã®é…åˆ—
 	ComPtr<ID3D12Resource> texBuff[kMaxSRVCount];
-	// ƒeƒNƒXƒ`ƒƒƒoƒbƒtƒ@æ“¾
+	// ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒãƒƒãƒ•ã‚¡å–å¾—
 	ID3D12Resource* GetTexBuffer(uint32_t index) const { return texBuff[index].Get(); }
 };
 
-// ƒXƒvƒ‰ƒCƒg
+// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆ
 class Sprite
 {
 public:
@@ -61,116 +61,116 @@ public:
 
 private:
 	struct ConstBufferData {
-		Vector4 color; // F (RGBA)
-		Matrix4 mat; //À•W
+		Vector4 color; // è‰² (RGBA)
+		Matrix4 mat; //åº§æ¨™
 	};
 
 public:
 	/// <summary>
-	/// ƒXƒvƒ‰ƒCƒg‹¤’Êƒf[ƒ^¶¬
+	/// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆå…±é€šãƒ‡ãƒ¼ã‚¿ç”Ÿæˆ
 	/// </summary>
 	SpriteCommon SpriteCommonCreate(ID3D12Device* dev, int window_width, int window_height);
 
 	/// <summary>
-	/// 3DƒIƒuƒWƒFƒNƒg—pƒpƒCƒvƒ‰ƒCƒ“¶¬
+	/// 3Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆç”¨ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ç”Ÿæˆ
 	/// </summary>
 	/// <param name="device"></param>
 	/// <returns></returns>
 	PipelineSet SpriteCreateGraphicsPipeline(ID3D12Device* device);
 
 	/// <summary>
-	/// ƒXƒvƒ‰ƒCƒg‹¤’ÊƒeƒNƒXƒ`ƒƒ“Ç‚İ‚İ
+	/// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆå…±é€šãƒ†ã‚¯ã‚¹ãƒãƒ£èª­ã¿è¾¼ã¿
 	/// </summary>
 	void LoadTexture(SpriteCommon& spriteCommon, UINT texnumber, 
 		const wchar_t* filename, ID3D12Device* dev);
 
 	/// <summary>
-	/// ƒXƒvƒ‰ƒCƒg¶¬
+	/// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆç”Ÿæˆ
 	/// </summary>
 	void SpriteCreate(ID3D12Device* dev, int window_width, int window_height, 
 		UINT texNumber, const SpriteCommon& spriteCommon, Vector2 anchorpoint, bool isFlipX, bool FlipY);
 
 	/// <summary>
-	/// ƒXƒvƒ‰ƒCƒg’P‘Ì’¸“_ƒoƒbƒtƒ@‚Ì“]‘—
+	/// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆå˜ä½“é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã®è»¢é€
 	/// </summary>
 	void SpriteTransferVertexBuffer(const Sprite& sprite, const SpriteCommon& spriteCommon, uint32_t texIndex_ = UINT32_MAX);
 
 	/// <summary>
-	/// ƒXƒvƒ‰ƒCƒg’P‘ÌXV
+	/// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆå˜ä½“æ›´æ–°
 	/// </summary>
 	void SpriteUpdate(Sprite& sprite, const SpriteCommon& spriteCommon);
 
 	/// <summary>
-	/// •`‰æ‘Oˆ—
+	/// æç”»å‰å‡¦ç†
 	/// </summary>
 	static void PreDraw(ID3D12GraphicsCommandList* cmdList, const SpriteCommon& spriteCommon);
 
 	/// <summary>
-	/// •`‰æŒãˆ—
+	/// æç”»å¾Œå‡¦ç†
 	/// </summary>
 	static void PostDraw();
 
 	/// <summary>
-	/// ƒXƒvƒ‰ƒCƒg’P‘Ì•`‰æ
+	/// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆå˜ä½“æç”»
 	/// </summary>
 	void SpriteDraw(ID3D12GraphicsCommandList* cmdList_, const SpriteCommon& spriteCommon, 
 		ID3D12Device* dev,D3D12_VERTEX_BUFFER_VIEW& vbView);
 
 	/// <summary>
-	/// I—¹ˆ—
+	/// çµ‚äº†å‡¦ç†
 	/// </summary>
 	void Finalize();
 
-public: // ƒZƒbƒ^[
-	// À•Wİ’è
+public: // ã‚»ãƒƒã‚¿ãƒ¼
+	// åº§æ¨™è¨­å®š
 	void SetPosition(Vector3 position) { this->position = position; }
-	// ƒTƒCƒYİ’è
+	// ã‚µã‚¤ã‚ºè¨­å®š
 	void SetScale(Vector2 scale) { this->scale = scale; }
-	// ‰ñ“]
+	// å›è»¢
 	void SetRotation(float rotation) { this->rotation = rotation; }
-	// ”Ô†
+	// ç•ªå·
 	void SetTexNumber(UINT texNumber) { this->texNumber = texNumber; }
-	// F
+	// è‰²
 	void SetColor(const Vector4& color) { this->color_ = color; }
-	// ƒtƒŠƒbƒv
+	// ãƒ•ãƒªãƒƒãƒ—
 	void SetIsFlipX(bool isFlipX) { this->isFlipX_ = isFlipX; } // X
 	void SetIsFlipY(bool isFlipY) { this->isFlipY_ = isFlipY; } // Y
-	// ƒeƒNƒXƒ`ƒƒ¶ãÀ•W
+	// ãƒ†ã‚¯ã‚¹ãƒãƒ£å·¦ä¸Šåº§æ¨™
 	void SetTexLeftTop(const Vector2& texLeftTop) { this->texLeftTop_ = texLeftTop; }
-	// ƒeƒNƒXƒ`ƒƒØ‚èo‚µƒTƒCƒY
+	// ãƒ†ã‚¯ã‚¹ãƒãƒ£åˆ‡ã‚Šå‡ºã—ã‚µã‚¤ã‚º
 	void SetTexSize(const Vector2& texSize) { this->texSize_ = texSize; }
 
-public: // ƒQƒbƒ^[
-	// À•W
+public: // ã‚²ãƒƒã‚¿ãƒ¼
+	// åº§æ¨™
 	Vector3 GetPosition() const { return position; }
-	// ƒTƒCƒY
+	// ã‚µã‚¤ã‚º
 	Vector2 GetScale() const { return scale; }
-	// ‰ñ“]
+	// å›è»¢
 	float GetRotation() const { return rotation; }
-	// ”Ô†
+	// ç•ªå·
 	UINT GetTexNumber() const { return texNumber; }
-	// F
+	// è‰²
 	Vector4 GetColor() const { return color_; }
-	// ƒtƒŠƒbƒv
+	// ãƒ•ãƒªãƒƒãƒ—
 	bool GetIsFlipX() const { return isFlipX_; } // X
 	bool GetIsFlipY() const { return isFlipY_; } // Y
-	// ƒeƒNƒXƒ`ƒƒ¶ãÀ•W
+	// ãƒ†ã‚¯ã‚¹ãƒãƒ£å·¦ä¸Šåº§æ¨™
 	Vector2 GetTexLeftTop() const { return texLeftTop_; }
-	// ƒeƒNƒXƒ`ƒƒØ‚èo‚µƒTƒCƒY
+	// ãƒ†ã‚¯ã‚¹ãƒãƒ£åˆ‡ã‚Šå‡ºã—ã‚µã‚¤ã‚º
 	Vector2 GetTexSize() const { return texSize_; }
 
 private:
 	static ID3D12Device* device;
 
 public:
-	//’¸“_ƒoƒbƒtƒ@
+	//é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡
 	ComPtr<ID3D12Resource> vertBuff;
-	//’¸“_ƒoƒbƒtƒ@ƒrƒ…[
+	//é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼
 	D3D12_VERTEX_BUFFER_VIEW vbView{};
 	D3D12_RESOURCE_DESC resDesc;
 
 protected:
-	// DirectXCommon‚ÌƒCƒ“ƒXƒ^ƒ“ƒX
+	// DirectXCommonã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹
 	DirectXCommon* dXCommon = nullptr;
 	SpriteCommon spriteCommon_;
 
@@ -179,36 +179,36 @@ protected:
 	ComPtr<ID3D12Resource> constBuff;
 	D3D12_DESCRIPTOR_HEAP_DESC srvHeapDesc = {};
 	static const size_t kMaxSRVCount = 2056;
-	// ƒeƒNƒXƒ`ƒƒƒoƒbƒtƒ@
+	// ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒãƒƒãƒ•ã‚¡
 	std::array<ComPtr<ID3D12Resource>, kMaxSRVCount> texBuffers_;
 
-	// ƒeƒNƒXƒ`ƒƒ”Ô†
+	// ãƒ†ã‚¯ã‚¹ãƒãƒ£ç•ªå·
 	UINT texNumber = 0;
 	uint32_t texIndex_ = 0;
-	// À•W
+	// åº§æ¨™
 	Vector3 position = { 0.0f, 0.0f, 0.0f };
-	// ƒTƒCƒY
+	// ã‚µã‚¤ã‚º
 	Vector2 scale = { 1.0f, 1.0f };
-	// ‰ñ“]
+	// å›è»¢
 	Vector3 rotation_ = { 0.0f,0.0f,0.0f };
-	// ƒ[ƒ‹ƒhs—ñ
+	// ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—
 	Matrix4 matWorld;
-	// ƒAƒ“ƒJ[ƒ|ƒCƒ“ƒg
+	// ã‚¢ãƒ³ã‚«ãƒ¼ãƒã‚¤ãƒ³ãƒˆ
 	Vector2 anchorpoint = { 0.0f,0.0f };
-	// ƒeƒNƒXƒ`ƒƒ¶ãÀ•Wİ’è
+	// ãƒ†ã‚¯ã‚¹ãƒãƒ£å·¦ä¸Šåº§æ¨™è¨­å®š
 	Vector2 texLeftTop_ = { 50.0f, 50.0f };
-	// ƒeƒNƒXƒ`ƒƒØ‚èo‚µƒTƒCƒY
+	// ãƒ†ã‚¯ã‚¹ãƒãƒ£åˆ‡ã‚Šå‡ºã—ã‚µã‚¤ã‚º
 	Vector2 texSize_ = { 100.0f, 100.0f };
-	// F
+	// è‰²
 	Vector4 color_ = { 1,1,1,1 };
 
-	// Z²‰ñ‚è‚Ì‰ñ“]
+	// Zè»¸å›ã‚Šã®å›è»¢
 	float rotation = 0.0f;
-	// ¶‰E”½“]
+	// å·¦å³åè»¢
 	bool isFlipX_ = false;
-	// ã‰º”½“]
+	// ä¸Šä¸‹åè»¢
 	bool isFlipY_ = false;
-	// ”ñ•\¦
+	// éè¡¨ç¤º
 	bool isInvisible = false;
 };
 
