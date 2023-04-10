@@ -122,7 +122,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)DirectXGame\Application\Platform;$(ProjectDir)DirectXGame\Application\Scene;$(ProjectDir)DirectXGame\Engin\2d;$(ProjectDir)DirectXGame\Engin\3d;$(ProjectDir)DirectXGame\Engin\Audio;$(ProjectDir)DirectXGame\Engin\Collision;$(ProjectDir)DirectXGame\Engin\Effect;$(ProjectDir)DirectXGame\Engin\Input;$(ProjectDir)DirectXGame\Engin\Math;$(ProjectDir)DirectXGame\Engin\Platform;$(ProjectDir)DirectXGame\Engin\Scene;$(ProjectDir)External\ImGui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)DirectXGame\Application\Platform;$(ProjectDir)DirectXGame\Application\Scene;$(ProjectDir)DirectXGame\Engin\2d;$(ProjectDir)DirectXGame\Engin\3d;$(ProjectDir)DirectXGame\Engin\Audio;$(ProjectDir)DirectXGame\Engin\Collision;$(ProjectDir)DirectXGame\Engin\Effect;$(ProjectDir)DirectXGame\Engin\Input;$(ProjectDir)DirectXGame\Engin\Math;$(ProjectDir)DirectXGame\Engin\Platform;$(ProjectDir)DirectXGame\Engin\Scene;$(ProjectDir)External\ImGui;$(ProjectDir)DirectXGame\Engin\PostEffect;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -138,7 +138,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)DirectXGame\Application\Platform;$(ProjectDir)DirectXGame\Application\Scene;$(ProjectDir)DirectXGame\Engin\2d;$(ProjectDir)DirectXGame\Engin\3d;$(ProjectDir)DirectXGame\Engin\Audio;$(ProjectDir)DirectXGame\Engin\Collision;$(ProjectDir)DirectXGame\Engin\Effect;$(ProjectDir)DirectXGame\Engin\Input;$(ProjectDir)DirectXGame\Engin\Math;$(ProjectDir)DirectXGame\Engin\Platform;$(ProjectDir)DirectXGame\Engin\Scene;$(ProjectDir)External\ImGui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)DirectXGame\Application\Platform;$(ProjectDir)DirectXGame\Application\Scene;$(ProjectDir)DirectXGame\Engin\2d;$(ProjectDir)DirectXGame\Engin\3d;$(ProjectDir)DirectXGame\Engin\Audio;$(ProjectDir)DirectXGame\Engin\Collision;$(ProjectDir)DirectXGame\Engin\Effect;$(ProjectDir)DirectXGame\Engin\Input;$(ProjectDir)DirectXGame\Engin\Math;$(ProjectDir)DirectXGame\Engin\Platform;$(ProjectDir)DirectXGame\Engin\Scene;$(ProjectDir)External\ImGui;$(ProjectDir)DirectXGame\Engin\PostEffect;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -172,6 +172,7 @@
     <ClCompile Include="DirectXGame\Engin\Math\Vector2.cpp" />
     <ClCompile Include="DirectXGame\Engin\Math\Vector3.cpp" />
     <ClCompile Include="DirectXGame\Engin\Math\Vector4.cpp" />
+    <ClCompile Include="DirectXGame\Engin\PostEffect\PostEffect.cpp" />
     <ClCompile Include="DirectXGame\Engin\Scene\RLFramework.cpp" />
     <ClCompile Include="DirectXGame\Application\Scene\GamePlayScene.cpp" />
     <ClCompile Include="DirectXGame\Engin\2d\Sprite.cpp" />
@@ -189,6 +190,7 @@
     <None Include="Resources\shaders\Basic.hlsli" />
     <None Include="Resources\shaders\OBJShaderHeader.hlsli" />
     <None Include="Resources\shaders\Particle.hlsli" />
+    <None Include="Resources\shaders\PostEffect.hlsli" />
     <None Include="Resources\shaders\Sprite.hlsli" />
   </ItemGroup>
   <ItemGroup>
@@ -229,6 +231,18 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="Resources\shaders\ParticleVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\PostEffectPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\PostEffectVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
@@ -278,6 +292,7 @@
     <ClInclude Include="DirectXGame\Engin\Math\Vector2.h" />
     <ClInclude Include="DirectXGame\Engin\Math\Vector3.h" />
     <ClInclude Include="DirectXGame\Engin\Math\Vector4.h" />
+    <ClInclude Include="DirectXGame\Engin\PostEffect\PostEffect.h" />
     <ClInclude Include="DirectXGame\Engin\Scene\RLFramework.h" />
     <ClInclude Include="DirectXGame\Application\Scene\GamePlayScene.h" />
     <ClInclude Include="DirectXGame\Engin\2d\Sprite.h" />
