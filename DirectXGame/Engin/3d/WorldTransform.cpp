@@ -79,4 +79,5 @@ void WorldTransform::UpdateMatrix()
 
 	//定数バッファに転送
 	constMap->matWorld = matWorld_;
+
 }
