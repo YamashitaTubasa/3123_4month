@@ -17,11 +17,14 @@ public:
 		Matrix4 color; // 色(RGBA)
 	};
 
-
-	struct VertexPosUv {
-		Vector3 pos;
-		Vector2 uv;
+	struct ConstBufferDataTransform {
+		XMMATRIX mat; //3D変換行列
 	};
+
+	//struct VertexPosUv {
+	//	Vector3 pos;
+	//	Vector2 uv;
+	//};
 
 	////定数バッファ用データ構造体(Material)
 	//struct ConstBufferDataTransform {
@@ -55,9 +58,15 @@ private:
 	ComPtr<ID3D12PipelineState> pipelineState;
 	ComPtr<ID3D12Resource> vertBuff;
 
+	ComPtr<ID3D12Resource> constBuffMaterial;
+	ComPtr<ConstBufferDataMaterial> constMapMaterial;
+
 	//定数バッファの生成(準備)
 	ComPtr<ID3D12Resource> constBuffTransform;
-	//ComPtr<ConstBufferDataTransform> constMapTransform;
+	ComPtr<ConstBufferDataTransform> constMapTransform;
+
+	//設定を元にSRV用デスクリプタヒープを生成
+	ComPtr<ID3D12DescriptorHeap> srvHeap;
 
 	// 頂点バッファビューの作成
 	D3D12_VERTEX_BUFFER_VIEW vbView{};

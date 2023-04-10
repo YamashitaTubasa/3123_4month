@@ -12,7 +12,7 @@ void Line::Initialize() {
 	HRESULT result;
 
 	// 頂点データ全体のサイズ　＝　頂点データ一つ分のサイズ　＊　頂点データの要素数
-	UINT sizeVB = static_cast<UINT>(sizeof(VertexPosUv) * _countof(vertices));
+	UINT sizeVB = static_cast<UINT>(sizeof(Vector3) * _countof(vertices));
 
 	// 頂点バッファの設定
 	D3D12_HEAP_PROPERTIES heapProp{}; // ヒープ設定
@@ -38,36 +38,52 @@ void Line::Initialize() {
 		IID_PPV_ARGS(&vertBuff));
 	assert(SUCCEEDED(result));
 
-	////定数バッファの生成(設定)
-	////ヒープ設定
-	//D3D12_HEAP_PROPERTIES cbHeapProp{};
-	//cbHeapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
-	////リソース設定
-	//D3D12_RESOURCE_DESC cbResourceDesc{};
-	//cbResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
-	//cbResourceDesc.Width = (sizeof(ConstBufferDataTransform) + 0xff) & ~0xff;	//256バイトアラインメント
-	//cbResourceDesc.Height = 1;
-	//cbResourceDesc.DepthOrArraySize = 1;
-	//cbResourceDesc.MipLevels = 1;
-	//cbResourceDesc.SampleDesc.Count = 1;
-	//cbResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+	//定数バッファの生成(設定)
+	//ヒープ設定
+	D3D12_HEAP_PROPERTIES cbHeapProp{};
+	cbHeapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
+	//リソース設定
+	D3D12_RESOURCE_DESC cbResourceDesc{};
+	cbResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
+	cbResourceDesc.Width = (sizeof(ConstBufferDataMaterial) + 0xff) & ~0xff;	//256バイトアラインメント
+	cbResourceDesc.Height = 1;
+	cbResourceDesc.DepthOrArraySize = 1;
+	cbResourceDesc.MipLevels = 1;
+	cbResourceDesc.SampleDesc.Count = 1;
+	cbResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
-	////定数バッファの生成
-	//result = dXCommon_->GetDevice()->CreateCommittedResource(
-	//	&cbHeapProp,
-	//	D3D12_HEAP_FLAG_NONE,
-	//	&cbResourceDesc,
-	//	D3D12_RESOURCE_STATE_GENERIC_READ,
-	//	nullptr,
-	//	IID_PPV_ARGS(&constBuffTransform));
-	//assert(SUCCEEDED(result));
+	{
+		//定数バッファの生成(設定)
+		//ヒープ設定
+		D3D12_HEAP_PROPERTIES cbHeapProp{};
+		cbHeapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
+		//リソース設定
+		D3D12_RESOURCE_DESC cbResourceDesc{};
+		cbResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
+		cbResourceDesc.Width = (sizeof(ConstBufferDataTransform) + 0xff) & ~0xff;	//256バイトアラインメント
+		cbResourceDesc.Height = 1;
+		cbResourceDesc.DepthOrArraySize = 1;
+		cbResourceDesc.MipLevels = 1;
+		cbResourceDesc.SampleDesc.Count = 1;
+		cbResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+	}
 
-	////定数バッファのマッピング
-	//result = constBuffTransform->Map(0, nullptr, (void**)&constMapTransform);	//マッピング
-	//assert(SUCCEEDED(result));
+	//定数バッファの生成
+	result = dXCommon_->GetDevice()->CreateCommittedResource(
+		&cbHeapProp,
+		D3D12_HEAP_FLAG_NONE,
+		&cbResourceDesc,
+		D3D12_RESOURCE_STATE_GENERIC_READ,
+		nullptr,
+		IID_PPV_ARGS(&constBuffTransform));
+	assert(SUCCEEDED(result));
 
-	////単位行列を代入
-	//constMapTransform->mat = XMMatrixIdentity();
+	//定数バッファのマッピング
+	result = constBuffTransform->Map(0, nullptr, (void**)&constMapTransform);	//マッピング
+	assert(SUCCEEDED(result));
+
+	//単位行列を代入
+	constMapTransform->mat = XMMatrixIdentity();
 
 	// GPU上のバッファに対した仮想メモリ(メインメモリ上)を取得
 	Vector3* vertMap = nullptr;
@@ -90,6 +106,88 @@ void Line::Initialize() {
 	ComPtr<ID3DBlob> vsBlob; // 頂点シェーダオブジェクト
 	ComPtr<ID3DBlob> psBlob; // ピクセルシェーダオブジェクト
 	ComPtr<ID3DBlob> errorBlob; // エラーオブジェクト
+
+	//横方向ピクセル数
+	const size_t textureWidth = 256;
+	//縦方向ピクセル数
+	const size_t textureHeight = 256;
+
+	//配列の要素数
+	const size_t imageDataCount = textureWidth * textureHeight;
+
+	//画像イメージデータ配列
+	Vector4* imageData = new Vector4[imageDataCount];
+
+	//全ピクセルの色を初期化
+	for (size_t i = 0; i < imageDataCount; i++) {
+		imageData[i].x = 1.0f; //R
+		imageData[i].y = 0.0f; //G
+		imageData[i].z = 0.0f; //B
+		imageData[i].w = 1.0f; //A
+	}
+
+	//ヒープの設定
+	D3D12_HEAP_PROPERTIES textureHeapProp{};
+	textureHeapProp.Type = D3D12_HEAP_TYPE_CUSTOM;
+	textureHeapProp.CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_WRITE_BACK;
+	textureHeapProp.MemoryPoolPreference = D3D12_MEMORY_POOL_L0;
+	//リソース設定
+	D3D12_RESOURCE_DESC textureResourceDesc{};
+	textureResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
+	textureResourceDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+	textureResourceDesc.Width = textureWidth;		//幅
+	textureResourceDesc.Height = textureHeight;		//高さ
+	textureResourceDesc.DepthOrArraySize = 1;
+	textureResourceDesc.MipLevels = 1;
+	textureResourceDesc.SampleDesc.Count = 1;
+
+	//テクスチャバッファに生成
+	ID3D12Resource *texBuff = nullptr;
+
+	//テクスチャバッファの生成
+	result = dXCommon_->GetDevice()->CreateCommittedResource(
+		&textureHeapProp,
+		D3D12_HEAP_FLAG_NONE,
+		&textureResourceDesc,
+		D3D12_RESOURCE_STATE_GENERIC_READ,
+		nullptr,
+		IID_PPV_ARGS(&texBuff));
+
+	//テクスチャバッファにデータ転送
+	result = texBuff->WriteToSubresource(
+		0,
+		nullptr,
+		imageData,
+		sizeof(Vector4) * textureWidth,		//1ラインサイズ
+		sizeof(Vector4) * imageDataCount	//全サイズ
+	);
+
+	//SRVの最大個数
+	const size_t kmaxSRVCount = 2056;
+
+	//デスクリプタヒープの設定
+	D3D12_DESCRIPTOR_HEAP_DESC srvHeapDesc{};
+	srvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
+	srvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;	//シェーダから見えるように
+	srvHeapDesc.NumDescriptors = kmaxSRVCount;
+
+	result = dXCommon_->GetDevice()->CreateDescriptorHeap(&srvHeapDesc, IID_PPV_ARGS(&srvHeap));
+	assert(SUCCEEDED(result));
+
+	//SRVヒープの先頭ハンドルを取得
+	D3D12_CPU_DESCRIPTOR_HANDLE srvHandle = srvHeap->GetCPUDescriptorHandleForHeapStart();
+
+	//シェーダリソースビューに作成
+	//シェーダリソースビューの設定
+	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};
+	srvDesc.Format = resDesc.Format;
+	srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
+	srvDesc.Texture2D.MipLevels = resDesc.MipLevels;
+
+	//ハンドルのさす位置にシェーダリソースビューの作成
+	dXCommon_->GetDevice()->CreateShaderResourceView(texBuff, &srvDesc, srvHandle);
+
 
 	// 頂点シェーダの読み込みとコンパイル
 	result = D3DCompileFromFile(
@@ -211,11 +309,54 @@ void Line::Initialize() {
 	pipelineDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB; // 0～255指定のRGBA
 	pipelineDesc.SampleDesc.Count = 1; // １ピクセルにつき１回サンプリング
 
+	//デスクリプタレンジの設定
+	D3D12_DESCRIPTOR_RANGE descriptorRange{};
+	descriptorRange.NumDescriptors = 1;
+	descriptorRange.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
+	descriptorRange.BaseShaderRegister = 0;
+	descriptorRange.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
+
+	//ルートパラメータの設定
+	D3D12_ROOT_PARAMETER rootParams[3] = {};
+
+	//定数バッファ0番
+	rootParams[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
+	rootParams[0].Descriptor.ShaderRegister = 0;
+	rootParams[0].Descriptor.RegisterSpace = 0;
+	rootParams[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
+	//テクスチャレジスタ0番
+	rootParams[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
+	rootParams[1].DescriptorTable.pDescriptorRanges = &descriptorRange;
+	rootParams[1].DescriptorTable.NumDescriptorRanges = 1;
+	rootParams[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
+	//定数バッファ1番
+	rootParams[2].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
+	rootParams[2].Descriptor.ShaderRegister = 1;
+	rootParams[2].Descriptor.RegisterSpace = 0;
+	rootParams[2].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
+
+	//テクスチャサンプラーの設定
+	D3D12_STATIC_SAMPLER_DESC samplerDesc{};
+	samplerDesc.AddressU = D3D12_TEXTURE_ADDRESS_MODE_WRAP;						//横繰り返し(タイリング)
+	samplerDesc.AddressV = D3D12_TEXTURE_ADDRESS_MODE_WRAP;						//縦繰り返し(タイニング)
+	samplerDesc.AddressW = D3D12_TEXTURE_ADDRESS_MODE_WRAP;						//奥行繰り返し(タイニング)
+	samplerDesc.BorderColor = D3D12_STATIC_BORDER_COLOR_TRANSPARENT_BLACK;		//ボーダーの時は黒
+	samplerDesc.Filter = D3D12_FILTER_MIN_MAG_MIP_LINEAR;						//全てリニア補間
+	samplerDesc.MaxLOD = D3D12_FLOAT32_MAX;										//ミップマップ最大値
+	samplerDesc.MinLOD = 0.0f;													//ミップマップ最小値
+	samplerDesc.ComparisonFunc = D3D12_COMPARISON_FUNC_NEVER;
+	samplerDesc.ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;				//ピクセルシェーダからのみ使用可能
+
 	// ルートシグネチャ
 	/*ComPtr<ID3D12RootSignature> rootSignature;*/
 	// ルードシグネチャの設定
 	D3D12_ROOT_SIGNATURE_DESC rootSignatureDesc{};
 	rootSignatureDesc.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
+	rootSignatureDesc.pParameters = rootParams;					//ルートパラメータの先頭アドレス
+	rootSignatureDesc.NumParameters = _countof(rootParams);		//ルートパラメータ数
+	rootSignatureDesc.pStaticSamplers = &samplerDesc;
+	rootSignatureDesc.NumStaticSamplers = 1;
+
 	// ルートシグネチャのシリアライズ
 	ComPtr<ID3DBlob> rootSigBlob;
 	result = D3D12SerializeRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1_0,
@@ -231,6 +372,9 @@ void Line::Initialize() {
 	/*ComPtr<ID3D12PipelineState> pipelineState;*/
 	result = dXCommon_->GetDevice()->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&pipelineState));
 	assert(SUCCEEDED(result));
+
+	//元データ解放
+	delete[] imageData;
 }
 
 void Line::Update() {
@@ -247,6 +391,15 @@ void Line::Draw() {
 	//頂点バッファの設定コマンド
 	dXCommon_->GetCommandList()->IASetVertexBuffers(0, 1, &vbView);
 
+	//定数バッファビュー(CBV)の設定コマンド
+	dXCommon_->GetCommandList()->SetGraphicsRootConstantBufferView(0, constBuffMaterial->GetGPUVirtualAddress());
+
+	//SRVヒープの設定コマンド
+	dXCommon_->GetCommandList()->SetDescriptorHeaps(1, &srvHeap);
+	//SRVヒープの先頭ハンドルを取得
+	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = srvHeap->GetGPUDescriptorHandleForHeapStart();
+	//SRVヒープの先頭にあるSRVをルートパラメータ1番に設定
+	dXCommon_->GetCommandList()->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
 	//描画コマンド
 	dXCommon_->GetCommandList()->DrawInstanced(4, 1, 0, 0);
 }

@@ -14,6 +14,7 @@
 #include "WorldTransform.h"
 #include "RailCamera.h"
 #include "Player.h"
+#include "Line.h"
 
 //====================//
 // ゲームプレイシーン
@@ -89,6 +90,8 @@ private:
 	ImGuiManager* imGuiManager = nullptr;
 	ParticleManager* ParticleMan = nullptr;
 	WinApp* winApp = nullptr;
+
+	Line* line = nullptr;
 
 	XMFLOAT3 position[5]{};
 	XMFLOAT3 rotation[5]{};
