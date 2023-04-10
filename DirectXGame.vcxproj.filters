@@ -33,9 +33,6 @@
     <ClCompile Include="DirectXGame\Engin\Audio\Audio.cpp">
       <Filter>ソースファイル\Engine\Audio</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\Engin\Effect\ParticleManager.cpp">
-      <Filter>ソースファイル\Engine\Effect</Filter>
-    </ClCompile>
     <ClCompile Include="External\ImGui\ImGuiManager.cpp">
       <Filter>ソースファイル\Engine\ImGui</Filter>
     </ClCompile>
@@ -126,6 +123,15 @@
     <ClCompile Include="DirectXGame\Engin\3d\Enemy.cpp">
       <Filter>ソースファイル\Engine\GameObject</Filter>
     </ClCompile>
+    <ClCompile Include="DirectXGame\Engin\Effect\Particle.cpp">
+      <Filter>ソースファイル\Engine\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\Engin\Effect\ParticleManager.cpp">
+      <Filter>ソースファイル\Engine\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\Engin\3d\XMViewProjection.cpp">
+      <Filter>ソースファイル\Engine\Camera</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectXGame\Engin\2d\Sprite.h">
@@ -148,9 +154,6 @@
     </ClInclude>
     <ClInclude Include="DirectXGame\Engin\3d\Object3d.h">
       <Filter>ヘッダーファイル\Engine\3d</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXGame\Engin\Effect\ParticleManager.h">
-      <Filter>ヘッダーファイル\Engine\Effect</Filter>
     </ClInclude>
     <ClInclude Include="DirectXGame\Engin\3d\ViewProjection.h">
       <Filter>ヘッダーファイル\Engine\Camera</Filter>
@@ -232,6 +235,15 @@
     </ClInclude>
     <ClInclude Include="DirectXGame\Engin\3d\Enemy.h">
       <Filter>ヘッダーファイル\Engine\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Engin\Effect\Particle.h">
+      <Filter>ヘッダーファイル\Engine\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Engin\Effect\ParticleManager.h">
+      <Filter>ヘッダーファイル\Engine\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Engin\3d\XMViewProjection.h">
+      <Filter>ヘッダーファイル\Engine\Camera</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -14,6 +14,7 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	input = Input::GetInstance();
 
 	railCamera = new RailCamera;
+	xmViewProjection = new XMViewProjection();
 
 	// OBJからモデルデータを読み込む
 	skyModel = Model::LoadFromOBJ("skydome");
@@ -42,6 +43,17 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	stage->SetScale(Vector3({ 80, 20, 20 }));
 	stage->SetPosition(Vector3(0, -26, -775));
 
+	//パーティクル初期化
+	particle_1 = Particle::LoadParticleTexture("effect1.png");
+	pm_1 = ParticleManager::Create();
+	particle_2 = Particle::LoadParticleTexture("effect2.png");
+	pm_2 = ParticleManager::Create();
+	//オブジェクトにモデルを紐付ける
+	pm_1->SetParticleModel(particle_1);
+	pm_2->SetParticleModel(particle_2);
+	//カメラをセット
+	pm_1->SetXMViewProjection(xmViewProjection);
+	pm_2->SetXMViewProjection(xmViewProjection);
 
 	// スプライトの初期化
 	// スプライト
@@ -84,16 +96,30 @@ void GamePlayScene::Update() {
 		}
 	}
 
+	//パーティクル発生実験
+	if (input->PushKey(DIK_B))
+	{
+		pm_1->Fire(particle_1, 30, 0.2f, 0, 2, { 8.0f, 0.0f });
+		pm_2->Fire(particle_2, 70, 0.2f, 0, 5, { 4.0f,0.0f });
+	}
 	//デスフラグの立った敵を削除
 	enemys_.remove_if([](std::unique_ptr < Enemy>& enemy_)
 		{
 			return enemy_->IsDead();
 		});
 
+	//カメラ更新
 	railCamera->Update(player, points);
+	//プレイヤー
 	player->Update();
+	//ステージ
 	stage->Update();
+	//天球
 	sky->Update();
+
+	//パーティクル
+	pm_1->Update();
+	pm_2->Update();
 
 	//更新コマンド
 	UpdateEnemyPopCommands();
@@ -129,7 +155,9 @@ void GamePlayScene::Draw() {
 	ParticleManager::PreDraw(dXCommon->GetCommandList());
 
 	///==== パーティクル描画 ====///
-
+	//パーティクル
+	pm_1->Draw();
+	pm_2->Draw();
 
 	// パーティクル描画後処理
 	ParticleManager::PostDraw();

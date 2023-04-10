@@ -88,6 +88,7 @@ private:
 	//カメラ
 	ViewProjection* viewProjection = nullptr;
 	RailCamera* railCamera = nullptr;
+	XMViewProjection* xmViewProjection = nullptr;
 	//座標
 	WorldTransform* worldTransform = nullptr;
 	// スプライト
@@ -99,7 +100,11 @@ private:
 
 	DirectXCommon* dXCommon = nullptr;
 	ImGuiManager* imGuiManager = nullptr;
-	ParticleManager* ParticleMan = nullptr;
+	//パーティクル
+	Particle* particle_1 = nullptr;
+	ParticleManager* pm_1 = nullptr;
+	Particle* particle_2 = nullptr;
+	ParticleManager* pm_2 = nullptr;
 	WinApp* winApp = nullptr;
 
 	Vector3 position[5]{};
