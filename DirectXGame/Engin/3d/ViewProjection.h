@@ -8,76 +8,76 @@
 
 class ViewProjection
 {
-public:// ƒTƒuƒNƒ‰ƒX
-	// ’è”ƒoƒbƒtƒ@—pƒf[ƒ^\‘¢‘Ì
+public:// ã‚µãƒ–ã‚¯ãƒ©ã‚¹
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡ç”¨ãƒ‡ãƒ¼ã‚¿æ§‹é€ ä½“
 	struct ConstBufferDataViewProjection {
-		Matrix4 view;       // ƒ[ƒ‹ƒh ¨ ƒrƒ…[•ÏŠ·s—ñ
-		Matrix4 projection; // ƒrƒ…[ ¨ ƒvƒƒWƒFƒNƒVƒ‡ƒ“•ÏŠ·s—ñ
-		Vector3 cameraPos;  // ƒJƒƒ‰À•Wiƒ[ƒ‹ƒhÀ•Wj
+		Matrix4 view;       // ãƒ¯ãƒ¼ãƒ«ãƒ‰ â†’ ãƒ“ãƒ¥ãƒ¼å¤‰æ›è¡Œåˆ—
+		Matrix4 projection; // ãƒ“ãƒ¥ãƒ¼ â†’ ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ã‚·ãƒ§ãƒ³å¤‰æ›è¡Œåˆ—
+		Vector3 cameraPos;  // ã‚«ãƒ¡ãƒ©åº§æ¨™ï¼ˆãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ï¼‰
 	};
-public:// ƒƒ“ƒoŠÖ”
-	// Ã“I‰Šú‰»
+public:// ãƒ¡ãƒ³ãƒé–¢æ•°
+	// é™çš„åˆæœŸåŒ–
 	static void StaticInitialize(ID3D12Device* device);
 
-	/// ‰Šú‰»
+	/// åˆæœŸåŒ–
 	void Initialize();
 
-	/// s—ñ‚ğXV‚·‚é
+	/// è¡Œåˆ—ã‚’æ›´æ–°ã™ã‚‹
 	void UpdateMatrix();
 
-	// ƒoƒbƒtƒ@‚ÌƒQƒbƒ^[
+	// ãƒãƒƒãƒ•ã‚¡ã®ã‚²ãƒƒã‚¿ãƒ¼
 	ID3D12Resource* GetBuff() { return constBuff.Get(); }
 
 
-private:// ƒvƒ‰ƒCƒx[ƒgŠÖ”
-	// ‰~ü—¦
+private:// ãƒ—ãƒ©ã‚¤ãƒ™ãƒ¼ãƒˆé–¢æ•°
+	// å††å‘¨ç‡
 	const float PI = 3.141592f;
 
-	/// ’è”ƒoƒbƒtƒ@¶¬
+	/// å®šæ•°ãƒãƒƒãƒ•ã‚¡ç”Ÿæˆ
 	void CreateConstBuffer();
 
-	/// ƒ}ƒbƒsƒ“ƒO‚·‚é
+	/// ãƒãƒƒãƒ”ãƒ³ã‚°ã™ã‚‹
 	void Map();
 
-	// “x”‚©‚çƒ‰ƒWƒAƒ“‚É•ÏŠ·
+	// åº¦æ•°ã‹ã‚‰ãƒ©ã‚¸ã‚¢ãƒ³ã«å¤‰æ›
 	float ToRadian(float angle) { return angle * (PI / 180); }
 
 
-public:// ƒpƒuƒŠƒbƒN•Ï”
-#pragma region ƒrƒ…[s—ñ‚Ìİ’è
-	// ‹“_À•W
+public:// ãƒ‘ãƒ–ãƒªãƒƒã‚¯å¤‰æ•°
+#pragma region ãƒ“ãƒ¥ãƒ¼è¡Œåˆ—ã®è¨­å®š
+	// è¦–ç‚¹åº§æ¨™
 	Vector3 eye = { 0, 5, -10.0f };
-	// ’‹“_À•W
+	// æ³¨è¦–ç‚¹åº§æ¨™
 	Vector3 target = { 0, 0, 0 };
-	// ã•ûŒüƒxƒNƒgƒ‹
+	// ä¸Šæ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«
 	Vector3 up = { 0, 1, 0 };
 #pragma endregion
 
-#pragma region Ë‰es—ñ‚Ìİ’è
-	// ‚’¼•ûŒü‹–ìŠp
+#pragma region å°„å½±è¡Œåˆ—ã®è¨­å®š
+	// å‚ç›´æ–¹å‘è¦–é‡è§’
 	float fovAngleY = ToRadian(45.0f);
-	// ƒrƒ…[ƒ|[ƒg‚ÌƒAƒXƒyƒNƒg”ä
+	// ãƒ“ãƒ¥ãƒ¼ãƒãƒ¼ãƒˆã®ã‚¢ã‚¹ãƒšã‚¯ãƒˆæ¯”
 	float aspectRatio = (float)WinApp::window_width / WinApp::window_height;
-	// [“xŒÀŠEiè‘O‘¤j
+	// æ·±åº¦é™ç•Œï¼ˆæ‰‹å‰å´ï¼‰
 	float nearZ = 0.1f;
-	// [“xŒÀŠEi‰œ‘¤j
+	// æ·±åº¦é™ç•Œï¼ˆå¥¥å´ï¼‰
 	float farZ = 2000.0f;
 #pragma endregion
 
-	// ƒrƒ…[s—ñ
+	// ãƒ“ãƒ¥ãƒ¼è¡Œåˆ—
 	Matrix4 matView;
-	// Ë‰es—ñ
+	// å°„å½±è¡Œåˆ—
 	Matrix4 matProjection;
 
-private:// ƒƒ“ƒo•Ï”
+private:// ãƒ¡ãƒ³ãƒå¤‰æ•°
 
-	// ƒfƒoƒCƒXiØ‚è‚Ä‚­‚éj
+	// ãƒ‡ãƒã‚¤ã‚¹ï¼ˆå€Ÿã‚Šã¦ãã‚‹ï¼‰
 	static Microsoft::WRL::ComPtr<ID3D12Device> device_;
 
-	// ’è”ƒoƒbƒtƒ@
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡
 	Microsoft::WRL::ComPtr<ID3D12Resource> constBuff;
 
-	// ƒ}ƒbƒsƒ“ƒOÏ‚İƒAƒhƒŒƒX
+	// ãƒãƒƒãƒ”ãƒ³ã‚°æ¸ˆã¿ã‚¢ãƒ‰ãƒ¬ã‚¹
 	ConstBufferDataViewProjection* constMap = nullptr;
 
 };

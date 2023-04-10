@@ -5,45 +5,45 @@
 #include "Model.h"
 #include <list>
 
-//GameScene‚Ì‘O•ûéŒ¾
+//GameSceneã®å‰æ–¹å®£è¨€
 class GamePlayScene;
 
 class Enemy {
 public:
-	//ƒfƒXƒgƒ‰ƒNƒ^
+	//ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	~Enemy();
-	//‰Šú‰»
+	//åˆæœŸåŒ–
 	void Initialize(const Vector3& v);
-	//XV
+	//æ›´æ–°
 	void Update();
-	//•`‰æ
+	//æç”»
 	void Draw(ViewProjection* viewProjection);
 
-	//“GƒŠƒXƒg
+	//æ•µãƒªã‚¹ãƒˆ
 	const std::list<std::unique_ptr<Enemy>>& GetEnemys() { return enemys_; }
 
-	//gameScene‚Ìsetter
+	//gameSceneã®setter
 	void SetGameScene(GamePlayScene* gameScene) { gameScene_ = gameScene; }
 
 	bool IsDead() const { return isDead_; }
 
 public:
-	// ƒIƒuƒWƒFƒNƒg
+	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	Object3d* obj = nullptr;
 
 private:
-	//ƒQ[ƒ€ƒV[ƒ“
+	//ã‚²ãƒ¼ãƒ ã‚·ãƒ¼ãƒ³
 	GamePlayScene* gameScene_ = nullptr;
 
-	//ƒfƒXƒtƒ‰ƒO
+	//ãƒ‡ã‚¹ãƒ•ãƒ©ã‚°
 	bool isDead_ = false;
 
-	//“G
+	//æ•µ
 	std::list<std::unique_ptr<Enemy>> enemys_;
 
-	// ƒ‚ƒfƒ‹
+	// ãƒ¢ãƒ‡ãƒ«
 	Model* enemyModel = nullptr;
 
-	//”¼Œa
+	//åŠå¾„
 	float radius = 1.0f;
 };

@@ -8,39 +8,39 @@
 
 class Player {
 public:
-	//ƒfƒXƒgƒ‰ƒNƒ^
+	//ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	~Player();
-	//‰Šú‰»
+	//åˆæœŸåŒ–
 	void Initialize();
-	//XV
+	//æ›´æ–°
 	void Update();
-	//•`‰æ
+	//æç”»
 	void Draw(ViewProjection* viewProjection);
 
-	//feverƒ^ƒCƒ€
+	//feverã‚¿ã‚¤ãƒ 
 	void GoesFever();
 	bool GetFever() { return isFever; }
 	int GetFeverNum() { return feverNum; }
 
-	//ƒxƒNƒgƒ‹‚ğæ“¾
+	//ãƒ™ã‚¯ãƒˆãƒ«ã‚’å–å¾—
 	void GetVec(Vector3 a, Vector3 b);
 	float GetVal() { return val; }
-	//ƒtƒ‰ƒO
+	//ãƒ•ãƒ©ã‚°
 	bool GetOnRail() { return isOnRail; }
 	void SetOnRail(bool isOnRail_) { this->isOnRail = isOnRail_; }
 
 public:
-	// ƒIƒuƒWƒFƒNƒg
+	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	Object3d* obj = nullptr;
 private:
 	Input* input_ = nullptr;
-	// ƒ‚ƒfƒ‹
+	// ãƒ¢ãƒ‡ãƒ«
 	Model* playerModel = nullptr;
 	//fever
 	int feverTime;
 	bool isFever = false;
 	int feverNum = 0;
 	float val = 1000.0f;
-	//ƒŒ[ƒ‹‚Éæ‚Á‚Ä‚¢‚éó‘Ô
+	//ãƒ¬ãƒ¼ãƒ«ã«ä¹—ã£ã¦ã„ã‚‹çŠ¶æ…‹
 	bool isOnRail = false;
 };

@@ -28,6 +28,12 @@
     <FxCompile Include="Resources\shaders\SpriteVS.hlsl">
       <Filter>シェーダーファイル</Filter>
     </FxCompile>
+    <FxCompile Include="Resources\shaders\PostEffectPS.hlsl">
+      <Filter>シェーダーファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\PostEffectVS.hlsl">
+      <Filter>シェーダーファイル</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DirectXGame\Engin\Audio\Audio.cpp">
@@ -125,6 +131,9 @@
     </ClCompile>
     <ClCompile Include="DirectXGame\Engin\3d\Enemy.cpp">
       <Filter>ソースファイル\Engine\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\Engin\PostEffect\PostEffect.cpp">
+      <Filter>ソースファイル\Engine\PostEffect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -233,6 +242,9 @@
     <ClInclude Include="DirectXGame\Engin\3d\Enemy.h">
       <Filter>ヘッダーファイル\Engine\GameObject</Filter>
     </ClInclude>
+    <ClInclude Include="DirectXGame\Engin\PostEffect\PostEffect.h">
+      <Filter>ヘッダーファイル\Engine\PostEffect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Basic.hlsli">
@@ -245,6 +257,9 @@
       <Filter>シェーダーファイル</Filter>
     </None>
     <None Include="Resources\shaders\Sprite.hlsli">
+      <Filter>シェーダーファイル</Filter>
+    </None>
+    <None Include="Resources\shaders\PostEffect.hlsli">
       <Filter>シェーダーファイル</Filter>
     </None>
   </ItemGroup>
@@ -353,6 +368,12 @@
     </Filter>
     <Filter Include="ソースファイル\Engine\GameObject">
       <UniqueIdentifier>{46b7a177-ed8f-439c-b7ad-ff8384fb9e89}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソースファイル\Engine\PostEffect">
+      <UniqueIdentifier>{7253a584-cb1e-484c-b3a2-ae9ece11d1d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダーファイル\Engine\PostEffect">
+      <UniqueIdentifier>{51ac6d51-1f20-46b0-ac30-accb533c59e9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -16,23 +16,23 @@ public:
 	virtual ~RLFramework() = default;
 
 public:
-	// Às
+	// å®Ÿè¡Œ
 	void Run();
 
-	// ‰Šú‰»
+	// åˆæœŸåŒ–
 	virtual void Initialize();
 
-	// XV
+	// æ›´æ–°
 	virtual void Update();
 
-	// XV
+	// æ›´æ–°
 	virtual void Draw() = 0;
 
-	// I—¹
+	// çµ‚äº†
 	virtual void Finalize();
 
 public:
-	//@I—¹ƒ`ƒFƒbƒN
+	//ã€€çµ‚äº†ãƒã‚§ãƒƒã‚¯
 	virtual bool IsEndRequest() { return endRequest_; }
 
 protected:
@@ -44,6 +44,6 @@ protected:
 	SpriteCommon spriteCommon;
 
 private:
-	// ƒQ[ƒ€I—¹ƒtƒ‰ƒO
+	// ã‚²ãƒ¼ãƒ çµ‚äº†ãƒ•ãƒ©ã‚°
 	bool endRequest_ = false;
 };

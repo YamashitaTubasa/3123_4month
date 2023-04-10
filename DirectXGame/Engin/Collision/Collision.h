@@ -5,24 +5,24 @@
 class Collision
 {
 public:
-	//‹…‚Æ‹…‚Ì“–‚½‚è”»’è
+	//çƒã¨çƒã®å½“ãŸã‚Šåˆ¤å®š
 	static bool CheckSphere2Sphere(const Sphere& sphereA, const Sphere& sphereB, Vector3* inter = nullptr, Vector3* reject = nullptr);
-	//‹…‚Æ•½–Ê‚Ì“–‚½‚è”»’è
+	//çƒã¨å¹³é¢ã®å½“ãŸã‚Šåˆ¤å®š
 	static bool CheckSphere2Plane(const Sphere& sphere, const Plane& plane, Vector3* inter = nullptr);
 
-	//“_‚ÆOŠpŒ`‚ÌÅ‹ß‚¹‚Á‚Ä‚ğ‹‚ß‚é
+	//ç‚¹ã¨ä¸‰è§’å½¢ã®æœ€è¿‘ã›ã£ã¦ã‚’æ±‚ã‚ã‚‹
 	static void ClosestPtPoint2Triangle(const Vector3& point, const Triangle& triangle, Vector3* closest);
 
-	//‹…‚Æ–@ü•t‚«OŠpŒ`‚Ì“–‚½‚èƒ`ƒFƒbƒN
+	//çƒã¨æ³•ç·šä»˜ãä¸‰è§’å½¢ã®å½“ãŸã‚Šãƒã‚§ãƒƒã‚¯
 	static bool CheckSphere2Triangle(const Sphere& sphere, const Triangle& triangle, Vector3* inter = nullptr, Vector3* reject = nullptr);
 
-	//ƒŒƒC‚Æ•½–Ê‚Ì“–‚½‚è”»’è
+	//ãƒ¬ã‚¤ã¨å¹³é¢ã®å½“ãŸã‚Šåˆ¤å®š
 	static bool CheckRay2Plane(const Ray& ray, const Plane& plane, float* distance = nullptr, Vector3* inter = nullptr);
 
-	//ƒŒƒC‚Æ–@ü•t‚«OŠpŒ`‚Ì“–‚½‚è”»’è
+	//ãƒ¬ã‚¤ã¨æ³•ç·šä»˜ãä¸‰è§’å½¢ã®å½“ãŸã‚Šåˆ¤å®š
 	static bool CheckRay2Triangle(const Ray& ray, const Triangle& triangle, float* distance = nullptr, Vector3* inter = nullptr);
 
-	//ƒŒƒC‚Æ‹…‚Ì“–‚½‚è”»’è
+	//ãƒ¬ã‚¤ã¨çƒã®å½“ãŸã‚Šåˆ¤å®š
 	static bool CheckRay2Sphere(const Ray& ray, const Sphere& sphere, float* distance = nullptr, Vector3* inter = nullptr);
 };
 

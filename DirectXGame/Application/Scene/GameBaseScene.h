@@ -1,7 +1,7 @@
 #pragma once
 
 //========================//
-// ƒQ[ƒ€ƒV[ƒ“Šî’êƒNƒ‰ƒX
+// ã‚²ãƒ¼ãƒ ã‚·ãƒ¼ãƒ³åŸºåº•ã‚¯ãƒ©ã‚¹
 //========================//
 class GameBaseScene
 {
@@ -9,15 +9,15 @@ public:
 	virtual ~GameBaseScene() = default;
 
 public:
-	// ‰Šú‰»
+	// åˆæœŸåŒ–
 	virtual void Initialize() = 0;
 
-	// XV
+	// æ›´æ–°
 	virtual void Update() = 0;
 
-	// •`‰æ
+	// æç”»
 	virtual void Draw() = 0;
 
-	// ‰ğ•ú
+	// è§£æ”¾
 	virtual void Finalize() = 0;
 };

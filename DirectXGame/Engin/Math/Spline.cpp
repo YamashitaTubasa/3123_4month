@@ -6,30 +6,30 @@ void Spline::Initialize() {
 	startCount = GetTickCount64();
 }
 
-Vector3 Spline::Update(std::vector<Vector3>& points,float timeRate) {
+Vector3 Spline::Update(std::vector<Vector3>& points, float t, float val) {
 
-	//Œo‰ßŠÔ‚ÌŒvZ
+	//çµŒéæ™‚é–“ã®è¨ˆç®—
 	nowCount = GetTickCount64();
 	elapsedCount = nowCount - startCount;
 	float elapsedTime = static_cast<float> (elapsedCount) / 1000.0f;
 
-	timeRate = elapsedTime / maxTime;
+	t = elapsedTime / maxTime;
 
-	//timeRate‚ª1.0fˆÈã‚É‚È‚Á‚½‚çAŸ‚Ì‹æŠÔ‚Éi‚Ş
-	if (timeRate >= 1.0f) {
+	//timeRateãŒ1.0fä»¥ä¸Šã«ãªã£ãŸã‚‰ã€æ¬¡ã®åŒºé–“ã«é€²ã‚€
+	if (t >= 1.0f) {
 		if (startIndex < points.size() - 3) {
 
 			startIndex++;
 
-			timeRate -= 1.0f;
+			t -= 1.0f;
 			startCount = GetTickCount64();
 		}
 		else {
-			timeRate = 1.0f;
+			t = 1.0f;
 		}
 	}
 
-	Vector3 pos = SplinePosition(points, startIndex, timeRate);
+	Vector3 pos = SplinePosition(points, startIndex, t);
 	
 	return pos;
 }
@@ -40,19 +40,19 @@ void Spline::Draw() {
 }
 
 Vector3 Spline::SplinePosition(const std::vector<Vector3>& points, size_t startIndex, float t) {
-	//•âŠÔ‚·‚×‚«“_
+	//è£œé–“ã™ã¹ãç‚¹
 	size_t n = points.size() - 2;
 
 	if (startIndex > n) return points[n];
 	if (startIndex < 1) return points[1];
 
-	//p0~p3‚Ì§Œä“_‚ğæ“¾‚·‚é
+	//p0~p3ã®åˆ¶å¾¡ç‚¹ã‚’å–å¾—ã™ã‚‹
 	Vector3 p0_ = points[startIndex - 1];
 	Vector3 p1_ = points[startIndex];
 	Vector3 p2_ = points[startIndex + 1];
 	Vector3 p3_ = points[startIndex + 2];
 
-	//Catmull-Rom ‚Ì®‚É‚æ‚é•âŠÔ
+	//Catmull-Rom ã®å¼ã«ã‚ˆã‚‹è£œé–“
 	Vector3 position = 0.5 * (p1_ * 2 + (-p0_ + p2_) *
 							  t + (p0_ * 2 - p1_ * 5 + p2_ * 4 - p3_) *
 							  (t * t) + (-p0_ + p1_ * 3 - p2_ * 3 + p3_) *

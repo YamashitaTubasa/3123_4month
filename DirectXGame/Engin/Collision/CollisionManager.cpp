@@ -15,7 +15,7 @@ void CollisionManager::CheckAllCollisions()
 	std::forward_list<BaseCollider*>::iterator itA;
 	std::forward_list<BaseCollider*>::iterator itB;
 
-	//‘S‚Ä‚Ì‘g‚İ‡‚í‚¹‚É‚Â‚¢‚Ä‘“–‚½‚èƒ`ƒFƒbƒN
+	//å…¨ã¦ã®çµ„ã¿åˆã‚ã›ã«ã¤ã„ã¦ç·å½“ãŸã‚Šãƒã‚§ãƒƒã‚¯
 	itA = colliders.begin();
 	for (; itA != colliders.end(); ++itA)
 	{
@@ -26,7 +26,7 @@ void CollisionManager::CheckAllCollisions()
 			BaseCollider* colA = *itA;
 			BaseCollider* colB = *itB;
 
-			// ‚Æ‚à‚É‹…
+			// ã¨ã‚‚ã«çƒ
 			if (colA->GetShapeType() == COLLISIONSHAPE_SPHERE &&
 				colB->GetShapeType() == COLLISIONSHAPE_SPHERE) {
 				Sphere* SphereA = dynamic_cast<Sphere*>(colA);
@@ -45,36 +45,36 @@ void CollisionManager::CheckAllCollisions()
 bool CollisionManager::Raycast(const Ray& ray, RaycastHit* hitInfo, float maxDistance)
 {
 	bool result = false;
-	//‘–¸—p‚ÌƒCƒeƒŒ[ƒ^
+	//èµ°æŸ»ç”¨ã®ã‚¤ãƒ†ãƒ¬ãƒ¼ã‚¿
 	std::forward_list<BaseCollider*>::iterator it;
-	//¡‚Ü‚Å‚ÅÅ‚à‹ß‚¢ƒRƒ‰ƒCƒ_[‚ğ‹L˜^‚·‚é‚½‚ß‚ÌƒCƒeƒŒ[ƒ^
+	//ä»Šã¾ã§ã§æœ€ã‚‚è¿‘ã„ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã‚’è¨˜éŒ²ã™ã‚‹ãŸã‚ã®ã‚¤ãƒ†ãƒ¬ãƒ¼ã‚¿
 	std::forward_list<BaseCollider*>::iterator it_hit;
-	//¡‚Ü‚Å‚ÅÅ‚à‹ß‚¢ƒRƒ‰ƒCƒ_[‚Ì‹——£‚ğ‹L˜^‚·‚é•Ï”
+	//ä»Šã¾ã§ã§æœ€ã‚‚è¿‘ã„ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã®è·é›¢ã‚’è¨˜éŒ²ã™ã‚‹å¤‰æ•°
 	float distance = maxDistance;
-	//¡‚Ü‚Å‚ÅÅ‚à‹ß‚¢ƒRƒ‰ƒCƒ_[‚Æ‚ÌŒğ“_‚ğ‹L˜^‚·‚é•Ï”
+	//ä»Šã¾ã§ã§æœ€ã‚‚è¿‘ã„ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã¨ã®äº¤ç‚¹ã‚’è¨˜éŒ²ã™ã‚‹å¤‰æ•°
 	Vector3 inter;
 
-	//‘S‚Ä‚ÌƒRƒ‰ƒCƒ_[‚Æ‘“–‚½‚èƒ`ƒFƒbƒN
+	//å…¨ã¦ã®ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã¨ç·å½“ãŸã‚Šãƒã‚§ãƒƒã‚¯
 	it = colliders.begin();
 	for (; it != colliders.end(); ++it)
 	{
 		BaseCollider* colA = *it;
-		//‹…‚Ìê‡
+		//çƒã®å ´åˆ
 		if (colA->GetShapeType() == COLLISIONSHAPE_SPHERE)
 		{
 			Sphere* sphere = dynamic_cast<Sphere*>(colA);
 			float tempDistance;
 			Vector3 tempInter;
-			//“–‚½‚ç‚È‚¯‚ê‚ÎœŠO
+			//å½“ãŸã‚‰ãªã‘ã‚Œã°é™¤å¤–
 			if (!Collision::CheckRay2Sphere(ray, *sphere, &tempDistance, &tempInter))continue;
-			//‹——£‚ªÅ¬o‚È‚¯‚ê‚ÎœŠO
+			//è·é›¢ãŒæœ€å°å‡ºãªã‘ã‚Œã°é™¤å¤–
 			if (tempDistance >= distance)continue;
-			//¡‚Ü‚Å‚ÅÅ‚à‹ß‚¢‚Ì‚Å‹L˜^‚ğ‚Æ‚é
+			//ä»Šã¾ã§ã§æœ€ã‚‚è¿‘ã„ã®ã§è¨˜éŒ²ã‚’ã¨ã‚‹
 			result = true;
 			distance = tempDistance;
 			inter = tempInter;
 			it_hit = it;
-			//ÅI“I‚É‰½‚©‚É“–‚½‚Á‚Ä‚¢‚½‚çŒ‹‰Ê‚ğ‘‚«‚Ş
+			//æœ€çµ‚çš„ã«ä½•ã‹ã«å½“ãŸã£ã¦ã„ãŸã‚‰çµæœã‚’æ›¸ãè¾¼ã‚€
 			if (result && hitInfo)
 			{
 				hitInfo->distance = distance;

@@ -8,14 +8,14 @@
 
 class SphereCollider :public BaseCollider, public Sphere
 {
-private:// ƒGƒCƒŠƒAƒX
+private:// ã‚¨ã‚¤ãƒªã‚¢ã‚¹
 public:
 	SphereCollider(Vector3 offset = { 0,0,0 }, float radius = 1.0f) :offset(offset), radius(radius) {
-		// ‹…Œ`ó‚ğƒZƒbƒg
+		// çƒå½¢çŠ¶ã‚’ã‚»ãƒƒãƒˆ
 		shapeType = COLLISIONSHAPE_SPHERE;
 	}
 
-	// XV
+	// æ›´æ–°
 	void Update()override;
 
 	inline const Vector3& GetOffset() { return offset; }
@@ -27,8 +27,8 @@ public:
 	inline void SetRadius(float radius) { this->radius = radius; }
 
 private:
-	// ƒIƒuƒWƒFƒNƒg’†S‚©‚ç‚ÌƒIƒtƒZƒbƒg
+	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆä¸­å¿ƒã‹ã‚‰ã®ã‚ªãƒ•ã‚»ãƒƒãƒˆ
 	Vector3 offset;
-	// ”¼Œa
+	// åŠå¾„
 	float radius;
 };

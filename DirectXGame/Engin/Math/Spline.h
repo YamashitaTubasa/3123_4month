@@ -6,29 +6,29 @@
 class Spline 
 {
 public:
-	//‰Šú‰»
+	//åˆæœŸåŒ–
 	void Initialize();
 
-	//XV
+	//æ›´æ–°
 	Vector3 Update(std::vector<Vector3>& points,float t,float val);
 
-	//•`‰æ
+	//æç”»
 	void Draw();
 
-	//§Œä“_‚ÌW‡(vectorƒRƒ“ƒeƒi)A•âŠÔ‚·‚é‹æŠÔ‚Ì“YšAŠÔŒo‰ß—¦
+	//åˆ¶å¾¡ç‚¹ã®é›†åˆ(vectorã‚³ãƒ³ãƒ†ãƒŠ)ã€è£œé–“ã™ã‚‹åŒºé–“ã®æ·»å­—ã€æ™‚é–“çµŒéç‡
 	Vector3 SplinePosition(const std::vector<Vector3>& point, size_t startIndex, float t);
 
 private:
-	//ŠÔŒvZ‚É•K—v‚Èƒf[ƒ^
+	//æ™‚é–“è¨ˆç®—ã«å¿…è¦ãªãƒ‡ãƒ¼ã‚¿
 	long long startCount;
 	long long nowCount;
 	double elapsedCount = 0;
 
-	float maxTime = 5.0f;				//‘S‘ÌŠÔ[s]
+	float maxTime = 5.0f;				//å…¨ä½“æ™‚é–“[s]
 
-	//P1‚©‚çƒXƒ^[ƒg‚·‚é
+	//P1ã‹ã‚‰ã‚¹ã‚¿ãƒ¼ãƒˆã™ã‚‹
 	size_t startIndex = 1;
 
-	//‹…‚ÌˆÊ’u
+	//çƒã®ä½ç½®
 	Vector3 position;
 };

@@ -10,20 +10,20 @@
 
 class RailCamera {
 public:
-	//ƒCƒ“ƒXƒ^ƒ“ƒX
+	//ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹
 	RailCamera();
 	~RailCamera();
-	//‰Šú‰»
+	//åˆæœŸåŒ–
 	void Initialize(Player* player_);
-	//XV
+	//æ›´æ–°
 	void Update(Player* player_, std::vector<Vector3>& point);
 
-	//ƒxƒNƒgƒ‹‚ğæ“¾
+	//ãƒ™ã‚¯ãƒˆãƒ«ã‚’å–å¾—
 	void GetVec(Vector3 a, Vector3 b);
 
 	ViewProjection* GetView() { return viewProjection; }
 
-	//feverƒ^ƒCƒ€
+	//feverã‚¿ã‚¤ãƒ 
 	void GoesFever(Object3d* player_);
 
 	bool GetFever() { return isFever; }
@@ -37,7 +37,7 @@ private:
 	int feverTime;
 	bool isFever = false;
 
-	//ƒXƒvƒ‰ƒCƒ“
+	//ã‚¹ãƒ—ãƒ©ã‚¤ãƒ³
 	Spline spline_;
 
 	Vector3 rightVec = { 0, 0, 0 };

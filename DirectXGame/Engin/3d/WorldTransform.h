@@ -8,71 +8,71 @@
 class WorldTransform
 {
 private:
-	// Microsoft::WRL::‚ğÈ—ª
+	// Microsoft::WRL::ã‚’çœç•¥
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
 
-public:// ƒTƒuƒNƒ‰ƒX
-	//’è”ƒoƒbƒtƒ@—pƒf[ƒ^\‘¢‘Ì
+public:// ã‚µãƒ–ã‚¯ãƒ©ã‚¹
+	//å®šæ•°ãƒãƒƒãƒ•ã‚¡ç”¨ãƒ‡ãƒ¼ã‚¿æ§‹é€ ä½“
 	struct ConstBufferDataB0 {
-		Matrix4 matWorld;// s—ñ
+		Matrix4 matWorld;// è¡Œåˆ—
 	};
-public:// ƒƒ“ƒoŠÖ”
-	// Ã“I‰Šú‰»
+public:// ãƒ¡ãƒ³ãƒé–¢æ•°
+	// é™çš„åˆæœŸåŒ–
 	static void StaticInitialize(ID3D12Device* device);
 
-	/// ‰Šú‰»
+	/// åˆæœŸåŒ–
 	void Initialize();
 
-	/// s—ñ‚ğXV‚·‚é
+	/// è¡Œåˆ—ã‚’æ›´æ–°ã™ã‚‹
 	void UpdateMatrix();
 
-	// ’è”ƒoƒbƒtƒ@‚ÌƒQƒbƒ^[
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡ã®ã‚²ãƒƒã‚¿ãƒ¼
 	ID3D12Resource* GetBuff() { return constBuffB0.Get(); }
 
-	/// ’è”ƒoƒbƒtƒ@¶¬
+	/// å®šæ•°ãƒãƒƒãƒ•ã‚¡ç”Ÿæˆ
 	void CreateConstBuffer();
 
-	/// ƒ}ƒbƒsƒ“ƒO‚·‚é
+	/// ãƒãƒƒãƒ”ãƒ³ã‚°ã™ã‚‹
 	void Map();
 
 	const Vector3& GetPosition()const { return position_; }
 
-	// “x”‚©‚çƒ‰ƒWƒAƒ“‚É•ÏŠ·
+	// åº¦æ•°ã‹ã‚‰ãƒ©ã‚¸ã‚¢ãƒ³ã«å¤‰æ›
 	float ToRadian(float angle) { return angle * (PI / 180); }
 
 	void SetParent3d(WorldTransform* parent) { this->parent_ = parent; }
 
-public:// ƒpƒuƒŠƒbƒN•Ï”
-	// ƒ[ƒJƒ‹ƒXƒP[ƒ‹
+public:// ãƒ‘ãƒ–ãƒªãƒƒã‚¯å¤‰æ•°
+	// ãƒ­ãƒ¼ã‚«ãƒ«ã‚¹ã‚±ãƒ¼ãƒ«
 	Vector3 scale_ = { 1.0f, 1.0f, 1.0f };
 
-	// X,Y,Z²‰ñ‚è‚Ìƒ[ƒJƒ‹‰ñ“]Šp
+	// X,Y,Zè»¸å›ã‚Šã®ãƒ­ãƒ¼ã‚«ãƒ«å›è»¢è§’
 	Vector3 rotation_ = { 0, 0, 0 };
 
-	// ƒ[ƒJƒ‹À•W
+	// ãƒ­ãƒ¼ã‚«ãƒ«åº§æ¨™
 	Vector3 position_ = { 0, 0, 0 };
 
-	// F
+	// è‰²
 	Vector4 color_ = { 1,1,1,1 };
 
-	// ƒ[ƒJƒ‹ ¨ ƒ[ƒ‹ƒh•ÏŠ·s—ñ
+	// ãƒ­ãƒ¼ã‚«ãƒ« â†’ ãƒ¯ãƒ¼ãƒ«ãƒ‰å¤‰æ›è¡Œåˆ—
 	Matrix4 matWorld_;
 
-	// e‚Æ‚È‚éƒ[ƒ‹ƒh•ÏŠ·‚Ö‚Ìƒ|ƒCƒ“ƒ^
+	// è¦ªã¨ãªã‚‹ãƒ¯ãƒ¼ãƒ«ãƒ‰å¤‰æ›ã¸ã®ãƒã‚¤ãƒ³ã‚¿
 	const WorldTransform* parent_ = nullptr;
 
-	// ‰~ü—¦
+	// å††å‘¨ç‡
 	const float PI = 3.141592f;
 
-private:// ƒƒ“ƒo•Ï”
-	// ƒfƒoƒCƒX
+private:// ãƒ¡ãƒ³ãƒå¤‰æ•°
+	// ãƒ‡ãƒã‚¤ã‚¹
 	static ComPtr<ID3D12Device> device_;
 
-	// ’è”ƒoƒbƒtƒ@
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡
 	ComPtr<ID3D12Resource> constBuffB0;
 
-	// ƒ}ƒbƒsƒ“ƒOÏ‚İƒAƒhƒŒƒX
+	// ãƒãƒƒãƒ”ãƒ³ã‚°æ¸ˆã¿ã‚¢ãƒ‰ãƒ¬ã‚¹
 	ConstBufferDataB0* constMap = nullptr;
 };
 

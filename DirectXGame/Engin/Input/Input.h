@@ -16,9 +16,9 @@
 
 #define MaxCountrollers 4  
 #define MaxVibration 65535
-#define DIRECTINPUT_VERSION 0x0800 // DirectInput‚Ìƒo[ƒWƒ‡ƒ“w’è
+#define DIRECTINPUT_VERSION 0x0800 // DirectInputã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³æŒ‡å®š
 
-// “ü—Í
+// å…¥åŠ›
 class Input final
 {
 public:
@@ -27,8 +27,8 @@ public:
 public:
 	struct CountrolerState
 	{
-		XINPUT_STATE state; // ƒRƒ“ƒgƒ[ƒ‰[‚Ìó‘Ô‚Ìæ“¾
-		XINPUT_VIBRATION vibration;  // ƒoƒCƒuƒŒ[ƒVƒ‡ƒ“
+		XINPUT_STATE state; // ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼ã®çŠ¶æ…‹ã®å–å¾—
+		XINPUT_VIBRATION vibration;  // ãƒã‚¤ãƒ–ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³
 		//bool Connected;
 	};
 	CountrolerState GamePad;
@@ -37,25 +37,25 @@ public:
 	// namespace
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
-public: // ƒƒ“ƒoŠÖ”
-	// ‰Šú‰»
+public: // ãƒ¡ãƒ³ãƒé–¢æ•°
+	// åˆæœŸåŒ–
 	void Initialize(WinApp* winApp);
 
-	// XV
+	// æ›´æ–°
 	void Update();
 
 	/// <summary>
-	/// ƒL[‚Ì‰Ÿ‰º‚ğƒ`ƒFƒbƒN
+	/// ã‚­ãƒ¼ã®æŠ¼ä¸‹ã‚’ãƒã‚§ãƒƒã‚¯
 	/// </summary>
-	/// <param name = "keyNumber">ƒL[”Ô†(DIK_0 “™)</param>
-	/// <returns>‰Ÿ‚³‚ê‚Ä‚¢‚é‚©</returns>
+	/// <param name = "keyNumber">ã‚­ãƒ¼ç•ªå·(DIK_0 ç­‰)</param>
+	/// <returns>æŠ¼ã•ã‚Œã¦ã„ã‚‹ã‹</returns>
 	bool PushKey(BYTE keyNumber);
 
 	/// <summary>
-	/// ƒL[‚ÌƒgƒŠƒK[‚ğƒ`ƒFƒbƒN
+	/// ã‚­ãƒ¼ã®ãƒˆãƒªã‚¬ãƒ¼ã‚’ãƒã‚§ãƒƒã‚¯
 	/// </summary>
-	/// </param name="keyNumber">ƒL[”Ô†( DIK_0 “™)</param>
-	/// <reutrns>ƒgƒŠƒK[‚©</params>
+	/// </param name="keyNumber">ã‚­ãƒ¼ç•ªå·( DIK_0 ç­‰)</param>
+	/// <reutrns>ãƒˆãƒªã‚¬ãƒ¼ã‹</params>
 	bool TriggerKey(BYTE keyNumber);
 
 private:
@@ -64,14 +64,14 @@ private:
 	Input(const Input&) = delete;
 	Input& operator=(const Input&) = delete;
 
-private: // ƒƒ“ƒo•Ï”
-	// ƒL[ƒ{[ƒh‚ÌƒfƒoƒCƒX
+private: // ãƒ¡ãƒ³ãƒå¤‰æ•°
+	// ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ã®ãƒ‡ãƒã‚¤ã‚¹
 	ComPtr<IDirectInputDevice8> keyboard;
-	// DirectInput‚ÌƒCƒ“ƒXƒ^ƒ“ƒX
+	// DirectInputã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹
 	ComPtr<IDirectInput8> directInput;
-	// ‘SƒL[‚Ìó‘Ô
+	// å…¨ã‚­ãƒ¼ã®çŠ¶æ…‹
 	BYTE key[256] = {};
-	// ‘O‰ñ‚Ì‘SƒL[‚Ìó‘Ô
+	// å‰å›ã®å…¨ã‚­ãƒ¼ã®çŠ¶æ…‹
 	BYTE keyPre[256] = {};
 	// WindowsAPI
 	WinApp* winApp = nullptr;

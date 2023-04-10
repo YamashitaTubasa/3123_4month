@@ -2,51 +2,51 @@
 
 void RideLight::Initialize()
 {
-	// Šî’êƒNƒ‰ƒX‚Ì‰Šú‰»
+	// åŸºåº•ã‚¯ãƒ©ã‚¹ã®åˆæœŸåŒ–
 	RLFramework::Initialize();
 
-	// ƒQ[ƒ€ƒV[ƒ“‚Ì¶¬‚Æ‰Šú‰»
+	// ã‚²ãƒ¼ãƒ ã‚·ãƒ¼ãƒ³ã®ç”Ÿæˆã¨åˆæœŸåŒ–
 	scene_ = new GamePlayScene();
 	scene_->Initialize(spriteCommon);
 }
 
 void RideLight::Update()
 {
-	// Šî’êƒNƒ‰ƒX‚ÌXVˆ—
+	// åŸºåº•ã‚¯ãƒ©ã‚¹ã®æ›´æ–°å‡¦ç†
 	RLFramework::Update();
 
-	// ImGuiŽó•tŠJŽn
+	// ImGuiå—ä»˜é–‹å§‹
 	imGuiManager->Begin();
 
-	// ƒQ[ƒ€ƒV[ƒ“‚ÌXV
+	// ã‚²ãƒ¼ãƒ ã‚·ãƒ¼ãƒ³ã®æ›´æ–°
 	scene_->Update();
 
-	// ImGuiŽó•tI—¹
+	// ImGuiå—ä»˜çµ‚äº†
 	imGuiManager->End();
 }
 
 void RideLight::Draw()
 {
-	// •`‰æ‘Oˆ—
+	// æç”»å‰å‡¦ç†
 	dXCommon->PreDraw();
 
-	// ƒQ[ƒ€ƒV[ƒ“‚Ì•`‰æ
+	// ã‚²ãƒ¼ãƒ ã‚·ãƒ¼ãƒ³ã®æç”»
 	scene_->Draw();
 
-	// ImGui•`‰æ
+	// ImGuiæç”»
 	imGuiManager->Draw(dXCommon);
 
-	// •`‰æŒãˆ—
+	// æç”»å¾Œå‡¦ç†
 	dXCommon->PostDraw();
 }
 
 void RideLight::Finalize()
 {
-	// ƒQ[ƒ€ƒV[ƒ“‚ÌI—¹ˆ—
+	// ã‚²ãƒ¼ãƒ ã‚·ãƒ¼ãƒ³ã®çµ‚äº†å‡¦ç†
 	scene_->Finalize();
-	// ƒQ[ƒ€ƒV[ƒ“‚Ì‰ð•ú
+	// ã‚²ãƒ¼ãƒ ã‚·ãƒ¼ãƒ³ã®è§£æ”¾
 	delete scene_;
 
-	// Šî’êƒNƒ‰ƒX‚ÌI—¹ˆ—
+	// åŸºåº•ã‚¯ãƒ©ã‚¹ã®çµ‚äº†å‡¦ç†
 	RLFramework::Finalize();
 }

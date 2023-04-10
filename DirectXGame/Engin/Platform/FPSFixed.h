@@ -5,12 +5,12 @@
 
 class FPSFixed 
 {
-public: // メンバ関数
-	// FPS固定初期化
+public: // 繝｡繝ｳ繝宣未謨ｰ
+	// FPS蝗ｺ螳壼�晄悄蛹�
 	void InitializeFixFPS();
-	// FPS固定更新
+	// FPS蝗ｺ螳壽峩譁ｰ
 	void UpdateFixFPS();
 
-	// 記録時間(FPS固定用)
+	// 險倬鹸譎る俣(FPS蝗ｺ螳夂畑)
 	std::chrono::steady_clock::time_point reference_;
 };

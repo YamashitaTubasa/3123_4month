@@ -8,7 +8,7 @@ RailCamera::~RailCamera() {
 	delete camera;
 }
 
-//‰Šú‰»
+//åˆæœŸåŒ–
 void RailCamera::Initialize(Player* player_) {
 	viewProjection = new ViewProjection;
 	input = Input::GetInstance();
@@ -20,38 +20,38 @@ void RailCamera::Initialize(Player* player_) {
 	camera->SetRotation(Vector3(0,0,0));
 }
 
-//XV
+//æ›´æ–°
 void RailCamera::Update(Player* player_, std::vector<Vector3>& point) {
 
 
 	if (player_->obj->GetPositionZ() >= -778) {
 		if (player_->GetOnRail() == false) {
 			player_->SetOnRail(true);
-			//Šg‘å‰ñ“]À•W•ÏŠ·
+			//æ‹¡å¤§å›è»¢åº§æ¨™å¤‰æ›
 			player_->obj->SetScale(Vector3(0.4, 0.4, 0.4));
 			player_->obj->SetPosition(Vector3(0, -0.5, 1.5));
-			//eq\‘¢‚ÌƒZƒbƒg
+			//è¦ªå­æ§‹é€ ã®ã‚»ãƒƒãƒˆ
 			player_->obj->worldTransform_.SetParent3d(&camera->worldTransform_);
 		}
 	}
 
 	if (player_->GetOnRail() == true) {
 		Vector3 target_ = spline_.Update(point, timeRate, player_->GetVal());
-		//•ûŒüƒxƒNƒgƒ‹‚Ìæ“¾
+		//æ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«ã®å–å¾—
 		GetVec(viewProjection->eye, target_);
 
-		//e(ƒJƒƒ‰ƒIƒuƒWƒFƒNƒg)‚ÌˆÚ“®
+		//è¦ª(ã‚«ãƒ¡ãƒ©ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ)ã®ç§»å‹•
 		camera->SetPosition(target_ + frontVec * 0.5);
-		//ƒJƒƒ‰•ûŒü‚É‡‚í‚¹‚ÄY²‚Ì‰ñ“]
+		//ã‚«ãƒ¡ãƒ©æ–¹å‘ã«åˆã‚ã›ã¦Yè»¸ã®å›è»¢
 		float radY = std::atan2(frontVec.x, frontVec.z);
 		camera->SetRotationY(radY * 180.0f / 3.1415f);
-		//ƒJƒƒ‰•ûŒü‚É‡‚í‚¹‚ÄX²‚Ì‰ñ“]
+		//ã‚«ãƒ¡ãƒ©æ–¹å‘ã«åˆã‚ã›ã¦Xè»¸ã®å›è»¢
 		Vector3 rotaVec = { frontVec.x,0,frontVec.z };
 		float length = rotaVec.length();
 		float radX = std::atan2(-frontVec.y, length);
 		camera->SetRotationX(radX * 180.0f / 3.1415f);
 
-		//XV
+		//æ›´æ–°
 		camera->Update();
 		viewProjection->target = (target_ + frontVec * 0.5);
 		viewProjection->eye = (target_ - frontVec);
@@ -60,27 +60,27 @@ void RailCamera::Update(Player* player_, std::vector<Vector3>& point) {
 	viewProjection->UpdateMatrix();
 }
 
-////////////////////--------ƒNƒ‰ƒX“à•Ö—˜ŠÖ”--------///////////////////////
+////////////////////--------ã‚¯ãƒ©ã‚¹å†…ä¾¿åˆ©é–¢æ•°--------///////////////////////
 
-//•ûŒüƒxƒNƒgƒ‹‚ğæ“¾
+//æ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«ã‚’å–å¾—
 void RailCamera::GetVec(Vector3 a, Vector3 b) {
 	Vector3 yTmpVec = { 0, 1, 0 };
 	Vector3 frontTmp = { 0, 0, 0 };
 	Vector3 a_ = { a.x,a.y,a.z };
 	Vector3 b_ = { b.x,b.y,b.z };
 
-	//Y²‰¼ƒxƒNƒgƒ‹
+	//Yè»¸ä»®ãƒ™ã‚¯ãƒˆãƒ«
 	yTmpVec.normalize();
-	//³–Ê‰¼ƒxƒNƒgƒ‹
+	//æ­£é¢ä»®ãƒ™ã‚¯ãƒˆãƒ«
 	frontTmp = b_ - a_;
 	frontTmp.normalize();
-	//‰EƒxƒNƒgƒ‹
+	//å³ãƒ™ã‚¯ãƒˆãƒ«
 	rightVec = yTmpVec.cross(frontTmp);
 	rightVec.normalize();
-	//¶ƒxƒNƒgƒ‹
+	//å·¦ãƒ™ã‚¯ãƒˆãƒ«
 	leftVec = frontTmp.cross(yTmpVec);
 	leftVec.normalize();
-	//³–ÊƒxƒNƒgƒ‹(YÀ•W‚ğ0‚É‚µ‚½)
+	//æ­£é¢ãƒ™ã‚¯ãƒˆãƒ«(Yåº§æ¨™ã‚’0ã«ã—ãŸ)
 	frontVec = rightVec.cross(yTmpVec);
 	frontVec.normalize();
 }

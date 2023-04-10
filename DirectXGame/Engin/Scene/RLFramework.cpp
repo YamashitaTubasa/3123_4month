@@ -2,81 +2,81 @@
 
 void RLFramework::Run()
 {
-	// ƒQ[ƒ€‚Ì‰Šú‰»
+	// ã‚²ãƒ¼ãƒ ã®åˆæœŸåŒ–
 	Initialize();
 
-	while (true) // ƒQ[ƒ€ƒ‹[ƒv 
+	while (true) // ã‚²ãƒ¼ãƒ ãƒ«ãƒ¼ãƒ— 
 	{
-		// –ˆƒtƒŒ[ƒ€XV
+		// æ¯Žãƒ•ãƒ¬ãƒ¼ãƒ æ›´æ–°
 		Update();
 
-		// I—¹ƒŠƒNƒGƒXƒg‚ª—ˆ‚½‚çƒ‹[ƒv‚ð”²‚¯‚é
+		// çµ‚äº†ãƒªã‚¯ã‚¨ã‚¹ãƒˆãŒæ¥ãŸã‚‰ãƒ«ãƒ¼ãƒ—ã‚’æŠœã‘ã‚‹
 		if (IsEndRequest()) {
-			// ƒQ[ƒ€ƒ‹[ƒv‚ð”²‚¯‚é
+			// ã‚²ãƒ¼ãƒ ãƒ«ãƒ¼ãƒ—ã‚’æŠœã‘ã‚‹
 			break;
 		}
 
-		// •`‰æ
+		// æç”»
 		Draw();
 	}
 
-	// ƒQ[ƒ€‚ÌI—¹
+	// ã‚²ãƒ¼ãƒ ã®çµ‚äº†
 	Finalize();
 }
 
 void RLFramework::Initialize()
 {
-	// WindowsAPI‚Ì‰Šú‰»
+	// WindowsAPIã®åˆæœŸåŒ–
 	winApp = WinApp::GetInstance();
 	winApp->Initialize();
 
-	// DirectX‚Ì‰Šú‰»
+	// DirectXã®åˆæœŸåŒ–
 	dXCommon = DirectXCommon::GetInstance();
 	dXCommon->Initialize(winApp);
 
-	// “ü—Í‚Ì‰Šú‰»
+	// å…¥åŠ›ã®åˆæœŸåŒ–
 	input = Input::GetInstance();
 	input->Initialize(winApp);
 
-	// ImGui‚Ì‰Šú‰»
+	// ImGuiã®åˆæœŸåŒ–
 	imGuiManager = new ImGuiManager();
 	imGuiManager->Initialize(dXCommon, winApp);
 
-	// 3DƒIƒuƒWƒFƒNƒgÃ“I‰Šú‰»
+	// 3Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆé™çš„åˆæœŸåŒ–
 	Object3d::StaticInitialize(dXCommon->GetDevice(), WinApp::window_width, WinApp::window_height);
 
-	// ƒp[ƒeƒBƒNƒ‹Ã“I‰Šú‰»
+	// ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«é™çš„åˆæœŸåŒ–
 	ParticleManager::StaticInitialize(dXCommon->GetDevice(), WinApp::window_width, WinApp::window_height);
 
-	// ƒrƒ…[ƒvƒƒWƒFƒNƒVƒ‡ƒ“‚Ì‰Šú‰»
+	// ãƒ“ãƒ¥ãƒ¼ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ã‚·ãƒ§ãƒ³ã®åˆæœŸåŒ–
 	ViewProjection::StaticInitialize(dXCommon->GetDevice());
 
 }
 
 void RLFramework::Update()
 {
-	// Windows‚ÌƒƒbƒZ[ƒWˆ—
+	// Windowsã®ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸å‡¦ç†
 	if (winApp->ProcessMessage()) {
-		// ƒQ[ƒ€ƒ‹[ƒv‚ð”²‚¯‚é
+		// ã‚²ãƒ¼ãƒ ãƒ«ãƒ¼ãƒ—ã‚’æŠœã‘ã‚‹
 		endRequest_ = true;
 	}
 
-	// “ü—Í‚ÌXV
+	// å…¥åŠ›ã®æ›´æ–°
 	input->Update();
 }
 
 void RLFramework::Finalize()
 {
-	// imgui‚ÌI—¹ˆ—
+	// imguiã®çµ‚äº†å‡¦ç†
 	imGuiManager->Finalize();
-	// imgui‚Ì‰ð•ú
+	// imguiã®è§£æ”¾
 	delete imGuiManager;
 	imGuiManager = nullptr;
 
-	// WindowsAPI‚ÌI—¹ˆ—
+	// WindowsAPIã®çµ‚äº†å‡¦ç†
 	winApp->Finalize();
 	
-	// DirectX‰ð•ú
+	// DirectXè§£æ”¾
 	dXCommon->fpsFixedFinalize();
 	
 }

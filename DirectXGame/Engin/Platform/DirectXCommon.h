@@ -13,32 +13,32 @@
 
 using namespace Microsoft::WRL;
 
-// DirectXŠî”Õ
+// DirectXåŸºç›¤
 class DirectXCommon final
 {
-public: // ƒƒ“ƒoŠÖ”
-	// ‰Šú‰»
+public: // ãƒ¡ãƒ³ãƒé–¢æ•°
+	// åˆæœŸåŒ–
 	void Initialize(WinApp* winApp);
-	// ƒfƒoƒCƒX‚Ì‰Šú‰»
+	// ãƒ‡ãƒã‚¤ã‚¹ã®åˆæœŸåŒ–
 	void InitializeDevice();
-	// ƒRƒ}ƒ“ƒhŠÖ˜A‚Ì‰Šú‰»
+	// ã‚³ãƒãƒ³ãƒ‰é–¢é€£ã®åˆæœŸåŒ–
 	void InitializeCommand();
-	// ƒXƒƒbƒvƒ`ƒF[ƒ“‚Ì‰Šú‰»
+	// ã‚¹ãƒ¯ãƒƒãƒ—ãƒã‚§ãƒ¼ãƒ³ã®åˆæœŸåŒ–
 	void InitializeSwapchain();
-	// ƒŒƒ“ƒ_[ƒ^[ƒQƒbƒgƒrƒ…[‚Ì‰Šú‰»
+	// ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãƒ“ãƒ¥ãƒ¼ã®åˆæœŸåŒ–
 	void InitializeRenderTargetView();
-	// [“xƒoƒbƒtƒ@‚Ì‰Šú‰»
+	// æ·±åº¦ãƒãƒƒãƒ•ã‚¡ã®åˆæœŸåŒ–
 	void InitializeDepthBuffer();
-	// ƒtƒFƒ“ƒX‚Ì‰Šú‰»
+	// ãƒ•ã‚§ãƒ³ã‚¹ã®åˆæœŸåŒ–
 	void InitializeFence();
-	// •`‰æ‘Oˆ—
+	// æç”»å‰å‡¦ç†
 	void PreDraw();
-	// •`‰æŒãˆ—
+	// æç”»å¾Œå‡¦ç†
 	void PostDraw();
-	// I—¹ˆ—
+	// çµ‚äº†å‡¦ç†
 	void fpsFixedFinalize();
 
-private: // ƒƒ“ƒoŠÖ”
+private: // ãƒ¡ãƒ³ãƒé–¢æ•°
 	template <class T>
 	inline void safe_delete(T*& p) {
 		delete p;
@@ -56,11 +56,11 @@ private:
 	
 
 public: // Getter
-	// ƒfƒoƒCƒX‚Ìæ“¾
+	// ãƒ‡ãƒã‚¤ã‚¹ã®å–å¾—
 	ID3D12Device* GetDevice() const { return device.Get(); }
-	// ƒRƒ}ƒ“ƒhƒŠƒXƒgæ“¾
+	// ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆå–å¾—
 	ID3D12GraphicsCommandList* GetCommandList() const { return commandList.Get(); }
-	// ƒoƒbƒNƒoƒbƒtƒ@‚Ì”‚ğæ“¾
+	// ãƒãƒƒã‚¯ãƒãƒƒãƒ•ã‚¡ã®æ•°ã‚’å–å¾—
 	size_t GetBackBufferCount() const { return backBuffers.size(); }
 
 private: 
@@ -70,30 +70,30 @@ private:
 	FPSFixed* fpsFixed = nullptr;
 
 	HRESULT result;
-	// DirectX12ƒfƒoƒCƒX
+	// DirectX12ãƒ‡ãƒã‚¤ã‚¹
 	ComPtr<ID3D12Device> device;
-	// DXGIƒtƒ@ƒNƒgƒŠ
+	// DXGIãƒ•ã‚¡ã‚¯ãƒˆãƒª
 	ComPtr<IDXGIFactory7> dxgiFactory;
-	// ƒXƒƒbƒvƒ`ƒFƒCƒ“
+	// ã‚¹ãƒ¯ãƒƒãƒ—ãƒã‚§ã‚¤ãƒ³
 	ComPtr<IDXGISwapChain4> swapChain;
-	// ƒRƒ}ƒ“ƒhƒAƒƒP[ƒ^
+	// ã‚³ãƒãƒ³ãƒ‰ã‚¢ãƒ­ã‚±ãƒ¼ã‚¿
 	ComPtr<ID3D12CommandAllocator> commandAllocator;
-	// ƒRƒ}ƒ“ƒhƒŠƒXƒg
+	// ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆ
 	ComPtr<ID3D12GraphicsCommandList> commandList;
-	// ƒRƒ}ƒ“ƒhƒLƒ…[
+	// ã‚³ãƒãƒ³ãƒ‰ã‚­ãƒ¥ãƒ¼
 	ComPtr<ID3D12CommandQueue> commandQueue;
 	ComPtr<ID3D12DescriptorHeap> rtvHeap;
 	ComPtr<ID3D12DescriptorHeap> dsvHeap;
 
-	//// ƒXƒƒbƒvƒ`ƒF[ƒ“‚Ìİ’è
+	//// ã‚¹ãƒ¯ãƒƒãƒ—ãƒã‚§ãƒ¼ãƒ³ã®è¨­å®š
 	//DXGI_SWAP_CHAIN_DESC1 swapChainDesc{};
-	//// ƒRƒ}ƒ“ƒhƒLƒ…[‚Ìİ’è
+	//// ã‚³ãƒãƒ³ãƒ‰ã‚­ãƒ¥ãƒ¼ã®è¨­å®š
 	//D3D12_COMMAND_QUEUE_DESC commandQueueDesc{};
 	//D3D12_RESOURCE_BARRIER barrierDesc{};
 	//D3D12_DESCRIPTOR_HEAP_DESC rtvHeapDesc{};
-	//ƒoƒbƒNƒoƒbƒtƒ@
+	//ãƒãƒƒã‚¯ãƒãƒƒãƒ•ã‚¡
 	std::vector<ComPtr<ID3D12Resource>> backBuffers;
-	// ƒtƒFƒ“ƒX‚Ì¶¬
+	// ãƒ•ã‚§ãƒ³ã‚¹ã®ç”Ÿæˆ
 	ComPtr<ID3D12Fence> fence;
 
 	UINT rtvHD;

@@ -9,30 +9,30 @@ class BaseCollider;
 
 class CollisionManager
 {
-public://Ã“Iƒƒ“ƒoŠÖ”
+public://é™çš„ãƒ¡ãƒ³ãƒé–¢æ•°
 	static CollisionManager* GetInstance();
 
-public://ƒƒ“ƒoŠÖ”
-	//ƒRƒ‰ƒCƒ_[‚Ì’Ç‰Á
+public://ãƒ¡ãƒ³ãƒé–¢æ•°
+	//ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã®è¿½åŠ 
 	inline void AddCollider(BaseCollider* collider)
 	{
 		colliders.push_front(collider);
 	}
-	//ƒRƒ‰ƒCƒ_[‚Ìíœ
+	//ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã®å‰Šé™¤
 	inline void RemoveCollider(BaseCollider* collider)
 	{
 		colliders.remove(collider);
 	}
-	//‘S‚Ä‚ÌÕ“Ëƒ`ƒFƒbƒN
+	//å…¨ã¦ã®è¡çªãƒã‚§ãƒƒã‚¯
 	void CheckAllCollisions();
-	//ƒŒƒCƒLƒƒƒXƒg
+	//ãƒ¬ã‚¤ã‚­ãƒ£ã‚¹ãƒˆ
 	bool Raycast(const Ray& ray, RaycastHit* hitInfo = nullptr, float maxDistance = D3D12_FLOAT32_MAX);
 private:
 	CollisionManager() = default;
 	CollisionManager(const CollisionManager&) = delete;
 	~CollisionManager() = default;
 	CollisionManager& operator = (const CollisionManager&) = delete;
-	//ƒRƒ‰ƒCƒ_[‚ÌƒŠƒXƒg
+	//ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã®ãƒªã‚¹ãƒˆ
 	std::forward_list<BaseCollider*>colliders;
 };
 

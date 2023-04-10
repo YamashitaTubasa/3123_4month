@@ -3,19 +3,19 @@
 void ImGuiManager::Initialize(DirectXCommon* dXCommon_, WinApp* winApp_) {
 	HRESULT result;
 
-	// ImGui‚ÌƒRƒ“ƒeƒLƒXƒg‚ğ¶¬
+	// ImGuiã®ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã‚’ç”Ÿæˆ
 	ImGui::CreateContext();
-	// ImGui‚ÌƒXƒ^ƒCƒ‹‚ğİ’è
+	// ImGuiã®ã‚¹ã‚¿ã‚¤ãƒ«ã‚’è¨­å®š
 	ImGui::StyleColorsDark();
 
 	ImGui_ImplWin32_Init(winApp_->GetHwnd());
 
-	// ƒfƒXƒNƒŠƒvƒ^ƒq[ƒvİ’è
+	// ãƒ‡ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ’ãƒ¼ãƒ—è¨­å®š
 	D3D12_DESCRIPTOR_HEAP_DESC desc = {};
 	desc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
 	desc.NumDescriptors = 1;
 	desc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
-	// ƒfƒXƒNƒŠƒvƒ^ƒq[ƒv¶¬
+	// ãƒ‡ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ’ãƒ¼ãƒ—ç”Ÿæˆ
 	result = dXCommon_->GetDevice()->CreateDescriptorHeap(&desc, IID_PPV_ARGS(&srvHeap_));
 	assert(SUCCEEDED(result));
 
@@ -28,24 +28,24 @@ void ImGuiManager::Initialize(DirectXCommon* dXCommon_, WinApp* winApp_) {
 	);
 
 	ImGuiIO& io = ImGui::GetIO();
-	// •W€ƒtƒHƒ“ƒg‚ğ’Ç‰Á‚·‚é
+	// æ¨™æº–ãƒ•ã‚©ãƒ³ãƒˆã‚’è¿½åŠ ã™ã‚‹
 	io.Fonts->AddFontDefault();
 }
 
 void ImGuiManager::Finalize()
 {
-	// Œãn––
+	// å¾Œå§‹æœ«
 	ImGui_ImplDX12_Shutdown();
 	ImGui_ImplWin32_Shutdown();
 	ImGui::DestroyContext();
 
-	// ƒfƒXƒNƒŠƒvƒ^ƒq[ƒv‚Ì‰ğ•ú
+	// ãƒ‡ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ’ãƒ¼ãƒ—ã®è§£æ”¾
 	srvHeap_.Reset();
 }
 
 void ImGuiManager::Begin()
 {
-	// ImGuiƒtƒŒ[ƒ€ŠJn
+	// ImGuiãƒ•ãƒ¬ãƒ¼ãƒ é–‹å§‹
 	ImGui_ImplDX12_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
@@ -53,7 +53,7 @@ void ImGuiManager::Begin()
 
 void ImGuiManager::End()
 {
-	// •`‰æ€”õ
+	// æç”»æº–å‚™
 	ImGui::Render();
 }
 
@@ -61,10 +61,10 @@ void ImGuiManager::Draw(DirectXCommon* dXCommon_)
 {
 	ID3D12GraphicsCommandList* commandList = dXCommon_->GetCommandList();
 
-	// ƒfƒXƒNƒŠƒvƒ^ƒq[ƒv‚Ì”z—ñ‚ğƒZƒbƒg‚·‚éƒRƒ}ƒ“ƒh
+	// ãƒ‡ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ’ãƒ¼ãƒ—ã®é…åˆ—ã‚’ã‚»ãƒƒãƒˆã™ã‚‹ã‚³ãƒãƒ³ãƒ‰
 	ID3D12DescriptorHeap* ppHeaps[] = { srvHeap_.Get() };
 	commandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
-	// •`‰æƒRƒ}ƒ“ƒh‚ğ”­s
+	// æç”»ã‚³ãƒãƒ³ãƒ‰ã‚’ç™ºè¡Œ
 	ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), commandList);
 }
 

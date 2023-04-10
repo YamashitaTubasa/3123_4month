@@ -3,46 +3,46 @@
 #include<DirectXMath.h>
 #include "Vector3.h"
 
-//‹…
+//çƒ
 struct Sphere
 {
-	//’†SÀ•W
+	//ä¸­å¿ƒåº§æ¨™
 	Vector3 center = { 0,0,0 };
-	//”¼Œa
+	//åŠå¾„
 	float radius = 1.0f;
-	//À•W
+	//åº§æ¨™
 	Vector3 position = { 0,0,0 };
 };
-//•½–Ê
+//å¹³é¢
 struct Plane
 {
-	//–@üƒxƒNƒgƒ‹
+	//æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«
 	Vector3 normal = { 0,1,0 };
-	//Œ´“_(0,0,0)‚©‚ç‚Ì‹——£
+	//åŸç‚¹(0,0,0)ã‹ã‚‰ã®è·é›¢
 	float distance = 0.0f;
 };
-//ƒŒƒC
+//ãƒ¬ã‚¤
 struct Ray
 {
-	//n“_À•W
+	//å§‹ç‚¹åº§æ¨™
 	Vector3 start = { 0,0,0 };
 
-	//•ûŒü
+	//æ–¹å‘
 	Vector3 dir = { 1,0,0 };
 };
 
-//–@ü•t‚«OŠpŒ`(Œv‰ñ‚è‚ª•\–Ê)
+//æ³•ç·šä»˜ãä¸‰è§’å½¢(æ™‚è¨ˆå›ã‚ŠãŒè¡¨é¢)
 class Triangle
 {
 public:
-	//’¸“_3‚Â
+	//é ‚ç‚¹3ã¤
 	Vector3 p0;
 	Vector3 p1;
 	Vector3 p2;
-	//–@üƒxƒNƒgƒ‹
+	//æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«
 	Vector3 normal;
 
-	//–@ü‚ÌŒvZ
+	//æ³•ç·šã®è¨ˆç®—
 	void ComputeNormal();
 };
 

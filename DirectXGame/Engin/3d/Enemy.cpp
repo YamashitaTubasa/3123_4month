@@ -1,31 +1,31 @@
 #include "Enemy.h"
 #include "GamePlayScene.h"
 
-//ƒfƒXƒgƒ‰ƒNƒ^
+//ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 Enemy::~Enemy() {
 	delete enemyModel;
 	delete obj;
 }
 
-//‰Šú‰»
+//åˆæœŸåŒ–
 void Enemy::Initialize(const Vector3& v)
 {
-	// OBJ‚©‚çƒ‚ƒfƒ‹ƒf[ƒ^‚ð“Ç‚Ýž‚Þ
+	// OBJã‹ã‚‰ãƒ¢ãƒ‡ãƒ«ãƒ‡ãƒ¼ã‚¿ã‚’èª­ã¿è¾¼ã‚€
 	enemyModel = Model::LoadFromOBJ("ironSphere");
-	// 3DƒIƒuƒWƒFƒNƒg¶¬
+	// 3Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆç”Ÿæˆ
 	obj = Object3d::Create();
-	// ƒIƒuƒWƒFƒNƒg‚Éƒ‚ƒfƒ‹‚ð‚Ð‚à•t‚¯‚é
+	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«ãƒ¢ãƒ‡ãƒ«ã‚’ã²ã‚‚ä»˜ã‘ã‚‹
 	obj->SetModel(enemyModel);
 	obj->SetPosition(Vector3(v.x, v.y, v.z));
 }
 
-//XV
+//æ›´æ–°
 void Enemy::Update() {
-	//XV
+	//æ›´æ–°
 	obj->Update();
 }
 
-//•`‰æ
+//æç”»
 void Enemy::Draw(ViewProjection* viewProjection) {
 	obj->Draw(viewProjection);
 }

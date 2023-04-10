@@ -1,31 +1,31 @@
 #include "Player.h"
 
-//ƒfƒXƒgƒ‰ƒNƒ^
+//ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 Player::~Player() {
 	delete playerModel;
 	delete obj;
 }
 
-//‰Šú‰»
+//åˆæœŸåŒ–
 void Player::Initialize() {
 	input_ = Input::GetInstance();
-	// OBJ‚©‚çƒ‚ƒfƒ‹ƒf[ƒ^‚ğ“Ç‚İ‚Ş
+	// OBJã‹ã‚‰ãƒ¢ãƒ‡ãƒ«ãƒ‡ãƒ¼ã‚¿ã‚’èª­ã¿è¾¼ã‚€
 	playerModel = Model::LoadFromOBJ("fighter");
-	// 3DƒIƒuƒWƒFƒNƒg¶¬
+	// 3Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆç”Ÿæˆ
 	obj = Object3d::Create();
-	// ƒIƒuƒWƒFƒNƒg‚Éƒ‚ƒfƒ‹‚ğ‚Ğ‚à•t‚¯‚é
+	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«ãƒ¢ãƒ‡ãƒ«ã‚’ã²ã‚‚ä»˜ã‘ã‚‹
 	obj->SetModel(playerModel);
 	obj->SetRotation(Vector3({ 0, 90, 0 }));
 	obj->SetPosition(Vector3(0, 0, -790));
-	//•Ï”
+	//å¤‰æ•°
 	val = 1000.0f;
 	feverTime = 0;
 	isFever = false;
 }
 
-//XV
+//æ›´æ–°
 void Player::Update() {
-	//ƒŒ[ƒ‹‘OˆÚ“®
+	//ãƒ¬ãƒ¼ãƒ«å‰ç§»å‹•
 	if (isOnRail == false) {
 		if (input_->PushKey(DIK_W)) {
 			obj->SetPosition(obj->GetPosition() + Vector3(0, 0, 0.2));
@@ -40,25 +40,25 @@ void Player::Update() {
 			obj->SetPosition(obj->GetPosition() + Vector3(0, 0, -0.2));
 		}
 	}
-	//ƒŒ[ƒ‹Œãˆ—
+	//ãƒ¬ãƒ¼ãƒ«å¾Œå‡¦ç†
 	if (isOnRail == true) {
 		//feverTaime
 		if (val == 600) {
 			GoesFever();
 		}
 	}
-	//XV
+	//æ›´æ–°
 	obj->Update();
 }
 
-//•`‰æ
+//æç”»
 void Player::Draw(ViewProjection* viewProjection) {
 	obj->Draw(viewProjection);
 }
 
-//feverƒ^ƒCƒ€
+//feverã‚¿ã‚¤ãƒ 
 void Player::GoesFever() {
-	//fever‚Å‚È‚¢‚È‚çfever‚É
+	//feverã§ãªã„ãªã‚‰feverã«
 	if (isFever == false) {
 		isFever = true;
 	}
@@ -75,7 +75,7 @@ void Player::GoesFever() {
 			}
 		}
 
-		//ˆê’èŠÔ‚µ‚½‚ç’Êíƒ‚[ƒh‚Ö
+		//ä¸€å®šæ™‚é–“ã—ãŸã‚‰é€šå¸¸ãƒ¢ãƒ¼ãƒ‰ã¸
 		if (feverTime == 300) {
 			val = 1000.0f;
 			feverTime = 0;
