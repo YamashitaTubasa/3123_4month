@@ -218,7 +218,6 @@ void PostEffect::Initialize()
 	assert(SUCCEEDED(result));
 
 	// 定数バッファにデータ転送
-	ConstBufferData* constMap = nullptr;
 	result = constBuffB0->Map(0, nullptr, (void**)&constMap); // マッピング
 	constMap->color = color_;
 	constMap->mat = Matrix4::identity();

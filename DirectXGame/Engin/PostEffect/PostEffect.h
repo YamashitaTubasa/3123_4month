@@ -66,6 +66,7 @@ private:
 	ComPtr<ID3D12RootSignature> rootSignature;
 	ComPtr<ID3D12Device> device;
 	ComPtr<ID3D12GraphicsCommandList> cmdList;
+	ConstBufferData* constMap = nullptr;
 
 protected:
 	// 画面クリアカラー
