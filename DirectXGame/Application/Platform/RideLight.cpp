@@ -5,6 +5,8 @@ void RideLight::Initialize()
 	// 基底クラスの初期化
 	RLFramework::Initialize();
 
+	dXCommon = DirectXCommon::GetInstance();
+
 	// ゲームシーンの生成と初期化
 	scene_ = new GamePlayScene();
 	scene_->Initialize(spriteCommon);
@@ -27,17 +29,30 @@ void RideLight::Update()
 
 void RideLight::Draw()
 {
-	// 描画前処理
-	dXCommon->PreDraw();
+#pragma region ゲームシーン描画
+	// レンダーテクスチャの前処理
+	postEffect_->PreDrawScene(dXCommon->GetCommandList());
 
-	// ゲームシーンの描画
+	//=== ゲームシーン描画 ===//
 	scene_->Draw();
 
-	// ImGui描画
+	// レンダーテクスチャの後処理
+	postEffect_->PostDrawScene(dXCommon->GetCommandList());
+#pragma endregion
+
+#pragma region 描画
+	// 描画前処理
+	dXCommon->PreDraw();
+	
+	//=== ポストエフェクトの描画 ===//
+	postEffect_->Draw(dXCommon->GetCommandList());
+
+	//=== ImGui描画 ===//
 	imGuiManager->Draw(dXCommon);
 
 	// 描画後処理
 	dXCommon->PostDraw();
+#pragma endregion
 }
 
 void RideLight::Finalize()
