@@ -6,7 +6,7 @@ SamplerState smp : register(s0);
 float4 main(VSOutput input) : SV_TARGET
 {
 	// UV指定したピクセルの色をサンプリング
-	float4 texcolor = tex.Sample(smp, input.uv + float2(1.0f,1.0f));
+	float4 texcolor = tex.Sample(smp, input.uv + float2(1.0f,1.0f)) * color;
 
 	// アルファに1を入れて出力
 	return float4(texcolor.rgb * 1.0, 1);
