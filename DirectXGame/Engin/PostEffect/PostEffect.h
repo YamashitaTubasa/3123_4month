@@ -46,7 +46,7 @@ public:
 	void CreateGraphicsPipelineState();
 
 public:
-	void SetColor(const Vector4& color) { this->color_ = color; }
+	void SetColor(const Vector4& color);
 	Vector4 GetColor() const { return color_; }
 
 private:
