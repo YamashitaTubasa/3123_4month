@@ -7,6 +7,8 @@
 #include "WinApp.h"
 #include "DirectXCommon.h"
 
+
+
 class Line {
 public:
 	//static SpriteCommon* GetInstance();
@@ -14,7 +16,7 @@ public:
 public:
 	// 定数バッファ用データ構造体(マテリアル)
 	struct ConstBufferDataMaterial {
-		Matrix4 color; // 色(RGBA)
+		DirectX::XMFLOAT4 color_; // 色(RGBA)
 	};
 
 	////定数バッファ用データ構造体(Material)
@@ -42,7 +44,7 @@ private:
 		{ -0.5f, -0.5f, 0.0f }, // 左下
 		{ -0.5f, +0.5f, 0.0f }, // 左上
 		{ +0.5f, -0.5f, 0.0f }, // 右下
-		{ -0.5f, -0.5f, 0.0f },
+		//{ -0.5f, -0.5f, 0.0f },
 	};
 
 	ComPtr<ID3D12RootSignature> rootSignature;
@@ -52,6 +54,10 @@ private:
 	//定数バッファの生成(準備)
 	ComPtr<ID3D12Resource> constBuffTransform;
 	//ComPtr<ConstBufferDataTransform> constMapTransform;
+
+	ComPtr<ID3D12Resource> constBuffMaterial;
+	//ComPtr<ConstBufferDataMaterial> constMapMaterial;
+	ConstBufferDataMaterial* constMapMaterial = nullptr;
 
 	// 頂点バッファビューの作成
 	D3D12_VERTEX_BUFFER_VIEW vbView{};
