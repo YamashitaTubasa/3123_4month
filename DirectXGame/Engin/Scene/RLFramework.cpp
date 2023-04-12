@@ -42,6 +42,10 @@ void RLFramework::Initialize()
 	imGuiManager = new ImGuiManager();
 	imGuiManager->Initialize(dXCommon, winApp);
 
+	// ポストエフェクトの初期化
+	postEffect_ = new PostEffect();
+	postEffect_->Initialize();
+
 	// 3Dオブジェクト静的初期化
 	Object3d::StaticInitialize(dXCommon->GetDevice(), WinApp::window_width, WinApp::window_height);
 

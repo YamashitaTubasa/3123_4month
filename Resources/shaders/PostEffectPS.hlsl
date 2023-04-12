@@ -9,5 +9,5 @@ float4 main(VSOutput input) : SV_TARGET
 	float4 texcolor = tex.Sample(smp, input.uv + float2(1.0f,1.0f));
 
 	// アルファに1を入れて出力
-	return float4(texcolor.rgb * 0.7, 1);
+	return float4(texcolor.rgb * 1.0, 1);
 }
