@@ -28,6 +28,12 @@
     <FxCompile Include="Resources\shaders\SpriteVS.hlsl">
       <Filter>シェーダーファイル</Filter>
     </FxCompile>
+    <FxCompile Include="Resources\shaders\LinePS.hlsl">
+      <Filter>シェーダーファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\LineVS.hlsl">
+      <Filter>シェーダーファイル</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DirectXGame\Engin\Audio\Audio.cpp">
@@ -122,6 +128,9 @@
     </ClCompile>
     <ClCompile Include="DirectXGame\Engin\3d\Player.cpp">
       <Filter>ソースファイル\Engine\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\Engin\Line\Line.cpp">
+      <Filter>ソースファイル\Engine\Line</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -227,6 +236,9 @@
     <ClInclude Include="DirectXGame\Engin\3d\Player.h">
       <Filter>ヘッダーファイル\Engine\GameObject</Filter>
     </ClInclude>
+    <ClInclude Include="DirectXGame\Engin\Line\Line.h">
+      <Filter>ヘッダーファイル\Engine\Line</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Basic.hlsli">
@@ -239,6 +251,9 @@
       <Filter>シェーダーファイル</Filter>
     </None>
     <None Include="Resources\shaders\Sprite.hlsli">
+      <Filter>シェーダーファイル</Filter>
+    </None>
+    <None Include="Resources\shaders\Line.hlsli">
       <Filter>シェーダーファイル</Filter>
     </None>
   </ItemGroup>
@@ -347,6 +362,12 @@
     </Filter>
     <Filter Include="ソースファイル\Engine\GameObject">
       <UniqueIdentifier>{46b7a177-ed8f-439c-b7ad-ff8384fb9e89}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソースファイル\Engine\Line">
+      <UniqueIdentifier>{5b42aef6-7025-4c24-8cf1-a6d14cdde43c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダーファイル\Engine\Line">
+      <UniqueIdentifier>{620e5154-f40a-4ede-b378-b0b179a6e8f9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

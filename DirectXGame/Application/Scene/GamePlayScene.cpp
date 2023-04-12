@@ -57,6 +57,9 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	hP.SpriteTransferVertexBuffer(hP, spriteCommon, 3);
 	hP.SpriteUpdate(hP, spriteCommon_);
 
+	line = new Line();
+	line->Initialize();
+
 	LoadEffect(spriteCommon);
 
 	//レールカメラ初期化
@@ -95,6 +98,7 @@ void GamePlayScene::Draw() {
 
 	sky->Draw(railCamera->GetView());
 	stage->Draw(railCamera->GetView());
+	line->Draw();
 
 	// 3Dオブジェクト描画後処理
 	Object3d::PostDraw();
@@ -149,6 +153,7 @@ void GamePlayScene::Finalize() {
 	delete player;
 	delete sky;
 	delete skyModel;
+	delete line;
 
 	// スプライト解放
 	delete sprite;
