@@ -446,3 +446,13 @@ void PostEffect::CreateGraphicsPipelineState()
 	result = dXCommon->GetDevice()->CreateGraphicsPipelineState(&gpipeline, IID_PPV_ARGS(&pipelineState));
 	assert(SUCCEEDED(result));
 }
+
+void PostEffect::SetColor(const Vector4& color)
+{
+	HRESULT result;
+
+	// 定数バッファにデータ転送
+	result = constBuffB0->Map(0, nullptr, (void**)&constMap); // マッピング
+	constMap->color = color;
+	assert(SUCCEEDED(result));
+}
