@@ -52,22 +52,6 @@ void Line::Initialize() {
 	cbResourceDesc.SampleDesc.Count = 1;
 	cbResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
-	{
-		//定数バッファの生成(設定)
-		//ヒープ設定
-		D3D12_HEAP_PROPERTIES cbHeapProp{};
-		cbHeapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
-		//リソース設定
-		D3D12_RESOURCE_DESC cbResourceDesc{};
-		cbResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
-		cbResourceDesc.Width = (sizeof(ConstBufferDataTransform) + 0xff) & ~0xff;	//256バイトアラインメント
-		cbResourceDesc.Height = 1;
-		cbResourceDesc.DepthOrArraySize = 1;
-		cbResourceDesc.MipLevels = 1;
-		cbResourceDesc.SampleDesc.Count = 1;
-		cbResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
-	}
-
 	//定数バッファの生成
 	result = dXCommon_->GetDevice()->CreateCommittedResource(
 		&cbHeapProp,
@@ -75,15 +59,48 @@ void Line::Initialize() {
 		&cbResourceDesc,
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
-		IID_PPV_ARGS(&constBuffTransform));
+		IID_PPV_ARGS(&constBuffMaterial)
+	);
+
+	//定数バッファマッピング
+	result = constBuffMaterial->Map(0, nullptr, (void**)&constBuffer);
 	assert(SUCCEEDED(result));
+
+	//値を書き込むと自動的に転送される
+	constBuffer->color = Vector4(1.0f, 0.0f, 0.0f, 1.0f);
+	
+	//{
+	//	//定数バッファの生成(設定)
+	//	//ヒープ設定
+	//	D3D12_HEAP_PROPERTIES cbHeapProp{};
+	//	cbHeapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
+	//	//リソース設定
+	//	D3D12_RESOURCE_DESC cbResourceDesc{};
+	//	cbResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
+	//	cbResourceDesc.Width = (sizeof(ConstBufferDataTransform) + 0xff) & ~0xff;	//256バイトアラインメント
+	//	cbResourceDesc.Height = 1;
+	//	cbResourceDesc.DepthOrArraySize = 1;
+	//	cbResourceDesc.MipLevels = 1;
+	//	cbResourceDesc.SampleDesc.Count = 1;
+	//	cbResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+	//}
+
+	////定数バッファの生成
+	//result = dXCommon_->GetDevice()->CreateCommittedResource(
+	//	&cbHeapProp,
+	//	D3D12_HEAP_FLAG_NONE,
+	//	&cbResourceDesc,
+	//	D3D12_RESOURCE_STATE_GENERIC_READ,
+	//	nullptr,
+	//	IID_PPV_ARGS(&constBuffTransform));
+	//assert(SUCCEEDED(result));
 
 	//定数バッファのマッピング
-	result = constBuffTransform->Map(0, nullptr, (void**)&constMapTransform);	//マッピング
-	assert(SUCCEEDED(result));
+	//result = constBuffTransform->Map(0, nullptr, (void**)&constMapTransform);	//マッピング
+	//assert(SUCCEEDED(result));
 
 	//単位行列を代入
-	constMapTransform->mat = XMMatrixIdentity();
+	//constMapTransform->mat = XMMatrixIdentity();
 
 	// GPU上のバッファに対した仮想メモリ(メインメモリ上)を取得
 	Vector3* vertMap = nullptr;
@@ -243,6 +260,9 @@ void Line::Initialize() {
 	D3D12_INPUT_ELEMENT_DESC inputLayout[] = {
 		{
 			"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,D3D12_APPEND_ALIGNED_ELEMENT,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
+		},
+		{
+			"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
 		},
 	};
 
