@@ -98,7 +98,6 @@ void GamePlayScene::Draw() {
 
 	sky->Draw(railCamera->GetView());
 	stage->Draw(railCamera->GetView());
-	line->Draw();
 
 	// 3Dオブジェクト描画後処理
 	Object3d::PostDraw();
@@ -142,6 +141,7 @@ void GamePlayScene::Draw() {
 	Object3d::PreDraw(dXCommon->GetCommandList());
 	//playerを画像より手前に出したい
 	player->Draw(railCamera->GetView());
+	line->Draw();
 
 	// 3Dオブジェクト描画後処理
 	Object3d::PostDraw();

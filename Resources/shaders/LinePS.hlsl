@@ -1,11 +1,13 @@
 #include "Line.hlsli"
 
-cbuffer ConstBufferDataMaterial : register(b0) {
-	float4 color;
-}
+//float4 main() : SV_TARGET
+//{
+//	return color;
+//}
 
-float4 main() : SV_TARGET
+//-----04_01_UVç¿ïW-----//
+float4 main(VSOutput input) : SV_TARGET
 {
-	return color;
+	return float4(input.uv,0,1);
 }
 

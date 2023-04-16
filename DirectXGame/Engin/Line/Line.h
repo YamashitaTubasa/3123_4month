@@ -1,11 +1,14 @@
 #pragma once
+#include "Vector2.h"
 #include "Vector3.h"
+#include "Vector4.h"
 #include "Matrix4.h"
 #include <DirectXMath.h>
 #include <vector>
 
 #include "WinApp.h"
 #include "DirectXCommon.h"
+#include "stdint.h"
 
 
 
@@ -16,12 +19,7 @@ public:
 public:
 	// 定数バッファ用データ構造体(マテリアル)
 	struct ConstBufferDataMaterial {
-		Matrix4 color_; // 色(RGBA)
-	};
-
-	struct VertexPosUv {
-		Vector3 pos;
-		Vector2 uv;
+		Vector4 color_; // 色(RGBA)
 	};
 
 	////定数バッファ用データ構造体(Material)
@@ -44,17 +42,29 @@ public:
 	~Line() = default;
 
 private:
+	struct VertexPosUv {
+		Vector3 pos;
+		Vector2 uv;
+	};
+
 	// 頂点データ
-	Vector3 vertices[4] = {
-		{ -0.5f, -0.5f, 0.0f }, // 左下
-		{ -0.5f, +0.5f, 0.0f }, // 左上
-		{ +0.5f, -0.5f, 0.0f }, // 右下
-		//{ -0.5f, -0.5f, 0.0f },
+	std::vector<VertexPosUv> vertices = {
+		{{ -0.4f, -0.7f, 0.0f },{0.0f,1.0f}}, // 左下
+		{{ -0.4f, +0.7f, 0.0f },{0.0f,0.0f}}, // 左上
+		{{ +0.4f, -0.7f, 0.0f },{1.0f,1.0f}}, // 右下
+		{{ +0.4f, +0.7f, 0.0f },{1.0f,0.0f}}, // 右上
+	};
+
+	//std::vector = 可変長配列
+	std::vector<uint16_t> indices = {
+		0,1,2,
+		1,2,3,
 	};
 
 	ComPtr<ID3D12RootSignature> rootSignature;
 	ComPtr<ID3D12PipelineState> pipelineState;
 	ComPtr<ID3D12Resource> vertBuff;
+	ComPtr<ID3D12Resource> indexBuff;
 
 	//定数バッファの生成(準備)
 	ComPtr<ID3D12Resource> constBuffTransform;
@@ -66,6 +76,9 @@ private:
 
 	// 頂点バッファビューの作成
 	D3D12_VERTEX_BUFFER_VIEW vbView{};
+
+	//インデックスバッファビューの作成
+	D3D12_INDEX_BUFFER_VIEW ibView{};
 
 public:
 	DirectXCommon* GetDXCommon() const { return dXCommon_; }

@@ -12,7 +12,8 @@ void Line::Initialize() {
 	HRESULT result;
 
 	// 頂点データ全体のサイズ　＝　頂点データ一つ分のサイズ　＊　頂点データの要素数
-	UINT sizeVB = static_cast<UINT>(sizeof(VertexPosUv) * _countof(vertices));
+	//UINT sizeVB = static_cast<UINT>(sizeof(Vector3) * _countof(vertices));
+	UINT sizeVB = static_cast<UINT>(sizeof(vertices[0]) * vertices.size());
 
 	// 頂点バッファの設定
 	D3D12_HEAP_PROPERTIES heapProp{}; // ヒープ設定
@@ -67,7 +68,7 @@ void Line::Initialize() {
 	assert(SUCCEEDED(result));
 
 	//値を書き込むと自動的に転送される
-	constMapMaterial->color_ = Matrix4();
+	constMapMaterial->color_ = Vector4(1.0f, 1.0f, 0.0f, 1.0f);
 
 	////定数バッファの生成(設定)
 	////ヒープ設定
@@ -101,11 +102,11 @@ void Line::Initialize() {
 	//constMapTransform->mat = XMMatrixIdentity();
 
 	// GPU上のバッファに対した仮想メモリ(メインメモリ上)を取得
-	Vector3* vertMap = nullptr;
+	VertexPosUv* vertMap = nullptr;
 	result = vertBuff->Map(0, nullptr, (void**)&vertMap);
 	assert(SUCCEEDED(result));
 	// 全頂点に対して
-	for (int i = 0; i < _countof(vertices); i++) {
+	for (int i = 0; i < vertices.size(); i++) {
 		vertMap[i] = vertices[i]; // 座標をコピー
 	}
 	// 繋がりを解除
@@ -116,7 +117,44 @@ void Line::Initialize() {
 	// 頂点バッファのサイズ
 	vbView.SizeInBytes = sizeVB;
 	// 頂点一つ分のデータサイズ
-	vbView.StrideInBytes = sizeof(XMFLOAT3);
+	vbView.StrideInBytes = sizeof(vertices[0]);
+
+	//インデックスデータ全体のサイズ
+	UINT sizeIB = static_cast<UINT>(sizeof(uint16_t) * indices.size());
+
+	//リソース設定
+	resDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
+	resDesc.Width = sizeIB; // 頂点データ全体のサイズ
+	resDesc.Height = 1;
+	resDesc.DepthOrArraySize = 1;
+	resDesc.MipLevels = 1;
+	resDesc.SampleDesc.Count = 1;
+	resDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+
+	//インデックスバッファの生成
+	result = dXCommon_->GetDevice()->CreateCommittedResource(
+		&heapProp, // ヒープ設定
+		D3D12_HEAP_FLAG_NONE,
+		&resDesc, // リソース設定
+		D3D12_RESOURCE_STATE_GENERIC_READ,
+		nullptr,
+		IID_PPV_ARGS(&indexBuff));
+	assert(SUCCEEDED(result));
+
+	//インデックスバッファをマッピング
+	uint16_t* indexMap = nullptr;
+	result = indexBuff->Map(0, nullptr, (void**)&indexMap);
+	assert(SUCCEEDED(result));
+	// 全頂点に対して
+	for (int i = 0; i < indices.size(); i++) {
+		indexMap[i] = indices[i]; // 座標をコピー
+	}
+	// 繋がりを解除
+	indexBuff->Unmap(0, nullptr);
+
+	ibView.BufferLocation = indexBuff->GetGPUVirtualAddress();
+	ibView.Format = DXGI_FORMAT_R16_UINT;
+	ibView.SizeInBytes = sizeIB;
 
 	ComPtr<ID3DBlob> vsBlob; // 頂点シェーダオブジェクト
 	ComPtr<ID3DBlob> psBlob; // ピクセルシェーダオブジェクト
@@ -177,6 +215,9 @@ void Line::Initialize() {
 		{
 			"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,D3D12_APPEND_ALIGNED_ELEMENT,D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
 		},
+		{
+			"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D12_APPEND_ALIGNED_ELEMENT, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
+		},
 	};
 
 	// グラフィックスパイプライン設定
@@ -193,8 +234,8 @@ void Line::Initialize() {
 
 	// ラスタライザの設定
 	pipelineDesc.RasterizerState.CullMode = D3D12_CULL_MODE_NONE; // カリングしない
-	//pipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID; // ポリゴン内塗るつぶし
-	pipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_WIREFRAME;
+	pipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID; // ポリゴン内塗るつぶし
+	//pipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_WIREFRAME;
 	pipelineDesc.RasterizerState.DepthClipEnable = true; // 深度クリッピングを有効に
 
 	// ブレンドステート
@@ -289,9 +330,18 @@ void Line::Draw() {
 	//頂点バッファの設定コマンド
 	dXCommon_->GetCommandList()->IASetVertexBuffers(0, 1, &vbView);
 
+	//インデックスバッファビューの設定コマンド
+	dXCommon_->GetCommandList()->IASetIndexBuffer(&ibView);
+
 	//定数バッファビュー(CBV)の設定コマンド
 	dXCommon_->GetCommandList()->SetGraphicsRootConstantBufferView(0, constBuffMaterial->GetGPUVirtualAddress());
 
-	//描画コマンド
-	dXCommon_->GetCommandList()->DrawInstanced(_countof(vertices), 1, 0, 0);
+	//描画コマンド									//_countofは配列専用(配列じゃなければ数えられない)
+	//dXCommon_->GetCommandList()->DrawInstanced(_countof(vertices), 1, 0, 0);
+
+	//-----インデックスバッファを使わずに頂点バッファのみで描画する場合-----//
+	//dXCommon_->GetCommandList()->DrawInstanced(vertices.size(), 1, 0, 0);
+
+	//-----インデックスバッファと頂点バッファで描画する場合-----//
+	dXCommon_->GetCommandList()->DrawIndexedInstanced(indices.size(), 1, 0, 0, 0);
 }
