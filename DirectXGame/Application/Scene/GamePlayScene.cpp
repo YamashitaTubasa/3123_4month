@@ -28,7 +28,7 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	sky = Object3d::Create();
 	// オブジェクトにモデルをひも付ける
 	sky->SetModel(skyModel);
-	sky->SetScale(Vector3({1000, 1000, 1000}));
+	sky->SetScale(Vector3({ 1000, 1000, 1000 }));
 
 	//player初期化
 	player = new Player;
@@ -47,11 +47,6 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	stage->SetModel(stageModel);
 	stage->SetScale(Vector3({ 80, 20, 20 }));
 	stage->SetPosition(Vector3(0, -26, -775));
-
-	//コライダーの追加
-	for (const std::unique_ptr<Enemy>& enemy : enemys_) {
-		enemy->obj->SetCollider(new SphereCollider);
-	}
 
 	//パーティクル初期化
 	particle_1 = Particle::LoadParticleTexture("effect1.png");
@@ -135,7 +130,7 @@ void GamePlayScene::Update() {
 
 	//全ての衝突をチェック
 	collisionManager->CheckAllCollisions();
-	
+
 	//パーティクル発生実験
 	if (player->GetIsHit() == true)
 	{
@@ -188,7 +183,7 @@ void GamePlayScene::Draw() {
 		effectR[player->GetFeverNum()].SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), effectR[player->GetFeverNum()].vbView);
 		effectL[player->GetFeverNum()].SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), effectL[player->GetFeverNum()].vbView);
 	}
-	
+
 
 	// スプライト描画後処理
 	Sprite::PostDraw();
@@ -228,7 +223,8 @@ void GamePlayScene::EnemyOcurrence(const Vector3& v)
 	std::unique_ptr<Enemy> newEnemy = std::make_unique<Enemy>();
 	//敵の初期化
 	newEnemy->Initialize(Vector3(v.x, v.y, v.z));
-
+	//コライダーの追加
+	newEnemy->obj->SetCollider(new SphereCollider);
 	//敵の登録
 	enemys_.push_back(std::move(newEnemy));
 }
@@ -338,7 +334,7 @@ void GamePlayScene::LoadEffect(SpriteCommon& spriteCommon) {
 		else if (i == 4) {
 			effectL[i].LoadTexture(spriteCommon_, 4 + i, L"Resources/EfL5.bmp", dXCommon->GetDevice());
 		}
-		else{
+		else {
 			effectL[i].LoadTexture(spriteCommon_, 4 + i, L"Resources/EfL6.bmp", dXCommon->GetDevice());
 		}
 		effectL[i].SetColor(Vector4(1, 1, 1, 0.8));
