@@ -88,6 +88,7 @@ void GamePlayScene::Update() {
 	player->Update();
 	stage->Update();
 	sky->Update();
+
 }
 
 void GamePlayScene::Draw() {

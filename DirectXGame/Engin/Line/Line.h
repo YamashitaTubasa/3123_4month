@@ -61,10 +61,22 @@ private:
 		1,2,3,
 	};
 
+	//横方向ピクセル数
+	const size_t textureWidth = 256;
+	//縦方向ピクセル数
+	const size_t textureHeight = 256;
+	//配列の要素数
+	const size_t imageDataCount = textureWidth * textureHeight;
+	//画像イメージデータ配列
+	Vector4* imageData = new Vector4[imageDataCount];
+
 	ComPtr<ID3D12RootSignature> rootSignature;
 	ComPtr<ID3D12PipelineState> pipelineState;
 	ComPtr<ID3D12Resource> vertBuff;
 	ComPtr<ID3D12Resource> indexBuff;
+
+	//テクスチャバッファの生成
+	ID3D12Resource *texBuff = nullptr;
 
 	//定数バッファの生成(準備)
 	ComPtr<ID3D12Resource> constBuffTransform;
@@ -74,11 +86,17 @@ private:
 	//ComPtr<ConstBufferDataMaterial> constMapMaterial;
 	ConstBufferDataMaterial* constMapMaterial = nullptr;
 
+	//デスクリプタヒープを生成
+	ID3D12DescriptorHeap *srvHeap = nullptr;
+
 	// 頂点バッファビューの作成
 	D3D12_VERTEX_BUFFER_VIEW vbView{};
 
 	//インデックスバッファビューの作成
 	D3D12_INDEX_BUFFER_VIEW ibView{};
+
+	//テクスチャサンプラーの設定
+	D3D12_STATIC_SAMPLER_DESC samplerDesc{};
 
 public:
 	DirectXCommon* GetDXCommon() const { return dXCommon_; }
