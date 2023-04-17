@@ -85,7 +85,7 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	LoadEffect(spriteCommon);
 
 	//レールカメラ初期化
-	railCamera->Initialize(player);
+	railCamera->Initialize();
 
 	//レーン
 	start = { 0.0f, 0.0f, -800.0f };		//スタート地点

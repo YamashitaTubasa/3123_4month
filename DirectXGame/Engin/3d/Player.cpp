@@ -84,7 +84,7 @@ void Player::OnCollision(const CollisionInfo& info)
 //•`‰æ
 void Player::Draw(ViewProjection* viewProjection) {
 	obj->Draw(viewProjection);
-	attack->Draw(viewProjection);
+	/*attack->Draw(viewProjection);*/
 }
 
 //feverƒ^ƒCƒ€
