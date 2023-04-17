@@ -20,12 +20,19 @@ bool Player::Initialize() {
 
 	// OBJからモデルデータを読み込む
 	playerModel = Model::LoadFromOBJ("fighter");
+	attackModel = Model::LoadFromOBJ("triangle_mat");
 	// 3Dオブジェクト生成
 	obj = Object3d::Create();
 	// オブジェクトにモデルをひも付ける
 	obj->SetModel(playerModel);
 	obj->SetRotation(Vector3({ 0, 90, 0 }));
 	obj->SetPosition(Vector3(0, 0, -790));
+	// 3Dオブジェクト生成
+	attack = Object3d::Create();
+	// オブジェクトにモデルをひも付ける
+	attack->SetModel(attackModel);
+	attack->SetRotation(Vector3({ 0, 90, 0 }));
+	attack->SetPosition(Vector3(0, 0, -780));
 	//変数
 	val = 1000.0f;
 	feverTime = 0;
@@ -63,6 +70,7 @@ void Player::Update() {
 	}
 	//更新
 	obj->Update();
+	attack->Update();
 }
 
 void Player::OnCollision(const CollisionInfo& info)
@@ -76,6 +84,7 @@ void Player::OnCollision(const CollisionInfo& info)
 //描画
 void Player::Draw(ViewProjection* viewProjection) {
 	obj->Draw(viewProjection);
+	attack->Draw(viewProjection);
 }
 
 //feverタイム

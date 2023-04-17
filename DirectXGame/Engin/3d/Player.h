@@ -34,14 +34,17 @@ public:
 	bool GetOnRail() { return isOnRail; }
 	void SetOnRail(bool isOnRail_) { this->isOnRail = isOnRail_; }
 	bool GetIsHit() { return isHit; }
+	void SetIsHit(bool isHit_) { this->isHit = isHit_; }
 
 public:
 	// オブジェクト
 	Object3d* obj = nullptr;
+	Object3d* attack = nullptr;
 private:
 	Input* input = nullptr;
 	// モデル
 	Model* playerModel = nullptr;
+	Model* attackModel = nullptr;
 	//パーティクル
 	Particle* particle = nullptr;
 	//fever
