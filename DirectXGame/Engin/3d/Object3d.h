@@ -71,6 +71,7 @@ public: // メンバ関数
 
 	//衝突時コールバック関数
 	virtual void OnCollision(const CollisionInfo& info){}
+	virtual void OffCollision(const CollisionInfo& info) {}
 
 	// モデルの設定
 	void SetModel(Model* model) { this->model = model; }

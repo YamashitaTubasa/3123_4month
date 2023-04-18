@@ -36,6 +36,12 @@ public:
 		object3d->OnCollision(info);
 	}
 
+	//衝突時コールバック関数
+	inline void OffCollision(const CollisionInfo& info)
+	{
+		object3d->OffCollision(info);
+	}
+
 protected:
 	Object3d* object3d = nullptr;
 	//形状タイプ

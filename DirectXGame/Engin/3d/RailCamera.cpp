@@ -29,7 +29,7 @@ void RailCamera::Update(Player* player_, std::vector<Vector3>& point) {
 			player_->SetOnRail(true);
 			//拡大回転座標変換
 			player_->SetScale(Vector3(0.4, 0.4, 0.4));
-			player_->SetPosition(Vector3(0, -0.5, 1.5));
+			player_->SetPosition(Vector3(0, 0, 0));
 			//親子構造のセット
 			player_->worldTransform_.SetParent3d(&camera->worldTransform_);
 		}
@@ -53,7 +53,8 @@ void RailCamera::Update(Player* player_, std::vector<Vector3>& point) {
 		//更新
 		camera->Update();
 		viewProjection->target = (target_ + frontVec * 0.5);
-		viewProjection->eye = (target_ - frontVec);
+		viewProjection->eye = (target_ - frontVec*3);
+		viewProjection->eye.y = (target_.y + 0.5);
 	}
 
 	viewProjection->UpdateMatrix();

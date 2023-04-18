@@ -37,6 +37,11 @@ void CollisionManager::CheckAllCollisions()
 					colA->OnCollision(CollisionInfo(colB->GetObject3d(), colB, inter));
 					colB->OnCollision(CollisionInfo(colA->GetObject3d(), colA, inter));
 				}
+				else
+				{
+					colA->OffCollision(CollisionInfo(colB->GetObject3d(), colB, inter));
+					colB->OffCollision(CollisionInfo(colA->GetObject3d(), colA, inter));
+				}
 			}
 		}
 	}

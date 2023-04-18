@@ -52,7 +52,14 @@ void Player::Update()
 			SetPosition(GetPosition() + Vector3(0, 0, -0.2));
 		}
 	}
+	// ワールドトランスフォームの行列更新と転送
 	worldTransform_.UpdateMatrix();
+
+	//当たり判定更新
+	if (collider)
+	{
+		collider->Update();
+	}
 }
 
 void Player::OnCollision(const CollisionInfo& info)
@@ -60,6 +67,14 @@ void Player::OnCollision(const CollisionInfo& info)
 	if (isHit == false)
 	{
 		isHit = true;
+	}
+}
+
+void Player::OffCollision(const CollisionInfo& info)
+{
+	if (isHit == true)
+	{
+		isHit = false;
 	}
 }
 

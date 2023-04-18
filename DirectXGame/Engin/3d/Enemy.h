@@ -25,6 +25,7 @@ public:
 	bool GetIsDead() const { return isDead_; }
 	
 	void OnCollision(const CollisionInfo& info) override;
+	void OffCollision(const CollisionInfo& info) override;
 
 private:
 	//ÉQÅ[ÉÄÉVÅ[Éì

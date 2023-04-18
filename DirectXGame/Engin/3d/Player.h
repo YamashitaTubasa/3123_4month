@@ -15,10 +15,11 @@ public:
 	//初期化
 	bool PlayerInitialize();
 
-	void Update()override;
+	void Update();
 
 	//衝突時コールバック関数
 	void OnCollision(const CollisionInfo& info) override;
+	void OffCollision(const CollisionInfo& info) override;
 
 	//feverタイム
 	void GoesFever();
