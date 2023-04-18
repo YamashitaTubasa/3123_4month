@@ -9,9 +9,9 @@ void Line::Initialize() {
 
 	//全ピクセルの色を初期化
 	for (size_t i = 0; i < imageDataCount; i++) {
-		imageData[i].x = 1.0f;		//R
-		imageData[i].y = 0.0f;		//G
-		imageData[i].z = 0.0f;		//B
+		imageData[i].x = rand() % 2;		//R
+		imageData[i].y = rand() % 2;		//G
+		imageData[i].z = rand() % 2;		//B
 		imageData[i].w = 1.0f;		//A
 	}
 
@@ -138,37 +138,53 @@ void Line::Initialize() {
 	dXCommon_->GetDevice()->CreateShaderResourceView(texBuff, &srvDesc, srvHandle);
 
 	{
-		////定数バッファの生成(設定)
-		////ヒープ設定
-		//D3D12_HEAP_PROPERTIES cbHeapProp{};
-		//cbHeapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
-		////リソース設定
-		//D3D12_RESOURCE_DESC cbResourceDesc{};
-		//cbResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
-		//cbResourceDesc.Width = (sizeof(ConstBufferDataTransform) + 0xff) & ~0xff;	//256バイトアラインメント
-		//cbResourceDesc.Height = 1;
-		//cbResourceDesc.DepthOrArraySize = 1;
-		//cbResourceDesc.MipLevels = 1;
-		//cbResourceDesc.SampleDesc.Count = 1;
-		//cbResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+		//定数バッファの生成(設定)
+		//ヒープ設定
+		D3D12_HEAP_PROPERTIES cbHeapProp{};
+		cbHeapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
+		//リソース設定
+		D3D12_RESOURCE_DESC cbResourceDesc{};
+		cbResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
+		cbResourceDesc.Width = (sizeof(ConstBufferDataTransform) + 0xff) & ~0xff;	//256バイトアラインメント
+		cbResourceDesc.Height = 1;
+		cbResourceDesc.DepthOrArraySize = 1;
+		cbResourceDesc.MipLevels = 1;
+		cbResourceDesc.SampleDesc.Count = 1;
+		cbResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
-		////定数バッファの生成
-		//result = dXCommon_->GetDevice()->CreateCommittedResource(
-		//	&cbHeapProp,
-		//	D3D12_HEAP_FLAG_NONE,
-		//	&cbResourceDesc,
-		//	D3D12_RESOURCE_STATE_GENERIC_READ,
-		//	nullptr,
-		//	IID_PPV_ARGS(&constBuffTransform));
-		//assert(SUCCEEDED(result));
+		//定数バッファの生成
+		result = dXCommon_->GetDevice()->CreateCommittedResource(
+			&cbHeapProp,
+			D3D12_HEAP_FLAG_NONE,
+			&cbResourceDesc,
+			D3D12_RESOURCE_STATE_GENERIC_READ,
+			nullptr,
+			IID_PPV_ARGS(&constBuffTransform));
+		assert(SUCCEEDED(result));
 
-		////定数バッファのマッピング
-		//result = constBuffTransform->Map(0, nullptr, (void**)&constMapTransform);	//マッピング
-		//assert(SUCCEEDED(result));
-
-		////単位行列を代入
-		//constMapTransform->mat = XMMatrixIdentity();
+		//定数バッファのマッピング
+		result = constBuffTransform->Map(0, nullptr, (void**)&constMapTransform);	//マッピング
+		assert(SUCCEEDED(result));
 	}
+
+	//単位行列を代入
+	constMapTransform->mat = Matrix4::identity();
+
+	//原点(中心)
+	constMapTransform->mat.m[0][0] = 2.0f / WinApp::window_width;
+	constMapTransform->mat.m[1][1] = -2.0f / WinApp::window_height;
+
+	//左上
+	constMapTransform->mat.m[3][0] = -1.0f;
+	constMapTransform->mat.m[3][1] = 1.0f;
+
+	//射影変換行列(透視投影)
+	XMMATRIX matProjection = XMMatrixPerspectiveFovLH(
+		XMConvertToRadians(45.0f),
+		(float)WinApp::window_width / WinApp::window_height,
+		0.1f, 1000.0f);
+	
+
 	// GPU上のバッファに対した仮想メモリ(メインメモリ上)を取得
 	VertexPosUv* vertMap = nullptr;
 	result = vertBuff->Map(0, nullptr, (void**)&vertMap);
@@ -360,16 +376,21 @@ void Line::Initialize() {
 	descriptorRange.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
 
 	//ルートパラメータの設定
-	D3D12_ROOT_PARAMETER rootParams[2] = {};
+	D3D12_ROOT_PARAMETER rootParams[3] = {};
 	rootParams[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;		//定数バッファビュー
 	rootParams[0].Descriptor.ShaderRegister = 0;						//定数バッファ番号
-	rootParams[0].Descriptor.RegisterSpace = 0;						//デフォルト値
-	rootParams[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;	//全てのシェーダから見える
+	rootParams[0].Descriptor.RegisterSpace = 0;							//デフォルト値
+	rootParams[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;		//全てのシェーダから見える
 	//テクスチャレジスタ0番
 	rootParams[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;		//種類
 	rootParams[1].DescriptorTable.pDescriptorRanges = &descriptorRange;				//デスクリプタレンジ
 	rootParams[1].DescriptorTable.NumDescriptorRanges = 1;							//デスクリプタレンジ数
 	rootParams[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;					//全てのシェーダから見える
+	//定数バッファ1番
+	rootParams[2].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;		//定数バッファビュー
+	rootParams[2].Descriptor.ShaderRegister = 1;						//定数バッファ番号
+	rootParams[2].Descriptor.RegisterSpace = 0;							//デフォルト値
+	rootParams[2].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;		//全てのシェーダから見える
 
 	//テクスチャサンプラーの設定
 	samplerDesc.AddressU = D3D12_TEXTURE_ADDRESS_MODE_WRAP;					//横繰り返し(タイリング)
@@ -379,7 +400,7 @@ void Line::Initialize() {
 	samplerDesc.Filter = D3D12_FILTER_MIN_MAG_MIP_LINEAR;					//全てリニア補間
 	samplerDesc.MaxLOD = D3D12_FLOAT32_MAX;									//ミップマップ最大値
 	samplerDesc.MinLOD = 0.0f;												//ミップマップ最小値
-	samplerDesc.ComparisonFunc = D3D12_COMPARISON_FUNC_NEVER;	
+	samplerDesc.ComparisonFunc = D3D12_COMPARISON_FUNC_NEVER;
 	samplerDesc.ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;			//ピクセルシェーダからのみ使用可能
 
 	// ルートシグネチャ
@@ -437,6 +458,9 @@ void Line::Draw() {
 	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = srvHeap->GetGPUDescriptorHandleForHeapStart();
 	//SRVヒープの先頭にあるSRVをルートパラメータ1番に設定
 	dXCommon_->GetCommandList()->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
+
+	//定数バッファビュー(CBV)の設定コマンド
+	dXCommon_->GetCommandList()->SetGraphicsRootConstantBufferView(2, constBuffTransform->GetGPUVirtualAddress());
 
 	//描画コマンド									//_countofは配列専用(配列じゃなければ数えられない)
 	//dXCommon_->GetCommandList()->DrawInstanced(_countof(vertices), 1, 0, 0);

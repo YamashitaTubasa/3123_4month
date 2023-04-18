@@ -12,7 +12,6 @@ public:
 	// Matrix4 構造体
 	float m[4][4];
 
-
 	// コンストラクタ
 	Matrix4();
 	// 成分を指定しての生成

@@ -12,6 +12,7 @@
 
 
 
+
 class Line {
 public:
 	//static SpriteCommon* GetInstance();
@@ -22,10 +23,10 @@ public:
 		Vector4 color_; // 色(RGBA)
 	};
 
-	////定数バッファ用データ構造体(Material)
-	//struct ConstBufferDataTransform {
-	//	XMMATRIX mat; //3D変換行列
-	//};
+	//定数バッファ用データ構造体(3D変換行列)
+	struct ConstBufferDataTransform {
+		Matrix4 mat;
+	};
 
 public:
 	// 初期化
@@ -49,10 +50,10 @@ private:
 
 	// 頂点データ
 	std::vector<VertexPosUv> vertices = {
-		{{ -0.4f, -0.7f, 0.0f },{0.0f,1.0f}}, // 左下
-		{{ -0.4f, +0.7f, 0.0f },{0.0f,0.0f}}, // 左上
-		{{ +0.4f, -0.7f, 0.0f },{1.0f,1.0f}}, // 右下
-		{{ +0.4f, +0.7f, 0.0f },{1.0f,0.0f}}, // 右上
+		{{ -50.0f, -50.0f, 0.0f },{0.0f,1.0f}}, // 左下
+		{{ -50.0f,  50.0f, 0.0f },{0.0f,0.0f}}, // 左上
+		{{  50.0f, -50.0f, 0.0f },{1.0f,1.0f}}, // 右下
+		{{  50.0f,  50.0f, 0.0f },{1.0f,0.0f}}, // 右上
 	};
 
 	//std::vector = 可変長配列
@@ -80,7 +81,7 @@ private:
 
 	//定数バッファの生成(準備)
 	ComPtr<ID3D12Resource> constBuffTransform;
-	//ComPtr<ConstBufferDataTransform> constMapTransform;
+	ConstBufferDataTransform *constMapTransform = nullptr;
 
 	ComPtr<ID3D12Resource> constBuffMaterial;
 	//ComPtr<ConstBufferDataMaterial> constMapMaterial;

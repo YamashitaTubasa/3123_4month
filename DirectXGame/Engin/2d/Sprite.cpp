@@ -287,7 +287,7 @@ void Sprite::SpriteCreate(ID3D12Device* dev, int window_width, int window_height
 	constMap->color = color_;
 
 	// 単位行列を代入
-	constMap->mat.identity();
+	constMap->mat = Matrix4::identity();
 
 	// 座標変換
 	constMap->mat.m[0][0] = 2.0f / WinApp::window_width;
@@ -352,7 +352,7 @@ SpriteCommon Sprite::SpriteCommonCreate(ID3D12Device* dev, int window_width, int
 	// スプライト用パイプライン生成
 	spriteCommon.pipelineSet = SpriteCreateGraphicsPipeline(dev);
 
-	spriteCommon.matProjection.identity();
+	spriteCommon.matProjection = Matrix4::identity();
 
 	// 座標変換
 	spriteCommon.matProjection.m[0][0] = 2.0f / WinApp::window_width;
