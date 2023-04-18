@@ -14,7 +14,7 @@ public:
 	RailCamera();
 	~RailCamera();
 	//‰Šú‰»
-	void Initialize(Player* player_);
+	void Initialize();
 	//XV
 	void Update(Player* player_, std::vector<Vector3>& point);
 

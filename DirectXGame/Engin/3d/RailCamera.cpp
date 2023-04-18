@@ -9,7 +9,7 @@ RailCamera::~RailCamera() {
 }
 
 //初期化
-void RailCamera::Initialize(Player* player_) {
+void RailCamera::Initialize() {
 	viewProjection = new ViewProjection;
 	input = Input::GetInstance();
 	viewProjection->Initialize();
@@ -30,8 +30,11 @@ void RailCamera::Update(Player* player_, std::vector<Vector3>& point) {
 			//拡大回転座標変換
 			player_->obj->SetScale(Vector3(0.4, 0.4, 0.4));
 			player_->obj->SetPosition(Vector3(0, -0.5, 1.5));
+			player_->attack->SetScale(Vector3(0.5, 0.5, 0.5));
+			player_->attack->SetPosition(Vector3(0, -0.5, 4));
 			//親子構造のセット
 			player_->obj->worldTransform_.SetParent3d(&camera->worldTransform_);
+			player_->attack->worldTransform_.SetParent3d(&camera->worldTransform_);
 		}
 	}
 
@@ -50,7 +53,6 @@ void RailCamera::Update(Player* player_, std::vector<Vector3>& point) {
 		float length = rotaVec.length();
 		float radX = std::atan2(-frontVec.y, length);
 		camera->SetRotationX(radX * 180.0f / 3.1415f);
-
 		//更新
 		camera->Update();
 		viewProjection->target = (target_ + frontVec * 0.5);

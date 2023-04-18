@@ -1,6 +1,9 @@
 #include "GamePlayScene.h"
 #include "spline.h"
 #include <fstream>
+#include "SphereCollider.h"
+#include "CollisionManager.h"
+#include"Player.h"
 
 GamePlayScene::GamePlayScene() {
 }
@@ -12,6 +15,8 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	dXCommon = DirectXCommon::GetInstance();
 	winApp = WinApp::GetInstance();
 	input = Input::GetInstance();
+	//当たり判定
+	collisionManager = CollisionManager::GetInstance();
 
 	railCamera = new RailCamera;
 	xmViewProjection = new XMViewProjection();
@@ -23,7 +28,7 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	sky = Object3d::Create();
 	// オブジェクトにモデルをひも付ける
 	sky->SetModel(skyModel);
-	sky->SetScale(Vector3({1000, 1000, 1000}));
+	sky->SetScale(Vector3({ 1000, 1000, 1000 }));
 
 	//player初期化
 	player = new Player;
@@ -75,7 +80,7 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	LoadEffect(spriteCommon);
 
 	//レールカメラ初期化
-	railCamera->Initialize(player);
+	railCamera->Initialize();
 
 	//レーン
 	start = { 0.0f, 0.0f, -800.0f };		//スタート地点
@@ -94,13 +99,6 @@ void GamePlayScene::Update() {
 			alpha -= 0.1f;
 			hP.SetAlpha(hP, alpha);
 		}
-	}
-
-	//パーティクル発生実験
-	if (input->PushKey(DIK_B))
-	{
-		pm_1->Fire(particle_1, 30, 0.2f, 0, 2, { 8.0f, 0.0f });
-		pm_2->Fire(particle_2, 70, 0.2f, 0, 5, { 4.0f,0.0f });
 	}
 	//デスフラグの立った敵を削除
 	enemys_.remove_if([](std::unique_ptr < Enemy>& enemy_)
@@ -128,6 +126,16 @@ void GamePlayScene::Update() {
 	for (const std::unique_ptr<Enemy>& enemy : enemys_) {
 		enemy->SetGameScene(this);
 		enemy->Update();
+	}
+
+	//全ての衝突をチェック
+	collisionManager->CheckAllCollisions();
+
+	//パーティクル発生実験
+	if (player->GetIsHit() == true)
+	{
+		pm_1->Fire(particle_1, 30, 0.2f, 0, 2, { 8.0f, 0.0f });
+		pm_2->Fire(particle_2, 70, 0.2f, 0, 5, { 4.0f,0.0f });
 	}
 }
 
@@ -175,7 +183,7 @@ void GamePlayScene::Draw() {
 		effectR[player->GetFeverNum()].SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), effectR[player->GetFeverNum()].vbView);
 		effectL[player->GetFeverNum()].SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), effectL[player->GetFeverNum()].vbView);
 	}
-	
+
 
 	// スプライト描画後処理
 	Sprite::PostDraw();
@@ -215,7 +223,8 @@ void GamePlayScene::EnemyOcurrence(const Vector3& v)
 	std::unique_ptr<Enemy> newEnemy = std::make_unique<Enemy>();
 	//敵の初期化
 	newEnemy->Initialize(Vector3(v.x, v.y, v.z));
-
+	//コライダーの追加
+	newEnemy->obj->SetCollider(new SphereCollider);
 	//敵の登録
 	enemys_.push_back(std::move(newEnemy));
 }
@@ -325,7 +334,7 @@ void GamePlayScene::LoadEffect(SpriteCommon& spriteCommon) {
 		else if (i == 4) {
 			effectL[i].LoadTexture(spriteCommon_, 4 + i, L"Resources/EfL5.bmp", dXCommon->GetDevice());
 		}
-		else{
+		else {
 			effectL[i].LoadTexture(spriteCommon_, 4 + i, L"Resources/EfL6.bmp", dXCommon->GetDevice());
 		}
 		effectL[i].SetColor(Vector4(1, 1, 1, 0.8));

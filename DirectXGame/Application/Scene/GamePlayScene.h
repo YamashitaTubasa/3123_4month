@@ -13,13 +13,16 @@
 #include "ViewProjection.h"
 #include "WorldTransform.h"
 #include "RailCamera.h"
-#include "Player.h"
 #include "Enemy.h"
 #include <sstream>
 
 //====================//
 // ゲームプレイシーン
 //====================//
+
+class CollisionManager;
+class Player;
+
 class GamePlayScene
 {
 public:
@@ -91,6 +94,9 @@ private:
 	XMViewProjection* xmViewProjection = nullptr;
 	//座標
 	WorldTransform* worldTransform = nullptr;
+	//当たり判定
+	CollisionManager* collisionManager = nullptr;
+
 	// スプライト
 	Sprite* sprite = nullptr;
 	Sprite hP;
