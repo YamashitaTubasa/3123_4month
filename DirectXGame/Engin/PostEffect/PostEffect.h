@@ -8,7 +8,9 @@ class PostEffect : public Sprite
 private:
 	struct ConstBufferData {
 		Vector4 color; // 色 (RGBA)
-		Matrix4 mat; //座標
+		Matrix4 mat; // 座標
+		bool isBlur; // ブラーフラグ
+		float alpha; // アルファ値
 	};
 
 public:
@@ -47,6 +49,9 @@ public:
 
 public:
 	void SetColor(const Vector4& color);
+	void SetBlur(const bool& blur);
+	void SetAlpha(const float& alpha);
+
 	Vector4 GetColor() const { return color_; }
 
 private:
@@ -75,5 +80,9 @@ protected:
 	static const int vertNum = 4; 
 	// 色
 	Vector4 color_ = { 1,1,1,1 };
+	// ブラーフラグ
+	bool isBlur_ = false;
+	// アルファ値
+	float alpha_ = 1.0f;
 };
 
