@@ -8,16 +8,13 @@
 //GameSceneの前方宣言
 class GamePlayScene;
 
-class Enemy {
+class Enemy : public Object3d
+{
 public:
 	//デストラクタ
 	~Enemy();
 	//初期化
-	void Initialize(const Vector3& v);
-	//更新
-	void Update();
-	//描画
-	void Draw(ViewProjection* viewProjection);
+	void EnemyInitialize(const Vector3& v);
 
 	//敵リスト
 	const std::list<std::unique_ptr<Enemy>>& GetEnemys() { return enemys_; }
@@ -25,11 +22,9 @@ public:
 	//gameSceneのsetter
 	void SetGameScene(GamePlayScene* gameScene) { gameScene_ = gameScene; }
 
-	bool IsDead() const { return isDead_; }
-
-public:
-	// オブジェクト
-	Object3d* obj = nullptr;
+	bool GetIsDead() const { return isDead_; }
+	
+	void OnCollision(const CollisionInfo& info) override;
 
 private:
 	//ゲームシーン

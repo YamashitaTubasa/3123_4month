@@ -32,7 +32,10 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 
 	//player初期化
 	player = new Player;
-	player->Initialize();
+	player->PlayerInitialize();
+
+	//半径分だけ足元から浮いた座標を球の中心にする
+	player->SetCollider(new SphereCollider);
 
 	//敵の情報の初期化
 	LoadEnemyPopData();
@@ -103,7 +106,7 @@ void GamePlayScene::Update() {
 	//デスフラグの立った敵を削除
 	enemys_.remove_if([](std::unique_ptr < Enemy>& enemy_)
 		{
-			return enemy_->IsDead();
+			return enemy_->GetIsDead();
 		});
 
 	//カメラ更新
@@ -222,9 +225,9 @@ void GamePlayScene::EnemyOcurrence(const Vector3& v)
 	//敵の生成
 	std::unique_ptr<Enemy> newEnemy = std::make_unique<Enemy>();
 	//敵の初期化
-	newEnemy->Initialize(Vector3(v.x, v.y, v.z));
+	newEnemy->EnemyInitialize(Vector3(v.x, v.y, v.z));
 	//コライダーの追加
-	newEnemy->obj->SetCollider(new SphereCollider);
+	newEnemy->SetCollider(new SphereCollider);
 	//敵の登録
 	enemys_.push_back(std::move(newEnemy));
 }

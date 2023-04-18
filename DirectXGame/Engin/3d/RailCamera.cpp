@@ -24,17 +24,14 @@ void RailCamera::Initialize() {
 void RailCamera::Update(Player* player_, std::vector<Vector3>& point) {
 
 
-	if (player_->obj->GetPositionZ() >= -778) {
+	if (player_->GetPositionZ() >= -778) {
 		if (player_->GetOnRail() == false) {
 			player_->SetOnRail(true);
 			//拡大回転座標変換
-			player_->obj->SetScale(Vector3(0.4, 0.4, 0.4));
-			player_->obj->SetPosition(Vector3(0, -0.5, 1.5));
-			player_->attack->SetScale(Vector3(0.5, 0.5, 0.5));
-			player_->attack->SetPosition(Vector3(0, -0.5, 4));
+			player_->SetScale(Vector3(0.4, 0.4, 0.4));
+			player_->SetPosition(Vector3(0, -0.5, 1.5));
 			//親子構造のセット
-			player_->obj->worldTransform_.SetParent3d(&camera->worldTransform_);
-			player_->attack->worldTransform_.SetParent3d(&camera->worldTransform_);
+			player_->worldTransform_.SetParent3d(&camera->worldTransform_);
 		}
 	}
 
