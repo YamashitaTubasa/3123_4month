@@ -34,6 +34,9 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	player = new Player;
 	player->PlayerInitialize();
 
+	//半径分だけ足元から浮いた座標を球の中心にする
+	player->SetCollider(new SphereCollider);
+
 	//敵の情報の初期化
 	LoadEnemyPopData();
 

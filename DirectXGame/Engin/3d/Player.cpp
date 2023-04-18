@@ -14,10 +14,7 @@ bool Player::PlayerInitialize() {
 	}
 
 	Initialize();
-	//コライダーの追加
-	float radius = 0.6f;
-	//半径分だけ足元から浮いた座標を球の中心にする
-	SetCollider(new SphereCollider(Vector3({ 0,radius,0 }), radius));
+
 	// OBJからモデルデータを読み込む
 	playerModel = Model::LoadFromOBJ("fighter");
 	attackModel = Model::LoadFromOBJ("triangle_mat");
