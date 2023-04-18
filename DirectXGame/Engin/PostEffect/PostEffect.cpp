@@ -30,9 +30,6 @@ void PostEffect::Initialize()
 
 	this->device = dXCommon->GetDevice();
 
-	// 基底クラスとしての初期化
-	//Sprite::Initialize();
-
 	// パイプライン生成
 	CreateGraphicsPipelineState();
 
@@ -220,6 +217,8 @@ void PostEffect::Initialize()
 	// 定数バッファにデータ転送
 	result = constBuffB0->Map(0, nullptr, (void**)&constMap); // マッピング
 	constMap->color = color_;
+	constMap->isBlur = isBlur_;
+	constMap->alpha = alpha_;
 	constMap->mat = Matrix4::identity();
 	assert(SUCCEEDED(result));
 }
@@ -454,5 +453,25 @@ void PostEffect::SetColor(const Vector4& color)
 	// 定数バッファにデータ転送
 	result = constBuffB0->Map(0, nullptr, (void**)&constMap); // マッピング
 	constMap->color = color;
+	assert(SUCCEEDED(result));
+}
+
+void PostEffect::SetBlur(const bool& isBlur)
+{
+	HRESULT result;
+
+	// 定数バッファにデータ転送
+	result = constBuffB0->Map(0, nullptr, (void**)&constMap); // マッピング
+	constMap->isBlur = isBlur;
+	assert(SUCCEEDED(result));
+}
+
+void PostEffect::SetAlpha(const float& alpha) 
+{
+	HRESULT result;
+
+	// 定数バッファにデータ転送
+	result = constBuffB0->Map(0, nullptr, (void**)&constMap);
+	constMap->alpha = alpha;
 	assert(SUCCEEDED(result));
 }
