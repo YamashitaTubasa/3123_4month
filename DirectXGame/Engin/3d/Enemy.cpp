@@ -26,3 +26,8 @@ void Enemy::OnCollision(const CollisionInfo& info)
 		isDead_ = true;
 	}
 }
+
+void Enemy::OffCollision(const CollisionInfo& info)
+{
+
+}

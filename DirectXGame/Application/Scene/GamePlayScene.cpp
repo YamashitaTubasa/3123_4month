@@ -137,8 +137,8 @@ void GamePlayScene::Update() {
 	//パーティクル発生実験
 	if (player->GetIsHit() == true)
 	{
-		pm_1->Fire(particle_1, 30, 0.2f, 0, 2, { 8.0f, 0.0f });
-		pm_2->Fire(particle_2, 70, 0.2f, 0, 5, { 4.0f,0.0f });
+		pm_1->Fire(particle_1, 30, 0.2f, 0, 20, { 8.0f, 0.0f });
+		pm_2->Fire(particle_2, 70, 0.2f, 0, 20, { 4.0f,0.0f });
 	}
 }
 
@@ -167,6 +167,7 @@ void GamePlayScene::Draw() {
 
 	///==== パーティクル描画 ====///
 	//パーティクル
+
 	pm_1->Draw();
 	pm_2->Draw();
 
