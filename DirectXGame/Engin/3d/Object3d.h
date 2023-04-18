@@ -66,9 +66,6 @@ public: // メンバ関数
 	void Draw(ViewProjection* viewProjection);
 	void Draw(ViewProjection* viewProjection, float alpha_);
 
-	//ワールド行列の取得
-	const Matrix4& GetMatWorld() { return matWorld; }
-
 	//コライダーのセット
 	void SetCollider(BaseCollider* collider);
 
@@ -102,8 +99,6 @@ protected: // メンバ変数
 	BaseCollider* collider = nullptr;
 	// モデル
 	Model* model = nullptr;
-	// ローカルワールド変換行列
-	Matrix4 matWorld;
 	
 };
 
