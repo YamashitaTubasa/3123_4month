@@ -13,14 +13,12 @@ public:
 	//デストラクタ
 	~Player();
 	//初期化
-	bool Initialize() override;
-	//更新
-	void Update() override;
+	bool PlayerInitialize();
+
+	void Update()override;
+
 	//衝突時コールバック関数
 	void OnCollision(const CollisionInfo& info) override;
-
-	//描画
-	void Draw(ViewProjection* viewProjection);
 
 	//feverタイム
 	void GoesFever();
@@ -28,7 +26,6 @@ public:
 	int GetFeverNum() { return feverNum; }
 
 	//ベクトルを取得
-	void GetVec(Vector3 a, Vector3 b);
 	float GetVal() { return val; }
 	//フラグ
 	bool GetOnRail() { return isOnRail; }
@@ -36,10 +33,6 @@ public:
 	bool GetIsHit() { return isHit; }
 	void SetIsHit(bool isHit_) { this->isHit = isHit_; }
 
-public:
-	// オブジェクト
-	Object3d* obj = nullptr;
-	Object3d* attack = nullptr;
 private:
 	Input* input = nullptr;
 	// モデル
