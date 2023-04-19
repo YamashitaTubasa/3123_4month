@@ -89,9 +89,11 @@ public: // メンバ関数
 	void SetRotationX(const float& rotation) { this->worldTransform_.rotation_.x = rotation; }
 	void SetRotationY(const float& rotation) { this->worldTransform_.rotation_.y = rotation; }
 
+	const char* GetName() const { return name; }
 public:
 	// ワールド変換データ
 	WorldTransform worldTransform_;
+	const char* toCollisionName = nullptr;
 
 protected: // メンバ変数
 	//クラス名

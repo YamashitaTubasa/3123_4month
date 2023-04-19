@@ -253,7 +253,7 @@ void Object3d::Update()
 {
 	// ワールドトランスフォームの行列更新と転送
 	worldTransform_.UpdateMatrix();
-
+	
 	//当たり判定更新
 	if (collider)
 	{

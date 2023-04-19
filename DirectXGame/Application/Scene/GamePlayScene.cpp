@@ -37,6 +37,13 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	//半径分だけ足元から浮いた座標を球の中心にする
 	player->SetCollider(new SphereCollider);
 
+	//攻撃初期化
+	playerAttack = new PlayerAttack;
+	playerAttack->AttackInitialize(player);
+
+	//半径分だけ足元から浮いた座標を球の中心にする
+	playerAttack->SetCollider(new SphereCollider);
+
 	//敵の情報の初期化
 	LoadEnemyPopData();
 
@@ -82,6 +89,16 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 
 	LoadEffect(spriteCommon);
 
+	//title
+	title.LoadTexture(spriteCommon_, 17, L"Resources/title.png", dXCommon->GetDevice());
+	title.SetColor(Vector4(1, 1, 1, 1));
+	title.SpriteCreate(dXCommon->GetDevice(), 1280, 720, 17, spriteCommon, Vector2(0.0f, 0.0f), false, false);
+	title.SetPosition(Vector3(0, 0, 0));
+	title.SetScale(Vector2(1280 * 1, 720 * 1));
+	title.SetRotation(0.0f);
+	title.SpriteTransferVertexBuffer(title, spriteCommon, 17);
+	title.SpriteUpdate(title, spriteCommon_);
+
 	//レールカメラ初期化
 	railCamera->Initialize();
 
@@ -96,49 +113,67 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 }
 
 void GamePlayScene::Update() {
-	//透過実験
-	if (input->TriggerKey(DIK_SPACE)) {
-		if (alpha > 0) {
-			alpha -= 0.1f;
-			hP.SetAlpha(hP, alpha);
-		}
-	}
-	//デスフラグの立った敵を削除
-	enemys_.remove_if([](std::unique_ptr < Enemy>& enemy_)
-		{
-			return enemy_->GetIsDead();
-		});
-
-	//カメラ更新
-	railCamera->Update(player, points);
-	//プレイヤー
-	player->Update();
-	//ステージ
-	stage->Update();
-	//天球
-	sky->Update();
-
-	//パーティクル
-	pm_1->Update();
-	pm_2->Update();
-
-	//更新コマンド
-	UpdateEnemyPopCommands();
-
-	//敵キャラの更新
-	for (const std::unique_ptr<Enemy>& enemy : enemys_) {
-		enemy->SetGameScene(this);
-		enemy->Update();
-	}
-
-	//全ての衝突をチェック
-	collisionManager->CheckAllCollisions();
-
-	//パーティクル発生実験
-	if (player->GetIsHit() == true)
+	switch (sceneNum)
 	{
-		pm_1->Fire(particle_1, 30, 0.2f, 0, 20, { 8.0f, 0.0f });
-		pm_2->Fire(particle_2, 70, 0.2f, 0, 20, { 4.0f,0.0f });
+	case 0:
+		if (input->TriggerKey(DIK_SPACE)) {
+			sceneNum = 1;
+		}
+		break;
+
+	case 1:
+		//透過実験
+		if (input->TriggerKey(DIK_SPACE)) {
+			if (alpha > 0) {
+				alpha -= 0.1f;
+				hP.SetAlpha(hP, alpha);
+			}
+		}
+		//デスフラグの立った敵を削除
+		enemys_.remove_if([](std::unique_ptr < Enemy>& enemy_)
+			{
+				return enemy_->GetIsDead();
+			});
+
+		//カメラ更新
+		railCamera->Update(player, playerAttack, points);
+		//プレイヤー
+		player->Update();
+		playerAttack->Update();
+		//ステージ
+		stage->Update();
+		//天球
+		sky->Update();
+
+		//パーティクル
+		pm_1->Update();
+		pm_2->Update();
+
+		//更新コマンド
+		UpdateEnemyPopCommands();
+
+		//敵キャラの更新
+		for (const std::unique_ptr<Enemy>& enemy : enemys_) {
+			enemy->SetGameScene(this);
+			enemy->Update();
+		}
+
+		//全ての衝突をチェック
+		collisionManager->CheckAllCollisions();
+
+		//パーティクル発生実験
+		if (player->GetIsHit() == true)
+		{
+			pm_1->Fire(particle_1, 30, 0.2f, 0, 20, { 8.0f, 0.0f });
+			pm_2->Fire(particle_2, 70, 0.2f, 0, 20, { 4.0f,0.0f });
+		}
+		break;
+
+	case 2:
+		if (input->TriggerKey(DIK_SPACE)) {
+			sceneNum = 0;
+		}
+		break;
 	}
 }
 
@@ -148,11 +183,13 @@ void GamePlayScene::Draw() {
 	// 3Dオブジェクト描画前処理
 	Object3d::PreDraw(dXCommon->GetCommandList());
 
-	sky->Draw(railCamera->GetView());
-	stage->Draw(railCamera->GetView());
-	//敵キャラの描画
-	for (const std::unique_ptr<Enemy>& enemy : enemys_) {
-		enemy->Draw(railCamera->GetView());
+	if (sceneNum == 1) {
+		sky->Draw(railCamera->GetView());
+		stage->Draw(railCamera->GetView());
+		//敵キャラの描画
+		for (const std::unique_ptr<Enemy>& enemy : enemys_) {
+			enemy->Draw(railCamera->GetView());
+		}
 	}
 
 	// 3Dオブジェクト描画後処理
@@ -182,10 +219,18 @@ void GamePlayScene::Draw() {
 	Sprite::PreDraw(dXCommon->GetCommandList(), spriteCommon_);
 
 	///=== スプライト描画 ===///
-	hP.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), hP.vbView);
-	if (player->GetFever() == true) {
-		effectR[player->GetFeverNum()].SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), effectR[player->GetFeverNum()].vbView);
-		effectL[player->GetFeverNum()].SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), effectL[player->GetFeverNum()].vbView);
+	if (sceneNum == 0) {
+		title.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), title.vbView);
+	}
+	else if (sceneNum == 1) {
+		hP.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), hP.vbView);
+		if (playerAttack->GetFever() == true) {
+			effectR[playerAttack->GetFeverNum()].SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), effectR[playerAttack->GetFeverNum()].vbView);
+			effectL[playerAttack->GetFeverNum()].SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), effectL[playerAttack->GetFeverNum()].vbView);
+		}
+	}
+	else {
+
 	}
 
 
@@ -198,11 +243,16 @@ void GamePlayScene::Draw() {
 
 	// 3Dオブジェクト描画前処理
 	Object3d::PreDraw(dXCommon->GetCommandList());
-	//playerを画像より手前に出したい
-	player->Draw(railCamera->GetView());
-	//敵キャラの描画
-	for (const std::unique_ptr<Enemy>& enemy : enemys_) {
-		enemy->Draw(railCamera->GetView());
+	if (sceneNum == 1) {
+		//playerを画像より手前に出したい
+		player->Draw(railCamera->GetView());
+		if (playerAttack->GetIsPush() == true) {
+			playerAttack->Draw(railCamera->GetView());
+		}
+		////敵キャラの描画
+		//for (const std::unique_ptr<Enemy>& enemy : enemys_) {
+		//	enemy->Draw(railCamera->GetView());
+		//}
 	}
 	// 3Dオブジェクト描画後処理
 	Object3d::PostDraw();

@@ -24,7 +24,15 @@ void CollisionManager::CheckAllCollisions()
 		for (; itB != colliders.end(); ++itB)
 		{
 			BaseCollider* colA = *itA;
-			BaseCollider* colB = *itB;
+    		BaseCollider* colB = *itB;
+			//衝突相手を記憶
+			colA->GetObject3d()->toCollisionName = colB->GetName();
+			colB->GetObject3d()->toCollisionName = colA->GetName();
+			
+			//同じオブジェクトなら当たらない
+			if (colA->GetName() == colB->GetName()) {
+				break;
+			}
 
 			// ともに球
 			if (colA->GetShapeType() == COLLISIONSHAPE_SPHERE &&

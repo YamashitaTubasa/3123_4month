@@ -1,5 +1,6 @@
 #include "Enemy.h"
 #include "GamePlayScene.h"
+#include "string.h"
 
 //デストラクタ
 Enemy::~Enemy() {
@@ -21,9 +22,20 @@ void Enemy::EnemyInitialize(const Vector3& v)
 
 void Enemy::OnCollision(const CollisionInfo& info)
 {
-	if (isDead_ == false)
-	{
-		isDead_ = true;
+	const char* str1 = "class Player";
+	const char* str2 = "class PlayerAttack";
+
+	//相手がplayer
+	if (strcmp(toCollisionName, str1) == 0) {
+
+	}
+
+	//相手がplayerの攻撃
+	if (strcmp(toCollisionName, str2) == 0) {
+		if (isDead_ == false)
+		{
+			isDead_ = true;
+		}
 	}
 }
 

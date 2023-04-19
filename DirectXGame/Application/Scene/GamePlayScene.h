@@ -15,6 +15,7 @@
 #include "RailCamera.h"
 #include "Enemy.h"
 #include <sstream>
+#include "PlayerAttack.h"
 
 //====================//
 // ゲームプレイシーン
@@ -85,6 +86,7 @@ private:
 	Model* stageModel;
 	// オブジェクト
 	Player* player;
+	PlayerAttack* playerAttack;
 	Enemy* enemy;
 	Object3d* sky;
 	Object3d* stage;
@@ -102,6 +104,7 @@ private:
 	Sprite hP;
 	Sprite effectL[6];
 	Sprite effectR[6];
+	Sprite title;
 	SpriteCommon spriteCommon_;
 
 	DirectXCommon* dXCommon = nullptr;
@@ -138,4 +141,6 @@ private:
 	const float PI = 3.141592;
 
 	float alpha = 1;
+
+	int sceneNum = 0;
 };

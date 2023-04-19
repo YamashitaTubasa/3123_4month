@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "SphereCollider.h"
+#include "string.h"
 
 //デストラクタ
 Player::~Player() {
@@ -17,19 +18,16 @@ bool Player::PlayerInitialize() {
 
 	// OBJからモデルデータを読み込む
 	playerModel = Model::LoadFromOBJ("fighter");
-	attackModel = Model::LoadFromOBJ("triangle_mat");
 	// 3Dオブジェクト生成
 	Create();
 	// オブジェクトにモデルをひも付ける
 	SetModel(playerModel);
 	SetRotation(Vector3({ 0, 90, 0 }));
 	SetPosition(Vector3(0, 0, -790));
-	//変数
-	val = 1000.0f;
-	feverTime = 0;
-	isFever = false;
+
 	//フラグ
 	isHit = false;
+	coolTime = 0;
 
 	return true;
 }
@@ -40,18 +38,31 @@ void Player::Update()
 	//レール前移動
 	if (isOnRail == false) {
 		if (input->PushKey(DIK_W)) {
+			SetRotation(Vector3({ 0, 90, 0 }));
 			SetPosition(GetPosition() + Vector3(0, 0, 0.2));
 		}
 		if (input->PushKey(DIK_D)) {
+			SetRotation(Vector3({ 0, 180, 0 }));
 			SetPosition(GetPosition() + Vector3(0.2, 0, 0));
 		}
 		if (input->PushKey(DIK_A)) {
+			SetRotation(Vector3({ 0, 0, 0 }));
 			SetPosition(GetPosition() + Vector3(-0.2, 0, 0));
 		}
 		if (input->PushKey(DIK_S)) {
+			SetRotation(Vector3({ 0, 270, 0 }));
 			SetPosition(GetPosition() + Vector3(0, 0, -0.2));
 		}
 	}
+
+	if (isHit == true) {
+		coolTime++;
+		if (coolTime == 25) {
+			coolTime = 0;
+			isHit = false;
+		}
+	}
+
 	// ワールドトランスフォームの行列更新と転送
 	worldTransform_.UpdateMatrix();
 
@@ -64,44 +75,16 @@ void Player::Update()
 
 void Player::OnCollision(const CollisionInfo& info)
 {
-	if (isHit == false)
-	{
-		isHit = true;
+	const char* str = "class PlayerAttack";
+	if (strcmp(toCollisionName, str) != 0) {
+		if (isHit == false)
+		{
+			isHit = true;
+		}
 	}
 }
 
 void Player::OffCollision(const CollisionInfo& info)
 {
-	if (isHit == true)
-	{
-		isHit = false;
-	}
-}
 
-//feverタイム
-void Player::GoesFever() {
-	//feverでないならfeverに
-	if (isFever == false) {
-		isFever = true;
-	}
-	//fever!!
-	if (isFever == true) {
-		feverTime++;
-
-		if (feverTime % 2 == 0) {
-			if (feverNum < 5) {
-				feverNum++;
-			}
-			else {
-				feverNum = 0;
-			}
-		}
-
-		//一定時間したら通常モードへ
-		if (feverTime == 300) {
-			val = 1000.0f;
-			feverTime = 0;
-			isFever = false;
-		}
-	}
 }

@@ -15,10 +15,17 @@ public:
 	inline void SetObject(Object3d* object)
 	{
 		this->object3d = object;
+		collname = object->GetName();
 	}
 	inline Object3d* GetObject3d()
 	{
 		return object3d;
+	}
+	void SetName(const char* name_) {
+		this->collname = name_;
+	}
+	const char* GetName() {
+		return collname;
 	}
 
 	//更新
@@ -46,4 +53,6 @@ protected:
 	Object3d* object3d = nullptr;
 	//形状タイプ
 	CollisionShapeType shapeType = SHAPE_UNKNOWN;
+	//衝突先クラス名
+	const char* collname = nullptr;
 };
