@@ -28,6 +28,9 @@ bool Player::PlayerInitialize() {
 	//ƒtƒ‰ƒO
 	isHit = false;
 	coolTime = 0;
+	isOnRail = false;
+	//“–‚½‚è”»’è
+	isHit = false;
 
 	//hp
 	hp = 3;
@@ -78,8 +81,8 @@ void Player::Update()
 
 void Player::OnCollision(const CollisionInfo& info)
 {
-	const char* str = "class PlayerAttack";
-	if (strcmp(toCollisionName, str) != 0) {
+	const char* str = "class Enemy";
+	if (strcmp(toCollisionName, str) == 0) {
 		if (isHit == false)
 		{
 			isHit = true;

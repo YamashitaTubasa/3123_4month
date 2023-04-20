@@ -63,6 +63,8 @@ public:
 
 	void LoadEffect(SpriteCommon& spriteCommon);
 
+	void Reset();
+
 	//補間で使うデータ
 	//start → end を5秒で完了させる
 	Vector3 start;		//スタート地点
@@ -105,6 +107,8 @@ private:
 	Sprite effectL[6];
 	Sprite effectR[6];
 	Sprite title;
+	Sprite clear;
+	Sprite over;
 	SpriteCommon spriteCommon_;
 
 	DirectXCommon* dXCommon = nullptr;
@@ -132,11 +136,6 @@ private:
 
 	//敵発生コマンド
 	std::stringstream enemyPopCommands;
-
-	bool isPush_D = false;
-	bool isPush_A = false;
-
-	int playerHp = 3;
 
 	const float PI = 3.141592;
 

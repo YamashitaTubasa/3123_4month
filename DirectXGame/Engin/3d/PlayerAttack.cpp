@@ -22,13 +22,15 @@ bool PlayerAttack::AttackInitialize(Player* player_) {
 	// オブジェクトにモデルをひも付ける
 	SetModel(attackModel);
 	//変数
-	val = 1000.0f;
+	val = 2500.0f;
 	feverTime = 0;
 	isFever = false;
 	isPush = false;
 	pushTime = 0;
 	isHit = false;
 	coolTime = 0;
+	feverNum = 0;
+	isOnRail = false;
 	//playerの子供にする
 	worldTransform_.SetParent3d(&player_->worldTransform_);
 	SetRotation(Vector3(0, -90, 0));
@@ -39,7 +41,7 @@ bool PlayerAttack::AttackInitialize(Player* player_) {
 
 void PlayerAttack::Update() {
 	input = Input::GetInstance();
-	
+
 	if (input->TriggerKey(DIK_SPACE)) {
 		if (isPush == false) {
 			isPush = true;
@@ -65,17 +67,18 @@ void PlayerAttack::Update() {
 		// ワールドトランスフォームの行列更新と転送
 		worldTransform_.UpdateMatrix();
 
-		//当たり判定更新
-		if (collider)
-		{
-			collider->Update();
+		if (isFever == false) {
+			pushTime++;
+			if (pushTime == 20) {
+				pushTime = 0;
+				isPush = false;
+			}
 		}
-
-		pushTime++;
-		if (pushTime == 20) {
-			pushTime = 0;
-			isPush = false;
-		}
+	}
+	//当たり判定更新
+	if (collider)
+	{
+		collider->Update();
 	}
 }
 
@@ -84,7 +87,7 @@ void PlayerAttack::GoesFever() {
 	//feverでないならfeverに
 	if (isFever == false) {
 		isFever = true;
-		SetScale(Vector3(8, 8, 8));
+		isPush = true;
 	}
 	//fever!!
 	if (isFever == true) {
@@ -101,7 +104,7 @@ void PlayerAttack::GoesFever() {
 
 		//一定時間したら通常モードへ
 		if (feverTime == 250) {
-			val = 1000.0f;
+			val = 2500.0f;
 			feverTime = 0;
 			isFever = false;
 			SetScale(Vector3(2, 2, 2));
@@ -115,12 +118,14 @@ void PlayerAttack::OnCollision(const CollisionInfo& info)
 	if (strcmp(toCollisionName, str) != 0) {
 		if (isHit == false) {
 			isHit = true;
-			val -= 500.0f;
+			if (isFever == false) {
+				val -= 500.0f;
+			}
 		}
 	}
 }
 
 void PlayerAttack::OffCollision(const CollisionInfo& info)
 {
-	
+
 }

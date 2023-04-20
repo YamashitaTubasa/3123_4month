@@ -18,6 +18,7 @@ void Enemy::EnemyInitialize(const Vector3& v)
 	// オブジェクトにモデルをひも付ける
 	SetModel(enemyModel);
 	SetPosition(Vector3(v.x, v.y, v.z));
+	isDead_ = false;
 }
 
 void Enemy::OnCollision(const CollisionInfo& info)

@@ -40,8 +40,8 @@ private:
 	//HP
 	int hp;
 	//ƒŒ[ƒ‹‚Éæ‚Á‚Ä‚¢‚éó‘Ô
-	bool isOnRail = false;
+	bool isOnRail;
 	//“–‚½‚è”»’è
-	bool isHit = false;
+	bool isHit;
 	int coolTime;
 };

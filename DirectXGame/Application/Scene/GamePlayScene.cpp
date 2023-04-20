@@ -42,7 +42,7 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	playerAttack->AttackInitialize(player);
 
 	//半径分だけ足元から浮いた座標を球の中心にする
-	playerAttack->SetCollider(new SphereCollider);
+	playerAttack->SetCollider(new SphereCollider(Vector3(0,0,0),3.0f));
 
 	//敵の情報の初期化
 	LoadEnemyPopData();
@@ -100,6 +100,24 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	title.SetRotation(0.0f);
 	title.SpriteTransferVertexBuffer(title, spriteCommon, 17);
 	title.SpriteUpdate(title, spriteCommon_);
+	//clear
+	clear.LoadTexture(spriteCommon_, 18, L"Resources/clear.png", dXCommon->GetDevice());
+	clear.SetColor(Vector4(1, 1, 1, 1));
+	clear.SpriteCreate(dXCommon->GetDevice(), 1280, 720, 18, spriteCommon, Vector2(0.0f, 0.0f), false, false);
+	clear.SetPosition(Vector3(0, 0, 0));
+	clear.SetScale(Vector2(1280 * 1, 720 * 1));
+	clear.SetRotation(0.0f);
+	clear.SpriteTransferVertexBuffer(clear, spriteCommon, 18);
+	clear.SpriteUpdate(clear, spriteCommon_);
+	//over
+	over.LoadTexture(spriteCommon_, 19, L"Resources/gameover.png", dXCommon->GetDevice());
+	over.SetColor(Vector4(1, 1, 1, 1));
+	over.SpriteCreate(dXCommon->GetDevice(), 1280, 720, 19, spriteCommon, Vector2(0.0f, 0.0f), false, false);
+	over.SetPosition(Vector3(0, 0, 0));
+	over.SetScale(Vector2(1280 * 1, 720 * 1));
+	over.SetRotation(0.0f);
+	over.SpriteTransferVertexBuffer(over, spriteCommon, 19);
+	over.SpriteUpdate(over, spriteCommon_);
 
 	//レールカメラ初期化
 	railCamera->Initialize();
@@ -165,7 +183,7 @@ void GamePlayScene::Update() {
 
 		//ゲームオーバー
 		if (player->GetHP() == 0) {
-			sceneNum = 2;
+			sceneNum = 3;
 		}
 		//クリア
 		if (railCamera->GetIsEnd() == true) {
@@ -173,9 +191,17 @@ void GamePlayScene::Update() {
 		}
 
 		break;
-
+	//クリア
 	case 2:
 		if (input->TriggerKey(DIK_SPACE)) {
+			Reset();
+			sceneNum = 0;
+		}
+		break;
+	//ゲームオーバー
+	case 3:
+		if (input->TriggerKey(DIK_SPACE)) {
+			Reset();
 			sceneNum = 0;
 		}
 		break;
@@ -236,8 +262,11 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 			effectL[playerAttack->GetFeverNum()].SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), effectL[playerAttack->GetFeverNum()].vbView);
 		}
 	}
-	else {
-
+	else if(sceneNum == 2) {
+		clear.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), clear.vbView);
+	}
+	else if(sceneNum == 3) {
+		over.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), over.vbView);
 	}
 
 
@@ -285,7 +314,7 @@ void GamePlayScene::EnemyOcurrence(const Vector3& v)
 	//敵の初期化
 	newEnemy->EnemyInitialize(Vector3(v.x, v.y, v.z));
 	//コライダーの追加
-	newEnemy->SetCollider(new SphereCollider);
+	newEnemy->SetCollider(new SphereCollider(Vector3(0,0,0),2.0f));
 	//敵の登録
 	enemys_.push_back(std::move(newEnemy));
 }
@@ -434,4 +463,86 @@ void GamePlayScene::LoadEffect(SpriteCommon& spriteCommon) {
 		effectR[i].SpriteTransferVertexBuffer(effectR[i], spriteCommon, 10 + i);
 		effectR[i].SpriteUpdate(effectR[i], spriteCommon_);
 	}
+}
+
+void GamePlayScene::Reset() {
+	delete skyModel;
+	delete stageModel;
+	delete player;
+	delete playerAttack;
+	delete enemy;
+	delete sky;
+	delete stage;
+	delete viewProjection;
+	delete railCamera;
+	delete xmViewProjection;
+	delete worldTransform;
+	delete particle_1;
+	delete pm_1;
+	delete particle_2;
+	delete pm_2;
+
+	railCamera = new RailCamera;
+	xmViewProjection = new XMViewProjection();
+
+	// OBJからモデルデータを読み込む
+	skyModel = Model::LoadFromOBJ("skydome");
+
+	// 3Dオブジェクト生成
+	sky = Object3d::Create();
+	// オブジェクトにモデルをひも付ける
+	sky->SetModel(skyModel);
+	sky->SetScale(Vector3({ 1000, 1000, 1000 }));
+
+	//player初期化
+	player = new Player;
+	player->PlayerInitialize();
+
+	//半径分だけ足元から浮いた座標を球の中心にする
+	player->SetCollider(new SphereCollider);
+
+	//攻撃初期化
+	playerAttack = new PlayerAttack;
+	playerAttack->AttackInitialize(player);
+
+	//半径分だけ足元から浮いた座標を球の中心にする
+	playerAttack->SetCollider(new SphereCollider(Vector3(0, 0, 0), 3.0f));
+
+	//敵の情報の初期化
+	LoadEnemyPopData();
+
+	//ステージ
+	// OBJからモデルデータを読み込む
+	stageModel = Model::LoadFromOBJ("triangle_mat");
+
+	// 3Dオブジェクト生成
+	stage = Object3d::Create();
+	// オブジェクトにモデルをひも付ける
+	stage->SetModel(stageModel);
+	stage->SetScale(Vector3({ 80, 20, 20 }));
+	stage->SetPosition(Vector3(0, -26, -775));
+
+	//パーティクル初期化
+	particle_1 = Particle::LoadParticleTexture("effect1.png");
+	pm_1 = ParticleManager::Create();
+	particle_2 = Particle::LoadParticleTexture("effect2.png");
+	pm_2 = ParticleManager::Create();
+	//オブジェクトにモデルを紐付ける
+	pm_1->SetParticleModel(particle_1);
+	pm_2->SetParticleModel(particle_2);
+	//カメラをセット
+	pm_1->SetXMViewProjection(xmViewProjection);
+	pm_2->SetXMViewProjection(xmViewProjection);
+
+	railCamera->Initialize();
+
+	//変数
+	//敵の打ち出すまでの時間
+	enemyDalayTimer = 0.0f;
+
+	isWait_ = false;
+
+	waitTimer = 300;
+
+
 }

@@ -29,10 +29,6 @@ void CollisionManager::CheckAllCollisions()
 			colA->GetObject3d()->toCollisionName = colB->GetName();
 			colB->GetObject3d()->toCollisionName = colA->GetName();
 			
-			//同じオブジェクトなら当たらない
-			if (colA->GetName() == colB->GetName()) {
-				break;
-			}
 
 			// ともに球
 			if (colA->GetShapeType() == COLLISIONSHAPE_SPHERE &&
@@ -45,11 +41,11 @@ void CollisionManager::CheckAllCollisions()
 					colA->OnCollision(CollisionInfo(colB->GetObject3d(), colB, inter));
 					colB->OnCollision(CollisionInfo(colA->GetObject3d(), colA, inter));
 				}
-				else
+				/*else
 				{
 					colA->OffCollision(CollisionInfo(colB->GetObject3d(), colB, inter));
 					colB->OffCollision(CollisionInfo(colA->GetObject3d(), colA, inter));
-				}
+				}*/
 			}
 		}
 	}

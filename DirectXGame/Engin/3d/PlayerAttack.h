@@ -37,12 +37,12 @@ private:
 	int pushTime;
 	//fever
 	int feverTime;
-	bool isFever = false;
-	int feverNum = 0;
-	float val = 1000.0f;
+	bool isFever;
+	int feverNum;
+	float val;
 	//ƒŒ[ƒ‹‚Éæ‚Á‚Ä‚¢‚éó‘Ô
-	bool isOnRail = false;
+	bool isOnRail;
 	//“–‚½‚Á‚½‚Ìˆ—‚Ég‚¤•Ï”
-	bool isHit = false;
+	bool isHit;
 	int coolTime;
 };
