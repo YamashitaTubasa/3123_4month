@@ -45,7 +45,7 @@ public:
 	/// <summary>
 	/// 描画
 	/// </summary>
-	void Draw() ;
+	void Draw(SpriteCommon& spriteCommon) ;
 
 	/// <summary>
 	/// 解放
@@ -101,7 +101,7 @@ private:
 
 	// スプライト
 	Sprite* sprite = nullptr;
-	Sprite hP;
+	Sprite hP[3];
 	Sprite effectL[6];
 	Sprite effectR[6];
 	Sprite title;

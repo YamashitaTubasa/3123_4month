@@ -27,12 +27,18 @@ public:
 	bool GetIsHit() { return isHit; }
 	void SetIsHit(bool isHit_) { this->isHit = isHit_; }
 
+	//hp
+	int GetHP() { return hp; }
+	void SetHP(int hp_) { this->hp = hp_; }
+
 private:
 	Input* input = nullptr;
 	// モデル
 	Model* playerModel = nullptr;
 	//パーティクル
 	Particle* particle = nullptr;
+	//HP
+	int hp;
 	//レールに乗っている状態
 	bool isOnRail = false;
 	//当たり判定

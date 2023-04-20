@@ -78,14 +78,16 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	PipelineSet spritePipelineSet = sprite->SpriteCreateGraphicsPipeline(dXCommon->GetDevice());
 
 	// HP
-	hP.LoadTexture(spriteCommon_, 3, L"Resources/hp.png", dXCommon->GetDevice());
-	hP.SetColor(Vector4(1, 1, 1, 1));
-	hP.SpriteCreate(dXCommon->GetDevice(), 50, 50, 3, spriteCommon, Vector2(0.0f, 0.0f), false, false);
-	hP.SetPosition(Vector3(0, 0, 0));
-	hP.SetScale(Vector2(50 * 1, 50 * 1));
-	hP.SetRotation(0.0f);
-	hP.SpriteTransferVertexBuffer(hP, spriteCommon, 3);
-	hP.SpriteUpdate(hP, spriteCommon_);
+	for (int i = 0; i < 3; i++) {
+		hP[i].LoadTexture(spriteCommon_, 3, L"Resources/hp.png", dXCommon->GetDevice());
+		hP[i].SetColor(Vector4(1, 1, 1, 1));
+		hP[i].SpriteCreate(dXCommon->GetDevice(), 50, 50, 3, spriteCommon, Vector2(0.0f, 0.0f), false, false);
+		hP[i].SetPosition(Vector3(0 + (i * 64), 0, 0));
+		hP[i].SetScale(Vector2(50 * 1, 50 * 1));
+		hP[i].SetRotation(0.0f);
+		hP[i].SpriteTransferVertexBuffer(hP[i], spriteCommon, 3);
+		hP[i].SpriteUpdate(hP[i], spriteCommon_);
+	}
 
 	LoadEffect(spriteCommon);
 
@@ -122,13 +124,6 @@ void GamePlayScene::Update() {
 		break;
 
 	case 1:
-		//透過実験
-		if (input->TriggerKey(DIK_SPACE)) {
-			if (alpha > 0) {
-				alpha -= 0.1f;
-				hP.SetAlpha(hP, alpha);
-			}
-		}
 		//デスフラグの立った敵を削除
 		enemys_.remove_if([](std::unique_ptr < Enemy>& enemy_)
 			{
@@ -162,11 +157,21 @@ void GamePlayScene::Update() {
 		collisionManager->CheckAllCollisions();
 
 		//パーティクル発生実験
-		if (player->GetIsHit() == true)
+		/*if (player->GetIsHit() == true)
 		{
 			pm_1->Fire(particle_1, 30, 0.2f, 0, 20, { 8.0f, 0.0f });
 			pm_2->Fire(particle_2, 70, 0.2f, 0, 20, { 4.0f,0.0f });
+		}*/
+
+		//ゲームオーバー
+		if (player->GetHP() == 0) {
+			sceneNum = 2;
 		}
+		//クリア
+		if (railCamera->GetIsEnd() == true) {
+			sceneNum = 2;
+		}
+
 		break;
 
 	case 2:
@@ -177,7 +182,7 @@ void GamePlayScene::Update() {
 	}
 }
 
-void GamePlayScene::Draw() {
+void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 #pragma region 3Dオブジェクト描画
 
 	// 3Dオブジェクト描画前処理
@@ -223,7 +228,9 @@ void GamePlayScene::Draw() {
 		title.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), title.vbView);
 	}
 	else if (sceneNum == 1) {
-		hP.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), hP.vbView);
+		for (int i = 0; i < player->GetHP(); i++) {
+			hP[i].SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), hP[i].vbView);
+		}
 		if (playerAttack->GetFever() == true) {
 			effectR[playerAttack->GetFeverNum()].SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), effectR[playerAttack->GetFeverNum()].vbView);
 			effectL[playerAttack->GetFeverNum()].SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), effectL[playerAttack->GetFeverNum()].vbView);

@@ -4,6 +4,7 @@
 
 void Spline::Initialize() {
 	startCount = GetTickCount64();
+	isEnd = false;
 }
 
 Vector3 Spline::Update(std::vector<Vector3>& points, float t, float val) {
@@ -25,6 +26,7 @@ Vector3 Spline::Update(std::vector<Vector3>& points, float t, float val) {
 			startCount = GetTickCount64();
 		}
 		else {
+			isEnd = true;
 			t = 1.0f;
 		}
 	}

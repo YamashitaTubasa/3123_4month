@@ -29,6 +29,9 @@ bool Player::PlayerInitialize() {
 	isHit = false;
 	coolTime = 0;
 
+	//hp
+	hp = 3;
+
 	return true;
 }
 
@@ -57,7 +60,7 @@ void Player::Update()
 
 	if (isHit == true) {
 		coolTime++;
-		if (coolTime == 25) {
+		if (coolTime == 50) {
 			coolTime = 0;
 			isHit = false;
 		}
@@ -80,6 +83,7 @@ void Player::OnCollision(const CollisionInfo& info)
 		if (isHit == false)
 		{
 			isHit = true;
+			hp--;
 		}
 	}
 }

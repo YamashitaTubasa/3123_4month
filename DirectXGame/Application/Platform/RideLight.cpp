@@ -34,7 +34,7 @@ void RideLight::Draw()
 	postEffect_->PreDrawScene(dXCommon->GetCommandList());
 
 	//=== ゲームシーン描画 ===//
-	scene_->Draw();
+	scene_->Draw(spriteCommon);
 
 	// レンダーテクスチャの後処理
 	postEffect_->PostDrawScene(dXCommon->GetCommandList());

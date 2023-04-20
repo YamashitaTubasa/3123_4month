@@ -18,6 +18,7 @@ void RailCamera::Initialize() {
 	viewProjection->target = { 0,-5,-750 };
 	camera->SetPosition(viewProjection->eye);
 	camera->SetRotation(Vector3(0,0,0));
+	isEnd = false;
 }
 
 //XV
@@ -56,6 +57,10 @@ void RailCamera::Update(Player* player_,PlayerAttack* attack_, std::vector<Vecto
 		viewProjection->target = (target_ + frontVec * 0.5);
 		viewProjection->eye = (target_ - frontVec*3);
 		viewProjection->eye.y = (target_.y + 0.5);
+
+		if (spline_.GetIsEnd() == true) {
+			isEnd = true;
+		}
 	}
 
 	viewProjection->UpdateMatrix();

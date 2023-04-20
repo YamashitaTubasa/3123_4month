@@ -18,6 +18,8 @@ public:
 	//制御点の集合(vectorコンテナ)、補間する区間の添字、時間経過率
 	Vector3 SplinePosition(const std::vector<Vector3>& point, size_t startIndex, float t);
 
+	bool GetIsEnd() { return isEnd; }
+
 private:
 	//時間計算に必要なデータ
 	long long startCount;
@@ -28,6 +30,7 @@ private:
 
 	//P1からスタートする
 	size_t startIndex = 1;
+	bool isEnd;
 
 	//球の位置
 	Vector3 position;

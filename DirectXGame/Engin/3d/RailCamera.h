@@ -23,11 +23,7 @@ public:
 	void GetVec(Vector3 a, Vector3 b);
 
 	ViewProjection* GetView() { return viewProjection; }
-
-	//feverƒ^ƒCƒ€
-	void GoesFever(Object3d* player_);
-
-	bool GetFever() { return isFever; }
+	bool GetIsEnd() { return isEnd; }
 
 private:
 	Input* input_ = nullptr;
@@ -45,8 +41,7 @@ private:
 	Vector3 leftVec = { 0, 0, 0 };
 	Vector3 frontVec = { 0, 0, 0 };
 
-	float val;
-
 	float timeRate;
+	bool isEnd;
 };
 
