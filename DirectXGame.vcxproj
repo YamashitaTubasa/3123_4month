@@ -155,6 +155,7 @@
     <ClCompile Include="DirectXGame\Application\Scene\GameTitleScene.cpp" />
     <ClCompile Include="DirectXGame\Engin\2d\SpriteCommon.cpp" />
     <ClCompile Include="DirectXGame\Engin\3d\Enemy.cpp" />
+    <ClCompile Include="DirectXGame\Engin\3d\Line.cpp" />
     <ClCompile Include="DirectXGame\Engin\3d\Player.cpp" />
     <ClCompile Include="DirectXGame\Engin\3d\PlayerAttack.cpp" />
     <ClCompile Include="DirectXGame\Engin\3d\RailCamera.cpp" />
@@ -272,6 +273,7 @@
     <ClInclude Include="DirectXGame\Application\Scene\GameTitleScene.h" />
     <ClInclude Include="DirectXGame\Engin\2d\SpriteCommon.h" />
     <ClInclude Include="DirectXGame\Engin\3d\Enemy.h" />
+    <ClInclude Include="DirectXGame\Engin\3d\Line.h" />
     <ClInclude Include="DirectXGame\Engin\3d\Player.h" />
     <ClInclude Include="DirectXGame\Engin\3d\PlayerAttack.h" />
     <ClInclude Include="DirectXGame\Engin\3d\RailCamera.h" />

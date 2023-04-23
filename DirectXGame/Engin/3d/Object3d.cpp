@@ -20,6 +20,8 @@ ID3D12Device* Object3d::device = nullptr;
 ID3D12GraphicsCommandList* Object3d::cmdList = nullptr;
 ComPtr<ID3D12RootSignature> Object3d::rootsignature;
 ComPtr<ID3D12PipelineState> Object3d::pipelinestate;
+ComPtr<ID3D12RootSignature> Object3d::lineRootsignature;
+ComPtr<ID3D12PipelineState> Object3d::linePipelinestate;
 
 Object3d::~Object3d()
 {
@@ -63,6 +65,22 @@ void Object3d::PreDraw(ID3D12GraphicsCommandList * cmdList)
 	cmdList->SetGraphicsRootSignature(rootsignature.Get());
 	// プリミティブ形状を設定
 	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+}
+//線描画
+void Object3d::PreLineDraw(ID3D12GraphicsCommandList* cmdList) {
+	// PreDrawとPostDrawがペアで呼ばれていなければエラー
+	assert(Object3d::cmdList == nullptr);
+
+	// コマンドリストをセット
+	Object3d::cmdList = cmdList;
+
+	// パイプラインステートの設定
+	cmdList->SetPipelineState(linePipelinestate.Get());
+
+	// ルートシグネチャの設定
+	cmdList->SetGraphicsRootSignature(rootsignature.Get());
+	// プリミティブ形状を設定
+	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_LINELIST);
 }
 
 void Object3d::PostDraw()
@@ -200,7 +218,7 @@ void Object3d::InitializeGraphicsPipeline()
 
 	// 図形の形状設定（三角形）
 	gpipeline.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
-
+	
 	gpipeline.NumRenderTargets = 1;	// 描画対象は1つ
 	gpipeline.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB; // 0～255指定のRGBA
 	gpipeline.SampleDesc.Count = 1; // 1ピクセルにつき1回サンプリング
@@ -236,6 +254,11 @@ void Object3d::InitializeGraphicsPipeline()
 	result = device->CreateGraphicsPipelineState(&gpipeline, IID_PPV_ARGS(&pipelinestate));
 	assert(SUCCEEDED(result));
 
+	gpipeline.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_LINE;
+
+	// グラフィックスパイプラインの生成
+	result = device->CreateGraphicsPipelineState(&gpipeline, IID_PPV_ARGS(&linePipelinestate));
+	assert(SUCCEEDED(result));
 }
 
 bool Object3d::Initialize()

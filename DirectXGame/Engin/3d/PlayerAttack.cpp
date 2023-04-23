@@ -22,7 +22,7 @@ bool PlayerAttack::AttackInitialize(Player* player_) {
 	// オブジェクトにモデルをひも付ける
 	SetModel(attackModel);
 	//変数
-	val = 2500.0f;
+	val = 1000.0f;
 	feverTime = 0;
 	isFever = false;
 	isPush = false;
@@ -104,7 +104,7 @@ void PlayerAttack::GoesFever() {
 
 		//一定時間したら通常モードへ
 		if (feverTime == 250) {
-			val = 2500.0f;
+			val = 1000.0f;
 			feverTime = 0;
 			isFever = false;
 			SetScale(Vector3(2, 2, 2));

@@ -226,7 +226,15 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 	// 3Dオブジェクト描画後処理
 	Object3d::PostDraw();
 
-#pragma endregion
+#pragma endregion レール
+
+	// 3Dオブジェクト描画前処理
+	Object3d::PreLineDraw(dXCommon->GetCommandList());
+
+	
+
+	// 3Dオブジェクト描画後処理
+	Object3d::PostDraw();
 
 #pragma region パーティクル描画
 
@@ -280,7 +288,7 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 	// 3Dオブジェクト描画前処理
 	Object3d::PreDraw(dXCommon->GetCommandList());
 	if (sceneNum == 1) {
-		//playerを画像より手前に出したい
+		////playerを画像より手前に出したい
 		player->Draw(railCamera->GetView());
 		if (playerAttack->GetIsPush() == true) {
 			playerAttack->Draw(railCamera->GetView());

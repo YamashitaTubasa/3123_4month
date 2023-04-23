@@ -144,6 +144,9 @@
     <ClCompile Include="DirectXGame\Engin\3d\PlayerAttack.cpp">
       <Filter>ソースファイル\Engine\GameObject</Filter>
     </ClCompile>
+    <ClCompile Include="DirectXGame\Engin\3d\Line.cpp">
+      <Filter>ソースファイル\Engine\3d</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectXGame\Engin\2d\Sprite.h">
@@ -262,6 +265,9 @@
     </ClInclude>
     <ClInclude Include="DirectXGame\Engin\3d\PlayerAttack.h">
       <Filter>ヘッダーファイル\Engine\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Engin\3d\Line.h">
+      <Filter>ヘッダーファイル\Engine\3d</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
