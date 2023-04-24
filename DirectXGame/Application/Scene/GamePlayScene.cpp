@@ -202,11 +202,10 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 				//gauge.SpriteUpdate(gauge, spriteCommon_);
 			}
 
-			if (input->PushKey(DIK_I)) {
-				if (gaugeAdd.GetGaugeAdd() == false) {
-					gaugeArea.x += 30;
-				}
+			if (gaugeAdd.GetGaugeAdd() == true) {
+				gaugeArea.x += 30;
 			}
+
 			gauge.SetScale(Vector2(gaugeArea.x, gaugeArea.y));
 			gauge.SpriteTransferVertexBuffer(gauge, spriteCommon, 21);
 
