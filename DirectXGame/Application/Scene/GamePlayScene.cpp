@@ -201,6 +201,7 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 				gauge.SetPosition(gauge.GetPosition() + Vector3(1, 0, 0));
 				//gauge.SpriteUpdate(gauge, spriteCommon_);
 			}
+
 			if (input->TriggerKey(DIK_I)) {
 				if (gaugeAdd.GetGaugeAdd() == false) {
 					gaugeArea.x += 30;
@@ -217,7 +218,6 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 				enemy->SetGameScene(this);
 				enemy->Update();
 			}
-
 
 			//全ての衝突をチェック
 			collisionManager->CheckAllCollisions();
