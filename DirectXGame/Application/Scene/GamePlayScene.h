@@ -40,7 +40,7 @@ public:
 	/// <summary>
 	/// 更新
 	/// </summary>
-	void Update();
+	void Update(SpriteCommon &spriteCommon);
 
 	/// <summary>
 	/// 描画
@@ -104,6 +104,9 @@ private:
 	// スプライト
 	Sprite* sprite = nullptr;
 	Sprite hP[3];
+	Sprite gaugeFlame;
+	Sprite gauge;
+	Sprite board;
 	Sprite effectL[6];
 	Sprite effectR[6];
 	Sprite title;
@@ -124,6 +127,8 @@ private:
 	Vector3 rotation[5]{};
 	Vector3 scale[5]{};
 
+	PlayerAttack gaugeAdd;
+
 	//敵
 	std::list<std::unique_ptr<Enemy>> enemys_;
 
@@ -133,6 +138,10 @@ private:
 	bool isWait_ = false;
 
 	int waitTimer = 300;
+
+	Vector2 gaugeArea = { 190,65 };
+
+	Vector3 gaugePosition = { 25,135,0 };
 
 	//敵発生コマンド
 	std::stringstream enemyPopCommands;
