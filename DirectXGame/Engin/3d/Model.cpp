@@ -532,5 +532,19 @@ void Model::SetAlpha(float alpha_) {
 }
 
 void Model::UpdateLineVertex() {
+	Vector3 target_ = spline_.Update(point, timeRate, attack_->GetVal());
 
+	//頂点データを更新する
+	float amount = 1.0f / (usedPosArray.size() - 1);
+	float v = 0;
+	vertices.clear();
+	vertices.resize(usedPosArray.size() * 2);
+	for (size_t i = 0, j = 0; i < vertices.size() && j < usedPosArray.size(); i += 2, ++j)
+	{
+		vertices[i].pos = usedPosArray[j].headPos;
+		vertices[i].uv = Vector2(1.0f, v);
+		vertices[i + 1].pos = usedPosArray[j].tailPos;
+		vertices[i + 1].uv = Vector2(0.0f, v);
+		v += amount;
+	}
 }
