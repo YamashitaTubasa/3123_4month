@@ -62,6 +62,13 @@ public: // サブクラス
 		}
 	};
 
+	//頂点バッファ
+	struct LineVertex
+	{
+		XMFLOAT3 pos = { 0, 0, 0 };
+		XMFLOAT2 uv = { 0, 0 };
+	};
+
 private: // 定数
 	static const int division = 50; // 分割数
 	static const float radius; // 底面の半径
@@ -90,6 +97,8 @@ public: // 静的メンバ関数
 	static void SetDevice(ID3D12Device* device) { Model::device = device; }
 
 	void SetAlpha(float alpha_);
+
+	void UpdateLineVertex();
 
 
 private: // 静的メンバ変数

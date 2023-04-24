@@ -58,6 +58,14 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	stage->SetScale(Vector3({ 80, 20, 20 }));
 	stage->SetPosition(Vector3(0, -26, -775));
 
+	lineModel = Model::LoadFromOBJ("triangle_mat");
+
+	// 3Dオブジェクト生成
+	line = Object3d::Create();
+	// オブジェクトにモデルをひも付ける
+	line->SetModel(stageModel);
+	line->SetPosition(Vector3(0, 0, -775));
+
 	//パーティクル初期化
 	particle_1 = Particle::LoadParticleTexture("effect1.png");
 	pm_1 = ParticleManager::Create();
@@ -155,6 +163,7 @@ void GamePlayScene::Update() {
 		playerAttack->Update();
 		//ステージ
 		stage->Update();
+		line->Update();
 		//天球
 		sky->Update();
 
@@ -231,7 +240,7 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 	// 3Dオブジェクト描画前処理
 	Object3d::PreLineDraw(dXCommon->GetCommandList());
 
-	
+	line->Draw(railCamera->GetView());
 
 	// 3Dオブジェクト描画後処理
 	Object3d::PostDraw();

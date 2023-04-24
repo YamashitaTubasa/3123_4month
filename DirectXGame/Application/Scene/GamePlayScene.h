@@ -86,12 +86,14 @@ private:
 	// モデル
 	Model* skyModel;
 	Model* stageModel;
+	Model* lineModel;
 	// オブジェクト
 	Player* player;
 	PlayerAttack* playerAttack;
 	Enemy* enemy;
 	Object3d* sky;
 	Object3d* stage;
+	Object3d* line;
 	//カメラ
 	ViewProjection* viewProjection = nullptr;
 	RailCamera* railCamera = nullptr;

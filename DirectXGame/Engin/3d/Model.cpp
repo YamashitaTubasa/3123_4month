@@ -530,3 +530,7 @@ void Model::SetAlpha(float alpha_) {
 		constBuffB1->Unmap(0, nullptr);
 	}
 }
+
+void Model::UpdateLineVertex() {
+
+}
