@@ -211,7 +211,6 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 			gauge.SpriteTransferVertexBuffer(gauge, spriteCommon, 21);
 
 
-
 			// ワールドトランスフォームの行列更新と転送
 
 			//敵キャラの更新
