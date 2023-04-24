@@ -80,6 +80,9 @@ public:
 
 	float timeRate;						//何％時間が進んだか
 
+public:
+	const bool& GetSartE() { return isStartE; }
+
 private:
 	// 入力
 	Input* input = nullptr;
@@ -111,6 +114,7 @@ private:
 	Sprite title;
 	Sprite clear;
 	Sprite over;
+	Sprite back;
 	SpriteCommon spriteCommon_;
 
 	DirectXCommon* dXCommon = nullptr;
@@ -120,6 +124,8 @@ private:
 	ParticleManager* pm_1 = nullptr;
 	Particle* particle_2 = nullptr;
 	ParticleManager* pm_2 = nullptr;
+	Particle* p_dmg = nullptr;
+	ParticleManager* pm_dmg = nullptr;
 	WinApp* winApp = nullptr;
 
 	Vector3 position[5]{};
@@ -144,4 +150,9 @@ private:
 	float alpha = 1;
 
 	int sceneNum = 0;
+	bool isBack = false; // ダメージ演出フラグ
+	float backT = 0.0f; // ダメージ演出タイマー
+	bool isStartE = false; // startEffectフラグ
+	float startE = 0.0f; // startEffect
+	int isDeadT = 0.0f;
 };

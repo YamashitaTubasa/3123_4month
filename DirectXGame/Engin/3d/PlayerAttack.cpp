@@ -121,6 +121,9 @@ void PlayerAttack::OnCollision(const CollisionInfo& info)
 			if (isFever == false) {
 				val -= 500.0f;
 			}
+			if (isHit == true) {
+				isDead = true;
+			}
 		}
 	}
 }
