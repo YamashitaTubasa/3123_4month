@@ -28,6 +28,9 @@ public:
 	bool GetFever() { return isFever; }
 	int GetFeverNum() { return feverNum; }
 
+	const bool& GetIsDead() { return isDead; }
+	void SetIsDead(const bool& isDead) { this->isDead = isDead; }
+
 private:
 	Input* input = nullptr;
 	// ƒ‚ƒfƒ‹
@@ -45,4 +48,5 @@ private:
 	//“–‚½‚Á‚½‚Ìˆ—‚Ég‚¤•Ï”
 	bool isHit;
 	int coolTime;
+	bool isDead = false;
 };

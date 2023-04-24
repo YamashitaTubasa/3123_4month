@@ -28,6 +28,9 @@ public:// メンバ関数
 	// バッファのゲッター
 	ID3D12Resource* GetBuff() { return constBuff.Get(); }
 
+	void SetEye(const Vector3& eye) { this->eye = eye; }
+	const Vector3& GetEye() { return eye; }
+
 
 private:// プライベート関数
 	// 円周率

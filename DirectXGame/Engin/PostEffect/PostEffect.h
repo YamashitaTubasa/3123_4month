@@ -84,5 +84,6 @@ protected:
 	bool isBlur_ = false;
 	// アルファ値
 	float alpha_ = 1.0f;
+
 };
 
