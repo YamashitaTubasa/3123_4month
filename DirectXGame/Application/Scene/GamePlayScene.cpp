@@ -37,13 +37,6 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	//半径分だけ足元から浮いた座標を球の中心にする
 	player->SetCollider(new SphereCollider);
 
-	//攻撃初期化
-	playerAttack = new PlayerAttack;
-	playerAttack->AttackInitialize(player);
-
-	//半径分だけ足元から浮いた座標を球の中心にする
-	playerAttack->SetCollider(new SphereCollider(Vector3(0,0,0),3.0f));
-
 	//敵の情報の初期化
 	LoadEnemyPopData();
 
@@ -179,10 +172,9 @@ void GamePlayScene::Update() {
 		}
 
 		//カメラ更新
-		railCamera->Update(player, playerAttack, points);
+		railCamera->Update(player,points);
 		//プレイヤー
 		player->Update();
-		playerAttack->Update();
 		//ステージ
 		stage->Update();
 		line->Update();
@@ -195,8 +187,11 @@ void GamePlayScene::Update() {
 		pm_dmg->Update();
 
 		// ダメージを受けた時の画面演出
-		if (player->GetIsHit() == true) {
-			isBack = true;
+		if (player->GetIsPush() == false) {
+			if (player->GetIsHit() == true)
+			{
+       			isBack = true;
+			}
 		}
 		if (isBack == true) {
 			backT++;
@@ -208,14 +203,14 @@ void GamePlayScene::Update() {
 
 
 		// 敵を倒した時の演出
-		if (playerAttack->GetIsDead() == true) {
+		if (player->GetIsBurst() == true) {
 			isDeadT++;
 		}
 		if (isDeadT >= 20) {
-			playerAttack->SetIsDead(false);
+			player->SetIsBurst(false);
 			isDeadT = 0.0f;
 		}
-		if (playerAttack->GetIsDead() == true) {
+		if (player->GetIsBurst() == true) {
 			pm_dmg->Fire(p_dmg, 30, 0.2f, 0, 3, { 4.0f, 0.0f });
 		}
 
@@ -324,9 +319,9 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 		for (int i = 0; i < player->GetHP(); i++) {
 			hP[i].SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), hP[i].vbView);
 		}
-		if (playerAttack->GetFever() == true) {
-			effectR[playerAttack->GetFeverNum()].SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), effectR[playerAttack->GetFeverNum()].vbView);
-			effectL[playerAttack->GetFeverNum()].SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), effectL[playerAttack->GetFeverNum()].vbView);
+		if (player->GetFever() == true) {
+			effectR[player->GetFeverNum()].SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), effectR[player->GetFeverNum()].vbView);
+			effectL[player->GetFeverNum()].SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), effectL[player->GetFeverNum()].vbView);
 		}
 		if (isBack == true) {
 			back.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), back.vbView);
@@ -352,8 +347,8 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 	if (sceneNum == 1) {
 		////playerを画像より手前に出したい
 		player->Draw(railCamera->GetView());
-		if (playerAttack->GetIsPush() == true) {
-			playerAttack->Draw(railCamera->GetView());
+		if (player->GetIsPush() == true) {
+			player->Draw(railCamera->GetView());
 		}
 		////敵キャラの描画
 		//for (const std::unique_ptr<Enemy>& enemy : enemys_) {
@@ -539,7 +534,6 @@ void GamePlayScene::Reset() {
 	delete skyModel;
 	delete stageModel;
 	delete player;
-	delete playerAttack;
 	delete enemy;
 	delete sky;
 	delete stage;
@@ -573,13 +567,6 @@ void GamePlayScene::Reset() {
 
 	//半径分だけ足元から浮いた座標を球の中心にする
 	player->SetCollider(new SphereCollider);
-
-	//攻撃初期化
-	playerAttack = new PlayerAttack;
-	playerAttack->AttackInitialize(player);
-
-	//半径分だけ足元から浮いた座標を球の中心にする
-	playerAttack->SetCollider(new SphereCollider(Vector3(0, 0, 0), 3.0f));
 
 	//敵の情報の初期化
 	LoadEnemyPopData();

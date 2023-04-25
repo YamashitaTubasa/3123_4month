@@ -28,9 +28,13 @@ bool Player::PlayerInitialize() {
 	isHit = false;
 	coolTime = 0;
 	isOnRail = false;
-	//当たり判定
-	isHit = false;
-
+	//変数
+	val = 2000.0f;
+	feverTime = 0;
+	isFever = false;
+	isPush = false;
+	pushTime = 0;
+	feverNum = 0;
 	//hp
 	hp = 3;
 
@@ -60,6 +64,38 @@ void Player::Update()
 		}
 	}
 
+	if (input->TriggerKey(DIK_SPACE)) {
+		if (isPush == false) {
+			isPush = true;
+		}
+	}
+
+	if (val <= 500) {
+		GoesFever();
+	}
+
+	//攻撃中なら更新する
+	if (isPush == true) {
+
+		// ワールドトランスフォームの行列更新と転送
+		worldTransform_.UpdateMatrix();
+
+		if (isFever == false) {
+			pushTime++;
+			worldTransform_.rotation_.z -= 18;
+			if (pushTime == 20) {
+				pushTime = 0;
+				worldTransform_.rotation_.z = 0;
+				if (isHit == true)
+				{
+					isHit = false;
+				}
+				isPush = false;
+				
+			}
+		}
+	}
+
 	if (isHit == true) {
 		coolTime++;
 		if (coolTime == 50) {
@@ -78,14 +114,53 @@ void Player::Update()
 	}
 }
 
+//feverタイム
+void Player::GoesFever() {
+	//feverでないならfeverに
+	if (isFever == false) {
+		isFever = true;
+		isPush = true;
+	}
+	//fever!!
+	if (isFever == true) {
+		feverTime++;
+
+		if (feverTime % 2 == 0) {
+			if (feverNum < 5) {
+				feverNum++;
+			}
+			else {
+				feverNum = 0;
+			}
+		}
+
+		//一定時間したら通常モードへ
+		if (feverTime == 250) {
+			val = 2000.0f;
+			feverTime = 0;
+			isFever = false;
+		}
+	}
+}
+
 void Player::OnCollision(const CollisionInfo& info)
 {
 	const char* str = "class Enemy";
 	if (strcmp(toCollisionName, str) == 0) {
 		if (isHit == false)
 		{
+			if (isPush == true)
+			{
+				if (isFever == false) {
+					val -= 500.0f;
+				}
+				isBurst = true;
+			}
+			else
+			{
+				hp--;
+			}
 			isHit = true;
-			hp--;
 		}
 	}
 }

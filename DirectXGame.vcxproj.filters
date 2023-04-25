@@ -153,7 +153,7 @@
     <ClCompile Include="DirectXGame\Engin\3d\Line.cpp">
       <Filter>ソースファイル\Engine\3d</Filter>
     </ClCompile>
-    <ClCompile Include="Building.cpp">
+    <ClCompile Include="DirectXGame\Engin\3d\Building.cpp">
       <Filter>ソースファイル\Engine\3d</Filter>
     </ClCompile>
   </ItemGroup>
@@ -278,7 +278,7 @@
     <ClInclude Include="DirectXGame\Engin\3d\Line.h">
       <Filter>ヘッダーファイル\Engine\3d</Filter>
     </ClInclude>
-    <ClInclude Include="Building.h">
+    <ClInclude Include="DirectXGame\Engin\3d\Building.h">
       <Filter>ヘッダーファイル\Engine\3d</Filter>
     </ClInclude>
   </ItemGroup>

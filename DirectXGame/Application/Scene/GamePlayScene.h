@@ -15,7 +15,6 @@
 #include "RailCamera.h"
 #include "Enemy.h"
 #include <sstream>
-#include "PlayerAttack.h"
 #include "Line.h"
 
 //====================//
@@ -93,7 +92,6 @@ private:
 	Model* lineModel;
 	// オブジェクト
 	Player* player;
-	PlayerAttack* playerAttack;
 	Enemy* enemy;
 	Object3d* sky;
 	Object3d* stage;
