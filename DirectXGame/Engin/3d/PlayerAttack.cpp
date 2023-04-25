@@ -14,15 +14,15 @@ bool PlayerAttack::AttackInitialize(Player* player_) {
 
 	Initialize();
 
-	// OBJ‚©‚çƒ‚ƒfƒ‹ƒf[ƒ^‚ğ“Ç‚İ‚Ş
+	// OBJã‹ã‚‰ãƒ¢ãƒ‡ãƒ«ãƒ‡ãƒ¼ã‚¿ã‚’èª­ã¿è¾¼ã‚€
 	attackModel = Model::LoadFromOBJ("triangle_mat");
 	attackModel->LoadTexture("Resources/red.png");
-	// 3DƒIƒuƒWƒFƒNƒg¶¬
+	// 3Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆç”Ÿæˆ
 	Create();
-	// ƒIƒuƒWƒFƒNƒg‚Éƒ‚ƒfƒ‹‚ğ‚Ğ‚à•t‚¯‚é
+	// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«ãƒ¢ãƒ‡ãƒ«ã‚’ã²ã‚‚ä»˜ã‘ã‚‹
 	SetModel(attackModel);
-	//•Ï”
-	val = 2500.0f;
+	//å¤‰æ•°
+	val = 2000.0f;
 	feverTime = 0;
 	isFever = false;
 	isPush = false;
@@ -31,7 +31,7 @@ bool PlayerAttack::AttackInitialize(Player* player_) {
 	coolTime = 0;
 	feverNum = 0;
 	isOnRail = false;
-	//player‚Ìq‹Ÿ‚É‚·‚é
+	//playerã®å­ä¾›ã«ã™ã‚‹
 	worldTransform_.SetParent3d(&player_->worldTransform_);
 	SetRotation(Vector3(0, -90, 0));
 	/*SetPosition(Vector3(-3, 1, 0));*/
@@ -48,23 +48,14 @@ void PlayerAttack::Update() {
 		}
 	}
 
-	//UŒ‚‚ª“–‚½‚Á‚½‚Ìˆ—
-	if (isHit == true) {
-		coolTime++;
-		if (coolTime == 10) {
-			coolTime = 0;
-			isHit = false;
-		}
-	}
-
 	if (val <= 500) {
 		GoesFever();
 	}
 
-	//UŒ‚’†‚È‚çXV‚·‚é
+	//æ”»æ’ƒä¸­ãªã‚‰æ›´æ–°ã™ã‚‹
 	if (isPush == true) {
 
-		// ƒ[ƒ‹ƒhƒgƒ‰ƒ“ƒXƒtƒH[ƒ€‚Ìs—ñXV‚Æ“]‘—
+		// ãƒ¯ãƒ¼ãƒ«ãƒ‰ãƒˆãƒ©ãƒ³ã‚¹ãƒ•ã‚©ãƒ¼ãƒ ã®è¡Œåˆ—æ›´æ–°ã¨è»¢é€
 		worldTransform_.UpdateMatrix();
 
 		if (isFever == false) {
@@ -75,16 +66,16 @@ void PlayerAttack::Update() {
 			}
 		}
 	}
-	//“–‚½‚è”»’èXV
+	//å½“ãŸã‚Šåˆ¤å®šæ›´æ–°
 	if (collider)
 	{
 		collider->Update();
 	}
 }
 
-//feverƒ^ƒCƒ€
+//feverã‚¿ã‚¤ãƒ 
 void PlayerAttack::GoesFever() {
-	//fever‚Å‚È‚¢‚È‚çfever‚É
+	//feverã§ãªã„ãªã‚‰feverã«
 	if (isFever == false) {
 		isFever = true;
 		isPush = true;
@@ -102,9 +93,9 @@ void PlayerAttack::GoesFever() {
 			}
 		}
 
-		//ˆê’èŠÔ‚µ‚½‚ç’Êíƒ‚[ƒh‚Ö
+		//ä¸€å®šæ™‚é–“ã—ãŸã‚‰é€šå¸¸ãƒ¢ãƒ¼ãƒ‰ã¸
 		if (feverTime == 250) {
-			val = 2500.0f;
+			val = 2000.0f;
 			feverTime = 0;
 			isFever = false;
 			SetScale(Vector3(2, 2, 2));
@@ -123,6 +114,9 @@ void PlayerAttack::OnCollision(const CollisionInfo& info)
 			isHit = true;
 			if (isFever == false) {
 				val -= 500.0f;
+			}
+			if (isHit == true) {
+				isDead = true;
 			}
 		}
 	}

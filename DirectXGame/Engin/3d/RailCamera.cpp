@@ -22,23 +22,22 @@ void RailCamera::Initialize() {
 }
 
 //更新
-void RailCamera::Update(Player* player_,PlayerAttack* attack_, std::vector<Vector3>& point) {
+void RailCamera::Update(Player* player_, std::vector<Vector3>& point) {
 
 
 	if (player_->GetPositionZ() >= -778) {
 		if (player_->GetOnRail() == false) {
 			player_->SetOnRail(true);
 			//拡大回転座標変換
-			player_->SetScale(Vector3(0.4, 0.4, 0.4));
+			player_->SetScale(Vector3(0.2, 0.2, 0.2));
 			player_->SetPosition(Vector3(0, 0, 0));
-			player_->SetRotation(Vector3(0, 90, 0));
 			//親子構造のセット
 			player_->worldTransform_.SetParent3d(&camera->worldTransform_);
 		}
 	}
 
 	if (player_->GetOnRail() == true) {
-		Vector3 target_ = spline_.Update(point, timeRate, attack_->GetVal());
+		Vector3 target_ = spline_.Update(point, timeRate, player_->GetVal());
 		//方向ベクトルの取得
 		GetVec(viewProjection->eye, target_);
 

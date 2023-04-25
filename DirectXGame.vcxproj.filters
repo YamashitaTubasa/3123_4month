@@ -34,6 +34,12 @@
     <FxCompile Include="Resources\shaders\PostEffectVS.hlsl">
       <Filter>シェーダーファイル</Filter>
     </FxCompile>
+    <FxCompile Include="Resources\shaders\LinePS.hlsl">
+      <Filter>シェーダーファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\LineVS.hlsl">
+      <Filter>シェーダーファイル</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DirectXGame\Engin\Audio\Audio.cpp">
@@ -143,6 +149,12 @@
     </ClCompile>
     <ClCompile Include="DirectXGame\Engin\3d\PlayerAttack.cpp">
       <Filter>ソースファイル\Engine\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\Engin\3d\Line.cpp">
+      <Filter>ソースファイル\Engine\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\Engin\3d\Building.cpp">
+      <Filter>ソースファイル\Engine\3d</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -263,6 +275,12 @@
     <ClInclude Include="DirectXGame\Engin\3d\PlayerAttack.h">
       <Filter>ヘッダーファイル\Engine\GameObject</Filter>
     </ClInclude>
+    <ClInclude Include="DirectXGame\Engin\3d\Line.h">
+      <Filter>ヘッダーファイル\Engine\3d</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Engin\3d\Building.h">
+      <Filter>ヘッダーファイル\Engine\3d</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Basic.hlsli">
@@ -278,6 +296,9 @@
       <Filter>シェーダーファイル</Filter>
     </None>
     <None Include="Resources\shaders\PostEffect.hlsli">
+      <Filter>シェーダーファイル</Filter>
+    </None>
+    <None Include="Resources\shaders\Line.hlsli">
       <Filter>シェーダーファイル</Filter>
     </None>
   </ItemGroup>

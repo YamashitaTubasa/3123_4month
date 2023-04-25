@@ -31,6 +31,16 @@ public:
 	int GetHP() { return hp; }
 	void SetHP(int hp_) { this->hp = hp_; }
 
+	//Getter
+	bool GetIsPush() { return isPush; }
+	float GetVal() { return val; }
+	//fever
+	void GoesFever();
+	bool GetFever() { return isFever; }
+	int GetFeverNum() { return feverNum; }
+	const bool& GetIsBurst() { return isBurst; }
+	void SetIsBurst(const bool& isBurst) { this->isBurst = isBurst; }
+
 private:
 	Input* input = nullptr;
 	// モデル
@@ -41,7 +51,16 @@ private:
 	int hp;
 	//レールに乗っている状態
 	bool isOnRail;
+	//キーを押したか
+	bool isPush;
+	int pushTime;
+	//fever
+	int feverTime;
+	bool isFever;
+	int feverNum;
+	float val;
 	//当たり判定
 	bool isHit;
 	int coolTime;
+	bool isBurst = false;
 };

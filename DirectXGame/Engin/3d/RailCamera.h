@@ -17,7 +17,7 @@ public:
 	//初期化
 	void Initialize();
 	//更新
-	void Update(Player* player_,PlayerAttack* attack_, std::vector<Vector3>& point);
+	void Update(Player* player_, std::vector<Vector3>& point);
 
 	//ベクトルを取得
 	void GetVec(Vector3 a, Vector3 b);

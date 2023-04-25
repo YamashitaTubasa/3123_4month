@@ -49,6 +49,9 @@ void RLFramework::Initialize()
 	// 3Dオブジェクト静的初期化
 	Object3d::StaticInitialize(dXCommon->GetDevice(), WinApp::window_width, WinApp::window_height);
 
+	//レール描画静的初期化
+	Line::StaticInitialize(dXCommon->GetDevice());
+
 	// パーティクル静的初期化
 	ParticleManager::StaticInitialize(dXCommon->GetDevice());
 
@@ -67,6 +70,14 @@ void RLFramework::Update()
 
 	// 入力の更新
 	input->Update();
+
+	// ポストエフェクト
+	if (scene_->GetSartE() == true) {
+		postEffect_->SetBlur(true);
+	}
+	if (scene_->GetSartE() == false) {
+		postEffect_->SetBlur(false);
+	}
 }
 
 void RLFramework::Finalize()

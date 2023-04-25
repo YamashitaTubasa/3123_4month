@@ -26,6 +26,7 @@ public: // 静的メンバ関数
 
 	/// 描画前処理
 	static void PreDraw(ID3D12GraphicsCommandList* cmdList);
+	static void PreLineDraw(ID3D12GraphicsCommandList* cmdList);
 
 	/// 描画後処理
 	static void PostDraw();
@@ -42,6 +43,10 @@ private: // 静的メンバ変数
 	static ComPtr<ID3D12RootSignature> rootsignature;
 	// パイプラインステートオブジェクト
 	static ComPtr<ID3D12PipelineState> pipelinestate;
+	// ルートシグネチャ
+	static ComPtr<ID3D12RootSignature> lineRootsignature;
+	// パイプラインステートオブジェクト
+	static ComPtr<ID3D12PipelineState> linePipelinestate;
 
 private:// 静的メンバ関数
 

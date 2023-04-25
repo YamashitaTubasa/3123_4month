@@ -9,14 +9,14 @@
 class PlayerAttack : public Object3d
 {
 public:
-	//ƒfƒXƒgƒ‰ƒNƒ^
+	//ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	~PlayerAttack();
-	//‰Šú‰»
+	//åˆæœŸåŒ–
 	bool AttackInitialize(Player* player_);
 
 	void Update()override;
 
-	//Õ“ËƒR[ƒ‹ƒoƒbƒNŠÖ”
+	//è¡çªæ™‚ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°
 	void OnCollision(const CollisionInfo& info) override;
 	void OffCollision(const CollisionInfo& info) override;
 
@@ -29,14 +29,17 @@ public:
 	void GoesFever();
 	bool GetFever() { return isFever; }
 	int GetFeverNum() { return feverNum; }
+	const bool& GetIsDead() { return isDead; }
+	void SetIsDead(const bool& isDead) { this->isDead = isDead; }
+
 
 	void SetGaugeAdd(bool isGauge) { this->isGauge_ = isGauge; }
 
 private:
 	Input* input = nullptr;
-	// ƒ‚ƒfƒ‹
+	// ãƒ¢ãƒ‡ãƒ«
 	Model* attackModel = nullptr;
-	//•Ï”
+	//å¤‰æ•°
 	bool isPush;
 	int pushTime;
 	//fever
@@ -44,10 +47,14 @@ private:
 	bool isFever;
 	int feverNum;
 	float val;
-	//ƒŒ[ƒ‹‚Éæ‚Á‚Ä‚¢‚éó‘Ô
+	//ãƒ¬ãƒ¼ãƒ«ã«ä¹—ã£ã¦ã„ã‚‹çŠ¶æ…‹
 	bool isOnRail;
-	//“–‚½‚Á‚½‚Ìˆ—‚Ég‚¤•Ï”
+	//å½“ãŸã£ãŸæ™‚ã®å‡¦ç†ã«ä½¿ã†å¤‰æ•°
 	bool isHit;
 	int coolTime;
+
 	bool isGauge_ = false;
+
+	bool isDead = false;
+
 };

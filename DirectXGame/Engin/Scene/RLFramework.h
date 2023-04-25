@@ -10,6 +10,7 @@
 #include "GameTitleScene.h"
 #include "ImGuiManager.h"
 #include "PostEffect.h"
+#include "Line.h"
 
 class RLFramework
 {
@@ -44,6 +45,7 @@ protected:
 	GamePlayScene* scene_ = nullptr;
 	SpriteCommon spriteCommon;
 	PostEffect* postEffect_ = nullptr;
+	Line* line = nullptr;
 
 private:
 	// ゲーム終了フラグ

@@ -64,12 +64,16 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	pm_1 = ParticleManager::Create();
 	particle_2 = Particle::LoadParticleTexture("effect2.png");
 	pm_2 = ParticleManager::Create();
+	p_dmg = Particle::LoadParticleTexture("dmg.png");
+	pm_dmg = ParticleManager::Create();
 	//オブジェクトにモデルを紐付ける
 	pm_1->SetParticleModel(particle_1);
 	pm_2->SetParticleModel(particle_2);
+	pm_dmg->SetParticleModel(p_dmg);
 	//カメラをセット
 	pm_1->SetXMViewProjection(xmViewProjection);
 	pm_2->SetXMViewProjection(xmViewProjection);
+	pm_dmg->SetXMViewProjection(xmViewProjection);
 
 	// スプライトの初期化
 	// スプライト
@@ -149,6 +153,15 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	over.SetRotation(0.0f);
 	over.SpriteTransferVertexBuffer(over, spriteCommon, 19);
 	over.SpriteUpdate(over, spriteCommon_);
+	//back
+	back.LoadTexture(spriteCommon_, 7, L"Resources/back.png", dXCommon->GetDevice());
+	back.SetColor(Vector4(1, 1, 1, 1));
+	back.SpriteCreate(dXCommon->GetDevice(), 1280, 720, 7, spriteCommon, Vector2(0.0f, 0.0f), false, false);
+	back.SetPosition(Vector3(0, 0, 0));
+	back.SetScale(Vector2(1280 * 1, 720 * 1));
+	back.SetRotation(0.0f);
+	back.SpriteTransferVertexBuffer(back, spriteCommon, 7);
+	back.SpriteUpdate(back, spriteCommon_);
 
 	//レールカメラ初期化
 	railCamera->Initialize();
@@ -161,6 +174,14 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	end = { -300.0f, 300.0f, 800.0f };		//ゴール地点
 
 	points = { start,start,p2,p3,p4,end,end };
+
+	lineModel = Model::CreateLine(points);
+
+	// 3Dオブジェクト生成
+	line = Line::Create();
+	// オブジェクトにモデルをひも付ける
+	line->SetModel(lineModel);
+	line->SetPosition(Vector3(0, -5, 0));
 }
 
 void GamePlayScene::Update(SpriteCommon& spriteCommon) {
@@ -175,79 +196,87 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 			//デスフラグの立った敵を削除
 			enemys_.remove_if([](std::unique_ptr < Enemy>& enemy_) {
 				return enemy_->GetIsDead();
-							  });
+			});
 
-			//カメラ更新
-			railCamera->Update(player, playerAttack, points);
-			//プレイヤー
-			player->Update();
-			playerAttack->Update();
-			//ステージ
-			stage->Update();
-			//天球
-			sky->Update();
+		// スタート画面演出
+		startE++;
+		if (startE < 50) {
+			isStartE = true;
+		}
+		if (startE > 50) {
+			isStartE = false;
+		}
 
-			//パーティクル
-			pm_1->Update();
-			pm_2->Update();
+		//カメラ更新
+		railCamera->Update(player,points);
+		//プレイヤー
+		player->Update();
+		//ステージ
+		stage->Update();
+		line->Update();
+		//天球
+		sky->Update();
 
-			//更新コマンド
-			UpdateEnemyPopCommands();
+		//パーティクル
+		pm_1->Update();
+		pm_2->Update();
+		pm_dmg->Update();
 
-			gauge.GetScale();
-
-			if (isMaxGauge == true) {
-				if (gaugeScale.x >= 4) {
-					gaugeScale.x -= 1;
-				}
-				else {
-					isMaxGauge = false;
-				}
-			}
-
-			gauge.SetPosition(gauge.GetPosition() + Vector3(1, 0, 0));
-			//gauge.SpriteUpdate(gauge, spriteCommon_);
-
-			if (playerAttack->GetGaugeAdd() == true) {
-				playerAttack->SetGaugeAdd(false);
-				gaugeScale.x += 70;
-
-			}
-			if (gaugeScale.x >= 140) {
-				if (isMaxGauge == false) {
-					isMaxGauge = true;
-				}
-			}
-
-			gauge.SetScale(Vector2(gaugeScale.x, gaugeScale.y));
-			gauge.SpriteTransferVertexBuffer(gauge, spriteCommon, 21);
-
-			// ワールドトランスフォームの行列更新と転送
-
-			//敵キャラの更新
-			for (const std::unique_ptr<Enemy>& enemy : enemys_) {
-				enemy->SetGameScene(this);
-				enemy->Update();
-			}
-
-			//全ての衝突をチェック
-			collisionManager->CheckAllCollisions();
-
-			//パーティクル発生実験
-			/*if (player->GetIsHit() == true)
+		// ダメージを受けた時の画面演出
+		if (player->GetIsPush() == false) {
+			if (player->GetIsHit() == true)
 			{
-				pm_1->Fire(particle_1, 30, 0.2f, 0, 20, { 8.0f, 0.0f });
-				pm_2->Fire(particle_2, 70, 0.2f, 0, 20, { 4.0f,0.0f });
-			}*/
+       			isBack = true;
+			}
+		}
+		if (isBack == true) {
+			backT++;
+		}
+		if (backT >= 50) {
+			isBack = false;
+			backT = 0.0f;
+		}
 
-			//ゲームオーバー
-			if (player->GetHP() == 0) {
-				sceneNum = 3;
-			}
-			//クリア
-			if (railCamera->GetIsEnd() == true) {
-				sceneNum = 2;
-			}
+
+		// 敵を倒した時の演出
+		if (player->GetIsBurst() == true) {
+			isDeadT++;
+		}
+		if (isDeadT >= 20) {
+			player->SetIsBurst(false);
+			isDeadT = 0.0f;
+		}
+		if (player->GetIsBurst() == true) {
+			pm_dmg->Fire(p_dmg, 30, 0.2f, 0, 3, { 4.0f, 0.0f });
+		}
+
+		//更新コマンド
+		UpdateEnemyPopCommands();
+
+		//敵キャラの更新
+		for (const std::unique_ptr<Enemy>& enemy : enemys_) {
+			enemy->SetGameScene(this);
+			enemy->Update();
+		}
+
+		//全ての衝突をチェック
+		collisionManager->CheckAllCollisions();
+
+		//パーティクル発生実験
+		/*if (player->GetIsHit() == true)
+		{
+			pm_1->Fire(particle_1, 30, 0.2f, 0, 20, { 8.0f, 0.0f });
+			pm_2->Fire(particle_2, 70, 0.2f, 0, 20, { 4.0f,0.0f });
+		}*/
+
+		//ゲームオーバー
+		if (player->GetHP() == 0) {
+			sceneNum = 3;
+		}
+		//クリア
+		if (railCamera->GetIsEnd() == true) {
+			sceneNum = 2;
+		}
 
 			break;
 			//クリア
@@ -285,7 +314,16 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 	// 3Dオブジェクト描画後処理
 	Object3d::PostDraw();
 
-#pragma endregion
+#pragma endregion レール
+
+
+	// 3Dオブジェクト描画前処理
+	Line::PreDraw(dXCommon->GetCommandList());
+
+	line->Draw(railCamera->GetView());
+
+	// 3Dオブジェクト描画後処理
+	Line::PostDraw();
 
 #pragma region パーティクル描画
 
@@ -297,6 +335,7 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 
 	pm_1->Draw();
 	pm_2->Draw();
+	pm_dmg->Draw();
 
 	// パーティクル描画後処理
 	ParticleManager::PostDraw();
@@ -317,9 +356,12 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 		for (int i = 0; i < player->GetHP(); i++) {
 			hP[i].SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), hP[i].vbView);
 		}
-		if (playerAttack->GetFever() == true) {
-			effectR[playerAttack->GetFeverNum()].SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), effectR[playerAttack->GetFeverNum()].vbView);
-			effectL[playerAttack->GetFeverNum()].SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), effectL[playerAttack->GetFeverNum()].vbView);
+		if (player->GetFever() == true) {
+			effectR[player->GetFeverNum()].SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), effectR[player->GetFeverNum()].vbView);
+			effectL[player->GetFeverNum()].SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), effectL[player->GetFeverNum()].vbView);
+		}
+		if (isBack == true) {
+			back.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), back.vbView);
 		}
 		gaugeFlame.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), gaugeFlame.vbView);
 		gauge.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), gauge.vbView);
@@ -342,10 +384,10 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 	// 3Dオブジェクト描画前処理
 	Object3d::PreDraw(dXCommon->GetCommandList());
 	if (sceneNum == 1) {
-		//playerを画像より手前に出したい
+		////playerを画像より手前に出したい
 		player->Draw(railCamera->GetView());
-		if (playerAttack->GetIsPush() == true) {
-			playerAttack->Draw(railCamera->GetView());
+		if (player->GetIsPush() == true) {
+			player->Draw(railCamera->GetView());
 		}
 		////敵キャラの描画
 		//for (const std::unique_ptr<Enemy>& enemy : enemys_) {
@@ -522,7 +564,6 @@ void GamePlayScene::Reset() {
 	delete skyModel;
 	delete stageModel;
 	delete player;
-	delete playerAttack;
 	delete enemy;
 	delete sky;
 	delete stage;
@@ -534,6 +575,9 @@ void GamePlayScene::Reset() {
 	delete pm_1;
 	delete particle_2;
 	delete pm_2;
+	delete line;
+	delete p_dmg;
+	delete pm_dmg;
 
 	railCamera = new RailCamera;
 	xmViewProjection = new XMViewProjection();
@@ -554,13 +598,6 @@ void GamePlayScene::Reset() {
 	//半径分だけ足元から浮いた座標を球の中心にする
 	player->SetCollider(new SphereCollider);
 
-	//攻撃初期化
-	playerAttack = new PlayerAttack;
-	playerAttack->AttackInitialize(player);
-
-	//半径分だけ足元から浮いた座標を球の中心にする
-	playerAttack->SetCollider(new SphereCollider(Vector3(0, 0, 0), 3.0f));
-
 	//敵の情報の初期化
 	LoadEnemyPopData();
 
@@ -575,19 +612,32 @@ void GamePlayScene::Reset() {
 	stage->SetScale(Vector3({ 80, 20, 20 }));
 	stage->SetPosition(Vector3(0, -26, -775));
 
+
 	//パーティクル初期化
 	particle_1 = Particle::LoadParticleTexture("effect1.png");
 	pm_1 = ParticleManager::Create();
 	particle_2 = Particle::LoadParticleTexture("effect2.png");
 	pm_2 = ParticleManager::Create();
+	p_dmg = Particle::LoadParticleTexture("dmg.png");
+	pm_dmg = ParticleManager::Create();
 	//オブジェクトにモデルを紐付ける
 	pm_1->SetParticleModel(particle_1);
 	pm_2->SetParticleModel(particle_2);
+	pm_dmg->SetParticleModel(p_dmg);
 	//カメラをセット
 	pm_1->SetXMViewProjection(xmViewProjection);
 	pm_2->SetXMViewProjection(xmViewProjection);
+	pm_dmg->SetXMViewProjection(xmViewProjection);
 
 	railCamera->Initialize();
+
+
+	lineModel = Model::CreateLine(points);
+	// 3Dオブジェクト生成
+	line = Line::Create();
+	// オブジェクトにモデルをひも付ける
+	line->SetModel(lineModel);
+	line->SetPosition(Vector3(0, -5, 0));
 
 	//変数
 	//敵の打ち出すまでの時間
