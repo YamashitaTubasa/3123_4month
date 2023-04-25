@@ -22,7 +22,6 @@ bool Player::PlayerInitialize() {
 	Create();
 	// オブジェクトにモデルをひも付ける
 	SetModel(playerModel);
-	SetRotation(Vector3({ 0, 90, 0 }));
 	SetPosition(Vector3(0, 0, -790));
 
 	//フラグ
@@ -44,19 +43,19 @@ void Player::Update()
 	//レール前移動
 	if (isOnRail == false) {
 		if (input->PushKey(DIK_W)) {
-			SetRotation(Vector3({ 0, 90, 0 }));
+			SetRotation(Vector3({ 0, 0, 0 }));
 			SetPosition(GetPosition() + Vector3(0, 0, 0.2));
 		}
 		if (input->PushKey(DIK_D)) {
-			SetRotation(Vector3({ 0, 180, 0 }));
+			SetRotation(Vector3({ 0, 90, 0 }));
 			SetPosition(GetPosition() + Vector3(0.2, 0, 0));
 		}
 		if (input->PushKey(DIK_A)) {
-			SetRotation(Vector3({ 0, 0, 0 }));
+			SetRotation(Vector3({ 0, -90, 0 }));
 			SetPosition(GetPosition() + Vector3(-0.2, 0, 0));
 		}
 		if (input->PushKey(DIK_S)) {
-			SetRotation(Vector3({ 0, 270, 0 }));
+			SetRotation(Vector3({ 0, 180, 0 }));
 			SetPosition(GetPosition() + Vector3(0, 0, -0.2));
 		}
 	}

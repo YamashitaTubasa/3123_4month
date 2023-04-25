@@ -29,9 +29,8 @@ void RailCamera::Update(Player* player_,PlayerAttack* attack_, std::vector<Vecto
 		if (player_->GetOnRail() == false) {
 			player_->SetOnRail(true);
 			//拡大回転座標変換
-			player_->SetScale(Vector3(0.4, 0.4, 0.4));
+			player_->SetScale(Vector3(0.2, 0.2, 0.2));
 			player_->SetPosition(Vector3(0, 0, 0));
-			player_->SetRotation(Vector3(0, 90, 0));
 			//親子構造のセット
 			player_->worldTransform_.SetParent3d(&camera->worldTransform_);
 		}

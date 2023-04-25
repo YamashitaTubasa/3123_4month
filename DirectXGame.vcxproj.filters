@@ -153,6 +153,9 @@
     <ClCompile Include="DirectXGame\Engin\3d\Line.cpp">
       <Filter>ソースファイル\Engine\3d</Filter>
     </ClCompile>
+    <ClCompile Include="Building.cpp">
+      <Filter>ソースファイル\Engine\3d</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectXGame\Engin\2d\Sprite.h">
@@ -273,6 +276,9 @@
       <Filter>ヘッダーファイル\Engine\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="DirectXGame\Engin\3d\Line.h">
+      <Filter>ヘッダーファイル\Engine\3d</Filter>
+    </ClInclude>
+    <ClInclude Include="Building.h">
       <Filter>ヘッダーファイル\Engine\3d</Filter>
     </ClInclude>
   </ItemGroup>
