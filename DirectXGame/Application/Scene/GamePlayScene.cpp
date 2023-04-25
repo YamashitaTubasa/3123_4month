@@ -38,13 +38,6 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	//半径分だけ足元から浮いた座標を球の中心にする
 	player->SetCollider(new SphereCollider);
 
-	//攻撃初期化
-	playerAttack = new PlayerAttack;
-	playerAttack->AttackInitialize(player);
-
-	//半径分だけ足元から浮いた座標を球の中心にする
-	playerAttack->SetCollider(new SphereCollider(Vector3(0, 0, 0), 3.0f));
-
 	//敵の情報の初期化
 	LoadEnemyPopData();
 
@@ -197,6 +190,37 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 			enemys_.remove_if([](std::unique_ptr < Enemy>& enemy_) {
 				return enemy_->GetIsDead();
 			});
+
+
+			gauge.GetScale();
+
+			if (isMaxGauge == true) {
+				if (gaugeScale.x >= 4) {
+					gaugeScale.x -= 1;
+				}
+				else {
+					isMaxGauge = false;
+				}
+			}
+
+			gauge.SetPosition(gauge.GetPosition() + Vector3(1, 0, 0));
+			//gauge.SpriteUpdate(gauge, spriteCommon_);
+
+			if (player->GetGaugeAdd() == true) {
+				player->SetGaugeAdd(false);
+				gaugeScale.x += 70;
+
+			}
+			if (gaugeScale.x >= 140) {
+				if (isMaxGauge == false) {
+					isMaxGauge = true;
+				}
+			}
+
+			gauge.SetScale(Vector2(gaugeScale.x, gaugeScale.y));
+			gauge.SpriteTransferVertexBuffer(gauge, spriteCommon, 21);
+
+	
 
 		// スタート画面演出
 		startE++;

@@ -6,7 +6,6 @@
 #include "input.h"
 #include "Spline.h"
 #include "Player.h"
-#include "PlayerAttack.h"
 
 
 class RailCamera {

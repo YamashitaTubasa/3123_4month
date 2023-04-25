@@ -149,6 +149,9 @@ void Player::OnCollision(const CollisionInfo& info)
 	if (strcmp(toCollisionName, str) == 0) {
 		if (isHit == false)
 		{
+			if (isGauge_ == false) {
+				isGauge_ = true;
+			}
 			if (isPush == true)
 			{
 				if (isFever == false) {

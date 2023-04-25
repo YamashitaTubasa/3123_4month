@@ -147,9 +147,6 @@
     <ClCompile Include="DirectXGame\Engin\PostEffect\PostEffect.cpp">
       <Filter>ソースファイル\Engine\PostEffect</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\Engin\3d\PlayerAttack.cpp">
-      <Filter>ソースファイル\Engine\GameObject</Filter>
-    </ClCompile>
     <ClCompile Include="DirectXGame\Engin\3d\Line.cpp">
       <Filter>ソースファイル\Engine\3d</Filter>
     </ClCompile>
@@ -271,9 +268,6 @@
     </ClInclude>
     <ClInclude Include="DirectXGame\Engin\PostEffect\PostEffect.h">
       <Filter>ヘッダーファイル\Engine\PostEffect</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXGame\Engin\3d\PlayerAttack.h">
-      <Filter>ヘッダーファイル\Engine\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="DirectXGame\Engin\3d\Line.h">
       <Filter>ヘッダーファイル\Engine\3d</Filter>

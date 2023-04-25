@@ -41,6 +41,9 @@ public:
 	const bool& GetIsBurst() { return isBurst; }
 	void SetIsBurst(const bool& isBurst) { this->isBurst = isBurst; }
 
+	bool GetGaugeAdd() { return isGauge_; }
+	void SetGaugeAdd(bool isGauge) { this->isGauge_ = isGauge; }
+
 private:
 	Input* input = nullptr;
 	// ƒ‚ƒfƒ‹
@@ -63,4 +66,6 @@ private:
 	bool isHit;
 	int coolTime;
 	bool isBurst = false;
+
+	bool isGauge_ = false;
 };
