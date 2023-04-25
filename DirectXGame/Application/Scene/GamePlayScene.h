@@ -127,8 +127,6 @@ private:
 	Vector3 rotation[5]{};
 	Vector3 scale[5]{};
 
-	PlayerAttack gaugeAdd;
-
 	//敵
 	std::list<std::unique_ptr<Enemy>> enemys_;
 
@@ -139,9 +137,9 @@ private:
 
 	int waitTimer = 300;
 
-	Vector2 gaugeArea = { 190,65 };
+	Vector2 gaugeScale = { 3,25 };
 
-	Vector3 gaugePosition = { 25,135,0 };
+	Vector3 gaugePosition = { 50,167.5f,0 };
 
 	//敵発生コマンド
 	std::stringstream enemyPopCommands;
@@ -151,4 +149,6 @@ private:
 	float alpha = 1;
 
 	int sceneNum = 0;
+
+	bool isMaxGauge = false;
 };

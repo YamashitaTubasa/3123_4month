@@ -23,14 +23,14 @@ public:
 	//Getter
 	bool GetIsPush() { return isPush; }
 	float GetVal() { return val; }
-	int GetGaugeAdd() { return isGauge; }
+	bool GetGaugeAdd() { return isGauge_; }
 
 	//fever
 	void GoesFever();
 	bool GetFever() { return isFever; }
 	int GetFeverNum() { return feverNum; }
 
-	int SetGaugeAdd(int gaugeAdd) { this->isGauge = gaugeAdd; }
+	void SetGaugeAdd(bool isGauge) { this->isGauge_ = isGauge; }
 
 private:
 	Input* input = nullptr;
@@ -49,5 +49,5 @@ private:
 	//“–‚½‚Á‚½‚Ìˆ—‚Ég‚¤•Ï”
 	bool isHit;
 	int coolTime;
-	int isGauge = false;
+	bool isGauge_ = false;
 };

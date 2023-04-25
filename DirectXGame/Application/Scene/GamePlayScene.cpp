@@ -94,18 +94,18 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	gaugeFlame.LoadTexture(spriteCommon_, 20, L"Resources/gaugeFlame.png", dXCommon->GetDevice());
 	gaugeFlame.SetColor(Vector4(1, 1, 1, 1));
 	gaugeFlame.SpriteCreate(dXCommon->GetDevice(), 128, 64, 20, spriteCommon, Vector2(0.0f, 0.0f), false, false);
-	gaugeFlame.SetPosition(Vector3(25, 135, 0));
-	gaugeFlame.SetScale(Vector2(190, 65));
+	gaugeFlame.SetPosition(Vector3(45, 150, 0));
+	gaugeFlame.SetScale(Vector2(150, 35));
 	gaugeFlame.SetRotation(0.0f);
 	gaugeFlame.SpriteTransferVertexBuffer(gaugeFlame, spriteCommon, 20);
 	gaugeFlame.SpriteUpdate(gaugeFlame, spriteCommon_);
 
 	//gauge
-	gauge.LoadTexture(spriteCommon_, 21, L"Resources/gaugeNeo.png", dXCommon->GetDevice());
+	gauge.LoadTexture(spriteCommon_, 21, L"Resources/gaugeOne.png", dXCommon->GetDevice());
 	gauge.SetColor(Vector4(1, 1, 1, 1));
-	gauge.SpriteCreate(dXCommon->GetDevice(), 128, 64, 21, spriteCommon, Vector2(0.0f, 0.0f), false, false);
+	gauge.SpriteCreate(dXCommon->GetDevice(), 110, 26, 21, spriteCommon, Vector2(0.0f, 0.5f), false, false);
 	gauge.SetPosition(Vector3(gaugePosition.x, gaugePosition.y, gaugePosition.z));
-	gauge.SetScale(Vector2(gaugeArea.x, gaugeArea.y));
+	gauge.SetScale(Vector2(gaugeScale.x, gaugeScale.y));
 	gauge.SetRotation(0.0f);
 	gauge.SpriteTransferVertexBuffer(gauge, spriteCommon, 21);
 	gauge.SpriteUpdate(gauge, spriteCommon_);
@@ -196,19 +196,30 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 
 			gauge.GetScale();
 
-			if (input->PushKey(DIK_U)) {
-				gaugeArea.x -= 1;
-				gauge.SetPosition(gauge.GetPosition() + Vector3(1, 0, 0));
-				//gauge.SpriteUpdate(gauge, spriteCommon_);
-			}
-
-			if (input->TriggerKey(DIK_I)) {
-				if (gaugeAdd.GetGaugeAdd() == false) {
-					gaugeArea.x += 30;
+			if (isMaxGauge == true) {
+				if (gaugeScale.x >= 4) {
+					gaugeScale.x -= 1;
+				}
+				else {
+					isMaxGauge = false;
 				}
 			}
 
-			gauge.SetScale(Vector2(gaugeArea.x, gaugeArea.y));
+			gauge.SetPosition(gauge.GetPosition() + Vector3(1, 0, 0));
+			//gauge.SpriteUpdate(gauge, spriteCommon_);
+
+			if (playerAttack->GetGaugeAdd() == true) {
+				playerAttack->SetGaugeAdd(false);
+				gaugeScale.x += 70;
+
+			}
+			if (gaugeScale.x >= 140) {
+				if (isMaxGauge == false) {
+					isMaxGauge = true;
+				}
+			}
+
+			gauge.SetScale(Vector2(gaugeScale.x, gaugeScale.y));
 			gauge.SpriteTransferVertexBuffer(gauge, spriteCommon, 21);
 
 			// ワールドトランスフォームの行列更新と転送
