@@ -595,13 +595,6 @@ void GamePlayScene::Reset() {
 	stage->SetScale(Vector3({ 80, 20, 20 }));
 	stage->SetPosition(Vector3(0, -26, -775));
 
-	lineModel = Model::LoadFromOBJ("triangle_mat");
-
-	// 3Dオブジェクト生成
-	line = Object3d::Create();
-	// オブジェクトにモデルをひも付ける
-	line->SetModel(stageModel);
-	line->SetPosition(Vector3(0, 0, -775));
 
 	//パーティクル初期化
 	particle_1 = Particle::LoadParticleTexture("effect1.png");
@@ -620,6 +613,14 @@ void GamePlayScene::Reset() {
 	pm_dmg->SetXMViewProjection(xmViewProjection);
 
 	railCamera->Initialize();
+
+
+	lineModel = Model::CreateLine(points);
+	// 3Dオブジェクト生成
+	line = Line::Create();
+	// オブジェクトにモデルをひも付ける
+	line->SetModel(lineModel);
+	line->SetPosition(Vector3(0, -5, 0));
 
 	//変数
 	//敵の打ち出すまでの時間
