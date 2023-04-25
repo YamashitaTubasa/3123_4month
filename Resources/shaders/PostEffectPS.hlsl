@@ -18,8 +18,8 @@ float4 main(VSOutput input) : SV_TARGET
     //========================= ブラー =========================//
     if (isBlur == true) {
         luminance = 1.0f;
-        setU = 3.0f / 1280.0f;
-        setV = 3.0f / 720.0f;
+        setU = 5.0f / 1280.0f;
+        setV = 5.0f / 720.0f;
 
         // 右のカラーをサンプリングする
         texcolor += tex.Sample(smp, input.uv + float2(setU, 0.0f));

@@ -70,6 +70,14 @@ void RLFramework::Update()
 
 	// 入力の更新
 	input->Update();
+
+	// ポストエフェクト
+	if (scene_->GetSartE() == true) {
+		postEffect_->SetBlur(true);
+	}
+	if (scene_->GetSartE() == false) {
+		postEffect_->SetBlur(false);
+	}
 }
 
 void RLFramework::Finalize()
