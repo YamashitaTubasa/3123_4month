@@ -21,7 +21,7 @@ void RideLight::Update()
 	imGuiManager->Begin();
 
 	// ゲームシーンの更新
-	scene_->Update();
+	scene_->Update(spriteCommon);
 
 	// ImGui受付終了
 	imGuiManager->End();

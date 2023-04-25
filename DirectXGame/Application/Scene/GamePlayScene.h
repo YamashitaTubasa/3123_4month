@@ -40,7 +40,7 @@ public:
 	/// <summary>
 	/// 更新
 	/// </summary>
-	void Update();
+	void Update(SpriteCommon &spriteCommon);
 
 	/// <summary>
 	/// 描画
@@ -108,6 +108,9 @@ private:
 	// スプライト
 	Sprite* sprite = nullptr;
 	Sprite hP[3];
+	Sprite gaugeFlame;
+	Sprite gauge;
+	Sprite board;
 	Sprite effectL[6];
 	Sprite effectR[6];
 	Sprite title;
@@ -141,6 +144,10 @@ private:
 
 	int waitTimer = 300;
 
+	Vector2 gaugeScale = { 3,25 };
+
+	Vector3 gaugePosition = { 50,167.5f,0 };
+
 	//敵発生コマンド
 	std::stringstream enemyPopCommands;
 
@@ -149,9 +156,14 @@ private:
 	float alpha = 1;
 
 	int sceneNum = 0;
+
+
+	bool isMaxGauge = false;
+
 	bool isBack = false; // ダメージ演出フラグ
 	float backT = 0.0f; // ダメージ演出タイマー
 	bool isStartE = false; // startEffectフラグ
 	float startE = 0.0f; // startEffect
 	int isDeadT = 0.0f;
+
 };

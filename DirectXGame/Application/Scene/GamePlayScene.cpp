@@ -3,7 +3,8 @@
 #include <fstream>
 #include "SphereCollider.h"
 #include "CollisionManager.h"
-#include"Player.h"
+#include "Player.h"
+#include "WorldTransform.h"
 
 GamePlayScene::GamePlayScene() {
 }
@@ -36,6 +37,13 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 
 	//半径分だけ足元から浮いた座標を球の中心にする
 	player->SetCollider(new SphereCollider);
+
+	//攻撃初期化
+	playerAttack = new PlayerAttack;
+	playerAttack->AttackInitialize(player);
+
+	//半径分だけ足元から浮いた座標を球の中心にする
+	playerAttack->SetCollider(new SphereCollider(Vector3(0, 0, 0), 3.0f));
 
 	//敵の情報の初期化
 	LoadEnemyPopData();
@@ -76,15 +84,45 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 
 	// HP
 	for (int i = 0; i < 3; i++) {
-		hP[i].LoadTexture(spriteCommon_, 3, L"Resources/hp.png", dXCommon->GetDevice());
+		hP[i].LoadTexture(spriteCommon_, 3, L"Resources/hitPoint.png", dXCommon->GetDevice());
 		hP[i].SetColor(Vector4(1, 1, 1, 1));
 		hP[i].SpriteCreate(dXCommon->GetDevice(), 50, 50, 3, spriteCommon, Vector2(0.0f, 0.0f), false, false);
-		hP[i].SetPosition(Vector3(0 + (i * 64), 0, 0));
-		hP[i].SetScale(Vector2(50 * 1, 50 * 1));
+		hP[i].SetPosition(Vector3(40 + (i * 60), 45, 0));
+		hP[i].SetScale(Vector2(40 * 1, 40 * 1));
 		hP[i].SetRotation(0.0f);
 		hP[i].SpriteTransferVertexBuffer(hP[i], spriteCommon, 3);
 		hP[i].SpriteUpdate(hP[i], spriteCommon_);
 	}
+
+	//gaugeFlame
+	gaugeFlame.LoadTexture(spriteCommon_, 20, L"Resources/gaugeFlame.png", dXCommon->GetDevice());
+	gaugeFlame.SetColor(Vector4(1, 1, 1, 1));
+	gaugeFlame.SpriteCreate(dXCommon->GetDevice(), 128, 64, 20, spriteCommon, Vector2(0.0f, 0.0f), false, false);
+	gaugeFlame.SetPosition(Vector3(45, 150, 0));
+	gaugeFlame.SetScale(Vector2(150, 35));
+	gaugeFlame.SetRotation(0.0f);
+	gaugeFlame.SpriteTransferVertexBuffer(gaugeFlame, spriteCommon, 20);
+	gaugeFlame.SpriteUpdate(gaugeFlame, spriteCommon_);
+
+	//gauge
+	gauge.LoadTexture(spriteCommon_, 21, L"Resources/gaugeOne.png", dXCommon->GetDevice());
+	gauge.SetColor(Vector4(1, 1, 1, 1));
+	gauge.SpriteCreate(dXCommon->GetDevice(), 110, 26, 21, spriteCommon, Vector2(0.0f, 0.5f), false, false);
+	gauge.SetPosition(Vector3(gaugePosition.x, gaugePosition.y, gaugePosition.z));
+	gauge.SetScale(Vector2(gaugeScale.x, gaugeScale.y));
+	gauge.SetRotation(0.0f);
+	gauge.SpriteTransferVertexBuffer(gauge, spriteCommon, 21);
+	gauge.SpriteUpdate(gauge, spriteCommon_);
+
+	//UIboard
+	board.LoadTexture(spriteCommon_, 22, L"Resources/UIboard(3).png", dXCommon->GetDevice());
+	board.SetColor(Vector4(1, 1, 1, 0.9));
+	board.SpriteCreate(dXCommon->GetDevice(), 128, 128, 22, spriteCommon, Vector2(0.0f, 0.0f), false, false);
+	board.SetPosition(Vector3(0, 0, 0));
+	board.SetScale(Vector2(240, 225));
+	board.SetRotation(0.0f);
+	board.SpriteTransferVertexBuffer(board, spriteCommon, 22);
+	board.SpriteUpdate(board, spriteCommon_);
 
 	LoadEffect(spriteCommon);
 
@@ -130,7 +168,7 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 
 	//レーン
 	start = { 0.0f, 0.0f, -800.0f };		//スタート地点
-	p2 = { 100.0f, 0.0f, -750.0f };		//制御点その1
+	p2 = { 100.0f, 0.0f, -750.0f };			//制御点その1
 	p3 = { -200.0f, 0.0f, 0.0f };			//制御点その2
 	p4 = { 500.0f, -300.0f, -400.0 };
 	end = { -300.0f, 300.0f, 800.0f };		//ゴール地点
@@ -146,19 +184,17 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	line->SetPosition(Vector3(0, -5, 0));
 }
 
-void GamePlayScene::Update() {
-	switch (sceneNum)
-	{
-	case 0:
-		if (input->TriggerKey(DIK_SPACE)) {
-			sceneNum = 1;
-		}
-		break;
+void GamePlayScene::Update(SpriteCommon& spriteCommon) {
+	switch (sceneNum) {
+		case 0:
+			if (input->TriggerKey(DIK_SPACE)) {
+				sceneNum = 1;
+			}
+			break;
 
-	case 1:
-		//デスフラグの立った敵を削除
-		enemys_.remove_if([](std::unique_ptr < Enemy>& enemy_)
-			{
+		case 1:
+			//デスフラグの立った敵を削除
+			enemys_.remove_if([](std::unique_ptr < Enemy>& enemy_) {
 				return enemy_->GetIsDead();
 			});
 
@@ -242,21 +278,21 @@ void GamePlayScene::Update() {
 			sceneNum = 2;
 		}
 
-		break;
-	//クリア
-	case 2:
-		if (input->TriggerKey(DIK_SPACE)) {
-			Reset();
-			sceneNum = 0;
-		}
-		break;
-	//ゲームオーバー
-	case 3:
-		if (input->TriggerKey(DIK_SPACE)) {
-			Reset();
-			sceneNum = 0;
-		}
-		break;
+			break;
+			//クリア
+		case 2:
+			if (input->TriggerKey(DIK_SPACE)) {
+				Reset();
+				sceneNum = 0;
+			}
+			break;
+			//ゲームオーバー
+		case 3:
+			if (input->TriggerKey(DIK_SPACE)) {
+				Reset();
+				sceneNum = 0;
+			}
+			break;
 	}
 }
 
@@ -316,6 +352,7 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 		title.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), title.vbView);
 	}
 	else if (sceneNum == 1) {
+		board.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), board.vbView);
 		for (int i = 0; i < player->GetHP(); i++) {
 			hP[i].SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), hP[i].vbView);
 		}
@@ -326,11 +363,13 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 		if (isBack == true) {
 			back.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), back.vbView);
 		}
+		gaugeFlame.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), gaugeFlame.vbView);
+		gauge.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), gauge.vbView);
 	}
-	else if(sceneNum == 2) {
+	else if (sceneNum == 2) {
 		clear.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), clear.vbView);
 	}
-	else if(sceneNum == 3) {
+	else if (sceneNum == 3) {
 		over.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), over.vbView);
 	}
 
@@ -372,20 +411,18 @@ void GamePlayScene::Finalize() {
 	sprite = nullptr;
 }
 
-void GamePlayScene::EnemyOcurrence(const Vector3& v)
-{
+void GamePlayScene::EnemyOcurrence(const Vector3& v) {
 	//敵の生成
 	std::unique_ptr<Enemy> newEnemy = std::make_unique<Enemy>();
 	//敵の初期化
 	newEnemy->EnemyInitialize(Vector3(v.x, v.y, v.z));
 	//コライダーの追加
-	newEnemy->SetCollider(new SphereCollider(Vector3(0,0,0),2.0f));
+	newEnemy->SetCollider(new SphereCollider(Vector3(0, 0, 0), 2.0f));
 	//敵の登録
 	enemys_.push_back(std::move(newEnemy));
 }
 
-void GamePlayScene::LoadEnemyPopData()
-{
+void GamePlayScene::LoadEnemyPopData() {
 	//ファイルを開く
 	std::ifstream file;
 	file.open("Resources/enemyPop.csv");
@@ -398,14 +435,11 @@ void GamePlayScene::LoadEnemyPopData()
 	file.close();
 }
 
-void GamePlayScene::UpdateEnemyPopCommands()
-{
+void GamePlayScene::UpdateEnemyPopCommands() {
 	//待機処理
-	if (isWait_)
-	{
+	if (isWait_) {
 		waitTimer--;
-		if (waitTimer <= 0)
-		{
+		if (waitTimer <= 0) {
 			//待機完了
 			isWait_ = false;
 		}
@@ -416,8 +450,7 @@ void GamePlayScene::UpdateEnemyPopCommands()
 	std::string line;
 
 	//コマンド実行ループ
-	while (getline(enemyPopCommands, line))
-	{
+	while (getline(enemyPopCommands, line)) {
 		//1桁分文字列をストリームに変換して解析しやすくする
 		std::istringstream line_stream(line);
 
@@ -426,15 +459,13 @@ void GamePlayScene::UpdateEnemyPopCommands()
 		getline(line_stream, word, ',');
 
 		//"//"から始まる行はコメント
-		if (word.find("//") == 0)
-		{
+		if (word.find("//") == 0) {
 			//コメント行を飛ばす
 			continue;
 		}
 
 		//POPコマンド
-		if (word.find("POP") == 0)
-		{
+		if (word.find("POP") == 0) {
 			//x座標
 			getline(line_stream, word, ',');
 			float x = (float)std::atof(word.c_str());
@@ -452,8 +483,7 @@ void GamePlayScene::UpdateEnemyPopCommands()
 		}
 
 		//WAITコマンド
-		else if (word.find("WAIT") == 0)
-		{
+		else if (word.find("WAIT") == 0) {
 			getline(line_stream, word, ',');
 
 			//待ち時間

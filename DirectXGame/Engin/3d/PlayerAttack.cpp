@@ -108,6 +108,9 @@ void PlayerAttack::OnCollision(const CollisionInfo& info)
 	const char* str = "class Player";
 	if (strcmp(toCollisionName, str) != 0) {
 		if (isHit == false) {
+			if (isGauge_ == false) {
+				isGauge_ = true;
+			}
 			isHit = true;
 			if (isFever == false) {
 				val -= 500.0f;
