@@ -49,6 +49,9 @@ void RLFramework::Initialize()
 	// 3Dオブジェクト静的初期化
 	Object3d::StaticInitialize(dXCommon->GetDevice(), WinApp::window_width, WinApp::window_height);
 
+	//レール描画静的初期化
+	Line::StaticInitialize(dXCommon->GetDevice());
+
 	// パーティクル静的初期化
 	ParticleManager::StaticInitialize(dXCommon->GetDevice());
 

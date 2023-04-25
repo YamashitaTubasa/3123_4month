@@ -58,14 +58,6 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	stage->SetScale(Vector3({ 80, 20, 20 }));
 	stage->SetPosition(Vector3(0, -26, -775));
 
-	lineModel = Model::LoadFromOBJ("triangle_mat");
-
-	// 3Dオブジェクト生成
-	line = Object3d::Create();
-	// オブジェクトにモデルをひも付ける
-	line->SetModel(lineModel);
-	line->SetPosition(Vector3(0, 0, -775));
-
 	//パーティクル初期化
 	particle_1 = Particle::LoadParticleTexture("effect1.png");
 	pm_1 = ParticleManager::Create();
@@ -151,6 +143,14 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	end = { -300.0f, 300.0f, 800.0f };		//ゴール地点
 
 	points = { start,start,p2,p3,p4,end,end };
+
+	lineModel = Model::CreateLine(points);
+
+	// 3Dオブジェクト生成
+	line = Line::Create();
+	// オブジェクトにモデルをひも付ける
+	line->SetModel(lineModel);
+	line->SetPosition(Vector3(0, -5, 0));
 }
 
 void GamePlayScene::Update() {
@@ -285,13 +285,14 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 
 #pragma endregion レール
 
-	 //3Dオブジェクト描画前処理
-	Object3d::PreLineDraw(dXCommon->GetCommandList());
+
+	// 3Dオブジェクト描画前処理
+	Line::PreDraw(dXCommon->GetCommandList());
 
 	line->Draw(railCamera->GetView());
 
 	// 3Dオブジェクト描画後処理
-	Object3d::PostDraw();
+	Line::PostDraw();
 
 #pragma region パーティクル描画
 

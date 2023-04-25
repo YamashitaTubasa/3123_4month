@@ -12,6 +12,9 @@ public:
 	//更新
 	Vector3 Update(std::vector<Vector3>& points,float t,float val);
 
+	//更新
+	Vector3 pointCal(std::vector<Vector3>& points, float t);
+
 	//描画
 	void Draw();
 
