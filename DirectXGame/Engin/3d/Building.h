@@ -9,12 +9,12 @@ public:
 	//初期化
 	bool BuildingInitialize();
 
-	//敵リスト
-	const std::list<std::unique_ptr<Building>>& GetEnemys() { return buildings_; }
+	//リスト
+	const std::list<std::unique_ptr<Building>>& GetBuildings() { return buildings_; }
 
 private:
 
-	//敵
+	//建物
 	std::list<std::unique_ptr<Building>> buildings_;
 
 	// モデル

@@ -150,11 +150,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Building.cpp" />
     <ClCompile Include="DirectXGame\Application\Platform\RideLight.cpp" />
     <ClCompile Include="DirectXGame\Application\Scene\GameBaseScene.cpp" />
     <ClCompile Include="DirectXGame\Application\Scene\GameTitleScene.cpp" />
     <ClCompile Include="DirectXGame\Engin\2d\SpriteCommon.cpp" />
+    <ClCompile Include="DirectXGame\Engin\3d\Building.cpp" />
     <ClCompile Include="DirectXGame\Engin\3d\Enemy.cpp" />
     <ClCompile Include="DirectXGame\Engin\3d\Line.cpp" />
     <ClCompile Include="DirectXGame\Engin\3d\Player.cpp" />
@@ -213,10 +213,14 @@
     <FxCompile Include="Resources\shaders\LinePS.hlsl">
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="Resources\shaders\LineVS.hlsl">
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="Resources\shaders\OBJPixelShader.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
@@ -278,11 +282,11 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Building.h" />
     <ClInclude Include="DirectXGame\Application\Platform\RideLight.h" />
     <ClInclude Include="DirectXGame\Application\Scene\GameBaseScene.h" />
     <ClInclude Include="DirectXGame\Application\Scene\GameTitleScene.h" />
     <ClInclude Include="DirectXGame\Engin\2d\SpriteCommon.h" />
+    <ClInclude Include="DirectXGame\Engin\3d\Building.h" />
     <ClInclude Include="DirectXGame\Engin\3d\Enemy.h" />
     <ClInclude Include="DirectXGame\Engin\3d\Line.h" />
     <ClInclude Include="DirectXGame\Engin\3d\Player.h" />

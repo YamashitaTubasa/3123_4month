@@ -48,15 +48,6 @@ void PlayerAttack::Update() {
 		}
 	}
 
-	//攻撃が当たった時の処理
-	if (isHit == true) {
-		coolTime++;
-		if (coolTime == 10) {
-			coolTime = 0;
-			isHit = false;
-		}
-	}
-
 	if (val <= 500) {
 		GoesFever();
 	}
