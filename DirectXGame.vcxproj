@@ -150,6 +150,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Building.cpp" />
     <ClCompile Include="DirectXGame\Application\Platform\RideLight.cpp" />
     <ClCompile Include="DirectXGame\Application\Scene\GameBaseScene.cpp" />
     <ClCompile Include="DirectXGame\Application\Scene\GameTitleScene.cpp" />
@@ -268,6 +269,7 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Building.h" />
     <ClInclude Include="DirectXGame\Application\Platform\RideLight.h" />
     <ClInclude Include="DirectXGame\Application\Scene\GameBaseScene.h" />
     <ClInclude Include="DirectXGame\Application\Scene\GameTitleScene.h" />
