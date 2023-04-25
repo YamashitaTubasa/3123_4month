@@ -16,6 +16,7 @@
 #include "Enemy.h"
 #include <sstream>
 #include "PlayerAttack.h"
+#include "Line.h"
 
 //====================//
 // ゲームプレイシーン
@@ -93,7 +94,7 @@ private:
 	Enemy* enemy;
 	Object3d* sky;
 	Object3d* stage;
-	Object3d* line;
+	Line* line;
 	//カメラ
 	ViewProjection* viewProjection = nullptr;
 	RailCamera* railCamera = nullptr;

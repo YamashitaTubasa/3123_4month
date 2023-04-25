@@ -45,6 +45,13 @@ public: // サブクラス
 		float alpha;       // アルファ
 	};
 
+	// 定数バッファ用データ構造体B2
+	struct ConstBufferDataB2
+	{
+		Vector4 color;	// 色 (RGBA)
+	};
+
+
 	// マテリアル
 	struct Material
 	{
@@ -66,8 +73,7 @@ public: // サブクラス
 	//頂点バッファ
 	struct LineVertex
 	{
-		Vector3 pos = { 0, 0, 0 };
-		Vector2 uv = { 0, 0 };
+		Vector3 pos;
 	};
 
 private: // 定数
@@ -81,6 +87,7 @@ public: // 静的メンバ関数
 	
 	// OBJファイルから3Dモデルを読み込む
 	static Model* LoadFromOBJ(const std::string& modelname, const std::string& texname = "Resources");
+	static Model* CreateLine(std::vector<Vector3>& point);
 
 	// マテリアル読み込み
 	void LoadMaterial(const std::string& directoryPath, const std::string& filename);
@@ -93,13 +100,14 @@ public: // 静的メンバ関数
 	/// <param name="cmdList">描画コマンドリスト</param>
 	/// <param name="rootParamIndexMaterial">マテリアル用ルートパラメータ番号</param>
 	void Draw(ID3D12GraphicsCommandList* cmdList, UINT rootParamIndexMaterial,float alpha_ = 1);
+	void DrawLine(ID3D12GraphicsCommandList* cmdList, UINT rootParamIndexMaterial);
 
 	// setter
 	static void SetDevice(ID3D12Device* device) { Model::device = device; }
 
 	void SetAlpha(float alpha_);
 
-	void UpdateLineVertex();
+	void UpdateLineVertex(std::vector<Vector3>& point);
 
 
 private: // 静的メンバ変数
@@ -107,8 +115,10 @@ private: // 静的メンバ変数
 	static ID3D12Device* device;
 	// 頂点データ配列
 	std::vector<VertexPosNormalUv> vertices;
+	std::vector<LineVertex> lineVertices;
 	// 頂点インデックス配列
 	std::vector<unsigned short> indices;
+	std::vector<unsigned short> lineIndices;
 	// マテリアル
 	Material material;
 	// テクスチャバッファ
@@ -131,7 +141,7 @@ private: // 静的メンバ変数
 	D3D12_INDEX_BUFFER_VIEW ibView;
 	// 定数バッファ（マテリアル）
 	ComPtr<ID3D12Resource> constBuffB1; // 定数バッファ
-
+	ComPtr<ID3D12Resource> constBuffB2; // 定数バッファ
 private:// 静的メンバ関数
 	// OBJファイルから3Dモデルを読み込む(非公開)
 	void LoadFromOBJInternal(const std::string& modelname);
@@ -141,5 +151,6 @@ private:// 静的メンバ関数
 
 	// 各種バッファ生成
 	void CreateBuffers();
+	void CreateLineBuffers();
 
 };

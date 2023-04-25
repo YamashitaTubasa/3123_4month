@@ -35,6 +35,23 @@ Model* Model::LoadFromOBJ(const string& modelname, const string& texname)
 	return model;
 }
 
+Model* Model::CreateLine(std::vector<Vector3>& point)
+{
+	// 新たなModel型のインスタンスのメモリを確保
+	Model* model = new Model();
+
+	// デスクリプタヒープの生成
+	model->InitializeDescriptorHeap();
+
+	//頂点を生成
+	model->UpdateLineVertex(point);
+
+	// バッファ生成
+	model->CreateLineBuffers();
+
+	return model;
+}
+
 void Model::LoadMaterial(const std::string& directoryPath, const std::string& filename)
 {
 	// ファイルストリーム
@@ -291,6 +308,33 @@ void Model::Draw(ID3D12GraphicsCommandList* cmdList, UINT rootParamIndexMaterial
 	cmdList->DrawIndexedInstanced((UINT)indices.size(), 1, 0, 0, 0);
 }
 
+void Model::DrawLine(ID3D12GraphicsCommandList* cmdList, UINT rootParamIndexMaterial)
+{
+	// nullptrチェック
+	assert(device);
+	assert(cmdList);
+
+	// 頂点バッファビューの設定
+	cmdList->IASetVertexBuffers(0, 1, &vbView);
+	// インデックスバッファの設定
+	cmdList->IASetIndexBuffer(&ibView);
+	// 定数バッファビューをセット
+	cmdList->SetGraphicsRootConstantBufferView(rootParamIndexMaterial,
+		constBuffB2->GetGPUVirtualAddress());
+
+	// デスクリプタヒープの配列
+	ID3D12DescriptorHeap* ppHeaps[] = { descHeap.Get() };
+	cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
+
+	if (material.textureFilename.size() > 0) {
+		// シェーダリソースビューをセット
+		cmdList->SetGraphicsRootDescriptorTable(3, gpuDescHandleSRV);
+	}
+
+	// 描画コマンド
+	cmdList->DrawIndexedInstanced((UINT)lineIndices.size(), 1, 0, 0, 0);
+}
+
 void Model::LoadFromOBJInternal(const string& modelname)
 {
 	HRESULT result = S_FALSE;
@@ -518,6 +562,95 @@ void Model::CreateBuffers()
 	}
 }
 
+void Model::CreateLineBuffers()
+{
+	HRESULT result = S_FALSE;
+
+	std::vector<LineVertex> realVertices;
+
+	/*UINT sizeVB = static_cast<UINT>(sizeof(vertices));*/
+	UINT sizeVB = static_cast<UINT>(sizeof(LineVertex) * lineVertices.size());
+
+	// ヒーププロパティ
+	CD3DX12_HEAP_PROPERTIES heapProps = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
+	// リソース設定
+	CD3DX12_RESOURCE_DESC resourceDesc = CD3DX12_RESOURCE_DESC::Buffer(sizeVB);
+
+	// 頂点バッファ生成
+	result = device->CreateCommittedResource(
+		&heapProps, D3D12_HEAP_FLAG_NONE, &resourceDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
+		IID_PPV_ARGS(&vertBuff));
+	assert(SUCCEEDED(result));
+
+	// 頂点バッファへのデータ転送
+	LineVertex* vertMap = nullptr;
+	result = vertBuff->Map(0, nullptr, (void**)&vertMap);
+	if (SUCCEEDED(result)) {
+		/*memcpy(vertMap, vertices, sizeof(vertices));*/
+		std::copy(lineVertices.begin(), lineVertices.end(), vertMap);
+		vertBuff->Unmap(0, nullptr);
+	}
+
+	// 頂点バッファビューの作成
+	vbView.BufferLocation = vertBuff->GetGPUVirtualAddress();
+	vbView.SizeInBytes = sizeVB;
+	vbView.StrideInBytes = sizeof(lineVertices[0]);
+
+	/*UINT sizeIB = static_cast<UINT>(sizeof(indices));*/
+	UINT sizeIB = static_cast<UINT>(sizeof(unsigned short) * lineIndices.size());
+	// リソース設定
+	resourceDesc.Width = sizeIB;
+
+	// インデックスバッファ生成
+	result = device->CreateCommittedResource(
+		&heapProps, D3D12_HEAP_FLAG_NONE, &resourceDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
+		IID_PPV_ARGS(&indexBuff));
+
+	// インデックスバッファへのデータ転送
+	unsigned short* indexMap = nullptr;
+	result = indexBuff->Map(0, nullptr, (void**)&indexMap);
+	if (SUCCEEDED(result)) {
+
+		std::copy(lineIndices.begin(), lineIndices.end(), indexMap);
+
+		indexBuff->Unmap(0, nullptr);
+	}
+
+	// インデックスバッファビューの作成
+	ibView.BufferLocation = indexBuff->GetGPUVirtualAddress();
+	ibView.Format = DXGI_FORMAT_R16_UINT;
+	ibView.SizeInBytes = sizeIB;
+
+	// nullptrチェック
+	assert(device);
+
+	// ヒーププロパティ
+	CD3DX12_HEAP_PROPERTIES heapProps1 = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
+
+	//HRESULT result;
+
+	resourceDesc =
+		CD3DX12_RESOURCE_DESC::Buffer((sizeof(ConstBufferDataB2) + 0xff) & ~0xff);
+
+	// 定数バッファの生成
+	result = device->CreateCommittedResource(
+		&heapProps1,
+		D3D12_HEAP_FLAG_NONE,
+		&resourceDesc,
+		D3D12_RESOURCE_STATE_GENERIC_READ,
+		nullptr,
+		IID_PPV_ARGS(&constBuffB2)
+	);
+
+	// 定数バッファへデータ転送
+	ConstBufferDataB2* constMap2 = nullptr;
+	result = constBuffB2->Map(0, nullptr, (void**)&constMap2);
+	if (SUCCEEDED(result)) {
+		constMap2->color = Vector4(1, 0, 0, 1);
+		constBuffB2->Unmap(0, nullptr);
+	}
+}
+
 void Model::SetAlpha(float alpha_) {
 
 	HRESULT result = S_FALSE;
@@ -531,20 +664,29 @@ void Model::SetAlpha(float alpha_) {
 	}
 }
 
-void Model::UpdateLineVertex() {
-	Vector3 target_ = spline_.Update(point, timeRate, attack_->GetVal());
+void Model::UpdateLineVertex(std::vector<Vector3>& point) {
+	Spline spline_;
+	spline_.Initialize();
+	Vector3 tempPos;
+	vector<Vector3> positions; // 頂点座標
+	Vector3 position{};
 
+	positions = point;
+
+	//while (spline_.GetIsEnd() == false) {
+	//	tempPos = spline_.Update(point, 0.0f, 1000);
+	//	//座標を記憶
+	//	position = tempPos;
+
+	//	// 座標データに追加
+	//	positions.emplace_back(position);
+	//}
 	//頂点データを更新する
-	float amount = 1.0f / (usedPosArray.size() - 1);
 	float v = 0;
-	vertices.clear();
-	vertices.resize(usedPosArray.size() * 2);
-	for (size_t i = 0, j = 0; i < vertices.size() && j < usedPosArray.size(); i += 2, ++j)
+	lineVertices.resize(positions.size());
+	for (size_t i = 0; i < lineVertices.size(); i++)
 	{
-		vertices[i].pos = usedPosArray[j].headPos;
-		vertices[i].uv = Vector2(1.0f, v);
-		vertices[i + 1].pos = usedPosArray[j].tailPos;
-		vertices[i + 1].uv = Vector2(0.0f, v);
-		v += amount;
+		lineVertices[i].pos = positions[i];
+		lineIndices.emplace_back(lineIndices.size());
 	}
 }
