@@ -151,6 +151,9 @@ void Player::OnCollision(const CollisionInfo& info)
 		{
 			if (isPush == true)
 			{
+				if (isGauge_ == false) {
+					isGauge_ = true;
+				}
 				if (isFever == false) {
 					val -= 500.0f;
 				}

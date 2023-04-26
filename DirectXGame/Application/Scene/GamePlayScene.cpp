@@ -191,6 +191,34 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 				return enemy_->GetIsDead();
 			});
 
+			gauge.GetScale();
+
+			if (isMaxGauge == true) {
+				if (gaugeScale.x >= 4) {
+					gaugeScale.x -= 1;
+				}
+				else {
+					isMaxGauge = false;
+				}
+			}
+
+			gauge.SetPosition(gauge.GetPosition() + Vector3(1, 0, 0));
+			//gauge.SpriteUpdate(gauge, spriteCommon_);
+
+			if (player->GetGaugeAdd() == true) {
+				player->SetGaugeAdd(false);
+				gaugeScale.x += 70;
+
+			}
+			if (gaugeScale.x >= 140) {
+				if (isMaxGauge == false) {
+					isMaxGauge = true;
+				}
+			}
+
+			gauge.SetScale(Vector2(gaugeScale.x, gaugeScale.y));
+			gauge.SpriteTransferVertexBuffer(gauge, spriteCommon, 21);
+
 		// スタート画面演出
 		startE++;
 		if (startE < 50) {
@@ -290,6 +318,16 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 }
 
 void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
+#pragma endregion レール
+
+	// 3Dオブジェクト描画前処理
+	Line::PreDraw(dXCommon->GetCommandList());
+
+	line->Draw(railCamera->GetView());
+
+	// 3Dオブジェクト描画後処理
+	Line::PostDraw();
+
 #pragma region 3Dオブジェクト描画
 
 	// 3Dオブジェクト描画前処理
@@ -307,16 +345,6 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 	// 3Dオブジェクト描画後処理
 	Object3d::PostDraw();
 
-#pragma endregion レール
-
-
-	// 3Dオブジェクト描画前処理
-	Line::PreDraw(dXCommon->GetCommandList());
-
-	line->Draw(railCamera->GetView());
-
-	// 3Dオブジェクト描画後処理
-	Line::PostDraw();
 
 #pragma region パーティクル描画
 
@@ -379,9 +407,6 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 	if (sceneNum == 1) {
 		////playerを画像より手前に出したい
 		player->Draw(railCamera->GetView());
-		if (player->GetIsPush() == true) {
-			player->Draw(railCamera->GetView());
-		}
 		////敵キャラの描画
 		//for (const std::unique_ptr<Enemy>& enemy : enemys_) {
 		//	enemy->Draw(railCamera->GetView());
@@ -605,7 +630,6 @@ void GamePlayScene::Reset() {
 	stage->SetScale(Vector3({ 80, 20, 20 }));
 	stage->SetPosition(Vector3(0, -26, -775));
 
-
 	//パーティクル初期化
 	particle_1 = Particle::LoadParticleTexture("effect1.png");
 	pm_1 = ParticleManager::Create();
@@ -639,6 +663,10 @@ void GamePlayScene::Reset() {
 	isWait_ = false;
 
 	waitTimer = 300;
+
+	gaugeScale = { 3,25 };
+
+	gaugePosition = { 50,167.5f,0 };
 
 
 }
