@@ -18,5 +18,7 @@ private:
 	std::list<std::unique_ptr<Building>> buildings_;
 
 	// ƒ‚ƒfƒ‹
-	Model* buildingModel = nullptr;
+	Model* buildingModel01 = nullptr;
+	Model* buildingModel02 = nullptr;
+	Model* buildingModel03 = nullptr;
 };
