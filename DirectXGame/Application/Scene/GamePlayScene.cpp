@@ -38,13 +38,6 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	//半径分だけ足元から浮いた座標を球の中心にする
 	player->SetCollider(new SphereCollider);
 
-	//攻撃初期化
-	playerAttack = new PlayerAttack;
-	playerAttack->AttackInitialize(player);
-
-	//半径分だけ足元から浮いた座標を球の中心にする
-	playerAttack->SetCollider(new SphereCollider(Vector3(0, 0, 0), 3.0f));
-
 	//敵の情報の初期化
 	LoadEnemyPopData();
 
