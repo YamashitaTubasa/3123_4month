@@ -123,7 +123,7 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	LoadEffect(spriteCommon);
 
 	//title
-	title.LoadTexture(spriteCommon_, 17, L"Resources/title.png", dXCommon->GetDevice());
+	title.LoadTexture(spriteCommon_, 17, L"Resources/title1.png", dXCommon->GetDevice());
 	title.SetColor(Vector4(1, 1, 1, 1));
 	title.SpriteCreate(dXCommon->GetDevice(), 1280, 720, 17, spriteCommon, Vector2(0.0f, 0.0f), false, false);
 	title.SetPosition(Vector3(0, 0, 0));
@@ -184,8 +184,10 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 	switch (sceneNum) {
 		case 0:
+			pColor = { 1,1,1,1 };
 			if (input->TriggerKey(DIK_SPACE)) {
 				sceneNum = 1;
+				pColor = { 0,0,0,1 };
 			}
 			break;
 
@@ -195,18 +197,17 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 				return enemy_->GetIsDead();
 			});
 
-			// スタート画面演出
+			// ゲーム画面フェードアウト演出
 			startE++;
-			if (0 < startE && startE < 30) {
+			if (0 < startE && startE < 50) {
 				isStartE = true;
+				pColor.x += 0.02;
+				pColor.y += 0.02;
+				pColor.z += 0.02;
 				postEffect_->SetColor(pColor);
-				pColor.x += 0.03;
-				pColor.y += 0.03;
-				pColor.z += 0.03;
 			}
-			if (startE > 30) {
+			if (startE > 50) {
 				isStartE = false;
-				//startE = 0.0f;
 				pColor = { 1,1,1,1 };
 				postEffect_->SetColor(pColor);
 			}
@@ -314,16 +315,16 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 			break;
 			//クリア
 		case 2:
-			// クリア画面演出
+			// クリア画面フェードアウト演出
 			gClearE++;
-			if (0 < gClearE && gClearE < 30) {
+			if (0 < gClearE && gClearE < 50) {
 				isGClearE = true;
+				pColor.x += 0.02;
+				pColor.y += 0.02;
+				pColor.z += 0.02;
 				postEffect_->SetColor(pColor);
-				pColor.x += 0.05;
-				pColor.y += 0.05;
-				pColor.z += 0.05;
 			}
-			if (gClearE > 30) {
+			if (gClearE > 50) {
 				isGClearE = false;
 				gClearE = 0.0f;
 				pColor = { 1,1,1,1 };
@@ -337,16 +338,16 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 			break;
 			//ゲームオーバー
 		case 3:
-			// ゲームオーバー画面演出
+			// ゲームオーバー画面フェードアウト演出
 			gOverE++;
-			if (0 < gOverE && gOverE < 30) {
+			if (0 < gOverE && gOverE < 50) {
 				isGOverE = true;
+				pColor.x += 0.02;
+				pColor.y += 0.02;
+				pColor.z += 0.02;
 				postEffect_->SetColor(pColor);
-				pColor.x += 0.05;
-				pColor.y += 0.05;
-				pColor.z += 0.05;
 			}
-			if (gOverE > 30) {
+			if (gOverE > 50) {
 				isGOverE = false;
 				gOverE = 0.0f;
 				pColor = { 1,1,1,1 };
