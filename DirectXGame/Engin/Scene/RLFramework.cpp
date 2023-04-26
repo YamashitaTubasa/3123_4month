@@ -43,7 +43,7 @@ void RLFramework::Initialize()
 	imGuiManager->Initialize(dXCommon, winApp);
 
 	// ポストエフェクトの初期化
-	postEffect_ = new PostEffect();
+	postEffect_ = PostEffect::GetInstance();
 	postEffect_->Initialize();
 
 	// 3Dオブジェクト静的初期化
@@ -70,14 +70,6 @@ void RLFramework::Update()
 
 	// 入力の更新
 	input->Update();
-
-	// ポストエフェクト
-	if (scene_->GetSartE() == true) {
-		postEffect_->SetBlur(true);
-	}
-	if (scene_->GetSartE() == false) {
-		postEffect_->SetBlur(false);
-	}
 }
 
 void RLFramework::Finalize()
