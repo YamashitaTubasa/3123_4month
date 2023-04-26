@@ -170,6 +170,7 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 
 	lineModel = Model::CreateLine(points);
 
+
 	// 3Dオブジェクト生成
 	line = Line::Create();
 	// オブジェクトにモデルをひも付ける
@@ -207,7 +208,8 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 
 			if (player->GetGaugeAdd() == true) {
 				player->SetGaugeAdd(false);
-				gaugeScale.x += 70;
+				calRes = static_cast<float>(140) / player->GetDivide();
+				gaugeScale.x += calRes;
 
 			}
 			if (gaugeScale.x >= 140) {

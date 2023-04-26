@@ -169,7 +169,8 @@ void Player::OnCollision(const CollisionInfo& info)
 					isGauge_ = true;
 				}
 				if (isFever == false) {
-					val -= 500.0f;
+					res = val / speedUpCount;
+					val -= res;
 				}
 				isBurst = true;
 			}

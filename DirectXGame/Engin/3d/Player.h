@@ -10,18 +10,18 @@
 class Player : public Object3d
 {
 public:
-	//ƒfƒXƒgƒ‰ƒNƒ^
+	//ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	~Player();
-	//‰Šú‰»
+	//åˆæœŸåŒ–
 	bool PlayerInitialize();
 
 	void Update()override;
 
-	//Õ“ËƒR[ƒ‹ƒoƒbƒNŠÖ”
+	//è¡çªæ™‚ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°
 	void OnCollision(const CollisionInfo& info) override;
 	void OffCollision(const CollisionInfo& info) override;
 
-	//ƒtƒ‰ƒO
+	//ãƒ•ãƒ©ã‚°
 	bool GetOnRail() { return isOnRail; }
 	void SetOnRail(bool isOnRail_) { this->isOnRail = isOnRail_; }
 	bool GetIsHit() { return isHit; }
@@ -44,23 +44,24 @@ public:
 	bool GetGaugeAdd() { return isGauge_; }
 	void SetGaugeAdd(bool isGauge) { this->isGauge_ = isGauge; }
 
-	//ƒC[ƒWƒ“ƒO
-	//t:ŠÔ b:ŠJnˆÊ’u c:ŠJnˆÊ’u-I—¹ˆÊ’u‚Ì· d:‡ŒvŠÔ
+	//ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°
+	//t:æ™‚é–“ b:é–‹å§‹ä½ç½® c:é–‹å§‹ä½ç½®-çµ‚äº†ä½ç½®ã®å·® d:åˆè¨ˆæ™‚é–“
 	float ease_in(float t, float b, float c,float d);
 
 	float ease_in_cubic(float x);
+	int GetDivide() { return speedUpCount; }
 
 private:
 	Input* input = nullptr;
-	// ƒ‚ƒfƒ‹
+	// ãƒ¢ãƒ‡ãƒ«
 	Model* playerModel = nullptr;
-	//ƒp[ƒeƒBƒNƒ‹
+	//ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«
 	Particle* particle = nullptr;
 	//HP
 	int hp;
-	//ƒŒ[ƒ‹‚Éæ‚Á‚Ä‚¢‚éó‘Ô
+	//ãƒ¬ãƒ¼ãƒ«ã«ä¹—ã£ã¦ã„ã‚‹çŠ¶æ…‹
 	bool isOnRail;
-	//ƒL[‚ğ‰Ÿ‚µ‚½‚©
+	//ã‚­ãƒ¼ã‚’æŠ¼ã—ãŸã‹
 	bool isPush;
 	int pushTime;
 	//fever
@@ -68,7 +69,10 @@ private:
 	bool isFever;
 	int feverNum;
 	float val;
-	//“–‚½‚è”»’è
+
+	int speedUpCount = 2;
+	float res = 0.0f;
+	//å½“ãŸã‚Šåˆ¤å®š
 	bool isHit;
 	int coolTime;
 	bool isBurst = false;
