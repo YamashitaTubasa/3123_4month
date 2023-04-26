@@ -64,7 +64,7 @@ void Player::Update()
 		}
 	}
 
-	if (input->TriggerKey(DIK_SPACE)) {
+	if (isOnRail == true && input->TriggerKey(DIK_SPACE)) {
 		if (isPush == false) {
 			isPush = true;
 		}
@@ -82,7 +82,8 @@ void Player::Update()
 
 		if (isFever == false) {
 			pushTime++;
-			worldTransform_.rotation_.z -= 18;
+			worldTransform_.rotation_.z += 18;
+			/*worldTransform_.rotation_.z = ease_in(20,0,-360, 20);*/
 			if (pushTime == 20) {
 				pushTime = 0;
 				worldTransform_.rotation_.z = 0;
@@ -91,7 +92,7 @@ void Player::Update()
 					isHit = false;
 				}
 				isPush = false;
-				
+
 			}
 		}
 	}
@@ -141,6 +142,19 @@ void Player::GoesFever() {
 			isFever = false;
 		}
 	}
+}
+
+float Player::ease_in(float t, float b, float c, float d)
+{
+	float x = t / d;
+	float v = ease_in_cubic(x);
+	float ret = c * v + b;
+	return ret;
+}
+
+float Player::ease_in_cubic(float x)
+{
+	return x * x * x;
 }
 
 void Player::OnCollision(const CollisionInfo& info)

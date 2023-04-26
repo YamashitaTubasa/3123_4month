@@ -44,6 +44,12 @@ public:
 	bool GetGaugeAdd() { return isGauge_; }
 	void SetGaugeAdd(bool isGauge) { this->isGauge_ = isGauge; }
 
+	//イージング
+	//t:時間 b:開始位置 c:開始位置-終了位置の差 d:合計時間
+	float ease_in(float t, float b, float c,float d);
+
+	float ease_in_cubic(float x);
+
 private:
 	Input* input = nullptr;
 	// モデル

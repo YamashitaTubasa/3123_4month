@@ -8,7 +8,7 @@ extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hwnd, UINT msg
 WinApp* WinApp::GetInstance() 
 {
 	static WinApp instance;
-
+	
 	return &instance;
 }
 
