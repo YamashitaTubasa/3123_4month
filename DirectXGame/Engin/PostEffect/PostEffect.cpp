@@ -10,6 +10,12 @@ using namespace DirectX;
 //                                        Red  Green Blue  Alpha
 const float PostEffect::clearColor[4] = { 0.25, 0.5, 0.1f, 0.0f }; // 緑っぽい色
 
+PostEffect* PostEffect::GetInstance() {
+	static PostEffect instance;
+
+	return &instance;
+}
+
 PostEffect::PostEffect()
 	: Sprite(
 		100, // テクスチャ番号

@@ -22,6 +22,9 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	railCamera = new RailCamera;
 	xmViewProjection = new XMViewProjection();
 
+	// ポストエフェクト
+	postEffect_ = PostEffect::GetInstance();
+
 	// OBJからモデルデータを読み込む
 	skyModel = Model::LoadFromOBJ("skydome");
 
@@ -192,6 +195,22 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 				return enemy_->GetIsDead();
 			});
 
+			// スタート画面演出
+			startE++;
+			if (0 < startE && startE < 30) {
+				isStartE = true;
+				postEffect_->SetColor(pColor);
+				pColor.x += 0.03;
+				pColor.y += 0.03;
+				pColor.z += 0.03;
+			}
+			if (startE > 30) {
+				isStartE = false;
+				//startE = 0.0f;
+				pColor = { 1,1,1,1 };
+				postEffect_->SetColor(pColor);
+			}
+
 			gauge.GetScale();
 
 			if (isMaxGauge == true) {
@@ -220,15 +239,6 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 
 			gauge.SetScale(Vector2(gaugeScale.x, gaugeScale.y));
 			gauge.SpriteTransferVertexBuffer(gauge, spriteCommon, 21);
-
-		// スタート画面演出
-		startE++;
-		if (startE < 50) {
-			isStartE = true;
-		}
-		if (startE > 50) {
-			isStartE = false;
-		}
 
 		//カメラ更新
 		railCamera->Update(player,points);
@@ -304,6 +314,22 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 			break;
 			//クリア
 		case 2:
+			// クリア画面演出
+			gClearE++;
+			if (0 < gClearE && gClearE < 30) {
+				isGClearE = true;
+				postEffect_->SetColor(pColor);
+				pColor.x += 0.05;
+				pColor.y += 0.05;
+				pColor.z += 0.05;
+			}
+			if (gClearE > 30) {
+				isGClearE = false;
+				gClearE = 0.0f;
+				pColor = { 1,1,1,1 };
+				postEffect_->SetColor(pColor);
+			}
+
 			if (input->TriggerKey(DIK_SPACE)) {
 				Reset();
 				sceneNum = 0;
@@ -311,6 +337,22 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 			break;
 			//ゲームオーバー
 		case 3:
+			// ゲームオーバー画面演出
+			gOverE++;
+			if (0 < gOverE && gOverE < 30) {
+				isGOverE = true;
+				postEffect_->SetColor(pColor);
+				pColor.x += 0.05;
+				pColor.y += 0.05;
+				pColor.z += 0.05;
+			}
+			if (gOverE > 30) {
+				isGOverE = false;
+				gOverE = 0.0f;
+				pColor = { 1,1,1,1 };
+				postEffect_->SetColor(pColor);
+			}
+
 			if (input->TriggerKey(DIK_SPACE)) {
 				Reset();
 				sceneNum = 0;
@@ -670,5 +712,11 @@ void GamePlayScene::Reset() {
 
 	gaugePosition = { 50,167.5f,0 };
 
-
+	isStartE = false; // startEffectフラグ
+	startE = 0.0f; // startEffect
+	isGClearE = false; // gClearEffectフラグ
+	gClearE = 0.0f; // gClearEffect
+	isGOverE = false; // gOverEffectフラグ
+	gOverE = 0.0f; // gOverEffect
+	pColor = { 0,0,0,1 }; // ポストエフェクトカラー
 }

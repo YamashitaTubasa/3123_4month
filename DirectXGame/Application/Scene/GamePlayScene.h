@@ -16,6 +16,7 @@
 #include "Enemy.h"
 #include <sstream>
 #include "Line.h"
+#include "PostEffect.h"
 
 //====================//
 // ゲームプレイシーン
@@ -83,7 +84,7 @@ public:
 	float timeRate;						//何％時間が進んだか
 
 public:
-	const bool& GetSartE() { return isStartE; }
+	const bool& GetStartE() { return isStartE; }
 
 private:
 	// 入力
@@ -132,6 +133,8 @@ private:
 	ParticleManager* pm_dmg = nullptr;
 	WinApp* winApp = nullptr;
 
+	PostEffect* postEffect_ = nullptr;
+
 	Vector3 position[5]{};
 	Vector3 rotation[5]{};
 	Vector3 scale[5]{};
@@ -166,7 +169,13 @@ private:
 	float backT = 0.0f; // ダメージ演出タイマー
 	bool isStartE = false; // startEffectフラグ
 	float startE = 0.0f; // startEffect
+	bool isGClearE = false; // gClearEffectフラグ
+	float gClearE = 0.0f; // gClearEffect
+	bool isGOverE = false; // gOverEffectフラグ
+	float gOverE = 0.0f; // gOverEffect
 	int isDeadT = 0.0f;
+	float pAlpha = 1.0f; // ポストエフェクトアルファ
+	Vector4 pColor = { 0,0,0,1 };
 
 	float calRes = 0.0f;
 
