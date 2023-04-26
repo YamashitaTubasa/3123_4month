@@ -168,4 +168,6 @@ private:
 	float startE = 0.0f; // startEffect
 	int isDeadT = 0.0f;
 
+	float calRes = 0.0f;
+
 };

@@ -44,6 +44,9 @@ public:
 	bool GetGaugeAdd() { return isGauge_; }
 	void SetGaugeAdd(bool isGauge) { this->isGauge_ = isGauge; }
 
+	int GetDivide() { return speedUpCount; }
+
+
 private:
 	Input* input = nullptr;
 	// ƒ‚ƒfƒ‹
@@ -62,6 +65,9 @@ private:
 	bool isFever;
 	int feverNum;
 	float val;
+
+	int speedUpCount = 2;
+	float res = 0.0f;
 	//“–‚½‚è”»’è
 	bool isHit;
 	int coolTime;
