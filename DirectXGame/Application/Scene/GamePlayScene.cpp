@@ -123,7 +123,7 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	LoadEffect(spriteCommon);
 
 	//title
-	title.LoadTexture(spriteCommon_, 17, L"Resources/title1.png", dXCommon->GetDevice());
+	title.LoadTexture(spriteCommon_, 17, L"Resources/title.png", dXCommon->GetDevice());
 	title.SetColor(Vector4(1, 1, 1, 1));
 	title.SpriteCreate(dXCommon->GetDevice(), 1280, 720, 17, spriteCommon, Vector2(0.0f, 0.0f), false, false);
 	title.SetPosition(Vector3(0, 0, 0));
@@ -132,7 +132,7 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	title.SpriteTransferVertexBuffer(title, spriteCommon, 17);
 	title.SpriteUpdate(title, spriteCommon_);
 	//clear
-	clear.LoadTexture(spriteCommon_, 18, L"Resources/clear.png", dXCommon->GetDevice());
+	clear.LoadTexture(spriteCommon_, 18, L"Resources/gameClear.png", dXCommon->GetDevice());
 	clear.SetColor(Vector4(1, 1, 1, 1));
 	clear.SpriteCreate(dXCommon->GetDevice(), 1280, 720, 18, spriteCommon, Vector2(0.0f, 0.0f), false, false);
 	clear.SetPosition(Vector3(0, 0, 0));
