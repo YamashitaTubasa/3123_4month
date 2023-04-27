@@ -38,17 +38,17 @@ public:
 	/// 初期化
 	/// </summary>
 	/// <param name="dXCommon"></param>
-	void Initialize(SpriteCommon& spriteCommon) ;
+	void Initialize(SpriteCommon& spriteCommon);
 
 	/// <summary>
 	/// 更新
 	/// </summary>
-	void Update(SpriteCommon &spriteCommon);
+	void Update(SpriteCommon& spriteCommon);
 
 	/// <summary>
 	/// 描画
 	/// </summary>
-	void Draw(SpriteCommon& spriteCommon) ;
+	void Draw(SpriteCommon& spriteCommon);
 
 	/// <summary>
 	/// 解放
@@ -74,12 +74,17 @@ public:
 	Vector3 p2;	//制御点その1
 	Vector3 p3;	//制御点その2
 	Vector3 p4;
+	Vector3 p5;
+	Vector3 p6;
+	Vector3 p7;
+	Vector3 p8;
+	Vector3 p9;
 	Vector3 end;	//ゴール地点
 
 	//				p1 - p2 - p3 - p4 を通るスプライン曲線を考える
 	//					先頭(p0)と最後(p5)に制御点を追加している
 	//								p0	p1	p2	p3	p4	p5
-	std::vector<Vector3> points{ start,start,p2,p3,p4,end,end };
+	std::vector<Vector3> points{ start,start,p2,p3,p4,p5,p6,p7,p8,p9,end,end };
 
 	float timeRate;						//何％時間が進んだか
 

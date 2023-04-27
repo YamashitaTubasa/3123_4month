@@ -165,11 +165,16 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	//レーン
 	start = { 0.0f, 0.0f, -800.0f };		//スタート地点
 	p2 = { 100.0f, 0.0f, -750.0f };			//制御点その1
-	p3 = { -200.0f, 0.0f, 0.0f };			//制御点その2
-	p4 = { 500.0f, -300.0f, -400.0 };
+	p3 = { -200.0f, 0.0f, -600.0f };			//制御点その2
+	p4 = { -400.0f, -50.0f, -400.0 };
+	p5 = { -200.0f, 50.0f, -100.0 };
+	p6 = { -100.0f, 0.0f, 0.0 };
+	p7 = { 100.0f, 0.0f, 200.0 };
+	p8 = { 100.0f, 50.0f, 400.0 };
+	p9 = { -100.0f, 100.0f, 600.0 };
 	end = { -300.0f, 300.0f, 800.0f };		//ゴール地点
 
-	points = { start,start,p2,p3,p4,end,end };
+	points = { start,start,p2,p3,p4,p5,p6,p7,p8,p9,end,end };
 
 	lineModel = Model::CreateLine(points);
 
@@ -178,7 +183,6 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	line = Line::Create();
 	// オブジェクトにモデルをひも付ける
 	line->SetModel(lineModel);
-	line->SetPosition(Vector3(0, -5, 0));
 }
 
 void GamePlayScene::Update(SpriteCommon& spriteCommon) {
@@ -699,7 +703,6 @@ void GamePlayScene::Reset() {
 	line = Line::Create();
 	// オブジェクトにモデルをひも付ける
 	line->SetModel(lineModel);
-	line->SetPosition(Vector3(0, -5, 0));
 
 	//変数
 	//敵の打ち出すまでの時間

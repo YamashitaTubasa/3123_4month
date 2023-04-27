@@ -64,6 +64,8 @@ private:
 	//キーを押したか
 	bool isPush;
 	int pushTime;
+	bool isAttack;
+	int attackTime;
 	//fever
 	int feverTime;
 	bool isFever;

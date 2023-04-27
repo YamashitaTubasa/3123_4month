@@ -28,6 +28,8 @@ bool Player::PlayerInitialize() {
 	isHit = false;
 	coolTime = 0;
 	isOnRail = false;
+	isAttack = false;
+	attackTime = 0;
 	//•Ï”
 	val = 2000.0f;
 	feverTime = 0;
@@ -67,6 +69,7 @@ void Player::Update()
 	if (isOnRail == true && input->TriggerKey(DIK_SPACE)) {
 		if (isPush == false) {
 			isPush = true;
+			isAttack = true;
 		}
 	}
 
@@ -82,11 +85,11 @@ void Player::Update()
 
 		if (isFever == false) {
 			pushTime++;
-			worldTransform_.rotation_.z += 18;
+			/*worldTransform_.rotation_.z += 18;*/
 			/*worldTransform_.rotation_.z = ease_in(20,0,-360, 20);*/
 			if (pushTime == 20) {
 				pushTime = 0;
-				worldTransform_.rotation_.z = 0;
+				/*worldTransform_.rotation_.z = 0;*/
 				if (isHit == true)
 				{
 					isHit = false;
@@ -94,6 +97,16 @@ void Player::Update()
 				isPush = false;
 
 			}
+		}
+	}
+	if (isAttack == true) {
+		attackTime++;
+		worldTransform_.rotation_.z += 18;
+		if (attackTime == 20) {
+			attackTime = 0;
+			worldTransform_.rotation_.z = 0;
+			isAttack = false;
+
 		}
 	}
 
