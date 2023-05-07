@@ -72,7 +72,7 @@ private:
 	int feverNum;
 	float val;
 
-	int speedUpCount = 2;
+	int speedUpCount = 3;
 	float res = 0.0f;
 	//当たり判定
 	bool isHit;
