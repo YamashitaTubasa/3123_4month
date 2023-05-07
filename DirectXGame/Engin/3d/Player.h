@@ -45,10 +45,10 @@ public:
 	void SetGaugeAdd(bool isGauge) { this->isGauge_ = isGauge; }
 
 	//イージング
-	//t:時間 b:開始位置 c:開始位置-終了位置の差 d:合計時間
-	float ease_in(float t, float b, float c,float d);
+	float easeInSine(float a);
 
-	float ease_in_cubic(float x);
+	float easeOutSine(float a);
+
 	int GetDivide() { return speedUpCount; }
 
 private:
@@ -81,4 +81,6 @@ private:
 
 	bool isGauge_ = false;
 
+	float start = 0.0;
+	float end = 360.0;
 };

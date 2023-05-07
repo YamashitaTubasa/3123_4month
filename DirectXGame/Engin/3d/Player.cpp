@@ -83,8 +83,6 @@ void Player::Update() {
 
 		if (isFever == false) {
 			pushTime++;
-			/*worldTransform_.rotation_.z += 18;*/
-			/*worldTransform_.rotation_.z = ease_in(20,0,-360, 20);*/
 			if (pushTime == 20) {
 				pushTime = 0;
 				/*worldTransform_.rotation_.z = 0;*/
@@ -98,12 +96,19 @@ void Player::Update() {
 	}
 	if (isAttack == true) {
 		attackTime++;
-		worldTransform_.rotation_.z += 18;
-		if (attackTime == 20) {
+		if (attackTime <= 10)
+		{
+			worldTransform_.rotation_.z -= 4;
+		}
+		if (attackTime >= 10)
+		{
+			worldTransform_.rotation_.z -= 16;
+		}
+		if (attackTime == 30) 
+		{
 			attackTime = 0;
 			worldTransform_.rotation_.z = 0;
 			isAttack = false;
-
 		}
 	}
 
@@ -153,15 +158,16 @@ void Player::GoesFever() {
 	}
 }
 
-float Player::ease_in(float t, float b, float c, float d) {
-	float x = t / d;
-	float v = ease_in_cubic(x);
-	float ret = c * v + b;
-	return ret;
+float Player::easeInSine(float a)
+{
+	const double PI = 3.141592;
+	return 1 - cos((a * PI) / 2);
 }
 
-float Player::ease_in_cubic(float x) {
-	return x * x * x;
+float Player::easeOutSine(float a)
+{
+	const double PI = 3.141592;
+	return sin((a * PI) / 2);
 }
 
 void Player::OnCollision(const CollisionInfo& info) {
