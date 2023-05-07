@@ -95,12 +95,14 @@ private:
 	// 入力
 	Input* input = nullptr;
 	// モデル
+	Model* floorModel;
 	Model* skyModel;
 	Model* stageModel;
 	Model* lineModel;
 	// オブジェクト
 	Player* player;
 	Enemy* enemy;
+	Object3d* floor;
 	Object3d* sky;
 	Object3d* stage;
 	Line* line;

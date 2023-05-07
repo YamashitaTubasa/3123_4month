@@ -26,9 +26,19 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	postEffect_ = PostEffect::GetInstance();
 
 	// OBJからモデルデータを読み込む
+	//床
+	floorModel = Model::LoadFromOBJ("floor");
+	//天球
 	skyModel = Model::LoadFromOBJ("skydome");
 
 	// 3Dオブジェクト生成
+	//床
+	floor = Object3d::Create();
+	// オブジェクトにモデルをひも付ける
+	floor->SetModel(floorModel);
+	floor->SetPosition(Vector3(0, -500, 0));
+	floor->SetScale(Vector3({ 1000, 1000, 1000 }));
+	//天球
 	sky = Object3d::Create();
 	// オブジェクトにモデルをひも付ける
 	sky->SetModel(skyModel);
@@ -111,7 +121,7 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	gauge.SpriteUpdate(gauge, spriteCommon_);
 
 	//UIboard
-	board.LoadTexture(spriteCommon_, 22, L"Resources/UIboard(3).png", dXCommon->GetDevice());
+	board.LoadTexture(spriteCommon_, 22, L"Resources/UIboard.png", dXCommon->GetDevice());
 	board.SetColor(Vector4(1, 1, 1, 0.9));
 	board.SpriteCreate(dXCommon->GetDevice(), 128, 128, 22, spriteCommon, Vector2(0.0f, 0.0f), false, false);
 	board.SetPosition(Vector3(0, 0, 0));
@@ -132,7 +142,7 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	title.SpriteTransferVertexBuffer(title, spriteCommon, 17);
 	title.SpriteUpdate(title, spriteCommon_);
 	//clear
-	clear.LoadTexture(spriteCommon_, 18, L"Resources/GameClear(2).png", dXCommon->GetDevice());
+	clear.LoadTexture(spriteCommon_, 18, L"Resources/GameClear.png", dXCommon->GetDevice());
 	clear.SetColor(Vector4(1, 1, 1, 1));
 	clear.SpriteCreate(dXCommon->GetDevice(), 1280, 720, 18, spriteCommon, Vector2(0.0f, 0.0f), false, false);
 	clear.SetPosition(Vector3(0, 0, 0));
@@ -253,6 +263,7 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		stage->Update();
 		line->Update();
 		//天球
+		floor->Update();
 		sky->Update();
 
 		//パーティクル
@@ -383,6 +394,7 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 	Object3d::PreDraw(dXCommon->GetCommandList());
 
 	if (sceneNum == 1) {
+		floor->Draw(railCamera->GetView());
 		sky->Draw(railCamera->GetView());
 		stage->Draw(railCamera->GetView());
 		//敵キャラの描画
@@ -470,6 +482,8 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 void GamePlayScene::Finalize() {
 	delete player;
 	delete enemy;
+	delete floor;
+	delete floorModel;
 	delete sky;
 	delete skyModel;
 
@@ -628,10 +642,12 @@ void GamePlayScene::LoadEffect(SpriteCommon& spriteCommon) {
 }
 
 void GamePlayScene::Reset() {
+	delete floorModel;
 	delete skyModel;
 	delete stageModel;
 	delete player;
 	delete enemy;
+	delete floor;
 	delete sky;
 	delete stage;
 	delete viewProjection;
@@ -650,9 +666,17 @@ void GamePlayScene::Reset() {
 	xmViewProjection = new XMViewProjection();
 
 	// OBJからモデルデータを読み込む
+	floorModel = Model::LoadFromOBJ("floor");
 	skyModel = Model::LoadFromOBJ("skydome");
 
 	// 3Dオブジェクト生成
+	//床
+	floor = Object3d::Create();
+	// オブジェクトにモデルをひも付ける
+	floor->SetModel(floorModel);
+	floor->SetPosition(Vector3(0, -500, 0));
+	floor->SetScale(Vector3({ 1000, 1000, 1000 }));
+	//天球
 	sky = Object3d::Create();
 	// オブジェクトにモデルをひも付ける
 	sky->SetModel(skyModel);
