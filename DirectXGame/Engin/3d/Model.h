@@ -152,5 +152,4 @@ private:// 静的メンバ関数
 	// 各種バッファ生成
 	void CreateBuffers();
 	void CreateLineBuffers();
-
 };

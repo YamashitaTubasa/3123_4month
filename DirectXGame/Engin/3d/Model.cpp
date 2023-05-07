@@ -668,25 +668,15 @@ void Model::UpdateLineVertex(std::vector<Vector3>& point) {
 	Spline spline_;
 	spline_.Initialize();
 	Vector3 tempPos;
-	vector<Vector3> positions; // 頂点座標
-	Vector3 position{};
 
-	positions = point;
-
-	//while (spline_.GetIsEnd() == false) {
-	//	tempPos = spline_.Update(point, 0.0f, 1000);
-	//	//座標を記憶
-	//	position = tempPos;
-
-	//	// 座標データに追加
-	//	positions.emplace_back(position);
-	//}
 	//頂点データを更新する
-	float v = 0;
-	lineVertices.resize(positions.size());
+	lineVertices.resize(917);
+	lineIndices.resize(917);
 	for (size_t i = 0; i < lineVertices.size(); i++)
 	{
-		lineVertices[i].pos = positions[i];
+		tempPos = spline_.pointCal(point);
+		lineVertices[i].pos = tempPos;
 		lineIndices.emplace_back(lineIndices.size());
 	}
+	int a = 0;
 }

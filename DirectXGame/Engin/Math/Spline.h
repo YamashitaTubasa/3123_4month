@@ -13,7 +13,7 @@ public:
 	Vector3 Update(std::vector<Vector3>& points,float t,float val);
 
 	//更新
-	Vector3 pointCal(std::vector<Vector3>& points, float t);
+	Vector3 pointCal(std::vector<Vector3>& points);
 
 	//描画
 	void Draw();
@@ -34,6 +34,7 @@ private:
 	//P1からスタートする
 	size_t startIndex = 1;
 	bool isEnd;
+	float t;
 
 	//球の位置
 	Vector3 position;
