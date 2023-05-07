@@ -42,6 +42,7 @@ public:// メンバ関数
 	float ToRadian(float angle) { return angle * (PI / 180); }
 
 	void SetParent3d(WorldTransform* parent) { this->parent_ = parent; }
+	void ResetParent() { this->parent_ = nullptr; }
 
 public:// パブリック変数
 	// ローカルスケール

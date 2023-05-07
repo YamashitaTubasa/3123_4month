@@ -65,6 +65,13 @@ void RailCamera::Update(Player* player_, std::vector<Vector3>& point) {
 	viewProjection->UpdateMatrix();
 }
 
+void RailCamera::TitleR(Player* player_)
+{
+	//player_->worldTransform_.ResetParent();
+	//camera->worldTransform_.SetParent3d(&player_->worldTransform_);
+	viewProjection->eye.z -= 1.5;
+}
+
 ////////////////////--------クラス内便利関数--------///////////////////////
 
 //方向ベクトルを取得

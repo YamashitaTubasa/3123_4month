@@ -209,9 +209,29 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 	switch (sceneNum) {
 		case 0:
 			pColor = { 1,1,1,1 };
+			isPlayerE = false;
+
+			railCamera->GetView()->target = {0, -15, -750};
+			//カメラ更新
+			railCamera->Update(player, points);
+			//天球
+			floor->Update();
+			sky->Update();
+			//プレイヤー
+			player->Update();
+
 			if (input->TriggerKey(DIK_SPACE)) {
-				sceneNum = 1;
 				pColor = { 0,0,0,1 };
+				isTitleT = true;
+			}
+			if (isTitleT == true) {
+				railCamera->TitleR(player);
+				isPlayerE = true;
+				titleT++;
+			}
+			if (titleT >= 100) {
+				Reset();
+				sceneNum = 1;
 			}
 			break;
 
@@ -393,7 +413,10 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 	// 3Dオブジェクト描画前処理
 	Line::PreDraw(dXCommon->GetCommandList());
 
-	line->Draw(railCamera->GetView());
+	if (sceneNum == 1)
+	{
+		line->Draw(railCamera->GetView());
+	}
 
 	// 3Dオブジェクト描画後処理
 	Line::PostDraw();
@@ -403,6 +426,11 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 	// 3Dオブジェクト描画前処理
 	Object3d::PreDraw(dXCommon->GetCommandList());
 
+	if (sceneNum == 0) {
+		floor->Draw(railCamera->GetView());
+		sky->Draw(railCamera->GetView());
+		stage->Draw(railCamera->GetView());
+	}
 	if (sceneNum == 1) {
 		floor->Draw(railCamera->GetView());
 		sky->Draw(railCamera->GetView());
@@ -441,8 +469,10 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 
 	///=== スプライト描画 ===///
 	if (sceneNum == 0) {
-		title.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), title.vbView);
-		spaButton.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), spaButton.vbView);
+		if (isTitleT == false) {
+			title.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), title.vbView);
+			spaButton.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), spaButton.vbView);
+		}
 	}
 	else if (sceneNum == 1) {
 		board.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), board.vbView);
@@ -478,13 +508,15 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 
 	// 3Dオブジェクト描画前処理
 	Object3d::PreDraw(dXCommon->GetCommandList());
-	if (sceneNum == 1) {
-		////playerを画像より手前に出したい
-		player->Draw(railCamera->GetView());
-		////敵キャラの描画
-		//for (const std::unique_ptr<Enemy>& enemy : enemys_) {
-		//	enemy->Draw(railCamera->GetView());
-		//}
+	if (sceneNum == 0 || sceneNum == 1) {
+		if (isPlayerE == true) {
+			////playerを画像より手前に出したい
+			player->Draw(railCamera->GetView());
+			////敵キャラの描画
+			//for (const std::unique_ptr<Enemy>& enemy : enemys_) {
+			//	enemy->Draw(railCamera->GetView());
+			//}
+		}
 	}
 	// 3Dオブジェクト描画後処理
 	Object3d::PostDraw();
@@ -760,4 +792,60 @@ void GamePlayScene::Reset() {
 	isGOverE = false; // gOverEffectフラグ
 	gOverE = 0.0f; // gOverEffect
 	pColor = { 0,0,0,1 }; // ポストエフェクトカラー
+	titleT = 0.0f;
+	isTitleT = false;
+	isPlayerE = true;
+}
+
+void GamePlayScene::TitleReset()
+{
+	delete floorModel;
+	delete skyModel;
+	delete player;
+	delete floor;
+	delete sky;
+	delete viewProjection;
+	delete railCamera;
+	delete xmViewProjection;
+	delete worldTransform;
+
+	railCamera = new RailCamera;
+	xmViewProjection = new XMViewProjection();
+
+	// OBJからモデルデータを読み込む
+	floorModel = Model::LoadFromOBJ("floor");
+	skyModel = Model::LoadFromOBJ("skydome");
+
+	// 3Dオブジェクト生成
+	//床
+	floor = Object3d::Create();
+	// オブジェクトにモデルをひも付ける
+	floor->SetModel(floorModel);
+	floor->SetPosition(Vector3(0, -500, 0));
+	floor->SetScale(Vector3({ 1000, 1000, 1000 }));
+	//天球
+	sky = Object3d::Create();
+	// オブジェクトにモデルをひも付ける
+	sky->SetModel(skyModel);
+	sky->SetScale(Vector3({ 1000, 1000, 1000 }));
+
+	//player初期化
+	player = new Player;
+	player->PlayerInitialize();
+
+	//半径分だけ足元から浮いた座標を球の中心にする
+	player->SetCollider(new SphereCollider);
+
+	railCamera->Initialize();
+
+	isStartE = false; // startEffectフラグ
+	startE = 0.0f; // startEffect
+	isGClearE = false; // gClearEffectフラグ
+	gClearE = 0.0f; // gClearEffect
+	isGOverE = false; // gOverEffectフラグ
+	gOverE = 0.0f; // gOverEffect
+	pColor = { 0,0,0,1 }; // ポストエフェクトカラー
+	titleT == 0.0f;
+	isTitleT = false;
+	isPlayerE = true;
 }

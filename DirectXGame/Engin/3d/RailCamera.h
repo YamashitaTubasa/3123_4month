@@ -19,6 +19,8 @@ public:
 	//更新
 	void Update(Player* player_, std::vector<Vector3>& point);
 
+	void TitleR(Player* player_);
+
 	//ベクトルを取得
 	void GetVec(Vector3 a, Vector3 b);
 
