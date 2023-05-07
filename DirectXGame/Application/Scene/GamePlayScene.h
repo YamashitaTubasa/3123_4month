@@ -125,6 +125,7 @@ private:
 	Sprite clear;
 	Sprite over;
 	Sprite back;
+	Sprite spaButton;
 	SpriteCommon spriteCommon_;
 
 	DirectXCommon* dXCommon = nullptr;

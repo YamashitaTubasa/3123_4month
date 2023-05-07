@@ -120,6 +120,16 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	board.SpriteTransferVertexBuffer(board, spriteCommon, 22);
 	board.SpriteUpdate(board, spriteCommon_);
 
+	//SpaceButton
+	spaButton.LoadTexture(spriteCommon_, 23, L"Resources/SPACEButton_01.png", dXCommon->GetDevice());
+	spaButton.SetColor(Vector4(1, 1, 1, 1));
+	spaButton.SpriteCreate(dXCommon->GetDevice(), 352, 112, 23, spriteCommon, Vector2(0.0f, 0.0f), false, false);
+	spaButton.SetPosition(Vector3(450,580,0));
+	spaButton.SetScale(Vector2(352, 112));
+	spaButton.SetRotation(0.0f);
+	spaButton.SpriteTransferVertexBuffer(spaButton, spriteCommon, 23);
+	spaButton.SpriteUpdate(spaButton, spriteCommon_);
+
 	LoadEffect(spriteCommon);
 
 	//title
@@ -141,7 +151,7 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	clear.SpriteTransferVertexBuffer(clear, spriteCommon, 18);
 	clear.SpriteUpdate(clear, spriteCommon_);
 	//over
-	over.LoadTexture(spriteCommon_, 19, L"Resources/gameover.png", dXCommon->GetDevice());
+	over.LoadTexture(spriteCommon_, 19, L"Resources/GameOver_01.png", dXCommon->GetDevice());
 	over.SetColor(Vector4(1, 1, 1, 1));
 	over.SpriteCreate(dXCommon->GetDevice(), 1280, 720, 19, spriteCommon, Vector2(0.0f, 0.0f), false, false);
 	over.SetPosition(Vector3(0, 0, 0));
@@ -420,6 +430,7 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 	///=== スプライト描画 ===///
 	if (sceneNum == 0) {
 		title.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), title.vbView);
+		spaButton.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), spaButton.vbView);
 	}
 	else if (sceneNum == 1) {
 		board.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), board.vbView);
@@ -438,9 +449,11 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 	}
 	else if (sceneNum == 2) {
 		clear.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), clear.vbView);
+		spaButton.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), spaButton.vbView);
 	}
 	else if (sceneNum == 3) {
 		over.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), over.vbView);
+		spaButton.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), spaButton.vbView);
 	}
 
 
