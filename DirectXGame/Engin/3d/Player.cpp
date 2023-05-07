@@ -9,8 +9,7 @@ Player::~Player() {
 
 //初期化
 bool Player::PlayerInitialize() {
-	if (!Object3d::Initialize())
-	{
+	if (!Object3d::Initialize()) {
 		return false;
 	}
 
@@ -43,8 +42,7 @@ bool Player::PlayerInitialize() {
 	return true;
 }
 
-void Player::Update()
-{
+void Player::Update() {
 	input = Input::GetInstance();
 	//レール前移動
 	if (isOnRail == false) {
@@ -90,8 +88,7 @@ void Player::Update()
 			if (pushTime == 20) {
 				pushTime = 0;
 				/*worldTransform_.rotation_.z = 0;*/
-				if (isHit == true)
-				{
+				if (isHit == true) {
 					isHit = false;
 				}
 				isPush = false;
@@ -122,8 +119,7 @@ void Player::Update()
 	worldTransform_.UpdateMatrix();
 
 	//当たり判定更新
-	if (collider)
-	{
+	if (collider) {
 		collider->Update();
 	}
 }
@@ -157,38 +153,32 @@ void Player::GoesFever() {
 	}
 }
 
-float Player::ease_in(float t, float b, float c, float d)
-{
+float Player::ease_in(float t, float b, float c, float d) {
 	float x = t / d;
 	float v = ease_in_cubic(x);
 	float ret = c * v + b;
 	return ret;
 }
 
-float Player::ease_in_cubic(float x)
-{
+float Player::ease_in_cubic(float x) {
 	return x * x * x;
 }
 
-void Player::OnCollision(const CollisionInfo& info)
-{
+void Player::OnCollision(const CollisionInfo& info) {
 	const char* str = "class Enemy";
 	if (strcmp(toCollisionName, str) == 0) {
-		if (isHit == false)
-		{
-			if (isPush == true)
-			{
-				if (isGauge_ == false) {
-					isGauge_ = true;
-				}
+		if (isHit == false) {
+			if (isPush == true) {
 				if (isFever == false) {
+					if (isGauge_ == false) {
+						isGauge_ = true;
+					}
 					res = val / speedUpCount;
 					val -= res;
 				}
 				isBurst = true;
 			}
-			else
-			{
+			else {
 				hp--;
 			}
 			isHit = true;
@@ -196,7 +186,6 @@ void Player::OnCollision(const CollisionInfo& info)
 	}
 }
 
-void Player::OffCollision(const CollisionInfo& info)
-{
+void Player::OffCollision(const CollisionInfo& info) {
 
 }
