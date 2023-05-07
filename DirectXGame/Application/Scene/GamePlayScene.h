@@ -68,6 +68,8 @@ public:
 
 	void Reset();
 
+	void TitleReset();
+
 	//補間で使うデータ
 	//start → end を5秒で完了させる
 	Vector3 start;		//スタート地点
@@ -187,4 +189,7 @@ private:
 
 	float calRes = 0.0f;
 
+	int titleT = 0.0f;
+	bool isTitleT = false;
+	bool isPlayerE = true;
 };
