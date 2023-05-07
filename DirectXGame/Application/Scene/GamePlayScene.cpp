@@ -371,7 +371,6 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 			}
 			if (gClearE > 50) {
 				isGClearE = false;
-				gClearE = 0.0f;
 				pColor = { 1,1,1,1 };
 				postEffect_->SetColor(pColor);
 			}
@@ -394,7 +393,6 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 			}
 			if (gOverE > 50) {
 				isGOverE = false;
-				gOverE = 0.0f;
 				pColor = { 1,1,1,1 };
 				postEffect_->SetColor(pColor);
 			}
