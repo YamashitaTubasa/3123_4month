@@ -6,6 +6,8 @@
 #include "Player.h"
 #include "WorldTransform.h"
 
+int GamePlayScene::sceneNum = 0;
+
 GamePlayScene::GamePlayScene() {
 }
 
@@ -53,17 +55,6 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 
 	//敵の情報の初期化
 	LoadEnemyPopData();
-
-	//ステージ
-	// OBJからモデルデータを読み込む
-	stageModel = Model::LoadFromOBJ("triangle_mat");
-
-	// 3Dオブジェクト生成
-	stage = Object3d::Create();
-	// オブジェクトにモデルをひも付ける
-	stage->SetModel(stageModel);
-	stage->SetScale(Vector3({ 80, 20, 20 }));
-	stage->SetPosition(Vector3(0, -26, -775));
 
 	//パーティクル初期化
 	particle_1 = Particle::LoadParticleTexture("effect1.png");
@@ -198,6 +189,8 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 
 	lineModel = Model::CreateLine(points);
 
+	sceneNum = 0;
+
 
 	// 3Dオブジェクト生成
 	line = Line::Create();
@@ -213,7 +206,7 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 
 			railCamera->GetView()->target = {0, -15, -750};
 			//カメラ更新
-			railCamera->Update(player, points);
+			railCamera->ViewUpdate();
 			//天球
 			floor->Update();
 			sky->Update();
@@ -231,6 +224,7 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 			}
 			if (titleT >= 100) {
 				Reset();
+				railCamera->SetPlayer(player);
 				sceneNum = 1;
 			}
 			break;
@@ -290,7 +284,6 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		//プレイヤー
 		player->Update();
 		//ステージ
-		stage->Update();
 		line->Update();
 		//天球
 		floor->Update();
@@ -427,12 +420,10 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 	if (sceneNum == 0) {
 		floor->Draw(railCamera->GetView());
 		sky->Draw(railCamera->GetView());
-		stage->Draw(railCamera->GetView());
 	}
 	if (sceneNum == 1) {
-		floor->Draw(railCamera->GetView());
+		/*floor->Draw(railCamera->GetView());*/
 		sky->Draw(railCamera->GetView());
-		stage->Draw(railCamera->GetView());
 		//敵キャラの描画
 		for (const std::unique_ptr<Enemy>& enemy : enemys_) {
 			enemy->Draw(railCamera->GetView());
@@ -687,12 +678,10 @@ void GamePlayScene::LoadEffect(SpriteCommon& spriteCommon) {
 void GamePlayScene::Reset() {
 	delete floorModel;
 	delete skyModel;
-	delete stageModel;
 	delete player;
 	delete enemy;
 	delete floor;
 	delete sky;
-	delete stage;
 	delete viewProjection;
 	delete railCamera;
 	delete xmViewProjection;
@@ -734,17 +723,6 @@ void GamePlayScene::Reset() {
 
 	//敵の情報の初期化
 	LoadEnemyPopData();
-
-	//ステージ
-	// OBJからモデルデータを読み込む
-	stageModel = Model::LoadFromOBJ("triangle_mat");
-
-	// 3Dオブジェクト生成
-	stage = Object3d::Create();
-	// オブジェクトにモデルをひも付ける
-	stage->SetModel(stageModel);
-	stage->SetScale(Vector3({ 80, 20, 20 }));
-	stage->SetPosition(Vector3(0, -26, -775));
 
 	//パーティクル初期化
 	particle_1 = Particle::LoadParticleTexture("effect1.png");

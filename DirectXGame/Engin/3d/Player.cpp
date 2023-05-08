@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "SphereCollider.h"
 #include "string.h"
+#include "GamePlayScene.h"
 
 //デストラクタ
 Player::~Player() {
@@ -44,81 +45,85 @@ bool Player::PlayerInitialize() {
 
 void Player::Update() {
 	input = Input::GetInstance();
-	//レール前移動
-	if (isOnRail == false) {
-		if (input->PushKey(DIK_W)) {
-			SetRotation(Vector3({ 0, 0, 0 }));
-			SetPosition(GetPosition() + Vector3(0, 0, 0.2));
-		}
-		if (input->PushKey(DIK_D)) {
-			SetRotation(Vector3({ 0, 90, 0 }));
-			SetPosition(GetPosition() + Vector3(0.2, 0, 0));
-		}
-		if (input->PushKey(DIK_A)) {
-			SetRotation(Vector3({ 0, -90, 0 }));
-			SetPosition(GetPosition() + Vector3(-0.2, 0, 0));
-		}
-		if (input->PushKey(DIK_S)) {
-			SetRotation(Vector3({ 0, 180, 0 }));
-			SetPosition(GetPosition() + Vector3(0, 0, -0.2));
-		}
-	}
+	////レール前移動
+	//if (isOnRail == false) {
+	//	if (input->PushKey(DIK_W)) {
+	//		SetRotation(Vector3({ 0, 0, 0 }));
+	//		SetPosition(GetPosition() + Vector3(0, 0, 0.2));
+	//	}
+	//	if (input->PushKey(DIK_D)) {
+	//		SetRotation(Vector3({ 0, 90, 0 }));
+	//		SetPosition(GetPosition() + Vector3(0.2, 0, 0));
+	//	}
+	//	if (input->PushKey(DIK_A)) {
+	//		SetRotation(Vector3({ 0, -90, 0 }));
+	//		SetPosition(GetPosition() + Vector3(-0.2, 0, 0));
+	//	}
+	//	if (input->PushKey(DIK_S)) {
+	//		SetRotation(Vector3({ 0, 180, 0 }));
+	//		SetPosition(GetPosition() + Vector3(0, 0, -0.2));
+	//	}
+	//}
 
-	if (isOnRail == true && input->TriggerKey(DIK_SPACE)) {
-		if (isPush == false) {
-			isPush = true;
-			isAttack = true;
+	if (GamePlayScene::GetScene() == 1) {
+		if (input->TriggerKey(DIK_SPACE)) {
+			if (isPush == false) {
+				isPush = true;
+				isAttack = true;
+			}
 		}
-	}
 
-	if (val <= 500) {
-		GoesFever();
-	}
+		if (val <= 500) {
+			GoesFever();
+		}
 
-	//攻撃中なら更新する
-	if (isPush == true) {
+		//攻撃中なら更新する
+		if (isPush == true) {
 
-		// ワールドトランスフォームの行列更新と転送
-		worldTransform_.UpdateMatrix();
+			// ワールドトランスフォームの行列更新と転送
+			worldTransform_.UpdateMatrix();
 
-		if (isFever == false) {
-			pushTime++;
-			if (pushTime == 20) {
-				pushTime = 0;
-				/*worldTransform_.rotation_.z = 0;*/
-				if (isHit == true) {
-					isHit = false;
+			if (isFever == false) {
+				pushTime++;
+				if (pushTime == 20) {
+					pushTime = 0;
+					/*worldTransform_.rotation_.z = 0;*/
+					if (isHit == true) {
+						isHit = false;
+					}
+					isPush = false;
+
 				}
-				isPush = false;
+			}
+		}
+		if (isAttack == true) {
+			attackTime++;
+			if (attackTime <= 10)
+			{
+				worldTransform_.rotation_.z -= 4;
+			}
+			if (attackTime >= 10)
+			{
+				worldTransform_.rotation_.z -= 16;
+			}
+			if (attackTime == 30)
+			{
+				attackTime = 0;
+				worldTransform_.rotation_.z = 0;
+				isAttack = false;
+			}
+		}
 
+		if (isHit == true) {
+			coolTime++;
+			if (coolTime == 50) {
+				coolTime = 0;
+				isHit = false;
 			}
 		}
 	}
-	if (isAttack == true) {
-		attackTime++;
-		if (attackTime <= 10)
-		{
-			worldTransform_.rotation_.z -= 4;
-		}
-		if (attackTime >= 10)
-		{
-			worldTransform_.rotation_.z -= 16;
-		}
-		if (attackTime == 30) 
-		{
-			attackTime = 0;
-			worldTransform_.rotation_.z = 0;
-			isAttack = false;
-		}
-	}
 
-	if (isHit == true) {
-		coolTime++;
-		if (coolTime == 50) {
-			coolTime = 0;
-			isHit = false;
-		}
-	}
+	
 
 	// ワールドトランスフォームの行列更新と転送
 	worldTransform_.UpdateMatrix();

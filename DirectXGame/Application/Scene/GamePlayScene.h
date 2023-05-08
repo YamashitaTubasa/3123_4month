@@ -70,6 +70,8 @@ public:
 
 	void TitleReset();
 
+	static int GetScene() { return sceneNum; }
+
 	//補間で使うデータ
 	//start → end を5秒で完了させる
 	Vector3 start;		//スタート地点
@@ -99,14 +101,12 @@ private:
 	// モデル
 	Model* floorModel;
 	Model* skyModel;
-	Model* stageModel;
 	Model* lineModel;
 	// オブジェクト
 	Player* player;
 	Enemy* enemy;
 	Object3d* floor;
 	Object3d* sky;
-	Object3d* stage;
 	Line* line;
 	//カメラ
 	ViewProjection* viewProjection = nullptr;
@@ -170,7 +170,7 @@ private:
 
 	float alpha = 1;
 
-	int sceneNum = 0;
+	static int sceneNum;
 
 
 	bool isMaxGauge = false;
