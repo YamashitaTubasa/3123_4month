@@ -161,7 +161,7 @@ private:
 
 	Vector2 gaugeScale = { 3,25 };
 
-	Vector3 gaugePosition = { 50,167.5f,0 };
+	Vector3 gaugePosition = { 50,137.5f,0 };
 
 	//敵発生コマンド
 	std::stringstream enemyPopCommands;
