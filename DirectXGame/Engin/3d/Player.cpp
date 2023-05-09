@@ -73,10 +73,6 @@ void Player::Update() {
 			}
 		}
 
-		if (val <= 500) {
-			GoesFever();
-		}
-
 		//攻撃中なら更新する
 		if (isPush == true) {
 
@@ -98,14 +94,7 @@ void Player::Update() {
 		}
 		if (isAttack == true) {
 			attackTime++;
-			if (attackTime <= 10)
-			{
-				worldTransform_.rotation_.z -= 4;
-			}
-			if (attackTime >= 10)
-			{
-				worldTransform_.rotation_.z -= 16;
-			}
+ 			worldTransform_.rotation_.z = start + (end - start) * -easeOutSine(attackTime / 30);
 			if (attackTime == 30)
 			{
 				attackTime = 0;
@@ -123,7 +112,9 @@ void Player::Update() {
 		}
 	}
 
-	
+	if (val <= 500) {
+		GoesFever();
+	}
 
 	// ワールドトランスフォームの行列更新と転送
 	worldTransform_.UpdateMatrix();
@@ -145,6 +136,7 @@ void Player::GoesFever() {
 	if (isFever == true) {
 		feverTime++;
 
+		worldTransform_.rotation_.z -= 36;
 		if (feverTime % 2 == 0) {
 			if (feverNum < 5) {
 				feverNum++;
@@ -157,6 +149,7 @@ void Player::GoesFever() {
 		//一定時間したら通常モードへ
 		if (feverTime == 250) {
 			val = 2000.0f;
+			worldTransform_.rotation_.z = 0;
 			feverTime = 0;
 			isFever = false;
 		}

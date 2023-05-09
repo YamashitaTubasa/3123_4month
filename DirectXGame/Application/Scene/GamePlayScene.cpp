@@ -125,7 +125,7 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	spaButton.LoadTexture(spriteCommon_, 23, L"Resources/SPACEButton_01.png", dXCommon->GetDevice());
 	spaButton.SetColor(Vector4(1, 1, 1, 1));
 	spaButton.SpriteCreate(dXCommon->GetDevice(), 352, 112, 23, spriteCommon, Vector2(0.0f, 0.0f), false, false);
-	spaButton.SetPosition(Vector3(450,580,0));
+	spaButton.SetPosition(Vector3(450, 580, 0));
 	spaButton.SetScale(Vector2(352, 112));
 	spaButton.SetRotation(0.0f);
 	spaButton.SpriteTransferVertexBuffer(spaButton, spriteCommon, 23);
@@ -200,87 +200,87 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 
 void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 	switch (sceneNum) {
-		case 0:
-			pColor = { 1,1,1,1 };
-			isPlayerE = false;
+	case 0:
+		pColor = { 1,1,1,1 };
+		isPlayerE = false;
 
-			railCamera->GetView()->target = {0, -15, -750};
-			//カメラ更新
-			railCamera->ViewUpdate();
-			//天球
-			floor->Update();
-			sky->Update();
-			//プレイヤー
-			player->Update();
+		railCamera->GetView()->target = { 0, -15, -750 };
+		//カメラ更新
+		railCamera->ViewUpdate();
+		//天球
+		floor->Update();
+		sky->Update();
+		//プレイヤー
+		player->Update();
 
-			if (input->TriggerKey(DIK_SPACE)) {
-				pColor = { 0,0,0,1 };
-				isTitleT = true;
-			}
-			if (isTitleT == true) {
-				railCamera->TitleR(player);
-				isPlayerE = true;
-				titleT++;
-			}
-			if (titleT >= 100) {
-				Reset();
-				railCamera->SetPlayer(player);
-				sceneNum = 1;
-			}
-			break;
+		if (input->TriggerKey(DIK_SPACE)) {
+			pColor = { 0,0,0,1 };
+			isTitleT = true;
+		}
+		if (isTitleT == true) {
+			railCamera->TitleR(player);
+			isPlayerE = true;
+			titleT++;
+		}
+		if (titleT >= 100) {
+			Reset();
+			railCamera->SetPlayer(player);
+			sceneNum = 1;
+		}
+		break;
 
-		case 1:
-			//デスフラグの立った敵を削除
-			enemys_.remove_if([](std::unique_ptr < Enemy>& enemy_) {
-				return enemy_->GetIsDead();
+	case 1:
+		//デスフラグの立った敵を削除
+		enemys_.remove_if([](std::unique_ptr < Enemy>& enemy_) {
+			return enemy_->GetIsDead();
 			});
 
-			// ゲーム画面フェードアウト演出
-			startE++;
-			if (0 < startE && startE < 50) {
-				isStartE = true;
-				pColor.x += 0.02;
-				pColor.y += 0.02;
-				pColor.z += 0.02;
-				postEffect_->SetColor(pColor);
+		// ゲーム画面フェードアウト演出
+		startE++;
+		if (0 < startE && startE < 50) {
+			isStartE = true;
+			pColor.x += 0.02;
+			pColor.y += 0.02;
+			pColor.z += 0.02;
+			postEffect_->SetColor(pColor);
+		}
+		if (startE > 50) {
+			isStartE = false;
+			pColor = { 1,1,1,1 };
+			postEffect_->SetColor(pColor);
+		}
+
+		gauge.GetScale();
+
+		if (isMaxGauge == true) {
+			if (gaugeScale.x >= 4) {
+				gaugeScale.x -= 0.55;
 			}
-			if (startE > 50) {
-				isStartE = false;
-				pColor = { 1,1,1,1 };
-				postEffect_->SetColor(pColor);
+			else {
+				isMaxGauge = false;
 			}
+		}
 
-			gauge.GetScale();
+		gauge.SetPosition(gauge.GetPosition() + Vector3(1, 0, 0));
+		//gauge.SpriteUpdate(gauge, spriteCommon_);
 
-			if (isMaxGauge == true) {
-				if (gaugeScale.x >= 4) {
-					gaugeScale.x -= 0.55;
-				}
-				else {
-					isMaxGauge = false;
-				}
+		if (player->GetGaugeAdd() == true) {
+			player->SetGaugeAdd(false);
+			calRes = static_cast<float>(140) / (player->GetDivide() + 1);
+			gaugeScale.x += calRes;
+
+		}
+		if (gaugeScale.x >= 140) {
+			if (isMaxGauge == false) {
+				isMaxGauge = true;
 			}
+		}
 
-			gauge.SetPosition(gauge.GetPosition() + Vector3(1, 0, 0));
-			//gauge.SpriteUpdate(gauge, spriteCommon_);
-
-			if (player->GetGaugeAdd() == true) {
-				player->SetGaugeAdd(false);
-				calRes = static_cast<float>(140) / (player->GetDivide() + 1);
-				gaugeScale.x += calRes;
-
-			}
-			if (gaugeScale.x >= 140) {
-				if (isMaxGauge == false) {
-					isMaxGauge = true;
-				}
-			}
-
-			gauge.SetScale(Vector2(gaugeScale.x, gaugeScale.y));
-			gauge.SpriteTransferVertexBuffer(gauge, spriteCommon, 21);
+		gauge.SetScale(Vector2(gaugeScale.x, gaugeScale.y));
+		gauge.SpriteTransferVertexBuffer(gauge, spriteCommon, 21);
 
 		//カメラ更新
-		railCamera->Update(player,points);
+		railCamera->Update(player, points);
 		//プレイヤー
 		player->Update();
 		//ステージ
@@ -298,7 +298,7 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		if (player->GetIsPush() == false) {
 			if (player->GetIsHit() == true)
 			{
-       			isBack = true;
+				isBack = true;
 			}
 		}
 		if (isBack == true) {
@@ -350,51 +350,51 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 			sceneNum = 2;
 		}
 
-			break;
-			//クリア
-		case 2:
-			// クリア画面フェードアウト演出
-			gClearE++;
-			if (0 < gClearE && gClearE < 50) {
-				isGClearE = true;
-				pColor.x += 0.02;
-				pColor.y += 0.02;
-				pColor.z += 0.02;
-				postEffect_->SetColor(pColor);
-			}
-			if (gClearE > 50) {
-				isGClearE = false;
-				pColor = { 1,1,1,1 };
-				postEffect_->SetColor(pColor);
-			}
+		break;
+		//クリア
+	case 2:
+		// クリア画面フェードアウト演出
+		gClearE++;
+		if (0 < gClearE && gClearE < 50) {
+			isGClearE = true;
+			pColor.x += 0.02;
+			pColor.y += 0.02;
+			pColor.z += 0.02;
+			postEffect_->SetColor(pColor);
+		}
+		if (gClearE > 50) {
+			isGClearE = false;
+			pColor = { 1,1,1,1 };
+			postEffect_->SetColor(pColor);
+		}
 
-			if (input->TriggerKey(DIK_SPACE)) {
-				Reset();
-				sceneNum = 0;
-			}
-			break;
-			//ゲームオーバー
-		case 3:
-			// ゲームオーバー画面フェードアウト演出
-			gOverE++;
-			if (0 < gOverE && gOverE < 50) {
-				isGOverE = true;
-				pColor.x += 0.02;
-				pColor.y += 0.02;
-				pColor.z += 0.02;
-				postEffect_->SetColor(pColor);
-			}
-			if (gOverE > 50) {
-				isGOverE = false;
-				pColor = { 1,1,1,1 };
-				postEffect_->SetColor(pColor);
-			}
+		if (input->TriggerKey(DIK_SPACE)) {
+			Reset();
+			sceneNum = 0;
+		}
+		break;
+		//ゲームオーバー
+	case 3:
+		// ゲームオーバー画面フェードアウト演出
+		gOverE++;
+		if (0 < gOverE && gOverE < 50) {
+			isGOverE = true;
+			pColor.x += 0.02;
+			pColor.y += 0.02;
+			pColor.z += 0.02;
+			postEffect_->SetColor(pColor);
+		}
+		if (gOverE > 50) {
+			isGOverE = false;
+			pColor = { 1,1,1,1 };
+			postEffect_->SetColor(pColor);
+		}
 
-			if (input->TriggerKey(DIK_SPACE)) {
-				Reset();
-				sceneNum = 0;
-			}
-			break;
+		if (input->TriggerKey(DIK_SPACE)) {
+			Reset();
+			sceneNum = 0;
+		}
+		break;
 	}
 }
 
@@ -417,13 +417,10 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 	// 3Dオブジェクト描画前処理
 	Object3d::PreDraw(dXCommon->GetCommandList());
 
-	if (sceneNum == 0) {
-		floor->Draw(railCamera->GetView());
-		sky->Draw(railCamera->GetView());
-	}
+	sky->Draw(railCamera->GetView());
+
 	if (sceneNum == 1) {
-		/*floor->Draw(railCamera->GetView());*/
-		sky->Draw(railCamera->GetView());
+		floor->Draw(railCamera->GetView());
 		//敵キャラの描画
 		for (const std::unique_ptr<Enemy>& enemy : enemys_) {
 			enemy->Draw(railCamera->GetView());

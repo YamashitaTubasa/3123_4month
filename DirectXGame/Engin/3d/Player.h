@@ -65,7 +65,7 @@ private:
 	bool isPush;
 	int pushTime;
 	bool isAttack;
-	int attackTime;
+	float attackTime;
 	//fever
 	int feverTime;
 	bool isFever;
