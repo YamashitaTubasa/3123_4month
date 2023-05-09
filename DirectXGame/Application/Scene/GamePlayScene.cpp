@@ -202,7 +202,18 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 	switch (sceneNum) {
 		case 0:
 			pColor = { 1,1,1,1 };
-			isPlayerE = false;
+			isPlayerE = true;
+
+			railCamera->GetView()->target = player->GetPosition();
+			//railCamera->GetView()->eye.x += 0.3;
+			//railCamera->GetView()->eye.x += 0.5;
+			//viewAngle += kEyeRotSpeed;
+			//viewAngle = fmodf(viewAngle, PI * 2.0);
+			//railCamera->GetView()->eye.x = sinf(viewAngle);
+			//railCamera->GetView()->eye.y = 10;
+			//railCamera->GetView()->eye.y -= 0.1;
+			//railCamera->GetView()->eye.z -= 0.1;
+			//viewProjection->eye.x += 1;
 
 			railCamera->GetView()->target = {0, -15, -750};
 			//カメラ更新
@@ -249,7 +260,7 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 				pColor = { 1,1,1,1 };
 				postEffect_->SetColor(pColor);
 			}
-
+			
 			gauge.GetScale();
 
 			if (isMaxGauge == true) {
@@ -347,7 +358,15 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		}
 		//クリア
 		if (railCamera->GetIsEnd() == true) {
-			sceneNum = 2;
+			
+			cStagingT++;
+			isClearStaging = true;
+			player->SetPosition(player->GetPosition() + Vector3(0, 0, 0.8));
+
+			if (cStagingT >= 100) {
+				sceneNum = 2;
+				isClearStaging = false;
+			}
 		}
 
 			break;
@@ -406,7 +425,9 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 
 	if (sceneNum == 1)
 	{
-		line->Draw(railCamera->GetView());
+		if (isClearStaging == false) {
+			line->Draw(railCamera->GetView());
+		}
 	}
 
 	// 3Dオブジェクト描画後処理
@@ -459,7 +480,7 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 	///=== スプライト描画 ===///
 	if (sceneNum == 0) {
 		if (isTitleT == false) {
-			title.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), title.vbView);
+			//title.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), title.vbView);
 			spaButton.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), spaButton.vbView);
 		}
 	}
@@ -771,6 +792,8 @@ void GamePlayScene::Reset() {
 	titleT = 0.0f;
 	isTitleT = false;
 	isPlayerE = true;
+	isClearStaging = false;
+	cStagingT = 0.0f;
 }
 
 void GamePlayScene::TitleReset()
