@@ -342,7 +342,15 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		}
 		//クリア
 		if (railCamera->GetIsEnd() == true) {
-			sceneNum = 2;
+
+			cStagingT++;
+			isClearStaging = true;
+			player->SetPosition(player->GetPosition() + Vector3(0, 0, 0.8));
+
+			if (cStagingT >= 100) {
+				sceneNum = 2;
+				isClearStaging = false;
+			}
 		}
 
 		break;
@@ -401,8 +409,10 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 
 	if (sceneNum == 1)
 	{
-		for (int i = 0; i < 3; i++) {
-			line[i]->Draw(railCamera->GetView());
+		if (isClearStaging == false) {
+			for (int i = 0; i < 3; i++) {
+				line[i]->Draw(railCamera->GetView());
+			}
 		}
 	}
 
@@ -763,6 +773,8 @@ void GamePlayScene::Reset() {
 	titleT = 0.0f;
 	isTitleT = false;
 	isPlayerE = true;
+	isClearStaging = false;
+	cStagingT = 0.0f;
 }
 
 void GamePlayScene::TitleReset()
