@@ -94,7 +94,7 @@ void Player::Update() {
 		}
 		if (isAttack == true) {
 			attackTime++;
- 			worldTransform_.rotation_.z = start + (end - start) * -easeOutSine(attackTime / 30);
+ 			worldTransform_.rotation_.z = start + (end - start) * -MathFunc::easeOutSine(attackTime / 30);
 			if (attackTime == 30)
 			{
 				attackTime = 0;
@@ -154,18 +154,6 @@ void Player::GoesFever() {
 			isFever = false;
 		}
 	}
-}
-
-float Player::easeInSine(float a)
-{
-	const double PI = 3.141592;
-	return 1 - cos((a * PI) / 2);
-}
-
-float Player::easeOutSine(float a)
-{
-	const double PI = 3.141592;
-	return sin((a * PI) / 2);
 }
 
 void Player::OnCollision(const CollisionInfo& info) {

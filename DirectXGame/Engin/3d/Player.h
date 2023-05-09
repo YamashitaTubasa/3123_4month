@@ -6,6 +6,7 @@
 #include "Spline.h"
 #include "Model.h"
 #include "Particle.h"
+#include "MathFunc.h"
 
 class Player : public Object3d
 {
@@ -43,11 +44,6 @@ public:
 
 	bool GetGaugeAdd() { return isGauge_; }
 	void SetGaugeAdd(bool isGauge) { this->isGauge_ = isGauge; }
-
-	//イージング
-	float easeInSine(float a);
-
-	float easeOutSine(float a);
 
 	int GetDivide() { return speedUpCount; }
 
