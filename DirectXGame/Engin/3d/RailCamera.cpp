@@ -45,9 +45,9 @@ void RailCamera::Update(Player* player_, std::vector<Vector3>& point) {
 	camera->SetRotationX(radX * 180.0f / 3.1415f);
 	//XV
 	camera->Update();
-	viewProjection->target = (target_ + frontVec * 0.5);
-	viewProjection->eye = (target_ - frontVec * 3);
-	viewProjection->eye.y = (target_.y + 0.5);
+	viewProjection->target = (target_ + frontVec);
+	viewProjection->eye = (target_ - frontVec * 8);
+	viewProjection->eye.y = (target_.y + 1);
 
 	if (spline_.GetIsEnd() == true) {
 		isEnd = true;
