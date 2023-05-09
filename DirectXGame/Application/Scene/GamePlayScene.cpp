@@ -173,7 +173,9 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	//レールカメラ初期化
 	railCamera->Initialize();
 
-	//レーン
+	sceneNum = 0;
+
+	//制御点
 	start = { 0.0f, 0.0f, -800.0f };		//スタート地点
 	p2 = { 100.0f, 0.0f, -750.0f };			//制御点その1
 	p3 = { -200.0f, 0.0f, -600.0f };			//制御点その2
@@ -183,19 +185,13 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	p7 = { 100.0f, 0.0f, 200.0 };
 	p8 = { 100.0f, 50.0f, 400.0 };
 	p9 = { -100.0f, 100.0f, 600.0 };
-	end = { -300.0f, 300.0f, 800.0f };		//ゴール地点
+	end = { -300.0f, 300.0f, 800.0f };
 
 	points = { start,start,p2,p3,p4,p5,p6,p7,p8,p9,end,end };
 
-	lineModel = Model::CreateLine(points);
-
-	sceneNum = 0;
+	CreatThreeLine(points);
 
 
-	// 3Dオブジェクト生成
-	line = Line::Create();
-	// オブジェクトにモデルをひも付ける
-	line->SetModel(lineModel);
 }
 
 void GamePlayScene::Update(SpriteCommon& spriteCommon) {
@@ -284,7 +280,6 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		//プレイヤー
 		player->Update();
 		//ステージ
-		line->Update();
 		//天球
 		floor->Update();
 		sky->Update();
@@ -406,7 +401,9 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 
 	if (sceneNum == 1)
 	{
-		line->Draw(railCamera->GetView());
+		for (int i = 0; i < 3; i++) {
+			line[i]->Draw(railCamera->GetView());
+		}
 	}
 
 	// 3Dオブジェクト描画後処理
@@ -687,9 +684,11 @@ void GamePlayScene::Reset() {
 	delete pm_1;
 	delete particle_2;
 	delete pm_2;
-	delete line;
 	delete p_dmg;
 	delete pm_dmg;
+	for (int i = 0; i < 3; i++) {
+		delete line[i];
+	}
 
 	railCamera = new RailCamera;
 	xmViewProjection = new XMViewProjection();
@@ -740,11 +739,7 @@ void GamePlayScene::Reset() {
 	railCamera->Initialize();
 
 
-	lineModel = Model::CreateLine(points);
-	// 3Dオブジェクト生成
-	line = Line::Create();
-	// オブジェクトにモデルをひも付ける
-	line->SetModel(lineModel);
+	CreatThreeLine(points);
 
 	//変数
 	//敵の打ち出すまでの時間
@@ -821,4 +816,43 @@ void GamePlayScene::TitleReset()
 	titleT == 0.0f;
 	isTitleT = false;
 	isPlayerE = true;
+}
+
+void GamePlayScene::CreatThreeLine(std::vector<Vector3>& points) {
+	Vector3 sub(-10, 0, 0);
+	Vector3 add(10, 0, 0);
+	std::vector<Vector3> temp = points;
+	//レーン
+		//ゴール地点
+
+	for (int i = 0; i < points.size(); i++) {
+		points[i].x -= 10;
+	}
+
+	lineModel[0] = Model::CreateLine(points);
+
+	// 3Dオブジェクト生成
+	line[0] = Line::Create();
+	// オブジェクトにモデルをひも付ける
+	line[0]->SetModel(lineModel[0]);
+
+	for (int i = 0; i < points.size(); i++) {
+		points[i].x += 20;
+	}
+
+	lineModel[1] = Model::CreateLine(points);
+
+	// 3Dオブジェクト生成
+	line[1] = Line::Create();
+	// オブジェクトにモデルをひも付ける
+	line[1]->SetModel(lineModel[1]);
+
+	points = temp;
+
+	lineModel[2] = Model::CreateLine(points);
+
+	// 3Dオブジェクト生成
+	line[2] = Line::Create();
+	// オブジェクトにモデルをひも付ける
+	line[2]->SetModel(lineModel[2]);
 }

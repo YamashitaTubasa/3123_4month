@@ -72,6 +72,8 @@ public:
 
 	static int GetScene() { return sceneNum; }
 
+	void CreatThreeLine(std::vector<Vector3>& points);
+
 	//補間で使うデータ
 	//start → end を5秒で完了させる
 	Vector3 start;		//スタート地点
@@ -88,7 +90,7 @@ public:
 	//				p1 - p2 - p3 - p4 を通るスプライン曲線を考える
 	//					先頭(p0)と最後(p5)に制御点を追加している
 	//								p0	p1	p2	p3	p4	p5
-	std::vector<Vector3> points{ start,start,p2,p3,p4,p5,p6,p7,p8,p9,end,end };
+	std::vector<Vector3> points{start,start,p2,p3,p4,p5,p6,p7,p8,p9,end,end};
 
 	float timeRate;						//何％時間が進んだか
 
@@ -101,13 +103,13 @@ private:
 	// モデル
 	Model* floorModel;
 	Model* skyModel;
-	Model* lineModel;
+	Model* lineModel[3];
 	// オブジェクト
 	Player* player;
 	Enemy* enemy;
 	Object3d* floor;
 	Object3d* sky;
-	Line* line;
+	Line* line[3];
 	//カメラ
 	ViewProjection* viewProjection = nullptr;
 	RailCamera* railCamera = nullptr;

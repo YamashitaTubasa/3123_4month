@@ -671,7 +671,7 @@ void Model::UpdateLineVertex(std::vector<Vector3>& point) {
 	LineVertex vert;
 
 	//頂点データを更新する
-	for (size_t i = 0; i < (point.size() - 2) * 90; i++)
+	for (size_t i = 0; i < (point.size() - 2) * 91; i++)
 	{
 		tempPos = spline_.pointCal(point);
 		vert.pos = tempPos;
