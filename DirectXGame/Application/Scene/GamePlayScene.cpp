@@ -659,7 +659,7 @@ void GamePlayScene::LoadEffect(SpriteCommon& spriteCommon) {
 		else {
 			effectR[i].LoadTexture(spriteCommon_, 10 + i, L"Resources/EfR6.jpg", dXCommon->GetDevice());
 		}
-		effectR[i].SetColor(Vector4(1, 1, 1, 0.9));
+		effectR[i].SetColor(Vector4(1, 1, 1, 0.8));
 		effectR[i].SpriteCreate(dXCommon->GetDevice(), 1280, 720, 10 + i, spriteCommon, Vector2(0.0f, 0.0f), false, false);
 		effectR[i].SetScale(Vector2(640 * 1, 720 * 1));
 		effectR[i].SetRotation(0.0f);
