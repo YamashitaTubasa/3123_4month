@@ -431,12 +431,16 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 			}
 		}
 		//戻る
-		if (input->TriggerKey(DIK_P) || input->TriggerKey(DIK_TAB)) {
+		if (input->TriggerKey(DIK_SPACE)) {
 			if (selectPause == 0) {
 				Reset();
 			}
-			postEffect_->SetColor(Vector4(1,1,1,1));
+			postEffect_->SetColor(Vector4(1, 1, 1, 1));
 			sceneNum = selectPause;
+		}
+		if (input->TriggerKey(DIK_P) || input->TriggerKey(DIK_TAB)) {
+			postEffect_->SetColor(Vector4(1, 1, 1, 1));
+			sceneNum = 1;
 		}
 		break;
 	}
