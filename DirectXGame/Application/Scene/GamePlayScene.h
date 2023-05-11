@@ -204,4 +204,5 @@ private:
 	bool isPlayerE = true;
 	bool isClearStaging = false; // クリア演出のフラグ
 	int cStagingT = 0.0f; // クリア演出のタイマー
+	int selectPause;
 };
