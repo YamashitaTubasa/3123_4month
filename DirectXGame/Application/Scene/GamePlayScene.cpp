@@ -84,7 +84,7 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 		hP[i].LoadTexture(spriteCommon_, 3, L"Resources/hitPoint.png", dXCommon->GetDevice());
 		hP[i].SetColor(Vector4(1, 1, 1, 1));
 		hP[i].SpriteCreate(dXCommon->GetDevice(), 50, 50, 3, spriteCommon, Vector2(0.0f, 0.0f), false, false);
-		hP[i].SetPosition(Vector3(40 + (i * 60), 45, 0));
+		hP[i].SetPosition(Vector3(40 + (i * 60), 30, 0));
 		hP[i].SetScale(Vector2(40 * 1, 40 * 1));
 		hP[i].SetRotation(0.0f);
 		hP[i].SpriteTransferVertexBuffer(hP[i], spriteCommon, 3);
@@ -92,10 +92,10 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	}
 
 	//gaugeFlame
-	gaugeFlame.LoadTexture(spriteCommon_, 20, L"Resources/gaugeFlame.png", dXCommon->GetDevice());
+	gaugeFlame.LoadTexture(spriteCommon_, 20, L"Resources/gaugeFlame_01.png", dXCommon->GetDevice());
 	gaugeFlame.SetColor(Vector4(1, 1, 1, 1));
 	gaugeFlame.SpriteCreate(dXCommon->GetDevice(), 128, 64, 20, spriteCommon, Vector2(0.0f, 0.0f), false, false);
-	gaugeFlame.SetPosition(Vector3(45, 150, 0));
+	gaugeFlame.SetPosition(Vector3(45, 120, 0));
 	gaugeFlame.SetScale(Vector2(150, 35));
 	gaugeFlame.SetRotation(0.0f);
 	gaugeFlame.SpriteTransferVertexBuffer(gaugeFlame, spriteCommon, 20);
@@ -112,21 +112,21 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	gauge.SpriteUpdate(gauge, spriteCommon_);
 
 	//UIboard
-	board.LoadTexture(spriteCommon_, 22, L"Resources/UIboard.png", dXCommon->GetDevice());
-	board.SetColor(Vector4(1, 1, 1, 0.9));
-	board.SpriteCreate(dXCommon->GetDevice(), 128, 128, 22, spriteCommon, Vector2(0.0f, 0.0f), false, false);
-	board.SetPosition(Vector3(0, 0, 0));
-	board.SetScale(Vector2(240, 225));
-	board.SetRotation(0.0f);
-	board.SpriteTransferVertexBuffer(board, spriteCommon, 22);
-	board.SpriteUpdate(board, spriteCommon_);
+	//board.LoadTexture(spriteCommon_, 22, L"Resources/UIboard.png", dXCommon->GetDevice());
+	//board.SetColor(Vector4(1, 1, 1, 0.9));
+	//board.SpriteCreate(dXCommon->GetDevice(), 128, 128, 22, spriteCommon, Vector2(0.0f, 0.0f), false, false);
+	//board.SetPosition(Vector3(0, 0, 0));
+	//board.SetScale(Vector2(240, 225));
+	//board.SetRotation(0.0f);
+	//board.SpriteTransferVertexBuffer(board, spriteCommon, 22);
+	//board.SpriteUpdate(board, spriteCommon_);
 
 	//SpaceButton
-	spaButton.LoadTexture(spriteCommon_, 23, L"Resources/SPACEButton_01.png", dXCommon->GetDevice());
+	spaButton.LoadTexture(spriteCommon_, 23, L"Resources/space.png", dXCommon->GetDevice());
 	spaButton.SetColor(Vector4(1, 1, 1, 1));
-	spaButton.SpriteCreate(dXCommon->GetDevice(), 352, 112, 23, spriteCommon, Vector2(0.0f, 0.0f), false, false);
-	spaButton.SetPosition(Vector3(450, 580, 0));
-	spaButton.SetScale(Vector2(352, 112));
+	spaButton.SpriteCreate(dXCommon->GetDevice(), 412, 95, 23, spriteCommon, Vector2(0.0f, 0.0f), false, false);
+	spaButton.SetPosition(Vector3(440, 610, 0));
+	spaButton.SetScale(Vector2(412, 95));
 	spaButton.SetRotation(0.0f);
 	spaButton.SpriteTransferVertexBuffer(spaButton, spriteCommon, 23);
 	spaButton.SpriteUpdate(spaButton, spriteCommon_);
@@ -137,8 +137,8 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	title.LoadTexture(spriteCommon_, 17, L"Resources/RideLight.png", dXCommon->GetDevice());
 	title.SetColor(Vector4(1, 1, 1, 1));
 	title.SpriteCreate(dXCommon->GetDevice(), 1280, 720, 17, spriteCommon, Vector2(0.0f, 0.0f), false, false);
-	title.SetPosition(Vector3(0, 0, 0));
-	title.SetScale(Vector2(1280 * 1, 720 * 1));
+	title.SetPosition(Vector3(730, 10, 0));
+	title.SetScale(Vector2(640 * 1, 360 * 1));
 	title.SetRotation(0.0f);
 	title.SpriteTransferVertexBuffer(title, spriteCommon, 17);
 	title.SpriteUpdate(title, spriteCommon_);
@@ -198,7 +198,7 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 	switch (sceneNum) {
 	case 0:
 		pColor = { 1,1,1,1 };
-		isPlayerE = false;
+		isPlayerE = true;
 
 		railCamera->GetView()->target = { 0, -15, -750 };
 		//カメラ更新
@@ -481,7 +481,7 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 		}
 	}
 	else if (sceneNum == 1) {
-		board.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), board.vbView);
+		//board.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), board.vbView);
 		for (int i = 0; i < player->GetHP(); i++) {
 			hP[i].SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), hP[i].vbView);
 		}
