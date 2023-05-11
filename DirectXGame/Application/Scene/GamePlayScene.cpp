@@ -122,11 +122,11 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	//board.SpriteUpdate(board, spriteCommon_);
 
 	//SpaceButton
-	spaButton.LoadTexture(spriteCommon_, 23, L"Resources/SPACEButton.png", dXCommon->GetDevice());
+	spaButton.LoadTexture(spriteCommon_, 23, L"Resources/space.png", dXCommon->GetDevice());
 	spaButton.SetColor(Vector4(1, 1, 1, 1));
 	spaButton.SpriteCreate(dXCommon->GetDevice(), 412, 95, 23, spriteCommon, Vector2(0.0f, 0.0f), false, false);
-	spaButton.SetPosition(Vector3(500, 610, 0));
-	spaButton.SetScale(Vector2(300, 50));
+	spaButton.SetPosition(Vector3(440, 610, 0));
+	spaButton.SetScale(Vector2(412, 95));
 	spaButton.SetRotation(0.0f);
 	spaButton.SpriteTransferVertexBuffer(spaButton, spriteCommon, 23);
 	spaButton.SpriteUpdate(spaButton, spriteCommon_);
