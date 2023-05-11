@@ -34,6 +34,7 @@ public:
 
 	//Getter
 	bool GetIsPush() { return isPush; }
+	bool GetIsAttack() { return isAttack; }
 	float GetVal() { return val; }
 	//fever
 	void GoesFever();
