@@ -132,6 +132,7 @@ private:
 	Sprite over;
 	Sprite back;
 	Sprite spaButton;
+	Sprite airRing;
 	SpriteCommon spriteCommon_;
 
 	DirectXCommon* dXCommon = nullptr;
@@ -161,9 +162,15 @@ private:
 
 	int waitTimer = 300;
 
+	//ゲージ
 	Vector2 gaugeScale = { 3,25 };
 
 	Vector3 gaugePosition = { 50,167.5f,0 };
+
+	//攻撃エフェクト
+	Vector2 airScale = { 0,0 };
+
+	Vector3 airPosition = { 0,0,0 };
 
 	//敵発生コマンド
 	std::stringstream enemyPopCommands;
@@ -177,6 +184,7 @@ private:
 
 	bool isMaxGauge = false;
 
+	bool isRing = false;
 	bool isBack = false; // ダメージ演出フラグ
 	float backT = 0.0f; // ダメージ演出タイマー
 	bool isStartE = false; // startEffectフラグ

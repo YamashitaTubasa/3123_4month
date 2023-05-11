@@ -304,6 +304,19 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 			backT = 0.0f;
 		}
 
+		////攻撃時演出
+		//if (player->GetIsAttack() == true)
+		//{
+		//	isRing = true;
+		//	airScale.x += 180;
+		//	airScale.y += 180;
+		//}
+		//else
+		//{
+		//	isRing = false;
+		//	airScale.x = 0;
+		//	airScale.y = 0;
+		//}
 
 		// 敵を倒した時の演出
 		if (player->GetIsBurst() == true) {
@@ -475,6 +488,10 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 		if (player->GetFever() == true) {
 			effectR[player->GetFeverNum()].SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), effectR[player->GetFeverNum()].vbView);
 			effectL[player->GetFeverNum()].SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), effectL[player->GetFeverNum()].vbView);
+		}
+		if (isRing == true)
+		{
+			airRing.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), airRing.vbView);
 		}
 		if (isBack == true) {
 			back.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), back.vbView);
@@ -762,6 +779,10 @@ void GamePlayScene::Reset() {
 	gaugeScale = { 3,25 };
 
 	gaugePosition = { 50,167.5f,0 };
+
+	airScale = { 0,0 };
+
+	airPosition = { 0,0,0 };
 
 	isStartE = false; // startEffectフラグ
 	startE = 0.0f; // startEffect
