@@ -64,7 +64,11 @@ public:
 	//敵発生コマンドの更新
 	void UpdateEnemyPopCommands();
 
+	//フィーバーエフェクト
 	void LoadEffect(SpriteCommon& spriteCommon);
+
+	//攻撃エフェクト
+	void LoadAttackEffect(SpriteCommon& spriteCommon);
 
 	void Reset();
 
@@ -103,7 +107,7 @@ private:
 	// モデル
 	Model* floorModel;
 	Model* skyModel;
-	Model* lineModel[3];
+	Model* lineModel;
 	// オブジェクト
 	Player* player;
 	Enemy* enemy;
@@ -132,8 +136,8 @@ private:
 	Sprite over;
 	Sprite back;
 	Sprite spaButton;
-	Sprite airRing;
 	SpriteCommon spriteCommon_;
+	Sprite attackEffect[8];
 
 	DirectXCommon* dXCommon = nullptr;
 	ImGuiManager* imGuiManager = nullptr;
@@ -183,8 +187,6 @@ private:
 
 
 	bool isMaxGauge = false;
-
-	bool isRing = false;
 	bool isBack = false; // ダメージ演出フラグ
 	float backT = 0.0f; // ダメージ演出タイマー
 	bool isStartE = false; // startEffectフラグ

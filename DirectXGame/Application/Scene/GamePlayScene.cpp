@@ -132,6 +132,7 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	spaButton.SpriteUpdate(spaButton, spriteCommon_);
 
 	LoadEffect(spriteCommon);
+	LoadAttackEffect(spriteCommon);
 
 	//title
 	title.LoadTexture(spriteCommon_, 17, L"Resources/RideLight.png", dXCommon->GetDevice());
@@ -201,14 +202,14 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		pColor = { 1,1,1,1 };
 		isPlayerE = true;
 
+		//プレイヤー
+		player->Update(points);
 		railCamera->GetView()->target = { 0, -15, -750 };
 		//カメラ更新
 		railCamera->ViewUpdate();
 		//天球
 		floor->Update();
 		sky->Update();
-		//プレイヤー
-		player->Update();
 
 		if (input->TriggerKey(DIK_SPACE)) {
 			pColor = { 0,0,0,1 };
@@ -279,7 +280,7 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		//カメラ更新
 		railCamera->Update(player, points);
 		//プレイヤー
-		player->Update();
+		player->Update(points);
 		//ステージ
 		//天球
 		floor->Update();
@@ -304,20 +305,6 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 			isBack = false;
 			backT = 0.0f;
 		}
-
-		////攻撃時演出
-		//if (player->GetIsAttack() == true)
-		//{
-		//	isRing = true;
-		//	airScale.x += 180;
-		//	airScale.y += 180;
-		//}
-		//else
-		//{
-		//	isRing = false;
-		//	airScale.x = 0;
-		//	airScale.y = 0;
-		//}
 
 		// 敵を倒した時の演出
 		if (player->GetIsBurst() == true) {
@@ -525,9 +512,9 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 			effectR[player->GetFeverNum()].SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), effectR[player->GetFeverNum()].vbView);
 			effectL[player->GetFeverNum()].SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), effectL[player->GetFeverNum()].vbView);
 		}
-		if (isRing == true)
+		if (player->GetAttackTime() <= 8&& player->GetIsAttack() == true)
 		{
-			airRing.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), airRing.vbView);
+			attackEffect[player->GetAttackNum()].SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), attackEffect[player->GetAttackNum()].vbView);
 		}
 		if (isBack == true) {
 			back.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), back.vbView);
@@ -736,7 +723,45 @@ void GamePlayScene::LoadEffect(SpriteCommon& spriteCommon) {
 	}
 }
 
-void GamePlayScene::Reset() {
+void GamePlayScene::LoadAttackEffect(SpriteCommon& spriteCommon)
+{
+	for (int i = 0; i < 8; i++) {
+		if (i == 0) {
+			attackEffect[i].LoadTexture(spriteCommon_, 25 + i, L"Resources/airRing_01.png", dXCommon->GetDevice());
+		}
+		else if (i == 1) {
+			attackEffect[i].LoadTexture(spriteCommon_, 25 + i, L"Resources/airRing_02.png", dXCommon->GetDevice());
+		}
+		else if (i == 2) {
+			attackEffect[i].LoadTexture(spriteCommon_, 25 + i, L"Resources/airRing_03.png", dXCommon->GetDevice());
+		}
+		else if (i == 3) {
+			attackEffect[i].LoadTexture(spriteCommon_, 25 + i, L"Resources/airRing_04.png", dXCommon->GetDevice());
+		}
+		else if (i == 4) {
+			attackEffect[i].LoadTexture(spriteCommon_, 25 + i, L"Resources/airRing_05.png", dXCommon->GetDevice());
+		}
+		else if (i == 5) {
+			attackEffect[i].LoadTexture(spriteCommon_, 25 + i, L"Resources/airRing_06.png", dXCommon->GetDevice());
+		}
+		else if (i == 6) {
+			attackEffect[i].LoadTexture(spriteCommon_, 25 + i, L"Resources/airRing_07.png", dXCommon->GetDevice());
+		}
+		else {
+			attackEffect[i].LoadTexture(spriteCommon_, 25 + i, L"Resources/airRing_08.png", dXCommon->GetDevice());
+		}
+		attackEffect[i].SetColor(Vector4(1, 1, 1, 0.8));
+		attackEffect[i].SpriteCreate(dXCommon->GetDevice(), 1280, 720, 25 + i, spriteCommon, Vector2(0.0f, 0.0f), false, false);
+		attackEffect[i].SetScale(Vector2(1280 * 1, 720 * 1));
+		attackEffect[i].SetRotation(0.0f);
+		attackEffect[i].SetPosition(Vector3(0, 0, 0));
+		attackEffect[i].SpriteTransferVertexBuffer(attackEffect[i], spriteCommon, 4 + i);
+		attackEffect[i].SpriteUpdate(attackEffect[i], spriteCommon_);
+	}
+}
+
+void GamePlayScene::Reset() 
+{
 	delete floorModel;
 	delete skyModel;
 	delete player;
@@ -892,40 +917,22 @@ void GamePlayScene::TitleReset()
 }
 
 void GamePlayScene::CreatThreeLine(std::vector<Vector3>& points) {
-	Vector3 sub(-10, 0, 0);
-	Vector3 add(10, 0, 0);
-	std::vector<Vector3> temp = points;
-	//レーン
-		//ゴール地点
 
-	for (int i = 0; i < points.size(); i++) {
-		points[i].x -= 10;
+	lineModel = Model::CreateLine(points);
+
+	for (int i = 0; i < 3; i++) {
+		line[i] = Line::Create();
+		// オブジェクトにモデルをひも付ける
+		line[i]->SetModel(lineModel);
 	}
 
-	lineModel[0] = Model::CreateLine(points);
-
-	// 3Dオブジェクト生成
-	line[0] = Line::Create();
-	// オブジェクトにモデルをひも付ける
-	line[0]->SetModel(lineModel[0]);
-
-	for (int i = 0; i < points.size(); i++) {
-		points[i].x += 20;
+	for (int i = 0; i < 2; i++) {
+		line[i]->worldTransform_.SetParent3d(&line[0]->worldTransform_);
 	}
+	line[1]->SetPosition(Vector3(10, 0, 0));
+	line[2]->SetPosition(Vector3(-10, 0, 0));
 
-	lineModel[1] = Model::CreateLine(points);
-
-	// 3Dオブジェクト生成
-	line[1] = Line::Create();
-	// オブジェクトにモデルをひも付ける
-	line[1]->SetModel(lineModel[1]);
-
-	points = temp;
-
-	lineModel[2] = Model::CreateLine(points);
-
-	// 3Dオブジェクト生成
-	line[2] = Line::Create();
-	// オブジェクトにモデルをひも付ける
-	line[2]->SetModel(lineModel[2]);
+	for (int i = 0; i < 3; i++) {
+		line[i]->Update();
+	}
 }
