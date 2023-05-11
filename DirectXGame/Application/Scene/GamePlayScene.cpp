@@ -174,6 +174,7 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	railCamera->Initialize();
 
 	sceneNum = 0;
+	selectPause = 1;
 
 	//制御点
 	start = { 0.0f, 0.0f, -800.0f };		//スタート地点
@@ -336,6 +337,12 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 			pm_2->Fire(particle_2, 70, 0.2f, 0, 20, { 4.0f,0.0f });
 		}*/
 
+		//ポーズ画面へ
+		if (input->TriggerKey(DIK_P)) {
+			selectPause = 1;
+			sceneNum = 4;
+		}
+
 		//ゲームオーバー
 		if (player->GetHP() == 0) {
 			sceneNum = 3;
@@ -390,6 +397,25 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 			sceneNum = 0;
 		}
 		break;
+	case 4://ポーズ
+		if (input->TriggerKey(DIK_W) || input->TriggerKey(DIK_UP)) {
+			if (selectPause <= 0) {
+				selectPause++;
+			}
+		}
+		if (input->TriggerKey(DIK_S) || input->TriggerKey(DIK_DOWN)) {
+			if (selectPause > 0) {
+				selectPause--;
+			}
+		}
+		if (input->TriggerKey(DIK_P) || input->TriggerKey(DIK_SPACE)) {
+			//タイトルへ戻るならリセット
+			if (selectPause == 0) {
+				Reset();
+			}
+			sceneNum = selectPause;
+		}
+		break;
 	}
 }
 
@@ -399,7 +425,7 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 	// 3Dオブジェクト描画前処理
 	Line::PreDraw(dXCommon->GetCommandList());
 
-	if (sceneNum == 1)
+	if (sceneNum == 1 || sceneNum == 4)
 	{
 		for (int i = 0; i < 3; i++) {
 			line[i]->Draw(railCamera->GetView());
@@ -416,7 +442,7 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 
 	sky->Draw(railCamera->GetView());
 
-	if (sceneNum == 1) {
+	if (sceneNum == 1 || sceneNum == 4) {
 		floor->Draw(railCamera->GetView());
 		//敵キャラの描画
 		for (const std::unique_ptr<Enemy>& enemy : enemys_) {
@@ -457,7 +483,7 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 			spaButton.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), spaButton.vbView);
 		}
 	}
-	else if (sceneNum == 1) {
+	else if (sceneNum == 1 || sceneNum == 4) {
 		board.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), board.vbView);
 		for (int i = 0; i < player->GetHP(); i++) {
 			hP[i].SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), hP[i].vbView);
@@ -491,7 +517,7 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 
 	// 3Dオブジェクト描画前処理
 	Object3d::PreDraw(dXCommon->GetCommandList());
-	if (sceneNum == 0 || sceneNum == 1) {
+	if (sceneNum == 0 || sceneNum == 1 || sceneNum == 4) {
 		if (isPlayerE == true) {
 			////playerを画像より手前に出したい
 			player->Draw(railCamera->GetView());
@@ -855,4 +881,5 @@ void GamePlayScene::CreatThreeLine(std::vector<Vector3>& points) {
 	line[2] = Line::Create();
 	// オブジェクトにモデルをひも付ける
 	line[2]->SetModel(lineModel[2]);
+	selectPause = 0;
 }

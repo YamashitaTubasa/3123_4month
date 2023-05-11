@@ -194,4 +194,5 @@ private:
 	int titleT = 0.0f;
 	bool isTitleT = false;
 	bool isPlayerE = true;
+	int selectPause;
 };
