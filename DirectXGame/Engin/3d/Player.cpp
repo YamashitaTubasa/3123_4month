@@ -83,7 +83,8 @@ void Player::Update(std::vector <Vector3>& point)
 					//¶—×‚ÌƒŒ[ƒ‹‚ÉˆÚ“®‚·‚é
 					for (float i = 0; i < point.size(); i++)
 					{
-						point[i].x = moveS + (moveE - moveS) * -MathFunc::easeOutSine(i / 12);
+						point[i].x -= 10;
+						/*point[i].x = moveS + (moveE - moveS) * -MathFunc::easeOutSine(i / 12);*/
 					}
 					//êŠ‚ÌenumØ‚è‘Ö‚¦
 					if (railPos == MIDDLE)
@@ -104,7 +105,8 @@ void Player::Update(std::vector <Vector3>& point)
 					//‰E—×‚ÌƒŒ[ƒ‹‚ÉˆÚ“®‚·‚é
 					for (float i = 0; i < point.size(); i++)
 					{
-						point[i].x = moveS + (moveE - moveS) * MathFunc::easeOutSine(i / 12);
+						point[i].x += 10;
+						/*point[i].x = moveS + (moveE - moveS) * MathFunc::easeOutSine(i / 12);*/
 					}
 					//êŠ‚ÌenumØ‚è‘Ö‚¦
 					if (railPos == MIDDLE)
