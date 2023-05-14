@@ -85,17 +85,21 @@ private:
 	int feverNum;
 	float val;
 
-	int speedUpCount = 3;
-	float res = 0.0f;
+	int speedUpCount;
+	float res;
 	//当たり判定
 	bool isHit;
 	int coolTime;
-	bool isBurst = false;
-	bool isGauge_ = false;
+	bool isBurst;
+	bool isGauge_;
 
-	float start = 0.0;
-	float end = 360.0;
+	float start;
+	float end;
+
+	float moveS;
+	float moveE;
+	float moveTime;
 
 	//自機の位置
-	int railPos = MIDDLE;
+	int railPos;
 };
