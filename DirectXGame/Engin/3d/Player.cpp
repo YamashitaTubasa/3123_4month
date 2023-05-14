@@ -39,13 +39,27 @@ bool Player::PlayerInitialize() {
 	pushTime = 0;
 	feverNum = 0;
 	attackNum = 0;
+	speedUpCount = 3;
+	res = 0.0f;
+	isBurst = false;
+	isGauge_ = false;
+
+	moveE = 12.0f;
+	moveS = 0.0f;
+
 	//hp
 	hp = 3;
+
+	//自機の位置
+	railPos = MIDDLE;
+
+	start = 0.0;
+	end = 360.0;
 
 	return true;
 }
 
-void Player::Update(std::vector <Vector3>& point) 
+void Player::Update(std::vector <Vector3>& point)
 {
 	input = Input::GetInstance();
 
@@ -66,11 +80,20 @@ void Player::Update(std::vector <Vector3>& point)
 			{
 				if (railPos != LEFT)
 				{
-					/*isMove = true;*/
 					//左隣のレールに移動する
-					for (int i = 0; i < point.size(); i++) {
-						point[i].x -= 10;
-						}
+					for (float i = 0; i < point.size(); i++)
+					{
+						point[i].x = moveS + (moveE - moveS) * -MathFunc::easeOutSine(i / 12);
+					}
+					//場所のenum切り替え
+					if (railPos == MIDDLE)
+					{
+						railPos = LEFT;
+					}
+					else if (railPos == RIGHT)
+					{
+						railPos = MIDDLE;
+					}
 				}
 			}
 			//右以外の時に右キーを押したら
@@ -78,11 +101,19 @@ void Player::Update(std::vector <Vector3>& point)
 			{
 				if (railPos != RIGHT)
 				{
-					/*isMove = true;*/
 					//右隣のレールに移動する
-					for (int i = 0; i < point.size(); i++)
+					for (float i = 0; i < point.size(); i++)
 					{
-						point[i].x += 10;
+						point[i].x = moveS + (moveE - moveS) * MathFunc::easeOutSine(i / 12);
+					}
+					//場所のenum切り替え
+					if (railPos == MIDDLE)
+					{
+						railPos = RIGHT;
+					}
+					else if (railPos == LEFT)
+					{
+						railPos = MIDDLE;
 					}
 				}
 			}
@@ -93,13 +124,13 @@ void Player::Update(std::vector <Vector3>& point)
 			// ワールドトランスフォームの行列更新と転送
 			worldTransform_.UpdateMatrix();
 
-			if (isFever == false) 
+			if (isFever == false)
 			{
 				pushTime++;
-				if (pushTime == 20) 
+				if (pushTime == 20)
 				{
 					pushTime = 0;
-					if (isHit == true) 
+					if (isHit == true)
 					{
 						isHit = false;
 					}
@@ -108,11 +139,11 @@ void Player::Update(std::vector <Vector3>& point)
 				}
 			}
 		}
-		if (isAttack == true) 
+		if (isAttack == true)
 		{
 			attackTime++;
 			worldTransform_.rotation_.z = start + (end - start) * -MathFunc::easeOutSine(attackTime / 30);
-			if (attackNum <=6)
+			if (attackNum <= 6)
 			{
 				attackNum++;
 			}
@@ -122,14 +153,14 @@ void Player::Update(std::vector <Vector3>& point)
 				attackNum = 0;
 				worldTransform_.rotation_.z = 0;
 				isAttack = false;
-				
+
 			}
 		}
 
-		if (isHit == true) 
+		if (isHit == true)
 		{
 			coolTime++;
-			if (coolTime == 50) 
+			if (coolTime == 50)
 			{
 				coolTime = 0;
 				isHit = false;
@@ -137,7 +168,7 @@ void Player::Update(std::vector <Vector3>& point)
 		}
 	}
 
-	if (val <= 500) 
+	if (val <= 500)
 	{
 		GoesFever();
 	}
@@ -146,14 +177,14 @@ void Player::Update(std::vector <Vector3>& point)
 	worldTransform_.UpdateMatrix();
 
 	//当たり判定更新
-	if (collider) 
+	if (collider)
 	{
 		collider->Update();
 	}
 }
 
 //feverタイム
-void Player::GoesFever() 
+void Player::GoesFever()
 {
 	//feverでないならfeverに
 	if (isFever == false) {
