@@ -217,11 +217,11 @@ void PostEffect::Initialize()
 		&resourceDescss,
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
-		IID_PPV_ARGS(&constBuffB0));
+		IID_PPV_ARGS(&constBuff));
 	assert(SUCCEEDED(result));
 
 	// 定数バッファにデータ転送
-	result = constBuffB0->Map(0, nullptr, (void**)&constMap); // マッピング
+	result = constBuff->Map(0, nullptr, (void**)&constMap); // マッピング
 	constMap->color = color_;
 	constMap->isBlur = isBlur_;
 	constMap->alpha = alpha_;
@@ -252,7 +252,7 @@ void PostEffect::Draw(ID3D12GraphicsCommandList* cmdList)
 
 
 	// 定数バッファ(CBV)をセット
-	cmdList->SetGraphicsRootConstantBufferView(0, constBuffB0->GetGPUVirtualAddress());
+	cmdList->SetGraphicsRootConstantBufferView(0, constBuff->GetGPUVirtualAddress());
 
 	ID3D12DescriptorHeap* ppHeap[] = { descHeapSRV.Get() };
 	cmdList->SetDescriptorHeaps(_countof(ppHeap), ppHeap);
@@ -457,7 +457,7 @@ void PostEffect::SetColor(const Vector4& color)
 	HRESULT result;
 
 	// 定数バッファにデータ転送
-	result = constBuffB0->Map(0, nullptr, (void**)&constMap); // マッピング
+	result = constBuff->Map(0, nullptr, (void**)&constMap); // マッピング
 	constMap->color = color;
 	assert(SUCCEEDED(result));
 }
@@ -467,17 +467,17 @@ void PostEffect::SetBlur(const bool& isBlur)
 	HRESULT result;
 
 	// 定数バッファにデータ転送
-	result = constBuffB0->Map(0, nullptr, (void**)&constMap); // マッピング
+	result = constBuff->Map(0, nullptr, (void**)&constMap); // マッピング
 	constMap->isBlur = isBlur;
 	assert(SUCCEEDED(result));
 }
 
-void PostEffect::SetAlpha(const float& alpha) 
+void PostEffect::SetAlpha(float alpha)
 {
 	HRESULT result;
 
 	// 定数バッファにデータ転送
-	result = constBuffB0->Map(0, nullptr, (void**)&constMap);
+	result = constBuff->Map(0, nullptr, (void**)&constMap);
 	constMap->alpha = alpha;
 	assert(SUCCEEDED(result));
 }

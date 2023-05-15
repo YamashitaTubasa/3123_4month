@@ -133,6 +133,7 @@ private:
 	Sprite back;
 	Sprite spaButton;
 	Sprite airRing;
+	Sprite fadeOut;
 	SpriteCommon spriteCommon_;
 
 	DirectXCommon* dXCommon = nullptr;

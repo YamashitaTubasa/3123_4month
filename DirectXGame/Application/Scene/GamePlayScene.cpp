@@ -169,6 +169,16 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	back.SetRotation(0.0f);
 	back.SpriteTransferVertexBuffer(back, spriteCommon, 7);
 	back.SpriteUpdate(back, spriteCommon_);
+	// フェードアウト
+	fadeOut.LoadTexture(spriteCommon_, 20, L"Resources/fadeOut.png", dXCommon->GetDevice());
+	fadeOut.SetColor(Vector4(1, 1, 1, 1));
+	fadeOut.SpriteCreate(dXCommon->GetDevice(), 1280, 720, 20, spriteCommon, Vector2(0.0f, 0.0f), false, false);
+	fadeOut.SetPosition(Vector3(0, 0, 0));
+	fadeOut.SetScale(Vector2(1280 * 1, 720 * 1));
+	fadeOut.SetRotation(0.0f);
+	fadeOut.SetAlpha(fadeOut, 1.0f);
+	fadeOut.SpriteTransferVertexBuffer(fadeOut, spriteCommon, 20);
+	fadeOut.SpriteUpdate(fadeOut, spriteCommon_);
 
 	//レールカメラ初期化
 	railCamera->Initialize();
@@ -199,7 +209,19 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 	switch (sceneNum) {
 	case 0:
 		pColor = { 1,1,1,1 };
+		postEffect_->SetAlpha(1);
+		postEffect_->SetColor(pColor);
 		isPlayerE = true;
+		//railCamera->GetView()->target = player->GetPosition();
+		//railCamera->GetView()->eye.x += 0.3;
+		//railCamera->GetView()->eye.x += 0.5;
+		//viewAngle += kEyeRotSpeed;
+		//viewAngle = fmodf(viewAngle, PI * 2.0);
+		//railCamera->GetView()->eye.x = sinf(viewAngle);
+		//railCamera->GetView()->eye.y = 10;
+		//railCamera->GetView()->eye.y -= 0.1;
+		//railCamera->GetView()->eye.z -= 0.1;
+		//viewProjection->eye.x += 1;
 
 		railCamera->GetView()->target = { 0, -15, -750 };
 		//カメラ更新
@@ -212,6 +234,7 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 
 		if (input->TriggerKey(DIK_SPACE)) {
 			pColor = { 0,0,0,1 };
+			postEffect_->SetColor(pColor);
 			isTitleT = true;
 		}
 		if (isTitleT == true) {
@@ -514,6 +537,7 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 		if (isTitleT == false) {
 			title.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), title.vbView);
 			spaButton.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), spaButton.vbView);
+			//fadeOut.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), fadeOut.vbView);
 		}
 	}
 	else if (sceneNum == 1 || sceneNum == 4) {
@@ -543,7 +567,6 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 		over.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), over.vbView);
 		spaButton.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), spaButton.vbView);
 	}
-
 	//ポーズ画面描画
 	if (sceneNum == 4) {
 

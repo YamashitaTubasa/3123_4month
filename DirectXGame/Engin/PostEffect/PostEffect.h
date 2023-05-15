@@ -57,7 +57,7 @@ private:
 public:
 	void SetColor(const Vector4& color);
 	void SetBlur(const bool& blur);
-	void SetAlpha(const float& alpha);
+	void SetAlpha(float alpha);
 
 	Vector4 GetColor() const { return color_; }
 
@@ -78,6 +78,7 @@ private:
 	ComPtr<ID3D12RootSignature> rootSignature;
 	ComPtr<ID3D12Device> device;
 	ComPtr<ID3D12GraphicsCommandList> cmdList;
+	ComPtr<ID3D12Resource> constBuff = nullptr;
 	ConstBufferData* constMap = nullptr;
 
 protected:
