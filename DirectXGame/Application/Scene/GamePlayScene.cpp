@@ -200,6 +200,7 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 	switch (sceneNum) {
 	case 0:
 		pColor = { 1,1,1,1 };
+		postEffect_->SetColor(pColor);
 		isPlayerE = true;
 
 		//プレイヤー
@@ -212,7 +213,7 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		sky->Update();
 
 		if (input->TriggerKey(DIK_SPACE)) {
-			pColor = { 0,0,0,1 };
+			
 			isTitleT = true;
 		}
 		if (isTitleT == true) {
@@ -223,6 +224,8 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		if (titleT >= 100) {
 			Reset();
 			railCamera->SetPlayer(player);
+			pColor = { 0,0,0,1 };
+			postEffect_->SetColor(pColor);
 			sceneNum = 1;
 		}
 		break;
@@ -235,14 +238,14 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 
 		// ゲーム画面フェードアウト演出
 		startE++;
-		if (0 < startE && startE < 50) {
+		if (0 < startE && startE < 100) {
 			isStartE = true;
 			pColor.x += 0.02;
 			pColor.y += 0.02;
 			pColor.z += 0.02;
 			postEffect_->SetColor(pColor);
 		}
-		if (startE > 50) {
+		if (startE > 100) {
 			isStartE = false;
 			pColor = { 1,1,1,1 };
 			postEffect_->SetColor(pColor);
@@ -365,14 +368,14 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 	case 2:
 		// クリア画面フェードアウト演出
 		gClearE++;
-		if (0 < gClearE && gClearE < 50) {
+		if (0 < gClearE && gClearE < 100) {
 			isGClearE = true;
 			pColor.x += 0.02;
 			pColor.y += 0.02;
 			pColor.z += 0.02;
 			postEffect_->SetColor(pColor);
 		}
-		if (gClearE > 50) {
+		if (gClearE > 100) {
 			isGClearE = false;
 			pColor = { 1,1,1,1 };
 			postEffect_->SetColor(pColor);
@@ -387,14 +390,14 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 	case 3:
 		// ゲームオーバー画面フェードアウト演出
 		gOverE++;
-		if (0 < gOverE && gOverE < 50) {
+		if (0 < gOverE && gOverE < 100) {
 			isGOverE = true;
 			pColor.x += 0.02;
 			pColor.y += 0.02;
 			pColor.z += 0.02;
 			postEffect_->SetColor(pColor);
 		}
-		if (gOverE > 50) {
+		if (gOverE > 100) {
 			isGOverE = false;
 			pColor = { 1,1,1,1 };
 			postEffect_->SetColor(pColor);
