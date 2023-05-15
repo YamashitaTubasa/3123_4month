@@ -433,6 +433,37 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 			sceneNum = 1;
 		}
 		break;
+	case 5:	//ステージ選択画面
+		//天球
+		sky->Update();
+		floor->Update();
+		player->Update(points);
+
+		
+		//railCamera->GetCamera()->Update();
+
+		//railCamera->SetPlayer(player);
+
+		//railCamera->GetView()->target = { 0, -15, -750 };
+
+
+		//railCamera->GetView()->eye = { 0, 5, -10.0f };
+		if (input->PushKey(DIK_H)) {
+			player->SetPosition(player->GetPosition() + Vector3(0, 0, 0.5));
+			//railCamera->GetCamera()->SetPosition(railCamera->GetCamera()->GetPosition() + Vector3(0, 0, 0.5));
+			//railCamera->GetView()->eye.z -= 0.5;
+			//railCamera->TitleR(player);
+		}
+		if (input->PushKey(DIK_N)) {
+			player->SetPosition(player->GetPosition() + Vector3(0, 0, -0.5));
+		}
+		//railCamera->GetCamera()->SetPosition(player->GetPosition());
+		//プレイヤーが遠くに行ってしまうがカメラは動くようになる
+
+		//railCamera->ViewUpdate();
+		//railCamera->GetCamera()->Update();
+
+		break;
 	}
 }
 
@@ -461,7 +492,7 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 
 	sky->Draw(railCamera->GetView());
 
-	if (sceneNum == 1 || sceneNum == 4) {
+	if (sceneNum == 1 || sceneNum == 4 || sceneNum == 5) {
 		floor->Draw(railCamera->GetView());
 		//敵キャラの描画
 		for (const std::unique_ptr<Enemy>& enemy : enemys_) {
@@ -548,7 +579,7 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 
 	// 3Dオブジェクト描画前処理
 	Object3d::PreDraw(dXCommon->GetCommandList());
-	if (sceneNum == 0 || sceneNum == 1 || sceneNum == 4) {
+	if (sceneNum == 0 || sceneNum == 1 || sceneNum == 4 || sceneNum == 5) {
 		if (isPlayerE == true) {
 			////playerを画像より手前に出したい
 			player->Draw(railCamera->GetView());

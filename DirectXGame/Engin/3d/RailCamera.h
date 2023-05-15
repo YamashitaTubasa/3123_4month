@@ -30,6 +30,7 @@ public:
 	ViewProjection* GetView() { return viewProjection; }
 	bool GetIsEnd() { return isEnd; }
 
+	Object3d* GetCamera() { return camera; }
 private:
 	Input* input_ = nullptr;
 	ViewProjection* viewProjection = nullptr;
