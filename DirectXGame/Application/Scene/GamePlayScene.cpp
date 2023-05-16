@@ -199,10 +199,9 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 	switch (sceneNum) {
 	case 0:
-		pColor = { 1,1,1,1 };
-		postEffect_->SetColor(pColor);
-		isPlayerE = true;
-
+		// スタート画面フェードアウト演出
+		FadeOut();
+		
 		//プレイヤー
 		player->Update(points);
 		railCamera->GetView()->target = { 0, -15, -750 };
@@ -218,38 +217,23 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		}
 		if (isTitleT == true) {
 			railCamera->TitleR(player);
-			isPlayerE = true;
 			titleT++;
 		}
 		if (titleT >= 100) {
 			Reset();
 			railCamera->SetPlayer(player);
-			pColor = { 0,0,0,1 };
-			postEffect_->SetColor(pColor);
 			sceneNum = 1;
 		}
 		break;
 
 	case 1:
+		// ゲーム画面フェードアウト演出
+		FadeOut();
+
 		//デスフラグの立った敵を削除
 		enemys_.remove_if([](std::unique_ptr < Enemy>& enemy_) {
 			return enemy_->GetIsDead();
 			});
-
-		// ゲーム画面フェードアウト演出
-		startE++;
-		if (0 < startE && startE < 100) {
-			isStartE = true;
-			pColor.x += 0.01;
-			pColor.y += 0.01;
-			pColor.z += 0.01;
-			postEffect_->SetColor(pColor);
-		}
-		if (startE > 100) {
-			isStartE = false;
-			pColor = { 1,1,1,1 };
-			postEffect_->SetColor(pColor);
-		}
 
 		gauge.GetScale();
 
@@ -367,19 +351,7 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		//クリア
 	case 2:
 		// クリア画面フェードアウト演出
-		gClearE++;
-		if (0 < gClearE && gClearE < 100) {
-			isGClearE = true;
-			pColor.x += 0.01;
-			pColor.y += 0.01;
-			pColor.z += 0.01;
-			postEffect_->SetColor(pColor);
-		}
-		if (gClearE > 100) {
-			isGClearE = false;
-			pColor = { 1,1,1,1 };
-			postEffect_->SetColor(pColor);
-		}
+		FadeOut();
 
 		if (input->TriggerKey(DIK_SPACE)) {
 			Reset();
@@ -389,19 +361,7 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		//ゲームオーバー
 	case 3:
 		// ゲームオーバー画面フェードアウト演出
-		gOverE++;
-		if (0 < gOverE && gOverE < 100) {
-			isGOverE = true;
-			pColor.x += 0.01;
-			pColor.y += 0.01;
-			pColor.z += 0.01;
-			postEffect_->SetColor(pColor);
-		}
-		if (gOverE > 100) {
-			isGOverE = false;
-			pColor = { 1,1,1,1 };
-			postEffect_->SetColor(pColor);
-		}
+		FadeOut();
 
 		if (input->TriggerKey(DIK_SPACE)) {
 			Reset();
@@ -549,14 +509,12 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 	// 3Dオブジェクト描画前処理
 	Object3d::PreDraw(dXCommon->GetCommandList());
 	if (sceneNum == 0 || sceneNum == 1 || sceneNum == 4) {
-		if (isPlayerE == true) {
-			////playerを画像より手前に出したい
-			player->Draw(railCamera->GetView());
-			////敵キャラの描画
-			//for (const std::unique_ptr<Enemy>& enemy : enemys_) {
-			//	enemy->Draw(railCamera->GetView());
-			//}
-		}
+		////playerを画像より手前に出したい
+		player->Draw(railCamera->GetView());
+		////敵キャラの描画
+		//for (const std::unique_ptr<Enemy>& enemy : enemys_) {
+		//	enemy->Draw(railCamera->GetView());
+		//}
 	}
 	// 3Dオブジェクト描画後処理
 	Object3d::PostDraw();
@@ -852,71 +810,14 @@ void GamePlayScene::Reset()
 
 	airPosition = { 0,0,0 };
 
-	isStartE = false; // startEffectフラグ
-	startE = 0.0f; // startEffect
-	isGClearE = false; // gClearEffectフラグ
-	gClearE = 0.0f; // gClearEffect
-	isGOverE = false; // gOverEffectフラグ
-	gOverE = 0.0f; // gOverEffect
+	isFadeOut = false;
+	fadeOut = 0.0f;
 	pColor = { 0,0,0,1 }; // ポストエフェクトカラー
+	postEffect_->SetColor(pColor);
 	titleT = 0.0f;
 	isTitleT = false;
-	isPlayerE = true;
 	isClearStaging = false;
 	cStagingT = 0.0f;
-}
-
-void GamePlayScene::TitleReset()
-{
-	delete floorModel;
-	delete skyModel;
-	delete player;
-	delete floor;
-	delete sky;
-	delete viewProjection;
-	delete railCamera;
-	delete xmViewProjection;
-	delete worldTransform;
-
-	railCamera = new RailCamera;
-	xmViewProjection = new XMViewProjection();
-
-	// OBJからモデルデータを読み込む
-	floorModel = Model::LoadFromOBJ("floor");
-	skyModel = Model::LoadFromOBJ("skydome");
-
-	// 3Dオブジェクト生成
-	//床
-	floor = Object3d::Create();
-	// オブジェクトにモデルをひも付ける
-	floor->SetModel(floorModel);
-	floor->SetPosition(Vector3(0, -500, 0));
-	floor->SetScale(Vector3({ 1000, 1000, 1000 }));
-	//天球
-	sky = Object3d::Create();
-	// オブジェクトにモデルをひも付ける
-	sky->SetModel(skyModel);
-	sky->SetScale(Vector3({ 1000, 1000, 1000 }));
-
-	//player初期化
-	player = new Player;
-	player->PlayerInitialize();
-
-	//半径分だけ足元から浮いた座標を球の中心にする
-	player->SetCollider(new SphereCollider);
-
-	railCamera->Initialize();
-
-	isStartE = false; // startEffectフラグ
-	startE = 0.0f; // startEffect
-	isGClearE = false; // gClearEffectフラグ
-	gClearE = 0.0f; // gClearEffect
-	isGOverE = false; // gOverEffectフラグ
-	gOverE = 0.0f; // gOverEffect
-	pColor = { 0,0,0,1 }; // ポストエフェクトカラー
-	titleT == 0.0f;
-	isTitleT = false;
-	isPlayerE = true;
 }
 
 void GamePlayScene::CreatThreeLine(std::vector<Vector3>& points) {
@@ -937,5 +838,22 @@ void GamePlayScene::CreatThreeLine(std::vector<Vector3>& points) {
 
 	for (int i = 0; i < 3; i++) {
 		line[i]->Update();
+	}
+}
+
+void GamePlayScene::FadeOut() 
+{
+	fadeOut++;
+	if (0 < fadeOut && fadeOut < 100) {
+		isFadeOut = true;
+		if (pColor.x <= 1 && pColor.y <= 1 && pColor.z <= 1) {
+			pColor += Vector4(0.01, 0.01, 0.01, 1);
+		}
+		postEffect_->SetColor(pColor);
+	}
+	if (fadeOut > 100) {
+		isFadeOut = false;
+		pColor = { 1,1,1,1 };
+		postEffect_->SetColor(pColor);
 	}
 }
