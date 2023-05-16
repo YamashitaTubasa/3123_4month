@@ -240,9 +240,9 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		startE++;
 		if (0 < startE && startE < 100) {
 			isStartE = true;
-			pColor.x += 0.02;
-			pColor.y += 0.02;
-			pColor.z += 0.02;
+			pColor.x += 0.01;
+			pColor.y += 0.01;
+			pColor.z += 0.01;
 			postEffect_->SetColor(pColor);
 		}
 		if (startE > 100) {
@@ -370,9 +370,9 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		gClearE++;
 		if (0 < gClearE && gClearE < 100) {
 			isGClearE = true;
-			pColor.x += 0.02;
-			pColor.y += 0.02;
-			pColor.z += 0.02;
+			pColor.x += 0.01;
+			pColor.y += 0.01;
+			pColor.z += 0.01;
 			postEffect_->SetColor(pColor);
 		}
 		if (gClearE > 100) {
@@ -392,9 +392,9 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		gOverE++;
 		if (0 < gOverE && gOverE < 100) {
 			isGOverE = true;
-			pColor.x += 0.02;
-			pColor.y += 0.02;
-			pColor.z += 0.02;
+			pColor.x += 0.01;
+			pColor.y += 0.01;
+			pColor.z += 0.01;
 			postEffect_->SetColor(pColor);
 		}
 		if (gOverE > 100) {
