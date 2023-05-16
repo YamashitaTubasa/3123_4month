@@ -200,7 +200,7 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 	switch (sceneNum) {
 	case 0:
 		// スタート画面フェードアウト演出
-		FadeOut();
+		FadeOut(0.01, 100);
 
 		//プレイヤー
 		player->Update(points);
@@ -228,7 +228,7 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 
 	case 1:
 		// ゲーム画面フェードアウト演出
-		FadeOut();
+		FadeOut(0.01, 100);
 
 		//デスフラグの立った敵を削除
 		enemys_.remove_if([](std::unique_ptr < Enemy>& enemy_) {
@@ -359,7 +359,7 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		//クリア
 	case 2:
 		// クリア画面フェードアウト演出
-		FadeOut();
+		FadeOut(0.01, 100);
 
 		if (input->TriggerKey(DIK_SPACE)) {
 			Reset();
@@ -369,7 +369,7 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		//ゲームオーバー
 	case 3:
 		// ゲームオーバー画面フェードアウト演出
-		FadeOut();
+		FadeOut(0.01, 100);
 
 		if (input->TriggerKey(DIK_SPACE)) {
 			Reset();
@@ -850,13 +850,13 @@ void GamePlayScene::CreatThreeLine(std::vector<Vector3>& points) {
 	}
 }
 
-void GamePlayScene::FadeOut()
+void GamePlayScene::FadeOut(float pColor_, float fadeOutTimer_)
 {
 	fadeOut++;
-	if (0 < fadeOut && fadeOut < 100) {
+	if (0 < fadeOut && fadeOut < fadeOutTimer_) {
 		isFadeOut = true;
 		if (pColor.x <= 1) {
-			pColor += Vector4(0.01, 0.01, 0.01, 1);
+			pColor += Vector4(pColor_, pColor_, pColor_, 1);
 		}
 		postEffect_->SetColor(pColor);
 	}
