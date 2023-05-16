@@ -202,8 +202,8 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 	switch (sceneNum) {
 	case 0:
 		// スタート画面フェードアウト演出
-		FadeOut();
-		
+		FadeOut(0.01, 100);
+
 		//プレイヤー
 		player->Update(points);
 		railCamera->GetView()->target = { 0, -15, -750 };
@@ -214,7 +214,7 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		sky->Update();
 
 		if (input->TriggerKey(DIK_SPACE)) {
-			
+
 			isTitleT = true;
 		}
 		if (isTitleT == true) {
@@ -230,7 +230,7 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 
 	case 1:
 		// ゲーム画面フェードアウト演出
-		FadeOut();
+		FadeOut(0.01, 100);
 
 		//デスフラグの立った敵を削除
 		enemys_.remove_if([](std::unique_ptr < Enemy>& enemy_) {
@@ -265,22 +265,6 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 
 		gauge.SetScale(Vector2(gaugeScale.x, gaugeScale.y));
 		gauge.SpriteTransferVertexBuffer(gauge, spriteCommon, 21);
-
-		//カメラ更新
-		if (railCamera->GetIsEnd() == false) {
-			railCamera->Update(player, points);
-		}
-		//プレイヤー
-		player->Update(points);
-		//ステージ
-		//天球
-		floor->Update();
-		sky->Update();
-
-		//パーティクル
-		pm_1->Update();
-		pm_2->Update();
-		pm_dmg->Update();
 
 		// ダメージを受けた時の画面演出
 		if (player->GetIsPush() == false) {
@@ -340,11 +324,11 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		}
 		//クリア
 		if (railCamera->GetIsEnd() == true) {
-
 			cStagingT++;
 			isClearStaging = true;
 			player->SetPosition(player->GetPosition() + Vector3(0, 0, 0.8));
-			Vector3 behindVec = (railCamera->GetView()->target - railCamera->GetView()->eye)* -1;
+			player->worldTransform_.UpdateMatrix();
+			Vector3 behindVec = (railCamera->GetView()->target - railCamera->GetView()->eye) * -1;
 			behindVec /= 80;
 			railCamera->SetEye(railCamera->GetView()->eye + behindVec);
 
@@ -354,11 +338,28 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 			}
 		}
 
+
+		//カメラ更新
+		if (railCamera->GetIsEnd() == false) {
+			railCamera->Update(player, points);
+		    //プレイヤー
+			player->Update(points);
+		}
+		//ステージ
+		//天球
+		floor->Update();
+		sky->Update();
+
+		//パーティクル
+		pm_1->Update();
+		pm_2->Update();
+		pm_dmg->Update();
+      
 		break;
 		//クリア
 	case 2:
 		// クリア画面フェードアウト演出
-		FadeOut();
+		FadeOut(0.01, 100);
 
 		if (input->TriggerKey(DIK_SPACE)) {
 			Reset();
@@ -368,7 +369,7 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		//ゲームオーバー
 	case 3:
 		// ゲームオーバー画面フェードアウト演出
-		FadeOut();
+		FadeOut(0.01, 100);
 
 		if (input->TriggerKey(DIK_SPACE)) {
 			Reset();
@@ -376,7 +377,7 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		}
 		break;
 	case 4://ポーズ画面
-		postEffect_->SetColor(Vector4(0.3,0.3,0.3,1));
+		postEffect_->SetColor(Vector4(0.3, 0.3, 0.3, 1));
 		if (input->TriggerKey(DIK_W) || input->TriggerKey(DIK_UP)) {
 			if (selectPause <= 0) {
 				selectPause++;
@@ -482,7 +483,7 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 			effectR[player->GetFeverNum()].SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), effectR[player->GetFeverNum()].vbView);
 			effectL[player->GetFeverNum()].SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), effectL[player->GetFeverNum()].vbView);
 		}
-		if (player->GetAttackTime() <= 8&& player->GetIsAttack() == true)
+		if (player->GetAttackTime() <= 8 && player->GetIsAttack() == true)
 		{
 			attackEffect[player->GetAttackNum()].SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), attackEffect[player->GetAttackNum()].vbView);
 		}
@@ -728,7 +729,7 @@ void GamePlayScene::LoadAttackEffect(SpriteCommon& spriteCommon)
 	}
 }
 
-void GamePlayScene::Reset() 
+void GamePlayScene::Reset()
 {
 	delete floorModel;
 	delete skyModel;
@@ -849,13 +850,13 @@ void GamePlayScene::CreatThreeLine(std::vector<Vector3>& points) {
 	}
 }
 
-void GamePlayScene::FadeOut() 
+void GamePlayScene::FadeOut(float pColor_, float fadeOutTimer_)
 {
 	fadeOut++;
-	if (0 < fadeOut && fadeOut < 100) {
+	if (0 < fadeOut && fadeOut < fadeOutTimer_) {
 		isFadeOut = true;
-		if (pColor.x <= 1 && pColor.y <= 1 && pColor.z <= 1) {
-			pColor += Vector4(0.01, 0.01, 0.01, 1);
+		if (pColor.x <= 1) {
+			pColor += Vector4(pColor_, pColor_, pColor_, 1);
 		}
 		postEffect_->SetColor(pColor);
 	}

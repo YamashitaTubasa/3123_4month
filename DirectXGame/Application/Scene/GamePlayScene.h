@@ -72,7 +72,7 @@ public:
 	void LoadAttackEffect(SpriteCommon& spriteCommon);
 
 	// フェードアウト処理
-	void FadeOut();
+	void FadeOut(float pColor_, float fadeOutTimer_);
 
 	void Reset();
 

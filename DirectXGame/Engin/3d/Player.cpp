@@ -67,7 +67,7 @@ void Player::Update(std::vector <Vector3>& point)
 	if (GamePlayScene::GetScene() == 1)
 	{
 		//攻撃も移動もしてない時
-		if (isPush == false /*&& isMove == false*/)
+		if (isPush == false && isMove == false)
 		{
 			//SPACEキーを押したら
 			if (input->TriggerKey(DIK_SPACE))
@@ -76,21 +76,23 @@ void Player::Update(std::vector <Vector3>& point)
 				isPush = true;
 				isAttack = true;
 			}
-			//左以外の時に左キーを押したら
-			if (input->TriggerKey(DIK_A) || input->TriggerKey(DIK_LEFT))
+			if (isAttack == false)
 			{
-				if (isMove == 0 && railPos != LEFT)
+				//左以外の時に左キーを押したら
+				if (input->TriggerKey(DIK_A) || input->TriggerKey(DIK_LEFT))
 				{
-					isMove = 1;
+					if (isMove == 0 && railPos != LEFT)
+					{
+						isMove = 1;
+					}
 				}
-
-			}
-			//右以外の時に右キーを押したら
-			if (input->TriggerKey(DIK_D) || input->TriggerKey(DIK_RIGHT))
-			{
-				if (isMove == 0 && railPos != RIGHT)
+				//右以外の時に右キーを押したら
+				if (input->TriggerKey(DIK_D) || input->TriggerKey(DIK_RIGHT))
 				{
-					isMove = 2;
+					if (isMove == 0 && railPos != RIGHT)
+					{
+						isMove = 2;
+					}
 				}
 			}
 		}
@@ -130,7 +132,6 @@ void Player::Update(std::vector <Vector3>& point)
 				attackNum = 0;
 				worldTransform_.rotation_.z = 0;
 				isAttack = false;
-
 			}
 		}
 
@@ -220,6 +221,7 @@ void Player::Move(std::vector <Vector3>& point)
 		//フラグ切り替え
 		if (moveTime == 20)
 		{
+			worldTransform_.rotation_.z = 0;
 			isMove = 0;
 			moveTime = 0;
 			//場所のenum切り替え
@@ -275,7 +277,7 @@ void Player::OnCollision(const CollisionInfo& info) {
 					}
 					/*res = val / speedUpCount;*/
 					/*val -= res;*/
-					val+= 0.0025f;
+					val += 0.0025f;
 					len = 15;
 				}
 				isBurst = true;
