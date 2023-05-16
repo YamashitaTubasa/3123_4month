@@ -32,7 +32,8 @@ bool Player::PlayerInitialize() {
 	isAttack = false;
 	//変数
 	attackTime = 0;
-	val = 2000.0f;
+	val = 0.0f;
+	len = 6.0f;
 	feverTime = 0;
 	isFever = false;
 	isPush = false;
@@ -159,6 +160,11 @@ void Player::Update(std::vector <Vector3>& point)
 			}
 		}
 
+		//カメラ距離演出
+		if (len > 6) {
+			len -= 0.125f;
+		}
+
 		if (isHit == true)
 		{
 			coolTime++;
@@ -170,7 +176,7 @@ void Player::Update(std::vector <Vector3>& point)
 		}
 	}
 
-	if (val <= 500)
+	if (val >= 0.0075)
 	{
 		GoesFever();
 	}
@@ -209,10 +215,7 @@ void Player::GoesFever()
 
 		//一定時間したら通常モードへ
 		if (feverTime == 250) {
-			val = 2000.0f;
-			worldTransform_.rotation_.z = 0;
-			feverTime = 0;
-			isFever = false;
+			EndFever();
 		}
 	}
 }
@@ -226,8 +229,10 @@ void Player::OnCollision(const CollisionInfo& info) {
 					if (isGauge_ == false) {
 						isGauge_ = true;
 					}
-					res = val / speedUpCount;
-					val -= res;
+					/*res = val / speedUpCount;*/
+					/*val -= res;*/
+					val+= 0.0025f;
+					len = 15;
 				}
 				isBurst = true;
 			}
@@ -241,4 +246,11 @@ void Player::OnCollision(const CollisionInfo& info) {
 
 void Player::OffCollision(const CollisionInfo& info) {
 
+}
+
+void Player::EndFever() {
+	val = 0.0f;
+	worldTransform_.rotation_.z = 0;
+	feverTime = 0;
+	isFever = false;
 }

@@ -8,14 +8,12 @@ void Spline::Initialize() {
 	t = 0.0f;
 }
 
-Vector3 Spline::Update(std::vector<Vector3>& points, float t, float val) {
+Vector3 Spline::Update(std::vector<Vector3>& points, float val) {
 
 	//経過時間の計算
-	nowCount = GetTickCount64();
-	elapsedCount = nowCount - startCount;
-	float elapsedTime = static_cast<float> (elapsedCount) / val;
+	/*float elapsedTime = static_cast<float> (elapsedCount) / val;*/
 
-	t = elapsedTime / maxTime;
+	t = t + val;
 
 	//timeRateが1.0f以上になったら、次の区間に進む
 	if (t >= 1.0f) {
@@ -24,7 +22,6 @@ Vector3 Spline::Update(std::vector<Vector3>& points, float t, float val) {
 			startIndex++;
 
 			t -= 1.0f;
-			startCount = GetTickCount64();
 		}
 		else {
 			isEnd = true;
@@ -33,6 +30,8 @@ Vector3 Spline::Update(std::vector<Vector3>& points, float t, float val) {
 	}
 
 	Vector3 pos = SplinePosition(points, startIndex, t);
+
+	t += 0.002;
 	
 	return pos;
 }

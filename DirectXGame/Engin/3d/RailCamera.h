@@ -23,6 +23,7 @@ public:
 	void TitleR(Player* player_);
 
 	void SetPlayer(Player* player_);
+	void SetEye(Vector3 view);
 
 	//ベクトルを取得
 	void GetVec(Vector3 a, Vector3 b);
@@ -41,6 +42,7 @@ private:
 
 	//スプライン
 	Spline spline_;
+	Spline splineCam;
 
 	Vector3 rightVec = { 0, 0, 0 };
 	Vector3 leftVec = { 0, 0, 0 };

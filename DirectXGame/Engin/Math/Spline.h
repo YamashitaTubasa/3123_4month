@@ -10,7 +10,7 @@ public:
 	void Initialize();
 
 	//更新
-	Vector3 Update(std::vector<Vector3>& points,float t,float val);
+	Vector3 Update(std::vector<Vector3>& points,float val);
 
 	//更新
 	Vector3 pointCal(std::vector<Vector3>& points);
@@ -35,6 +35,7 @@ private:
 	size_t startIndex = 1;
 	bool isEnd;
 	float t;
+
 
 	//球の位置
 	Vector3 position;

@@ -187,12 +187,12 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	p7 = { 100.0f, 0.0f, 200.0 };
 	p8 = { 100.0f, 50.0f, 400.0 };
 	p9 = { -100.0f, 100.0f, 600.0 };
-	end = { -300.0f, 300.0f, 800.0f };
+	end = { -300.0f, 100.0f, 800.0f };
 
 	points = { start,start,p2,p3,p4,p5,p6,p7,p8,p9,end,end };
 
 	CreatThreeLine(points);
-
+	worldTime = 0.0f;
 
 }
 
@@ -281,7 +281,9 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		gauge.SpriteTransferVertexBuffer(gauge, spriteCommon, 21);
 
 		//カメラ更新
-		railCamera->Update(player, points);
+		if (railCamera->GetIsEnd() == false) {
+			railCamera->Update(player, points);
+		}
 		//プレイヤー
 		player->Update(points);
 		//ステージ
@@ -356,12 +358,18 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 			cStagingT++;
 			isClearStaging = true;
 			player->SetPosition(player->GetPosition() + Vector3(0, 0, 0.8));
+			Vector3 behindVec = (railCamera->GetView()->target - railCamera->GetView()->eye)* -1;
+			behindVec /= 80;
+			railCamera->SetEye(railCamera->GetView()->eye + behindVec);
 
 			if (cStagingT >= 100) {
 				sceneNum = 2;
 				isClearStaging = false;
 			}
 		}
+
+		//1ループ終わり
+		worldTime++;
 
 		break;
 		//クリア
@@ -864,6 +872,7 @@ void GamePlayScene::Reset()
 	isPlayerE = true;
 	isClearStaging = false;
 	cStagingT = 0.0f;
+	worldTime = 0.0f;
 }
 
 void GamePlayScene::TitleReset()

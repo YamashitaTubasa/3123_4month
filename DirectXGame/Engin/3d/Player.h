@@ -53,6 +53,8 @@ public:
 	int GetFeverNum() { return feverNum; }
 	const bool& GetIsBurst() { return isBurst; }
 	void SetIsBurst(const bool& isBurst) { this->isBurst = isBurst; }
+	void EndFever();
+	float GetLen() { return len; }
 
 	bool GetGaugeAdd() { return isGauge_; }
 	void SetGaugeAdd(bool isGauge) { this->isGauge_ = isGauge; }
@@ -84,6 +86,7 @@ private:
 	bool isFever;
 	int feverNum;
 	float val;
+	float len;
 
 	int speedUpCount;
 	float res;
