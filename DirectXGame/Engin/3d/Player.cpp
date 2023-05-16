@@ -25,10 +25,8 @@ bool Player::PlayerInitialize() {
 	SetPosition(Vector3(0, 0, -790));
 
 	//フラグ
-	isMove = false;
 	isHit = false;
 	coolTime = 0;
-	isOnRail = false;
 	isAttack = false;
 	//変数
 	attackTime = 0;
@@ -44,8 +42,10 @@ bool Player::PlayerInitialize() {
 	isBurst = false;
 	isGauge_ = false;
 
-	moveE = 12.0f;
+	moveE = 0.822f;
 	moveS = 0.0f;
+	moveTime = 0.0f;
+	isMove = 0;
 
 	//hp
 	hp = 3;
@@ -53,8 +53,8 @@ bool Player::PlayerInitialize() {
 	//自機の位置
 	railPos = MIDDLE;
 
-	start = 0.0;
-	end = 360.0;
+	attackS = 0.0;
+	attackE = 360.0;
 
 	return true;
 }
@@ -78,48 +78,22 @@ void Player::Update(std::vector <Vector3>& point)
 			//左以外の時に左キーを押したら
 			if (input->TriggerKey(DIK_A) || input->TriggerKey(DIK_LEFT))
 			{
-				if (railPos != LEFT)
+				if (isMove == 0 && railPos != LEFT)
 				{
-					//左隣のレールに移動する
-					for (float i = 0; i < point.size(); i++)
-					{
-						point[i].x -= 10;
-						/*point[i].x = moveS + (moveE - moveS) * -MathFunc::easeOutSine(i / 12);*/
-					}
-					//場所のenum切り替え
-					if (railPos == MIDDLE)
-					{
-						railPos = LEFT;
-					}
-					else if (railPos == RIGHT)
-					{
-						railPos = MIDDLE;
-					}
+					isMove = 1;
 				}
+
 			}
 			//右以外の時に右キーを押したら
 			if (input->TriggerKey(DIK_D) || input->TriggerKey(DIK_RIGHT))
 			{
-				if (railPos != RIGHT)
+				if (isMove == 0 && railPos != RIGHT)
 				{
-					//右隣のレールに移動する
-					for (float i = 0; i < point.size(); i++)
-					{
-						point[i].x += 10;
-						/*point[i].x = moveS + (moveE - moveS) * MathFunc::easeOutSine(i / 12);*/
-					}
-					//場所のenum切り替え
-					if (railPos == MIDDLE)
-					{
-						railPos = RIGHT;
-					}
-					else if (railPos == LEFT)
-					{
-						railPos = MIDDLE;
-					}
+					isMove = 2;
 				}
 			}
 		}
+		Move(point);
 		//攻撃中なら更新する
 		if (isPush == true) {
 
@@ -144,7 +118,7 @@ void Player::Update(std::vector <Vector3>& point)
 		if (isAttack == true)
 		{
 			attackTime++;
-			worldTransform_.rotation_.z = start + (end - start) * -MathFunc::easeOutSine(attackTime / 30);
+			worldTransform_.rotation_.z = attackS + (attackE - attackS) * -MathFunc::easeOutSine(attackTime / 30);
 			if (attackNum <= 6)
 			{
 				attackNum++;
@@ -182,6 +156,59 @@ void Player::Update(std::vector <Vector3>& point)
 	if (collider)
 	{
 		collider->Update();
+	}
+}
+
+void Player::Move(std::vector <Vector3>& point)
+{
+	if (isMove == 1)
+	{
+		//左隣のレールに移動する
+		for (float i = 0; i < point.size(); i++)
+		{
+			point[i].x -= moveS + (moveE - moveS) * MathFunc::easeOutSine(moveTime / 20);
+		}
+		moveTime++;
+		//フラグ切り替え
+		if (moveTime == 20)
+		{
+			isMove = 0;
+			moveTime = 0;
+			//場所のenum切り替え
+			if (railPos == MIDDLE)
+			{
+				railPos = LEFT;
+			}
+			else if (railPos == RIGHT)
+			{
+				railPos = MIDDLE;
+			}
+		}
+	}
+
+	if (isMove == 2)
+	{
+		//右隣のレールに移動する
+		for (float i = 0; i < point.size(); i++)
+		{
+			point[i].x += moveS + (moveE - moveS) * MathFunc::easeOutSine(moveTime / 20);
+		}
+		moveTime++;
+		//フラグ切り替え
+		if (moveTime == 20)
+		{
+			isMove = 0;
+			moveTime = 0;
+			//場所のenum切り替え
+			if (railPos == MIDDLE)
+			{
+				railPos = RIGHT;
+			}
+			else if (railPos == LEFT)
+			{
+				railPos = MIDDLE;
+			}
+		}
 	}
 }
 
