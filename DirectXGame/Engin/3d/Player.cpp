@@ -221,6 +221,7 @@ void Player::Move(std::vector <Vector3>& point)
 		//ƒtƒ‰ƒOØ‚è‘Ö‚¦
 		if (moveTime == 20)
 		{
+			worldTransform_.rotation_.z = 0;
 			isMove = 0;
 			moveTime = 0;
 			//êŠ‚ÌenumØ‚è‘Ö‚¦
