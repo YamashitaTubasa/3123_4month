@@ -27,13 +27,13 @@ public:
 
 	void Update(std::vector <Vector3>& point);
 
+	void Move(std::vector <Vector3>& point);
+
 	//衝突時コールバック関数
 	void OnCollision(const CollisionInfo& info) override;
 	void OffCollision(const CollisionInfo& info) override;
 
 	//フラグ
-	bool GetOnRail() { return isOnRail; }
-	void SetOnRail(bool isOnRail_) { this->isOnRail = isOnRail_; }
 	bool GetIsHit() { return isHit; }
 	void SetIsHit(bool isHit_) { this->isHit = isHit_; }
 
@@ -69,16 +69,11 @@ private:
 	Particle* particle = nullptr;
 	//HP
 	int hp;
-	//レールに乗っている状態
-	bool isOnRail;
-	//移動しているか
-	bool isMove;
 
 	//キーを押したか
 	bool isPush;
 	int pushTime;
 	bool isAttack;
-	float attackTime;
 	//攻撃
 	int attackNum;
 	//fever
@@ -96,12 +91,14 @@ private:
 	bool isBurst;
 	bool isGauge_;
 
-	float start;
-	float end;
+	float attackS;
+	float attackE;
+	float attackTime;
 
 	float moveS;
 	float moveE;
 	float moveTime;
+	int isMove;
 
 	//自機の位置
 	int railPos;
