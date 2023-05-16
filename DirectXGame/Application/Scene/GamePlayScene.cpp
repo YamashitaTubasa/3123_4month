@@ -855,7 +855,7 @@ void GamePlayScene::FadeOut()
 	fadeOut++;
 	if (0 < fadeOut && fadeOut < 100) {
 		isFadeOut = true;
-		if (pColor.x <= 1 && pColor.y <= 1 && pColor.z <= 1) {
+		if (pColor.x <= 1) {
 			pColor += Vector4(0.01, 0.01, 0.01, 1);
 		}
 		postEffect_->SetColor(pColor);
