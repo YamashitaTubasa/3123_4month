@@ -60,6 +60,7 @@ public:
 
 	//敵発生データの読み込み
 	void LoadEnemyPopData();
+	void LoadStage(int stageNum);
 
 	//敵発生コマンドの更新
 	void UpdateEnemyPopCommands();
@@ -201,5 +202,6 @@ private:
 
 	int selectPause;
 
-	float worldTime;
+	//ステージ
+	int stageNum;
 };

@@ -176,23 +176,25 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 
 	sceneNum = 0;
 	selectPause = 1;
+	stageNum = 49;
 
-	//制御点
-	start = { 0.0f, 0.0f, -800.0f };		//スタート地点
-	p2 = { 100.0f, 0.0f, -750.0f };			//制御点その1
-	p3 = { -200.0f, 0.0f, -600.0f };			//制御点その2
-	p4 = { -400.0f, -50.0f, -400.0 };
-	p5 = { -200.0f, 50.0f, -100.0 };
-	p6 = { -100.0f, 0.0f, 0.0 };
-	p7 = { 100.0f, 0.0f, 200.0 };
-	p8 = { 100.0f, 50.0f, 400.0 };
-	p9 = { -100.0f, 100.0f, 600.0 };
-	end = { -300.0f, 100.0f, 800.0f };
+	////制御点
+	//start = { 0.0f, 0.0f, -800.0f };		//スタート地点
+	//p2 = { 100.0f, 0.0f, -750.0f };			//制御点その1
+	//p3 = { -200.0f, 0.0f, -600.0f };			//制御点その2
+	//p4 = { -400.0f, -50.0f, -400.0 };
+	//p5 = { -200.0f, 50.0f, -100.0 };
+	//p6 = { -100.0f, 0.0f, 0.0 };
+	//p7 = { 100.0f, 0.0f, 200.0 };
+	//p8 = { 100.0f, 50.0f, 400.0 };
+	//p9 = { -100.0f, 100.0f, 600.0 };
+	//end = { -300.0f, 100.0f, 800.0f };
 
-	points = { start,start,p2,p3,p4,p5,p6,p7,p8,p9,end,end };
+	//points = { start,start,p2,p3,p4,p5,p6,p7,p8,p9,end,end };
+
+	LoadStage(stageNum);
 
 	CreatThreeLine(points);
-	worldTime = 0.0f;
 
 }
 
@@ -336,6 +338,7 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 			}
 		}
 
+
 		//カメラ更新
 		if (railCamera->GetIsEnd() == false) {
 			railCamera->Update(player, points);
@@ -351,10 +354,7 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		pm_1->Update();
 		pm_2->Update();
 		pm_dmg->Update();
-
-		//1ループ終わり
-		worldTime++;
-
+      
 		break;
 		//クリア
 	case 2:
@@ -751,6 +751,7 @@ void GamePlayScene::Reset()
 		delete line[i];
 	}
 
+	LoadStage(stageNum);
 	railCamera = new RailCamera;
 	xmViewProjection = new XMViewProjection();
 
@@ -826,7 +827,6 @@ void GamePlayScene::Reset()
 	isTitleT = false;
 	isClearStaging = false;
 	cStagingT = 0.0f;
-	worldTime = 0.0f;
 }
 
 void GamePlayScene::CreatThreeLine(std::vector<Vector3>& points) {
@@ -865,4 +865,44 @@ void GamePlayScene::FadeOut(float pColor_, float fadeOutTimer_)
 		pColor = { 1,1,1,1 };
 		postEffect_->SetColor(pColor);
 	}
+}
+
+void GamePlayScene::LoadStage(int stageNum) {
+	points.clear();
+
+	//ファイルを開く
+	std::ifstream file;
+	file.open("Resources/stagePop.csv");
+	assert(file.is_open());
+
+	HRESULT result = S_FALSE;
+
+	std::string num;
+	num = stageNum;
+
+	// １行ずつ読み込む
+	string line;
+	while (getline(file, line)) {
+
+		// １行分の文字列をストリームに変換して解析しやすくする
+		std::istringstream line_stream(line);
+
+		// 半角スパース区切りで行の先頭文字列を取得
+		string key;
+		getline(line_stream, key, ' ');
+
+
+		// 先頭文字列がｖなら頂点座標
+		if (key == "v" + num) {
+			// X,Y,Z座標読み込み
+			Vector3 position{};
+			line_stream >> position.x;
+			line_stream >> position.y;
+			line_stream >> position.z;
+			// 座標データに追加
+			points.emplace_back(position);
+		}
+	}
+	// ファイルと閉じる
+	file.close();
 }
