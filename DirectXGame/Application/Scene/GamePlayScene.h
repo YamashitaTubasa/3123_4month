@@ -197,6 +197,9 @@ private:
 	float gOverE = 0.0f; // gOverEffect
 	int isDeadT = 0.0f;
 	float pAlpha = 1.0f; // ポストエフェクトアルファ
+
+	bool isPushKey = false;
+
 	Vector4 pColor = { 0,0,0,1 };
 
 	float calRes = 0.0f;
