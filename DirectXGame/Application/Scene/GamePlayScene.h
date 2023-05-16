@@ -160,8 +160,6 @@ private:
 	//敵の打ち出すまでの時間
 	float enemyDalayTimer = 0.0f;
 
-	bool isWait_ = false;
-
 	int waitTimer = 300;
 
 	//ゲージ

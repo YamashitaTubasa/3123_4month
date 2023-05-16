@@ -56,6 +56,9 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	//敵の情報の初期化
 	LoadEnemyPopData();
 
+	//更新コマンド
+	UpdateEnemyPopCommands();
+
 	//パーティクル初期化
 	particle_1 = Particle::LoadParticleTexture("effect1.png");
 	pm_1 = ParticleManager::Create();
@@ -291,9 +294,6 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 			pm_dmg->Fire(p_dmg, 30, 0.2f, 0, 3, { 4.0f, 0.0f });
 		}
 
-		//更新コマンド
-		UpdateEnemyPopCommands();
-
 		//敵キャラの更新
 		for (const std::unique_ptr<Enemy>& enemy : enemys_) {
 			enemy->SetGameScene(this);
@@ -323,6 +323,7 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		//クリア
 		if (railCamera->GetIsEnd() == true) {
 			cStagingT++;
+			player->worldTransform_.rotation_.z = 0;
 			isClearStaging = true;
 			player->SetPosition(player->GetPosition() + Vector3(0, 0, 0.8));
 			player->worldTransform_.UpdateMatrix();
@@ -339,7 +340,7 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		//カメラ更新
 		if (railCamera->GetIsEnd() == false) {
 			railCamera->Update(player, points);
-		    //プレイヤー
+			//プレイヤー
 			player->Update(points);
 		}
 		//ステージ
@@ -483,9 +484,12 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 			effectR[player->GetFeverNum()].SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), effectR[player->GetFeverNum()].vbView);
 			effectL[player->GetFeverNum()].SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), effectL[player->GetFeverNum()].vbView);
 		}
-		if (player->GetAttackTime() <= 8 && player->GetIsAttack() == true)
+		if (railCamera->GetIsEnd() == false)
 		{
-			attackEffect[player->GetAttackNum()].SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), attackEffect[player->GetAttackNum()].vbView);
+			if (player->GetAttackTime() <= 8 && player->GetIsAttack() == true)
+			{
+				attackEffect[player->GetAttackNum()].SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), attackEffect[player->GetAttackNum()].vbView);
+			}
 		}
 		if (isBack == true) {
 			back.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), back.vbView);
@@ -568,15 +572,6 @@ void GamePlayScene::LoadEnemyPopData() {
 }
 
 void GamePlayScene::UpdateEnemyPopCommands() {
-	//待機処理
-	if (isWait_) {
-		waitTimer--;
-		if (waitTimer <= 0) {
-			//待機完了
-			isWait_ = false;
-		}
-		return;
-	}
 
 	//1桁分の文字列を入れる変数
 	std::string line;
@@ -612,21 +607,6 @@ void GamePlayScene::UpdateEnemyPopCommands() {
 
 			//敵を発生させる
 			EnemyOcurrence(Vector3(x, y, z));
-		}
-
-		//WAITコマンド
-		else if (word.find("WAIT") == 0) {
-			getline(line_stream, word, ',');
-
-			//待ち時間
-			int32_t waitTime = atoi(word.c_str());
-
-			//待機開始
-			isWait_ = true;
-			waitTimer = waitTime;
-
-			//コマンドループを抜ける
-			break;
 		}
 	}
 }
@@ -805,8 +785,6 @@ void GamePlayScene::Reset()
 	//変数
 	//敵の打ち出すまでの時間
 	enemyDalayTimer = 0.0f;
-
-	isWait_ = false;
 
 	waitTimer = 300;
 
