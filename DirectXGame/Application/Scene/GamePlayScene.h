@@ -124,6 +124,7 @@ private:
 	// スプライト
 	Sprite* sprite = nullptr;
 	Sprite hP[3];
+	Sprite HPframe;
 	Sprite gaugeFlame;
 	Sprite gauge;
 	Sprite board;
