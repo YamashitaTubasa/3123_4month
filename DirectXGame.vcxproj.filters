@@ -159,6 +159,9 @@
     <ClCompile Include="DirectXGame\Engin\Math\MathFunc.cpp">
       <Filter>ソースファイル\Engine\Math</Filter>
     </ClCompile>
+    <ClCompile Include="DirectXGame\Engin\3d\InvisibleEnemy.cpp">
+      <Filter>ソースファイル\Engine\GameObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectXGame\Engin\2d\Sprite.h">
@@ -286,6 +289,9 @@
     </ClInclude>
     <ClInclude Include="DirectXGame\Engin\Math\MathFunc.h">
       <Filter>ヘッダーファイル\Engine\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Engin\3d\InvisibleEnemy.h">
+      <Filter>ヘッダーファイル\Engine\GameObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
