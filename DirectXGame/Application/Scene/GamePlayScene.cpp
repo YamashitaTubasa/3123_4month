@@ -81,11 +81,11 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 
 	// HP
 	for (int i = 0; i < 3; i++) {
-		hP[i].LoadTexture(spriteCommon_, 3, L"Resources/hitPoint.png", dXCommon->GetDevice());
+		hP[i].LoadTexture(spriteCommon_, 3, L"Resources/lineHP.png", dXCommon->GetDevice());
 		hP[i].SetColor(Vector4(1, 1, 1, 1));
-		hP[i].SpriteCreate(dXCommon->GetDevice(), 50, 50, 3, spriteCommon, Vector2(0.0f, 0.0f), false, false);
+		hP[i].SpriteCreate(dXCommon->GetDevice(), 64, 32, 3, spriteCommon, Vector2(0.0f, 0.0f), false, false);
 		hP[i].SetPosition(Vector3(40 + (i * 60), 30, 0));
-		hP[i].SetScale(Vector2(40 * 1, 40 * 1));
+		hP[i].SetScale(Vector2(64 * 1, 32 * 1));
 		hP[i].SetRotation(0.0f);
 		hP[i].SpriteTransferVertexBuffer(hP[i], spriteCommon, 3);
 		hP[i].SpriteUpdate(hP[i], spriteCommon_);
@@ -225,6 +225,8 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		if (titleT >= 100) {
 			Reset();
 			railCamera->SetPlayer(player);
+			//pColor = { 0,0,0,1 };
+			//postEffect_->SetColor(pColor);
 			sceneNum = 1;
 		}
 		break;
@@ -394,6 +396,62 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 			Reset();
 			sceneNum = 0;
 		}
+		break;
+	case 4://ポーズ画面
+		postEffect_->SetColor(Vector4(0.3,0.3,0.3,1));
+		if (input->TriggerKey(DIK_W) || input->TriggerKey(DIK_UP)) {
+			if (selectPause <= 0) {
+				selectPause++;
+			}
+		}
+		if (input->TriggerKey(DIK_S) || input->TriggerKey(DIK_DOWN)) {
+			if (selectPause > 0) {
+				selectPause--;
+			}
+		}
+		//戻る
+		if (input->TriggerKey(DIK_SPACE)) {
+			if (selectPause == 0) {
+				Reset();
+			}
+			postEffect_->SetColor(Vector4(1, 1, 1, 1));
+			sceneNum = selectPause;
+		}
+		if (input->TriggerKey(DIK_P) || input->TriggerKey(DIK_TAB)) {
+			postEffect_->SetColor(Vector4(1, 1, 1, 1));
+			sceneNum = 1;
+		}
+		break;
+	case 5:	//ステージ選択画面
+		//天球
+		sky->Update();
+		floor->Update();
+		player->Update(points);
+
+		
+		//railCamera->GetCamera()->Update();
+
+		//railCamera->SetPlayer(player);
+
+		//railCamera->GetView()->target = { 0, -15, -750 };
+
+
+		//railCamera->GetView()->eye = { 0, 5, -10.0f };
+		if (input->PushKey(DIK_H)) {
+			player->SetPosition(player->GetPosition() + Vector3(0, 0, 0.5));
+			//railCamera->GetCamera()->SetPosition(railCamera->GetCamera()->GetPosition() + Vector3(0, 0, 0.5));
+			//railCamera->GetView()->eye.z -= 0.5;
+			//railCamera->TitleR(player);
+		}
+		if (input->PushKey(DIK_N)) {
+			player->SetPosition(player->GetPosition() + Vector3(0, 0, -0.5));
+		}
+		//railCamera->GetCamera()->SetPosition(player->GetPosition());
+		//プレイヤーが遠くに行ってしまうがカメラは動くようになる
+
+		//railCamera->ViewUpdate();
+		//railCamera->GetCamera()->Update();
+
 		break;
 	}
 }
