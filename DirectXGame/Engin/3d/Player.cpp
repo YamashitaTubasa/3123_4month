@@ -174,10 +174,19 @@ void Player::Move(std::vector <Vector3>& point)
 		{
 			point[i].x -= moveS + (moveE - moveS) * MathFunc::easeOutSine(moveTime / 20);
 		}
+		if (moveTime <= 10)
+		{
+			worldTransform_.rotation_.z += 3 * MathFunc::easeOutSine(moveTime / 10);
+		}
+		else
+		{
+			worldTransform_.rotation_.z -= 3 * MathFunc::easeOutSine(moveTime / 20);
+		}
 		moveTime++;
 		//フラグ切り替え
 		if (moveTime == 20)
 		{
+			worldTransform_.rotation_.z = 0;
 			isMove = 0;
 			moveTime = 0;
 			//場所のenum切り替え
@@ -198,6 +207,14 @@ void Player::Move(std::vector <Vector3>& point)
 		for (float i = 0; i < point.size(); i++)
 		{
 			point[i].x += moveS + (moveE - moveS) * MathFunc::easeOutSine(moveTime / 20);
+		}
+		if (moveTime <= 10)
+		{
+			worldTransform_.rotation_.z -= 3 * MathFunc::easeOutSine(moveTime / 10);
+		}
+		else
+		{
+			worldTransform_.rotation_.z += 3 * MathFunc::easeOutSine(moveTime / 20);
 		}
 		moveTime++;
 		//フラグ切り替え
