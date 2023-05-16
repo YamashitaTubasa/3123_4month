@@ -438,7 +438,6 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 			floor->Update();
 			player->Update(points);
 
-
 			//railCamera->GetCamera()->Update();
 
 			//railCamera->SetPlayer(player);
@@ -457,17 +456,17 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 				player->SetPosition(player->GetPosition() + Vector3(0, 0, -0.5));
 			}
 
-			if (input->TriggerKey(DIK_1)) {
-				if (isPushKey == false) {
-					isPushKey = true;
-				}
+			if (input->TriggerKey(DIK_RIGHT)) {
+				Num++;
 			}
 
-			if (isPushKey == true) {
-				if (input->TriggerKey(DIK_SPACE)) {
-					sceneNum = 1;
-					isPushKey = false;
-				}
+			if (input->TriggerKey(DIK_LEFT)) {
+				Num--;
+			}
+
+			if (input->TriggerKey(DIK_SPACE)) {
+				sceneNum += Num;
+				isPushKey = false;
 			}
 
 			//railCamera->GetCamera()->SetPosition(player->GetPosition());

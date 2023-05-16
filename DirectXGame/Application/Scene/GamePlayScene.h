@@ -198,6 +198,7 @@ private:
 	int isDeadT = 0.0f;
 	float pAlpha = 1.0f; // ポストエフェクトアルファ
 
+	int Num = 0;
 	bool isPushKey = false;
 
 	Vector4 pColor = { 0,0,0,1 };
