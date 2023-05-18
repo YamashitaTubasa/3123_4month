@@ -185,7 +185,7 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 
 	sceneNum = 0;
 	selectPause = 1;
-	stageNum = 49;
+	stageNum = 1;
 
 	////制御点
 	//start = { 0.0f, 0.0f, -800.0f };		//スタート地点
@@ -200,8 +200,6 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	//end = { -300.0f, 100.0f, 800.0f };
 
 	//points = { start,start,p2,p3,p4,p5,p6,p7,p8,p9,end,end };
-
-	LoadStage(stageNum);
 
 	CreatThreeLine(points);
 
@@ -461,6 +459,7 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		}
 
 
+
 		//railCamera->GetCamera()->Update();
 
 		//railCamera->SetPlayer(player);
@@ -480,7 +479,7 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		}
 
 		//ステージ選択関数
-		StageSelect(0, 1);
+		StageSelect();
 	}
 }
 
@@ -827,7 +826,9 @@ void GamePlayScene::Reset() {
 		delete line[i];
 	}
 
-	LoadStage(stageNum);
+	if (stageNum != 0) {
+		LoadStage(stageNum);
+	}
 	railCamera = new RailCamera;
 	xmViewProjection = new XMViewProjection();
 
@@ -966,31 +967,33 @@ void GamePlayScene::FadeOut(float pColor_, float fadeOutTimer_) {
 }
 
 //ステージ選択
-void GamePlayScene::StageSelect(int stageMin, int stageMax) {
+void GamePlayScene::StageSelect() {
+	static const int STAGE_MAX = 2;
 
 	//StageMaxはステージよりも一つ少なく(ゲームオーバーの一つ前まで)
 	if (input->TriggerKey(DIK_RIGHT)) {
-		if (Num < stageMax) {
-			Num++;
+		if (stageNum < STAGE_MAX) {
+			stageNum++;
 		}
 	}
 
 	//SceneNumが0よりも下にいかないように
 	if (input->TriggerKey(DIK_LEFT)) {
-		if (Num > stageMin) {
-			Num--;
+		if (stageNum > 0) {
+			stageNum--;
 		}
 	}
 
 	if (input->TriggerKey(DIK_SPACE)) {
-		sceneNum = 0;
-		sceneNum += Num;
-		FadeOut(0.01, 100);
-		player->SetPosition(Vector3(0, 0, 0));
-		Num = 0;
-		if (sceneNum == 0) {
+		if (stageNum == 0) {
 			Reset();
+			sceneNum = 0;
 		}
+		else {
+			sceneNum = 1;
+			LoadStage(stageNum);
+		}
+		FadeOut(0.01, 100);
 	}
 }
 
@@ -1005,7 +1008,7 @@ void GamePlayScene::LoadStage(int stageNum) {
 	HRESULT result = S_FALSE;
 
 	std::string num;
-	num = stageNum;
+	num = stageNum + 48;
 
 	// １行ずつ読み込む
 	string line;

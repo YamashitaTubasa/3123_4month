@@ -75,7 +75,7 @@ public:
 	void FadeOut(float pColor_, float fadeOutTimer_);
 
 	//ステージ選択
-	void StageSelect(int stageMin, int stageMax);
+	void StageSelect();
 
 	void Reset();
 
@@ -187,7 +187,6 @@ private:
 
 	float alpha = 1;
 
-	int Num = 0;
 	bool isPushKey = false;
 
 	static int sceneNum;
