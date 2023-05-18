@@ -92,11 +92,11 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	}
 
 	//gaugeFlame
-	gaugeFlame.LoadTexture(spriteCommon_, 20, L"Resources/gaugeFlame_01.png", dXCommon->GetDevice());
+	gaugeFlame.LoadTexture(spriteCommon_, 20, L"Resources/HPframe_03.png", dXCommon->GetDevice());
 	gaugeFlame.SetColor(Vector4(1, 1, 1, 1));
-	gaugeFlame.SpriteCreate(dXCommon->GetDevice(), 128, 64, 20, spriteCommon, Vector2(0.0f, 0.0f), false, false);
-	gaugeFlame.SetPosition(Vector3(45, 120, 0));
-	gaugeFlame.SetScale(Vector2(150, 20));
+	gaugeFlame.SpriteCreate(dXCommon->GetDevice(), 204, 24, 20, spriteCommon, Vector2(0.0f, 0.0f), false, false);
+	gaugeFlame.SetPosition(Vector3(35, 64, 0));
+	gaugeFlame.SetScale(Vector2(204, 24));
 	gaugeFlame.SetRotation(0.0f);
 	gaugeFlame.SpriteTransferVertexBuffer(gaugeFlame, spriteCommon, 20);
 	gaugeFlame.SpriteUpdate(gaugeFlame, spriteCommon_);
@@ -104,9 +104,9 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	//gauge
 	gauge.LoadTexture(spriteCommon_, 21, L"Resources/gauge_01.png", dXCommon->GetDevice());
 	gauge.SetColor(Vector4(1, 1, 1, 1));
-	gauge.SpriteCreate(dXCommon->GetDevice(), 110, 25, 21, spriteCommon, Vector2(0.0f, 0.5f), false, false);
+	gauge.SpriteCreate(dXCommon->GetDevice(), 110, 10, 21, spriteCommon, Vector2(0.0f, 0.5f), false, false);
 	gauge.SetPosition(Vector3(gaugePosition.x, gaugePosition.y, gaugePosition.z));
-	gauge.SetScale(Vector2(gaugeScale.x, gaugeScale.y));
+	gauge.SetScale(Vector2(gaugeScale.x, 10));
 	gauge.SetRotation(0.0f);
 	gauge.SpriteTransferVertexBuffer(gauge, spriteCommon, 21);
 	gauge.SpriteUpdate(gauge, spriteCommon_);
@@ -130,6 +130,13 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	spaButton.SetRotation(0.0f);
 	spaButton.SpriteTransferVertexBuffer(spaButton, spriteCommon, 23);
 	spaButton.SpriteUpdate(spaButton, spriteCommon_);
+
+	//斜めフレーム
+	diagonalFrame.LoadTexture(spriteCommon_, 24, L"Resources/DiaFrame_01.png", dXCommon->GetDevice());
+	diagonalFrame.SetColor(Vector4(1, 1, 1, 1));
+	diagonalFrame.SpriteCreate(dXCommon->GetDevice(), 204, 24, 24, spriteCommon, Vector2(0.0f, 0.0f), false, false);
+	diagonalFrame.SetPosition(Vector3(35, 38, 0));
+	//diagonalFrame.
 
 	LoadEffect(spriteCommon);
 	LoadAttackEffect(spriteCommon);

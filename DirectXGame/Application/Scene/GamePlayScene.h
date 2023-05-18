@@ -127,6 +127,7 @@ private:
 	Sprite HPframe;
 	Sprite gaugeFlame;
 	Sprite gauge;
+	Sprite diagonalFrame;
 	Sprite board;
 	Sprite effectL[6];
 	Sprite effectR[6];
@@ -166,9 +167,9 @@ private:
 	int waitTimer = 300;
 
 	//ゲージ
-	Vector2 gaugeScale = { 3,25 };
+	Vector2 gaugeScale = { 3,10 };
 
-	Vector3 gaugePosition = { 50,137.5f,0 };
+	Vector3 gaugePosition = { 35,64,0 };
 
 	//攻撃エフェクト
 	Vector2 airScale = { 0,0 };
