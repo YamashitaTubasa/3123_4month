@@ -49,7 +49,6 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	//player初期化
 	player = new Player;
 	player->PlayerInitialize();
-
 	//半径分だけ足元から浮いた座標を球の中心にする
 	player->SetCollider(new SphereCollider);
 
@@ -207,6 +206,18 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		// スタート画面フェードアウト演出
 		FadeOut(0.01, 100);
 
+		if (titleTimer <= 50)
+		{
+			player->worldTransform_.position_.y += MathFunc::easeInOutSine(titleTimer / 50)/30;
+		}
+		else if(titleTimer <= 100)
+		{
+			player->worldTransform_.position_.y -=MathFunc::easeInOutSine((titleTimer-50.0f) /50)/30;
+		}
+		else
+		{
+			titleTimer = 0;
+		}
 		//プレイヤー
 		player->Update(points);
 		railCamera->GetView()->target = { 0, -15, -750 };
@@ -229,6 +240,7 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 			railCamera->SetPlayer(player);
 			sceneNum = 1;
 		}
+		titleTimer++;
 		break;
 
 	case 1:
@@ -355,7 +367,7 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		pm_1->Update();
 		pm_2->Update();
 		pm_dmg->Update();
-      
+
 		break;
 		//クリア
 	case 2:

@@ -200,6 +200,9 @@ private:
 
 	int selectPause;
 
+	//タイトル画面のタイマー
+	float titleTimer;
+
 	//ステージ
 	int stageNum;
 };
