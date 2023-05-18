@@ -110,11 +110,15 @@ private:
 	Model* floorModel;
 	Model* skyModel;
 	Model* lineModel;
+	Model* builModel_02;
+	Model* builModel_03;
 	// オブジェクト
 	Player* player;
 	Enemy* enemy;
 	Object3d* floor;
 	Object3d* sky;
+	Object3d* buil_02[5];
+	Object3d* buil_03[5];
 	Line* line[3];
 	//カメラ
 	ViewProjection* viewProjection = nullptr;
