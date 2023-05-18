@@ -32,20 +32,27 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	floorModel = Model::LoadFromOBJ("floor");
 	//天球
 	skyModel = Model::LoadFromOBJ("skydome");
-
+	//ビル
+	builModel_02 = Model::LoadFromOBJ("building_02");
+	builModel_03 = Model::LoadFromOBJ("building_03");
 	// 3Dオブジェクト生成
 	//床
 	floor = Object3d::Create();
 	// オブジェクトにモデルをひも付ける
 	floor->SetModel(floorModel);
-	floor->SetPosition(Vector3(0, -500, 0));
+	floor->SetPosition(Vector3(0, -80, 0));
 	floor->SetScale(Vector3({ 1000, 1000, 1000 }));
 	//天球
 	sky = Object3d::Create();
 	// オブジェクトにモデルをひも付ける
 	sky->SetModel(skyModel);
 	sky->SetScale(Vector3({ 1000, 1000, 1000 }));
-
+	//建物
+	for (int i = 0; i < 5; i++)
+	{
+		buil_02[i] = Object3d::Create();
+		buil_03[i] = Object3d::Create();
+	}
 	//player初期化
 	player = new Player;
 	player->PlayerInitialize();
@@ -208,11 +215,11 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 
 		if (titleTimer <= 50)
 		{
-			player->worldTransform_.position_.y += MathFunc::easeInOutSine(titleTimer / 50)/30;
+			player->worldTransform_.position_.y += MathFunc::easeInOutSine(titleTimer / 50) / 30;
 		}
-		else if(titleTimer <= 100)
+		else if (titleTimer <= 100)
 		{
-			player->worldTransform_.position_.y -=MathFunc::easeInOutSine((titleTimer-50.0f) /50)/30;
+			player->worldTransform_.position_.y -= MathFunc::easeInOutSine((titleTimer - 50.0f) / 50) / 30;
 		}
 		else
 		{
@@ -226,6 +233,11 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		//天球
 		floor->Update();
 		sky->Update();
+		for (int i = 0; i < 5; i++)
+		{
+			buil_02[i]->Update();
+			buil_03[i]->Update();
+		}
 
 		if (input->TriggerKey(DIK_SPACE)) {
 
@@ -362,6 +374,11 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		//天球
 		floor->Update();
 		sky->Update();
+		for (int i = 0; i < 5; i++)
+		{
+			buil_02[i]->Update();
+			buil_03[i]->Update();
+		}
 
 		//パーティクル
 		pm_1->Update();
@@ -444,6 +461,11 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 
 	if (sceneNum == 1 || sceneNum == 4) {
 		floor->Draw(railCamera->GetView());
+		for (int i = 0; i < 5; i++)
+		{
+			buil_02[i]->Draw(railCamera->GetView());
+			buil_03[i]->Draw(railCamera->GetView());
+		}
 		//敵キャラの描画
 		for (const std::unique_ptr<Enemy>& enemy : enemys_) {
 			enemy->Draw(railCamera->GetView());
@@ -551,6 +573,12 @@ void GamePlayScene::Finalize() {
 	delete enemy;
 	delete floor;
 	delete floorModel;
+	for (int i = 0; i < 5; i++)
+	{
+		delete buil_02[i];
+		delete buil_03[i];
+	}
+	delete builModel_03;
 	delete sky;
 	delete skyModel;
 
@@ -725,10 +753,17 @@ void GamePlayScene::Reset()
 {
 	delete floorModel;
 	delete skyModel;
+	delete builModel_02;
+	delete builModel_03;
 	delete player;
 	delete enemy;
 	delete floor;
 	delete sky;
+	for (int i = 0; i < 5; i++)
+	{
+		delete buil_02[i];
+		delete buil_03[i];
+	}
 	delete viewProjection;
 	delete railCamera;
 	delete xmViewProjection;
@@ -750,19 +785,44 @@ void GamePlayScene::Reset()
 	// OBJからモデルデータを読み込む
 	floorModel = Model::LoadFromOBJ("floor");
 	skyModel = Model::LoadFromOBJ("skydome");
+	builModel_02 = Model::LoadFromOBJ("building_02");
+	builModel_03 = Model::LoadFromOBJ("building_03");
 
 	// 3Dオブジェクト生成
 	//床
 	floor = Object3d::Create();
 	// オブジェクトにモデルをひも付ける
 	floor->SetModel(floorModel);
-	floor->SetPosition(Vector3(0, -500, 0));
-	floor->SetScale(Vector3({ 1000, 1000, 1000 }));
+	floor->SetPosition(Vector3(0, -80, 0));
+	floor->SetScale(Vector3({ 1000, 1, 1000 }));
 	//天球
 	sky = Object3d::Create();
 	// オブジェクトにモデルをひも付ける
 	sky->SetModel(skyModel);
 	sky->SetScale(Vector3({ 1000, 1000, 1000 }));
+	//建物
+	for (int i = 0; i < 5; i++)
+	{
+		buil_02[i] = Object3d::Create();
+		buil_03[i] = Object3d::Create();
+		// オブジェクトにモデルをひも付ける
+		buil_02[i]->SetModel(builModel_02);
+		buil_02[i]->SetScale(Vector3({ 20, 20, 20 }));
+		// オブジェクトにモデルをひも付ける
+		buil_03[i]->SetModel(builModel_03);
+		buil_03[i]->SetScale(Vector3({ 10, 10, 10 }));
+	}
+	buil_02[0]->SetPosition(Vector3(200, -60, -750));
+	buil_02[1]->SetPosition(Vector3(-350, -60, -575));
+	buil_02[2]->SetPosition(Vector3(-200 ,-60 ,- 100));
+	buil_02[3]->SetPosition(Vector3(170, -60, 200));
+	buil_02[4]->SetPosition(Vector3(-200, -60, 600));
+
+	buil_03[0]->SetPosition(Vector3(70, -60, -750));
+	buil_03[1]->SetPosition(Vector3(-175, -60, -575));
+	buil_03[2]->SetPosition(Vector3(-360, -60, -375));
+	buil_03[3]->SetPosition(Vector3(70, -60, 200));
+	buil_03[4]->SetPosition(Vector3(-100, -60, 600));
 
 	//player初期化
 	player = new Player;
