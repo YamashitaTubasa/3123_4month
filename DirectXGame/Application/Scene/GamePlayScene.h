@@ -74,6 +74,9 @@ public:
 	// フェードアウト処理
 	void FadeOut(float pColor_, float fadeOutTimer_);
 
+	//ステージ選択
+	void StageSelect(int stageMin, int stageMax);
+
 	void Reset();
 
 	static int GetScene() { return sceneNum; }
@@ -179,6 +182,9 @@ private:
 	const float PI = 3.141592;
 
 	float alpha = 1;
+
+	int Num = 0;
+	bool isPushKey = false;
 
 	static int sceneNum;
 
