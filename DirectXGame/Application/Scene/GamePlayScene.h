@@ -74,6 +74,9 @@ public:
 	// フェードアウト処理
 	void FadeOut(float pColor_, float fadeOutTimer_);
 
+	//ステージ選択
+	void StageSelect(int stageMin, int stageMax);
+
 	void Reset();
 
 	static int GetScene() { return sceneNum; }
@@ -107,11 +110,15 @@ private:
 	Model* floorModel;
 	Model* skyModel;
 	Model* lineModel;
+	Model* builModel_02;
+	Model* builModel_03;
 	// オブジェクト
 	Player* player;
 	Enemy* enemy;
 	Object3d* floor;
 	Object3d* sky;
+	Object3d* buil_02[5];
+	Object3d* buil_03[5];
 	Line* line[3];
 	//カメラ
 	ViewProjection* viewProjection = nullptr;
@@ -180,6 +187,9 @@ private:
 
 	float alpha = 1;
 
+	int Num = 0;
+	bool isPushKey = false;
+
 	static int sceneNum;
 
 
@@ -199,6 +209,9 @@ private:
 	float calRes = 0.0f;
 
 	int selectPause;
+
+	//タイトル画面のタイマー
+	float titleTimer;
 
 	//ステージ
 	int stageNum;

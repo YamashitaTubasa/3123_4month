@@ -15,8 +15,8 @@ bool Building::BuildingInitialize()
 	}
 
 	// OBJからモデルデータを読み込む
-	buildingModel01 = Model::LoadFromOBJ("building_01");
-	buildingModel02 = Model::LoadFromOBJ("building_02");
+	/*buildingModel01 = Model::LoadFromOBJ("building_01");
+	buildingModel02 = Model::LoadFromOBJ("building_02");*/
 	buildingModel03 = Model::LoadFromOBJ("building_03");
 
 	// 3Dオブジェクト生成
