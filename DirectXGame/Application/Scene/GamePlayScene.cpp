@@ -102,7 +102,7 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	gaugeFlame.SpriteUpdate(gaugeFlame, spriteCommon_);
 
 	//gauge
-	gauge.LoadTexture(spriteCommon_, 21, L"Resources/gauge_01.png", dXCommon->GetDevice());
+	gauge.LoadTexture(spriteCommon_, 21, L"Resources/gauge_02.png", dXCommon->GetDevice());
 	gauge.SetColor(Vector4(1, 1, 1, 1));
 	gauge.SpriteCreate(dXCommon->GetDevice(), 110, 10, 21, spriteCommon, Vector2(0.0f, 0.5f), false, false);
 	gauge.SetPosition(Vector3(gaugePosition.x, gaugePosition.y, gaugePosition.z));
