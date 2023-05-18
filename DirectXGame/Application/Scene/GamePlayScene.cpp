@@ -202,57 +202,54 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 
 void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 	switch (sceneNum) {
-	case 0:
-		// スタート画面フェードアウト演出
-		FadeOut(0.01, 100);
+		case 0:
+			// スタート画面フェードアウト演出
+			FadeOut(0.01, 100);
 
-		if (titleTimer <= 50)
-		{
-			player->worldTransform_.position_.y += MathFunc::easeInOutSine(titleTimer / 50)/30;
-		}
-		else if(titleTimer <= 100)
-		{
-			player->worldTransform_.position_.y -=MathFunc::easeInOutSine((titleTimer-50.0f) /50)/30;
-		}
-		else
-		{
-			titleTimer = 0;
-		}
-		//プレイヤー
-		player->Update(points);
-		railCamera->GetView()->target = { 0, -15, -750 };
-		//カメラ更新
-		railCamera->ViewUpdate();
-		//天球
-		floor->Update();
-		sky->Update();
+			if (titleTimer <= 50) {
+				player->worldTransform_.position_.y += MathFunc::easeInOutSine(titleTimer / 50) / 30;
+			}
+			else if (titleTimer <= 100) {
+				player->worldTransform_.position_.y -= MathFunc::easeInOutSine((titleTimer - 50.0f) / 50) / 30;
+			}
+			else {
+				titleTimer = 0;
+			}
+			//プレイヤー
+			player->Update(points);
+			railCamera->GetView()->target = { 0, -15, -750 };
+			//カメラ更新
+			railCamera->ViewUpdate();
+			//天球
+			floor->Update();
+			sky->Update();
 
-		if (input->TriggerKey(DIK_SPACE)) {
+			if (input->TriggerKey(DIK_SPACE)) {
 
-			isTitleT = true;
-		}
-		if (isTitleT == true) {
-			railCamera->TitleR(player);
-			titleT++;
-		}
-		if (titleT >= 100) {
-			Reset();
-			railCamera->SetPlayer(player);
-			sceneNum = 1;
-		}
-		titleTimer++;
-		break;
+				isTitleT = true;
+			}
+			if (isTitleT == true) {
+				railCamera->TitleR(player);
+				titleT++;
+			}
+			if (titleT >= 100) {
+				Reset();
+				railCamera->SetPlayer(player);
+				sceneNum = 5;
+			}
+			titleTimer++;
+			break;
 
-	case 1:
-		// ゲーム画面フェードアウト演出
-		FadeOut(0.01, 100);
+		case 1:
+			// ゲーム画面フェードアウト演出
+			FadeOut(0.01, 100);
 
-		//デスフラグの立った敵を削除
-		enemys_.remove_if([](std::unique_ptr < Enemy>& enemy_) {
-			return enemy_->GetIsDead();
-			});
+			//デスフラグの立った敵を削除
+			enemys_.remove_if([](std::unique_ptr < Enemy>& enemy_) {
+				return enemy_->GetIsDead();
+							  });
 
-		gauge.GetScale();
+			gauge.GetScale();
 
 			if (isMaxGauge == true) {
 				if (gaugeScale.x >= 4) {
@@ -281,20 +278,19 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 			gauge.SetScale(Vector2(gaugeScale.x, gaugeScale.y));
 			gauge.SpriteTransferVertexBuffer(gauge, spriteCommon, 21);
 
-		// ダメージを受けた時の画面演出
-		if (player->GetIsPush() == false) {
-			if (player->GetIsHit() == true)
-			{
-				isBack = true;
+			// ダメージを受けた時の画面演出
+			if (player->GetIsPush() == false) {
+				if (player->GetIsHit() == true) {
+					isBack = true;
+				}
 			}
-		}
-		if (isBack == true) {
-			backT++;
-		}
-		if (backT >= 50) {
-			isBack = false;
-			backT = 0.0f;
-		}
+			if (isBack == true) {
+				backT++;
+			}
+			if (backT >= 50) {
+				isBack = false;
+				backT = 0.0f;
+			}
 
 			// 敵を倒した時の演出
 			if (player->GetIsBurst() == true) {
@@ -308,11 +304,11 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 				pm_dmg->Fire(p_dmg, 30, 0.2f, 0, 3, { 4.0f, 0.0f });
 			}
 
-		//敵キャラの更新
-		for (const std::unique_ptr<Enemy>& enemy : enemys_) {
-			enemy->SetGameScene(this);
-			enemy->Update();
-		}
+			//敵キャラの更新
+			for (const std::unique_ptr<Enemy>& enemy : enemys_) {
+				enemy->SetGameScene(this);
+				enemy->Update();
+			}
 
 			//全ての衝突をチェック
 			collisionManager->CheckAllCollisions();
@@ -330,20 +326,20 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 				sceneNum = 4;
 			}
 
-		//ゲームオーバー
-		if (player->GetHP() == 0) {
-			sceneNum = 3;
-		}
-		//クリア
-		if (railCamera->GetIsEnd() == true) {
-			cStagingT++;
-			player->worldTransform_.rotation_.z = 0;
-			isClearStaging = true;
-			player->SetPosition(player->GetPosition() + Vector3(0, 0, 0.8));
-			player->worldTransform_.UpdateMatrix();
-			Vector3 behindVec = (railCamera->GetView()->target - railCamera->GetView()->eye) * -1;
-			behindVec /= 80;
-			railCamera->SetEye(railCamera->GetView()->eye + behindVec);
+			//ゲームオーバー
+			if (player->GetHP() == 0) {
+				sceneNum = 3;
+			}
+			//クリア
+			if (railCamera->GetIsEnd() == true) {
+				cStagingT++;
+				player->worldTransform_.rotation_.z = 0;
+				isClearStaging = true;
+				player->SetPosition(player->GetPosition() + Vector3(0, 0, 0.8));
+				player->worldTransform_.UpdateMatrix();
+				Vector3 behindVec = (railCamera->GetView()->target - railCamera->GetView()->eye) * -1;
+				behindVec /= 80;
+				railCamera->SetEye(railCamera->GetView()->eye + behindVec);
 
 				if (cStagingT >= 100) {
 					sceneNum = 2;
@@ -352,68 +348,115 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 			}
 
 
-		//カメラ更新
-		if (railCamera->GetIsEnd() == false) {
-			railCamera->Update(player, points);
-			//プレイヤー
-			player->Update(points);
-		}
-		//ステージ
-		//天球
-		floor->Update();
-		sky->Update();
-
-		//パーティクル
-		pm_1->Update();
-		pm_2->Update();
-		pm_dmg->Update();
-
-		break;
-		//クリア
-	case 2:
-		// クリア画面フェードアウト演出
-		FadeOut(0.01, 100);
-
-		if (input->TriggerKey(DIK_SPACE)) {
-			Reset();
-			sceneNum = 0;
-		}
-		break;
-		//ゲームオーバー
-	case 3:
-		// ゲームオーバー画面フェードアウト演出
-		FadeOut(0.01, 100);
-
-		if (input->TriggerKey(DIK_SPACE)) {
-			Reset();
-			sceneNum = 0;
-		}
-		break;
-	case 4://ポーズ画面
-		postEffect_->SetColor(Vector4(0.3, 0.3, 0.3, 1));
-		if (input->TriggerKey(DIK_W) || input->TriggerKey(DIK_UP)) {
-			if (selectPause <= 0) {
-				selectPause++;
+			//カメラ更新
+			if (railCamera->GetIsEnd() == false) {
+				railCamera->Update(player, points);
+				//プレイヤー
+				player->Update(points);
 			}
-		}
-		if (input->TriggerKey(DIK_S) || input->TriggerKey(DIK_DOWN)) {
-			if (selectPause > 0) {
-				selectPause--;
-			}
-		}
-		//戻る
-		if (input->TriggerKey(DIK_SPACE)) {
-			if (selectPause == 0) {
+			//ステージ
+			//天球
+			floor->Update();
+			sky->Update();
+
+			//パーティクル
+			pm_1->Update();
+			pm_2->Update();
+			pm_dmg->Update();
+
+			break;
+			//クリア
+		case 2:
+			// クリア画面フェードアウト演出
+			FadeOut(0.01, 100);
+
+			if (input->TriggerKey(DIK_SPACE)) {
 				Reset();
+				sceneNum = 0;
 			}
-			postEffect_->SetColor(Vector4(1, 1, 1, 1));
-			sceneNum = selectPause;
-		}
-		if (input->TriggerKey(DIK_P) || input->TriggerKey(DIK_TAB)) {
-			postEffect_->SetColor(Vector4(1, 1, 1, 1));
-			sceneNum = 1;
-		}
-		break;
+			break;
+			//ゲームオーバー
+		case 3:
+			// ゲームオーバー画面フェードアウト演出
+			FadeOut(0.01, 100);
+
+			if (input->TriggerKey(DIK_SPACE)) {
+				Reset();
+				sceneNum = 0;
+			}
+			break;
+		case 4://ポーズ画面
+			postEffect_->SetColor(Vector4(0.3, 0.3, 0.3, 1));
+			if (input->TriggerKey(DIK_W) || input->TriggerKey(DIK_UP)) {
+				if (selectPause <= 0) {
+					selectPause++;
+				}
+			}
+			if (input->TriggerKey(DIK_S) || input->TriggerKey(DIK_DOWN)) {
+				if (selectPause > 0) {
+					selectPause--;
+				}
+			}
+			//戻る
+			if (input->TriggerKey(DIK_SPACE)) {
+				if (selectPause == 0) {
+					Reset();
+				}
+				postEffect_->SetColor(Vector4(1, 1, 1, 1));
+				sceneNum = selectPause;
+			}
+			if (input->TriggerKey(DIK_P) || input->TriggerKey(DIK_TAB)) {
+				postEffect_->SetColor(Vector4(1, 1, 1, 1));
+				sceneNum = 1;
+			}
+			break;
+		case 5:
+			FadeOut(0.01, 100);
+
+			//天球
+			sky->Update();
+			floor->Update();
+			player->Update(points);
+
+			//railCamera->GetCamera()->Update();
+
+			//railCamera->SetPlayer(player);
+
+			//railCamera->GetView()->target = { 0, -15, -750 };
+
+
+			//railCamera->GetView()->eye = { 0, 5, -10.0f };
+			if (input->PushKey(DIK_H)) {
+				player->SetPosition(player->GetPosition() + Vector3(0, 0, 0.5));
+				//railCamera->GetCamera()->SetPosition(railCamera->GetCamera()->GetPosition() + Vector3(0, 0, 0.5));
+				//railCamera->GetView()->eye.z -= 0.5;
+				//railCamera->TitleR(player);
+			}
+			if (input->PushKey(DIK_N)) {
+				player->SetPosition(player->GetPosition() + Vector3(0, 0, -0.5));
+			}
+
+			if (input->TriggerKey(DIK_RIGHT)) {
+				if (Num < 1) {
+					Num++;
+				}
+			}
+
+			if (input->TriggerKey(DIK_LEFT)) {
+				if (Num > 0) {
+					Num--;
+				}
+			}
+
+			if (input->TriggerKey(DIK_SPACE)) {
+				sceneNum = 0;
+				sceneNum += Num;
+				player->SetPosition(Vector3(0, 0, 0));
+				Num = 0;
+				if (sceneNum == 0) {
+					Reset();
+				}
+			}
 	}
 }
 
@@ -441,12 +484,16 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 
 	sky->Draw(railCamera->GetView());
 
-	if (sceneNum == 1 || sceneNum == 4 || sceneNum == 5) {
+	if (sceneNum == 1 || sceneNum == 4) {
 		floor->Draw(railCamera->GetView());
 		//敵キャラの描画
 		for (const std::unique_ptr<Enemy>& enemy : enemys_) {
 			enemy->Draw(railCamera->GetView());
 		}
+	}
+
+	if (sceneNum == 5) {
+		floor->Draw(railCamera->GetView());
 	}
 
 	// 3Dオブジェクト描画後処理
@@ -495,10 +542,8 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 			effectR[player->GetFeverNum()].SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), effectR[player->GetFeverNum()].vbView);
 			effectL[player->GetFeverNum()].SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), effectL[player->GetFeverNum()].vbView);
 		}
-		if (railCamera->GetIsEnd() == false)
-		{
-			if (player->GetAttackTime() <= 8 && player->GetIsAttack() == true)
-			{
+		if (railCamera->GetIsEnd() == false) {
+			if (player->GetAttackTime() <= 8 && player->GetIsAttack() == true) {
 				attackEffect[player->GetAttackNum()].SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), attackEffect[player->GetAttackNum()].vbView);
 			}
 		}
@@ -531,7 +576,7 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 
 	// 3Dオブジェクト描画前処理
 	Object3d::PreDraw(dXCommon->GetCommandList());
-	if (sceneNum == 0 || sceneNum == 1 || sceneNum == 4) {
+	if (sceneNum == 0 || sceneNum == 1 || sceneNum == 4 || sceneNum == 5) {
 		////playerを画像より手前に出したい
 		player->Draw(railCamera->GetView());
 		////敵キャラの描画
@@ -719,8 +764,7 @@ void GamePlayScene::LoadAttackEffect(SpriteCommon& spriteCommon) {
 	}
 }
 
-void GamePlayScene::Reset()
-{
+void GamePlayScene::Reset() {
 	delete floorModel;
 	delete skyModel;
 	delete player;
@@ -838,8 +882,7 @@ void GamePlayScene::CreatThreeLine(std::vector<Vector3>& points) {
 	}
 }
 
-void GamePlayScene::FadeOut(float pColor_, float fadeOutTimer_)
-{
+void GamePlayScene::FadeOut(float pColor_, float fadeOutTimer_) {
 	fadeOut++;
 	if (0 < fadeOut && fadeOut < fadeOutTimer_) {
 		isFadeOut = true;
