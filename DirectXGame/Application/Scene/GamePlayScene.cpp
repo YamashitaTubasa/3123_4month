@@ -48,8 +48,7 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	sky->SetModel(skyModel);
 	sky->SetScale(Vector3({ 1000, 1000, 1000 }));
 	//建物
-	for (int i = 0; i < 5; i++)
-	{
+	for (int i = 0; i < 5; i++) {
 		buil_02[i] = Object3d::Create();
 		buil_03[i] = Object3d::Create();
 	}
@@ -209,35 +208,31 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 
 void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 	switch (sceneNum) {
-	case 0:
-		// スタート画面フェードアウト演出
-		FadeOut(0.01, 100);
+		case 0:
+			// スタート画面フェードアウト演出
+			FadeOut(0.01, 100);
 
-		if (titleTimer <= 50)
-		{
-			player->worldTransform_.position_.y += MathFunc::easeInOutSine(titleTimer / 50) / 30;
-		}
-		else if (titleTimer <= 100)
-		{
-			player->worldTransform_.position_.y -= MathFunc::easeInOutSine((titleTimer - 50.0f) / 50) / 30;
-		}
-		else
-		{
-			titleTimer = 0;
-		}
-		//プレイヤー
-		player->Update(points);
-		railCamera->GetView()->target = { 0, -15, -750 };
-		//カメラ更新
-		railCamera->ViewUpdate();
-		//天球
-		floor->Update();
-		sky->Update();
-		for (int i = 0; i < 5; i++)
-		{
-			buil_02[i]->Update();
-			buil_03[i]->Update();
-		}
+			if (titleTimer <= 50) {
+				player->worldTransform_.position_.y += MathFunc::easeInOutSine(titleTimer / 50) / 30;
+			}
+			else if (titleTimer <= 100) {
+				player->worldTransform_.position_.y -= MathFunc::easeInOutSine((titleTimer - 50.0f) / 50) / 30;
+			}
+			else {
+				titleTimer = 0;
+			}
+			//プレイヤー
+			player->Update(points);
+			railCamera->GetView()->target = { 0, -15, -750 };
+			//カメラ更新
+			railCamera->ViewUpdate();
+			//天球
+			floor->Update();
+			sky->Update();
+			for (int i = 0; i < 5; i++) {
+				buil_02[i]->Update();
+				buil_03[i]->Update();
+			}
 
 			if (titleTimer <= 50) {
 				player->worldTransform_.position_.y += MathFunc::easeInOutSine(titleTimer / 50) / 30;
@@ -450,16 +445,15 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 			sky->Update();
 			floor->Update();
 			player->Update(points);
-		//ステージ
-		//天球
-		floor->Update();
-		sky->Update();
-		for (int i = 0; i < 5; i++)
-		{
-			buil_02[i]->Update();
-			buil_03[i]->Update();
-		}
 
+			//ステージ
+			//天球
+			floor->Update();
+			sky->Update();
+			for (int i = 0; i < 5; i++) {
+				buil_02[i]->Update();
+				buil_03[i]->Update();
+			}
 
 			//railCamera->GetCamera()->Update();
 
@@ -510,8 +504,7 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 
 	if (sceneNum == 1 || sceneNum == 4) {
 		floor->Draw(railCamera->GetView());
-		for (int i = 0; i < 5; i++)
-		{
+		for (int i = 0; i < 5; i++) {
 			buil_02[i]->Draw(railCamera->GetView());
 			buil_03[i]->Draw(railCamera->GetView());
 		}
@@ -624,8 +617,7 @@ void GamePlayScene::Finalize() {
 	delete enemy;
 	delete floor;
 	delete floorModel;
-	for (int i = 0; i < 5; i++)
-	{
+	for (int i = 0; i < 5; i++) {
 		delete buil_02[i];
 		delete buil_03[i];
 	}
@@ -808,8 +800,7 @@ void GamePlayScene::Reset() {
 	delete enemy;
 	delete floor;
 	delete sky;
-	for (int i = 0; i < 5; i++)
-	{
+	for (int i = 0; i < 5; i++) {
 		delete buil_02[i];
 		delete buil_03[i];
 	}
@@ -850,8 +841,7 @@ void GamePlayScene::Reset() {
 	sky->SetModel(skyModel);
 	sky->SetScale(Vector3({ 1000, 1000, 1000 }));
 	//建物
-	for (int i = 0; i < 5; i++)
-	{
+	for (int i = 0; i < 5; i++) {
 		buil_02[i] = Object3d::Create();
 		buil_03[i] = Object3d::Create();
 		// オブジェクトにモデルをひも付ける
@@ -863,7 +853,7 @@ void GamePlayScene::Reset() {
 	}
 	buil_02[0]->SetPosition(Vector3(200, -60, -750));
 	buil_02[1]->SetPosition(Vector3(-350, -60, -575));
-	buil_02[2]->SetPosition(Vector3(-200 ,-60 ,- 100));
+	buil_02[2]->SetPosition(Vector3(-200, -60, -100));
 	buil_02[3]->SetPosition(Vector3(170, -60, 200));
 	buil_02[4]->SetPosition(Vector3(-200, -60, 600));
 
@@ -969,25 +959,25 @@ void GamePlayScene::FadeOut(float pColor_, float fadeOutTimer_) {
 void GamePlayScene::StageSelect(int stageMin, int stageMax) {
 
 	//StageMaxはステージよりも一つ少なく(ゲームオーバーの一つ前まで)
-	if (input->TriggerKey(DIK_RIGHT)) {
-		if (Num < stageMax) {
-			Num++;
+	if (input->TriggerKey(DIK_RIGHT) || input->TriggerKey(DIK_W)) {
+		if (selectNum < stageMax) {
+			selectNum++;
 		}
 	}
 
 	//SceneNumが0よりも下にいかないように
-	if (input->TriggerKey(DIK_LEFT)) {
-		if (Num > stageMin) {
-			Num--;
+	if (input->TriggerKey(DIK_LEFT) || input->TriggerKey(DIK_S)) {
+		if (selectNum > stageMin) {
+			selectNum--;
 		}
 	}
 
 	if (input->TriggerKey(DIK_SPACE)) {
 		sceneNum = 0;
-		sceneNum += Num;
+		sceneNum += selectNum;
 		FadeOut(0.01, 100);
 		player->SetPosition(Vector3(0, 0, 0));
-		Num = 0;
+		selectNum = 0;
 		if (sceneNum == 0) {
 			Reset();
 		}

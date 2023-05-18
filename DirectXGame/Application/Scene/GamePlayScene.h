@@ -187,7 +187,7 @@ private:
 
 	float alpha = 1;
 
-	int Num = 0;
+	int selectNum = 0;
 	bool isPushKey = false;
 
 	static int sceneNum;
