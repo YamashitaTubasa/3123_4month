@@ -25,14 +25,13 @@ bool Player::PlayerInitialize() {
 	SetPosition(Vector3(0, 0, -790));
 
 	//フラグ
-	isMove = false;
 	isHit = false;
 	coolTime = 0;
-	isOnRail = false;
 	isAttack = false;
 	//変数
 	attackTime = 0;
-	val = 2000.0f;
+	val = 0.0f;
+	len = 6.0f;
 	feverTime = 0;
 	isFever = false;
 	isPush = false;
@@ -44,8 +43,10 @@ bool Player::PlayerInitialize() {
 	isBurst = false;
 	isGauge_ = false;
 
-	moveE = 12.0f;
+	moveE = 0.822f;
 	moveS = 0.0f;
+	moveTime = 0.0f;
+	isMove = 0;
 
 	//hp
 	hp = 3;
@@ -53,8 +54,8 @@ bool Player::PlayerInitialize() {
 	//自機の位置
 	railPos = MIDDLE;
 
-	start = 0.0;
-	end = 360.0;
+	attackS = 0.0;
+	attackE = 360.0;
 
 	return true;
 }
@@ -66,7 +67,7 @@ void Player::Update(std::vector <Vector3>& point)
 	if (GamePlayScene::GetScene() == 1)
 	{
 		//攻撃も移動もしてない時
-		if (isPush == false /*&& isMove == false*/)
+		if (isPush == false && isMove == false)
 		{
 			//SPACEキーを押したら
 			if (input->TriggerKey(DIK_SPACE))
@@ -75,51 +76,27 @@ void Player::Update(std::vector <Vector3>& point)
 				isPush = true;
 				isAttack = true;
 			}
-			//左以外の時に左キーを押したら
-			if (input->TriggerKey(DIK_A) || input->TriggerKey(DIK_LEFT))
+			if (isAttack == false)
 			{
-				if (railPos != LEFT)
+				//左以外の時に左キーを押したら
+				if (input->TriggerKey(DIK_A) || input->TriggerKey(DIK_LEFT))
 				{
-					//左隣のレールに移動する
-					for (float i = 0; i < point.size(); i++)
+					if (isMove == 0 && railPos != LEFT)
 					{
-						point[i].x -= 10;
-						/*point[i].x = moveS + (moveE - moveS) * -MathFunc::easeOutSine(i / 12);*/
-					}
-					//場所のenum切り替え
-					if (railPos == MIDDLE)
-					{
-						railPos = LEFT;
-					}
-					else if (railPos == RIGHT)
-					{
-						railPos = MIDDLE;
+						isMove = 1;
 					}
 				}
-			}
-			//右以外の時に右キーを押したら
-			if (input->TriggerKey(DIK_D) || input->TriggerKey(DIK_RIGHT))
-			{
-				if (railPos != RIGHT)
+				//右以外の時に右キーを押したら
+				if (input->TriggerKey(DIK_D) || input->TriggerKey(DIK_RIGHT))
 				{
-					//右隣のレールに移動する
-					for (float i = 0; i < point.size(); i++)
+					if (isMove == 0 && railPos != RIGHT)
 					{
-						point[i].x += 10;
-						/*point[i].x = moveS + (moveE - moveS) * MathFunc::easeOutSine(i / 12);*/
-					}
-					//場所のenum切り替え
-					if (railPos == MIDDLE)
-					{
-						railPos = RIGHT;
-					}
-					else if (railPos == LEFT)
-					{
-						railPos = MIDDLE;
+						isMove = 2;
 					}
 				}
 			}
 		}
+		Move(point);
 		//攻撃中なら更新する
 		if (isPush == true) {
 
@@ -144,7 +121,7 @@ void Player::Update(std::vector <Vector3>& point)
 		if (isAttack == true)
 		{
 			attackTime++;
-			worldTransform_.rotation_.z = start + (end - start) * -MathFunc::easeOutSine(attackTime / 30);
+			worldTransform_.rotation_.z = attackS + (attackE - attackS) * -MathFunc::easeOutSine(attackTime / 30);
 			if (attackNum <= 6)
 			{
 				attackNum++;
@@ -155,8 +132,12 @@ void Player::Update(std::vector <Vector3>& point)
 				attackNum = 0;
 				worldTransform_.rotation_.z = 0;
 				isAttack = false;
-
 			}
+		}
+
+		//カメラ距離演出
+		if (len > 6) {
+			len -= 0.125f;
 		}
 
 		if (isHit == true)
@@ -170,7 +151,7 @@ void Player::Update(std::vector <Vector3>& point)
 		}
 	}
 
-	if (val <= 500)
+	if (val >= 0.0075)
 	{
 		GoesFever();
 	}
@@ -182,6 +163,77 @@ void Player::Update(std::vector <Vector3>& point)
 	if (collider)
 	{
 		collider->Update();
+	}
+}
+
+void Player::Move(std::vector <Vector3>& point)
+{
+	if (isMove == 1)
+	{
+		//左隣のレールに移動する
+		for (float i = 0; i < point.size(); i++)
+		{
+			point[i].x -= moveS + (moveE - moveS) * MathFunc::easeOutSine(moveTime / 20);
+		}
+		if (moveTime <= 10)
+		{
+			worldTransform_.rotation_.z += 3 * MathFunc::easeOutSine(moveTime / 10);
+		}
+		else
+		{
+			worldTransform_.rotation_.z -= 3 * MathFunc::easeOutSine(moveTime / 20);
+		}
+		moveTime++;
+		//フラグ切り替え
+		if (moveTime == 20)
+		{
+			worldTransform_.rotation_.z = 0;
+			isMove = 0;
+			moveTime = 0;
+			//場所のenum切り替え
+			if (railPos == MIDDLE)
+			{
+				railPos = LEFT;
+			}
+			else if (railPos == RIGHT)
+			{
+				railPos = MIDDLE;
+			}
+		}
+	}
+
+	if (isMove == 2)
+	{
+		//右隣のレールに移動する
+		for (float i = 0; i < point.size(); i++)
+		{
+			point[i].x += moveS + (moveE - moveS) * MathFunc::easeOutSine(moveTime / 20);
+		}
+		if (moveTime <= 10)
+		{
+			worldTransform_.rotation_.z -= 3 * MathFunc::easeOutSine(moveTime / 10);
+		}
+		else
+		{
+			worldTransform_.rotation_.z += 3 * MathFunc::easeOutSine(moveTime / 20);
+		}
+		moveTime++;
+		//フラグ切り替え
+		if (moveTime == 20)
+		{
+			worldTransform_.rotation_.z = 0;
+			isMove = 0;
+			moveTime = 0;
+			//場所のenum切り替え
+			if (railPos == MIDDLE)
+			{
+				railPos = RIGHT;
+			}
+			else if (railPos == LEFT)
+			{
+				railPos = MIDDLE;
+			}
+		}
 	}
 }
 
@@ -209,10 +261,7 @@ void Player::GoesFever()
 
 		//一定時間したら通常モードへ
 		if (feverTime == 250) {
-			val = 2000.0f;
-			worldTransform_.rotation_.z = 0;
-			feverTime = 0;
-			isFever = false;
+			EndFever();
 		}
 	}
 }
@@ -226,8 +275,10 @@ void Player::OnCollision(const CollisionInfo& info) {
 					if (isGauge_ == false) {
 						isGauge_ = true;
 					}
-					res = val / speedUpCount;
-					val -= res;
+					/*res = val / speedUpCount;*/
+					/*val -= res;*/
+					val += 0.0025f;
+					len = 15;
 				}
 				isBurst = true;
 			}
@@ -241,4 +292,11 @@ void Player::OnCollision(const CollisionInfo& info) {
 
 void Player::OffCollision(const CollisionInfo& info) {
 
+}
+
+void Player::EndFever() {
+	val = 0.0f;
+	worldTransform_.rotation_.z = 0;
+	feverTime = 0;
+	isFever = false;
 }

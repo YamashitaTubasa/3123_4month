@@ -60,6 +60,7 @@ public:
 
 	//敵発生データの読み込み
 	void LoadEnemyPopData();
+	void LoadStage(int stageNum);
 
 	//敵発生コマンドの更新
 	void UpdateEnemyPopCommands();
@@ -70,9 +71,10 @@ public:
 	//攻撃エフェクト
 	void LoadAttackEffect(SpriteCommon& spriteCommon);
 
-	void Reset();
+	// フェードアウト処理
+	void FadeOut(float pColor_, float fadeOutTimer_);
 
-	void TitleReset();
+	void Reset();
 
 	static int GetScene() { return sceneNum; }
 
@@ -97,9 +99,6 @@ public:
 	std::vector<Vector3> points{start,start,p2,p3,p4,p5,p6,p7,p8,p9,end,end};
 
 	float timeRate;						//何％時間が進んだか
-
-public:
-	const bool& GetStartE() { return isStartE; }
 
 private:
 	// 入力
@@ -151,7 +150,7 @@ private:
 	WinApp* winApp = nullptr;
 
 	PostEffect* postEffect_ = nullptr;
-
+	
 	Vector3 position[5]{};
 	Vector3 rotation[5]{};
 	Vector3 scale[5]{};
@@ -161,8 +160,6 @@ private:
 
 	//敵の打ち出すまでの時間
 	float enemyDalayTimer = 0.0f;
-
-	bool isWait_ = false;
 
 	int waitTimer = 300;
 
@@ -187,28 +184,25 @@ private:
 
 
 	bool isMaxGauge = false;
-	bool isBack = false; // ダメージ演出フラグ
-	float backT = 0.0f; // ダメージ演出タイマー
-	bool isStartE = false; // startEffectフラグ
-	float startE = 0.0f; // startEffect
-	bool isGClearE = false; // gClearEffectフラグ
-	float gClearE = 0.0f; // gClearEffect
-	bool isGOverE = false; // gOverEffectフラグ
-	float gOverE = 0.0f; // gOverEffect
-	int isDeadT = 0.0f;
-	float pAlpha = 1.0f; // ポストエフェクトアルファ
-
-	int Num = 0;
-	bool isPushKey = false;
-
-	Vector4 pColor = { 0,0,0,1 };
+	bool isBack = false;          // ダメージ演出フラグ
+	int backT = 0;                // ダメージ演出タイマー
+	bool isFadeOut = false;       // フェードアウト処理フラグ
+	int fadeOut = 0;              // フェードアウト処理タイマー
+	bool isTitleT = false;        // タイトル画面の演出フラグ
+	int titleT = 0;               // タイトル画面の演出タイマー
+	bool isClearStaging = false;  // クリア演出フラグ
+	int cStagingT = 0;            // クリア演出タイマー
+	int isDeadT = 0;              // 敵を倒したかのフラグ
+	float pAlpha = 1.0f;          // ポストエフェクトアルファ
+	Vector4 pColor = { 0,0,0,1 }; // ポストエフェクトカラー
 
 	float calRes = 0.0f;
 
-	int titleT = 0.0f;
-	bool isTitleT = false;
-	bool isPlayerE = true;
-	bool isClearStaging = false; // クリア演出のフラグ
-	int cStagingT = 0.0f; // クリア演出のタイマー
 	int selectPause;
+
+	//タイトル画面のタイマー
+	float titleTimer;
+
+	//ステージ
+	int stageNum;
 };

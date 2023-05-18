@@ -33,7 +33,7 @@ void WinApp::Initialize()
 	//WNDCLASSEX w{};
 	wc.cbSize = sizeof(WNDCLASSEX);
 	wc.lpfnWndProc = (WNDPROC)WindowProc;    // ウィンドウプロシージャを設定
-	wc.lpszClassName = L"DirectXGame";       // ウィンドクラス名
+	wc.lpszClassName = L"RideLight";       // ウィンドクラス名
 	wc.hInstance = GetModuleHandle(nullptr); // ウィンドハンドル
 	wc.hCursor = LoadCursor(NULL, IDC_ARROW);// カーソル指定
 
@@ -46,7 +46,7 @@ void WinApp::Initialize()
 
 	// ウィンドウオブジェクトの生成
 	hwnd = CreateWindow(wc.lpszClassName, // クラス名
-		L"DirectXGame",       // タイトルバーの文字
+		L"RideLight",       // タイトルバーの文字
 		WS_OVERLAPPEDWINDOW,  // 標準的なウィンドウスタイル
 		CW_USEDEFAULT,        // 標準X座標 (05に任せる)
 		CW_USEDEFAULT,        // 標準Y座標 (05に任せる)
