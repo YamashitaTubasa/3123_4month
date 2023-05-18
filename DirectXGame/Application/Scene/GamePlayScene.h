@@ -74,6 +74,9 @@ public:
 	// フェードアウト処理
 	void FadeOut(float pColor_, float fadeOutTimer_);
 
+	//ステージ選択
+	void StageSelect(int stageMin, int stageMax);
+
 	void Reset();
 
 	static int GetScene() { return sceneNum; }

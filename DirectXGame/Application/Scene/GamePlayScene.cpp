@@ -436,27 +436,8 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 				player->SetPosition(player->GetPosition() + Vector3(0, 0, -0.5));
 			}
 
-			if (input->TriggerKey(DIK_RIGHT)) {
-				if (Num < 1) {
-					Num++;
-				}
-			}
-
-			if (input->TriggerKey(DIK_LEFT)) {
-				if (Num > 0) {
-					Num--;
-				}
-			}
-
-			if (input->TriggerKey(DIK_SPACE)) {
-				sceneNum = 0;
-				sceneNum += Num;
-				player->SetPosition(Vector3(0, 0, 0));
-				Num = 0;
-				if (sceneNum == 0) {
-					Reset();
-				}
-			}
+			//ステージ選択関数
+			StageSelect(0, 1);
 	}
 }
 
@@ -895,6 +876,34 @@ void GamePlayScene::FadeOut(float pColor_, float fadeOutTimer_) {
 		isFadeOut = false;
 		pColor = { 1,1,1,1 };
 		postEffect_->SetColor(pColor);
+	}
+}
+
+//ステージ選択
+void GamePlayScene::StageSelect(int stageMin, int stageMax) {
+
+	//StageMaxはステージよりも一つ少なく(ゲームオーバーの一つ前まで)
+	if (input->TriggerKey(DIK_RIGHT)) {
+		if (Num < stageMax) {
+			Num++;
+		}
+	}
+
+	//SceneNumが0よりも下にいかないように
+	if (input->TriggerKey(DIK_LEFT)) {
+		if (Num > stageMin) {
+			Num--;
+		}
+	}
+
+	if (input->TriggerKey(DIK_SPACE)) {
+		sceneNum = 0;
+		sceneNum += Num;
+		player->SetPosition(Vector3(0, 0, 0));
+		Num = 0;
+		if (sceneNum == 0) {
+			Reset();
+		}
 	}
 }
 
