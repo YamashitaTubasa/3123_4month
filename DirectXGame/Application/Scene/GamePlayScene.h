@@ -17,6 +17,7 @@
 #include <sstream>
 #include "Line.h"
 #include "PostEffect.h"
+#include "Quaternion.h"
 
 //====================//
 // ゲームプレイシーン
@@ -118,6 +119,7 @@ private:
 	WorldTransform* worldTransform = nullptr;
 	//当たり判定
 	CollisionManager* collisionManager = nullptr;
+	Quaternion quaternion;
 
 	// スプライト
 	Sprite* sprite = nullptr;
@@ -206,4 +208,8 @@ private:
 	bool isClearStaging = false; // クリア演出のフラグ
 	int cStagingT = 0.0f; // クリア演出のタイマー
 	int selectPause;
+
+	float viewAngle = 0.0f;
+	float kEyeRotSpeed = 0.3f;
+	float rotateSpeed = 1.0f;
 };

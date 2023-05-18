@@ -6,6 +6,8 @@
 #include "Player.h"
 #include "WorldTransform.h"
 
+#define PI 3.14159265359
+
 int GamePlayScene::sceneNum = 0;
 
 GamePlayScene::GamePlayScene() {
@@ -212,18 +214,22 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		postEffect_->SetAlpha(1);
 		postEffect_->SetColor(pColor);
 		isPlayerE = true;
-		//railCamera->GetView()->target = player->GetPosition();
-		//railCamera->GetView()->eye.x += 0.3;
-		//railCamera->GetView()->eye.x += 0.5;
+
+		railCamera->GetView()->target = player->GetPosition();
+
+		railCamera->GetCamera()->worldTransform_.rotation_.x += rotateSpeed;
+		//railCamera->GetView()->eye.x += 0.2;
+		//railCamera->GetView()->eye.z += 0.3;
+
+		//MakeAxisAngle(railCamera->GetView()->eye, 30);
+		
 		//viewAngle += kEyeRotSpeed;
 		//viewAngle = fmodf(viewAngle, PI * 2.0);
-		//railCamera->GetView()->eye.x = sinf(viewAngle);
-		//railCamera->GetView()->eye.y = 10;
-		//railCamera->GetView()->eye.y -= 0.1;
-		//railCamera->GetView()->eye.z -= 0.1;
-		//viewProjection->eye.x += 1;
+		//railCamera->GetView()->eye.x = cosf(viewAngle);
+		//railCamera->GetView()->UpdateMatrix();
+		//railCamera->GetView()->eye.x += 0.3;
 
-		railCamera->GetView()->target = { 0, -15, -750 };
+		//railCamera->GetView()->target = { 0, -15, -750 };
 		//カメラ更新
 		railCamera->ViewUpdate();
 		//天球
