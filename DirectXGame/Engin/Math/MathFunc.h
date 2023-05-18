@@ -9,5 +9,7 @@ public:
 	static float easeInSine(float a);
 
 	static float easeOutSine(float a);
+
+	static float easeInOutSine(float a);
 };
 
