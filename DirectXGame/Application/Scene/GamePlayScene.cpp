@@ -899,6 +899,7 @@ void GamePlayScene::StageSelect(int stageMin, int stageMax) {
 	if (input->TriggerKey(DIK_SPACE)) {
 		sceneNum = 0;
 		sceneNum += Num;
+		FadeOut(0.01, 100);
 		player->SetPosition(Vector3(0, 0, 0));
 		Num = 0;
 		if (sceneNum == 0) {
