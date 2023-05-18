@@ -47,6 +47,7 @@ private:
 	Vector3 rightVec = { 0, 0, 0 };
 	Vector3 leftVec = { 0, 0, 0 };
 	Vector3 frontVec = { 0, 0, 0 };
+	Vector3 oldCamera = { 0,0,0 };
 
 	float timeRate;
 	bool isEnd;

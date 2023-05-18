@@ -18,6 +18,7 @@ void RailCamera::Initialize() {
 	viewProjection->target = { 0,-5,-750 };
 	camera->SetPosition(viewProjection->eye);
 	camera->SetRotation(Vector3(0, 0, 0));
+	oldCamera = { 0,0,0 };
 	isEnd = false;
 }
 
@@ -28,9 +29,15 @@ void RailCamera::ViewUpdate() {
 //更新
 void RailCamera::Update(Player* player_, std::vector<Vector3>& point) {
 
-
 	Vector3 target_ = spline_.Update(point, 0.00001 + player_->GetVal());
 	camera->SetPosition(splineCam.Update(point, player_->GetVal()));
+	//最初の1ループのみ現在位置を入れる
+	if (oldCamera.x == 0 && oldCamera.y == 0 && oldCamera.z == 0) {
+		oldCamera = camera->GetPosition();
+	}
+	
+	float eyeAd = camera->GetPosition().y - oldCamera.y;
+
 	//方向ベクトルの取得
 	GetVec(camera->GetPosition(), target_);
 
@@ -46,7 +53,7 @@ void RailCamera::Update(Player* player_, std::vector<Vector3>& point) {
 	camera->Update();
 	viewProjection->target = (target_ + frontVec * 5);
 	viewProjection->eye = (camera->GetPosition() - frontVec * player_->GetLen());
-	viewProjection->eye.y = (camera->GetPosition().y + 1);
+	viewProjection->eye.y = (camera->GetPosition().y + 1 - (eyeAd * 5));
 
 	if (spline_.GetIsEnd() == true) {
 		isEnd = true;
@@ -54,6 +61,7 @@ void RailCamera::Update(Player* player_, std::vector<Vector3>& point) {
 	}
 
 	viewProjection->UpdateMatrix();
+	oldCamera = camera->GetPosition();
 }
 
 void RailCamera::TitleR(Player* player_)
