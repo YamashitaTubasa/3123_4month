@@ -159,6 +159,7 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	clear.SetRotation(0.0f);
 	clear.SpriteTransferVertexBuffer(clear, spriteCommon, 18);
 	clear.SpriteUpdate(clear, spriteCommon_);
+
 	//over
 	over.LoadTexture(spriteCommon_, 19, L"Resources/GameOver_01.png", dXCommon->GetDevice());
 	over.SetColor(Vector4(1, 1, 1, 1));
@@ -168,6 +169,7 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	over.SetRotation(0.0f);
 	over.SpriteTransferVertexBuffer(over, spriteCommon, 19);
 	over.SpriteUpdate(over, spriteCommon_);
+
 	//back
 	back.LoadTexture(spriteCommon_, 7, L"Resources/back.png", dXCommon->GetDevice());
 	back.SetColor(Vector4(1, 1, 1, 1));
@@ -182,7 +184,7 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	titleBack.LoadTexture(spriteCommon_, 24, L"Resources/titleBack_02.png", dXCommon->GetDevice());
 	titleBack.SetColor(Vector4(1, 1, 1, 1));
 	titleBack.SpriteCreate(dXCommon->GetDevice(), 360, 47, 24, spriteCommon, Vector2(0.5f, 0.5f), false, false);
-	titleBack.SetPosition(Vector3(650, 590, 0));
+	titleBack.SetPosition(Vector3(650, 600, 0));
 	titleBack.SetScale(Vector2(360, 47));
 	titleBack.SetRotation(0.0f);
 	titleBack.SpriteTransferVertexBuffer(titleBack, spriteCommon, 24);
@@ -192,7 +194,7 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	stageBack.LoadTexture(spriteCommon_, 25, L"Resources/stageSelectBack_01.png", dXCommon->GetDevice());
 	stageBack.SetColor(Vector4(1, 1, 1, 1));
 	stageBack.SpriteCreate(dXCommon->GetDevice(), 360, 47, 25, spriteCommon, Vector2(0.5f, 0.5f), false, false);
-	stageBack.SetPosition(Vector3(650, 520, 0));
+	stageBack.SetPosition(Vector3(650, 530, 0));
 	stageBack.SetScale(Vector2(360, 47));
 	stageBack.SetRotation(0.0f);
 	stageBack.SpriteTransferVertexBuffer(stageBack, spriteCommon, 25);
