@@ -359,7 +359,6 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 
 		// 加速時のブラー処理
 		if (player->GetIsBurst() == true) {
-			
 			isBlur = true;
 		}
 		if (isBlur == true) {
@@ -371,7 +370,9 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 			if (isBlur == false) {
 				postEffect_->SetBlur(false);
 			}
-			blurT = 0;
+			if (player->GetFever() == false) {
+				blurT = 0;
+			}
 		}
 
 		//敵キャラの更新
@@ -411,10 +412,11 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 			behindVec /= 80;
 			railCamera->SetEye(railCamera->GetView()->eye + behindVec);
 
-			if (cStagingT >= 100) {
-				sceneNum = 2;
-				isClearStaging = false;
-			}
+		}
+		if (cStagingT >= 100) {
+			sceneNum = 2;
+			isClearStaging = false;
+			Reset();
 		}
 
 
@@ -440,7 +442,9 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 	case 2:
 		// クリア画面フェードアウト演出
 		FadeOut(0.01, 100);
-
+		player->Update(points);
+		
+		//player->SetPosition({ 0,0,0 });
 		if (input->TriggerKey(DIK_SPACE)) {
 			Reset();
 			sceneNum = 0;
@@ -630,7 +634,7 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 
 	// 3Dオブジェクト描画前処理
 	Object3d::PreDraw(dXCommon->GetCommandList());
-	if (sceneNum == 0 || sceneNum == 1 || sceneNum == 4 || sceneNum == 5) {
+	if (sceneNum == 0 || sceneNum == 1|| sceneNum == 4 || sceneNum == 5) {
 		////playerを画像より手前に出したい
 		player->Draw(railCamera->GetView());
 		////敵キャラの描画
