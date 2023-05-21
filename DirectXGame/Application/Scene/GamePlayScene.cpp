@@ -217,8 +217,8 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 
 		railCamera->GetView()->target = player->GetPosition();
 
-		rotateSpeed += 2;
-		railCamera->GetCamera()->SetRotationX(rotateSpeed);
+
+		railCamera->GetCamera()->SetRotationX(railCamera->GetCamera()->GetRotation().x + rotateSpeed);
 		//railCamera->GetView()->eye.x += 0.2;
 		//railCamera->GetView()->eye.z += 0.3;
 
