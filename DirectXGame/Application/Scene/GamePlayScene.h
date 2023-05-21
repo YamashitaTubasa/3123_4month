@@ -208,6 +208,8 @@ private:
 	int isDeadT = 0;              // 敵を倒したかのフラグ
 	float pAlpha = 1.0f;          // ポストエフェクトアルファ
 	Vector4 pColor = { 0,0,0,1 }; // ポストエフェクトカラー
+	int blurT = 0;                // ポストエフェクトブラータイマー
+	bool isBlur = false;          // ポストエフェクトブラーフラグ
 
 	float calRes = 0.0f;
 

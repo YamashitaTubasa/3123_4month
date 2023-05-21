@@ -236,7 +236,7 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 	case 0:
 		// スタート画面フェードアウト演出
 		FadeOut(0.01, 100);
-
+		
 		if (titleTimer <= 50)
 		{
 			player->worldTransform_.position_.y += MathFunc::easeInOutSine(titleTimer / 50) / 30;
@@ -355,6 +355,22 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		}
 		if (player->GetIsBurst() == true) {
 			pm_dmg->Fire(p_dmg, 30, 0.2f, 0, 3, { 4.0f, 0.0f });
+		}
+
+		if (player->GetIsHit() == true) {
+			
+			isBlur = true;
+		}
+		if (isBlur == true) {
+			blurT++;
+			postEffect_->SetBlur(true);
+		}
+		if (blurT >= 30) {
+			isBlur = false;
+			if (isBlur == false) {
+				postEffect_->SetBlur(false);
+			}
+			blurT = 0;
 		}
 
 		//敵キャラの更新
