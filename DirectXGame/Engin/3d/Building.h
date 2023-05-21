@@ -1,5 +1,6 @@
 #pragma once
 #include "Object3d.h"
+#include "RailCamera.h"
 
 class Building : public Object3d
 {
@@ -9,16 +10,19 @@ public:
 	//‰Šú‰»
 	bool BuildingInitialize();
 
-	//ƒŠƒXƒg
-	const std::list<std::unique_ptr<Building>>& GetBuildings() { return buildings_; }
+	void Update();
+
+	void Draw(RailCamera* railCamera);
 
 private:
-
-	//Œš•¨
-	std::list<std::unique_ptr<Building>> buildings_;
-
 	// ƒ‚ƒfƒ‹
-	Model* buildingModel01 = nullptr;
-	Model* buildingModel02 = nullptr;
-	Model* buildingModel03 = nullptr;
+	Model* builModel01;
+	Model* builModel02;
+	Model* builModel03;
+
+	Object3d* buil_01[5];
+	Object3d* buil_02[5];
+	Object3d* buil_03[5];
+
+	RailCamera* railCamera;
 };
