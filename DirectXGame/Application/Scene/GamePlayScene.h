@@ -169,7 +169,7 @@ private:
 	//ゲージ
 	Vector2 gaugeScale = { 3,10 };
 
-	Vector3 gaugePosition = { 35,64,0 };
+	Vector3 gaugePosition = { 40,76,0 };
 
 	//攻撃エフェクト
 	Vector2 airScale = { 0,0 };

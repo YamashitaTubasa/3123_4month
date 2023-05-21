@@ -106,7 +106,7 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	gauge.SetColor(Vector4(1, 1, 1, 1));
 	gauge.SpriteCreate(dXCommon->GetDevice(), 110, 10, 21, spriteCommon, Vector2(0.0f, 0.5f), false, false);
 	gauge.SetPosition(Vector3(gaugePosition.x, gaugePosition.y, gaugePosition.z));
-	gauge.SetScale(Vector2(gaugeScale.x, 10));
+	gauge.SetScale(Vector2(gaugeScale.x, gaugeScale.y));
 	gauge.SetRotation(0.0f);
 	gauge.SpriteTransferVertexBuffer(gauge, spriteCommon, 21);
 	gauge.SpriteUpdate(gauge, spriteCommon_);
@@ -246,29 +246,29 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 
 		if (isMaxGauge == true) {
 			if (gaugeScale.x >= 4) {
-				gaugeScale.x -= 0.55;
+				gaugeScale.x -= 0.8;
 			}
 			else {
 				isMaxGauge = false;
 			}
 		}
 
-		gauge.SetPosition(gauge.GetPosition() + Vector3(1, 0, 0));
+		//gauge.SetPosition(gauge.GetPosition() + Vector3(1, 0, 0));
 		//gauge.SpriteUpdate(gauge, spriteCommon_);
 
 		if (player->GetGaugeAdd() == true) {
 			player->SetGaugeAdd(false);
-			calRes = static_cast<float>(140) / (player->GetDivide() + 1);
+			calRes = static_cast<float>(195) / (player->GetDivide() + 1);
 			gaugeScale.x += calRes;
 
 		}
-		if (gaugeScale.x >= 140) {
+		if (gaugeScale.x >= 195) {
 			if (isMaxGauge == false) {
 				isMaxGauge = true;
 			}
 		}
 
-		gauge.SetScale(Vector2(gaugeScale.x, gaugeScale.y));
+ 		gauge.SetScale(Vector2(gaugeScale.x, gaugeScale.y));
 		gauge.SpriteTransferVertexBuffer(gauge, spriteCommon, 21);
 
 		//カメラ更新
@@ -819,7 +819,7 @@ void GamePlayScene::Reset()
 
 	waitTimer = 300;
 
-	gaugeScale = { 3,25 };
+	gaugeScale = { 3,20 };
 
 	gaugePosition = { 50,167.5f,0 };
 
