@@ -187,7 +187,7 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	back.SpriteUpdate(back, spriteCommon_);
 
 	//titleBack
-	titleBack.LoadTexture(spriteCommon_, 24, L"Resources/titleBack_02.png", dXCommon->GetDevice());
+	titleBack.LoadTexture(spriteCommon_, 24, L"Resources/titleBack_03.png", dXCommon->GetDevice());
 	titleBack.SetColor(Vector4(1, 1, 1, 1));
 	titleBack.SpriteCreate(dXCommon->GetDevice(), 360, 47, 24, spriteCommon, Vector2(0.5f, 0.5f), false, false);
 	titleBack.SetPosition(Vector3(650, 600, 0));
@@ -197,7 +197,7 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	titleBack.SpriteUpdate(titleBack, spriteCommon_);
 
 	//stageBack
-	stageBack.LoadTexture(spriteCommon_, 25, L"Resources/stageSelectBack_01.png", dXCommon->GetDevice());
+	stageBack.LoadTexture(spriteCommon_, 25, L"Resources/stageSelectBack_02.png", dXCommon->GetDevice());
 	stageBack.SetColor(Vector4(1, 1, 1, 1));
 	stageBack.SpriteCreate(dXCommon->GetDevice(), 360, 47, 25, spriteCommon, Vector2(0.5f, 0.5f), false, false);
 	stageBack.SetPosition(Vector3(650, 530, 0));
@@ -487,7 +487,7 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		if (input->PushKey(DIK_H)) {
 			player->SetPosition(player->GetPosition() + Vector3(0, 0, 0.5));
 			//railCamera->GetCamera()->SetPosition(railCamera->GetCamera()->GetPosition() + Vector3(0, 0, 0.5));
-			//railCamera->GetView()->eye.z -= 0.5;
+			railCamera->GetView()->target.z -= 0.5;
 			//railCamera->TitleR(player);
 		}
 		if (input->PushKey(DIK_N)) {
