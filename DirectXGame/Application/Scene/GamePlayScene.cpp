@@ -357,7 +357,8 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 			pm_dmg->Fire(p_dmg, 30, 0.2f, 0, 3, { 4.0f, 0.0f });
 		}
 
-		if (player->GetIsHit() == true) {
+		// 加速時のブラー処理
+		if (player->GetIsBurst() == true) {
 			
 			isBlur = true;
 		}
