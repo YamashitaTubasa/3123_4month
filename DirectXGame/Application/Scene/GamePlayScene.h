@@ -135,6 +135,8 @@ private:
 	Sprite clear;
 	Sprite over;
 	Sprite back;
+	Sprite titleBack;
+	Sprite stageBack;
 	Sprite spaButton;
 	SpriteCommon spriteCommon_;
 	Sprite attackEffect[8];

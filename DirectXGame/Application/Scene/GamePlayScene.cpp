@@ -132,10 +132,10 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	spaButton.SpriteUpdate(spaButton, spriteCommon_);
 
 	//斜めフレーム
-	diagonalFrame.LoadTexture(spriteCommon_, 24, L"Resources/DiaFrame_01.png", dXCommon->GetDevice());
+	/*diagonalFrame.LoadTexture(spriteCommon_, 24, L"Resources/DiaFrame_01.png", dXCommon->GetDevice());
 	diagonalFrame.SetColor(Vector4(1, 1, 1, 1));
 	diagonalFrame.SpriteCreate(dXCommon->GetDevice(), 204, 24, 24, spriteCommon, Vector2(0.0f, 0.0f), false, false);
-	diagonalFrame.SetPosition(Vector3(35, 38, 0));
+	diagonalFrame.SetPosition(Vector3(35, 38, 0));*/
 	//diagonalFrame.
 
 	LoadEffect(spriteCommon);
@@ -177,6 +177,26 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	back.SetRotation(0.0f);
 	back.SpriteTransferVertexBuffer(back, spriteCommon, 7);
 	back.SpriteUpdate(back, spriteCommon_);
+
+	//titleBack
+	titleBack.LoadTexture(spriteCommon_, 24, L"Resources/titleBack_02.png", dXCommon->GetDevice());
+	titleBack.SetColor(Vector4(1, 1, 1, 1));
+	titleBack.SpriteCreate(dXCommon->GetDevice(), 360, 47, 24, spriteCommon, Vector2(0.5f, 0.5f), false, false);
+	titleBack.SetPosition(Vector3(650, 590, 0));
+	titleBack.SetScale(Vector2(360, 47));
+	titleBack.SetRotation(0.0f);
+	titleBack.SpriteTransferVertexBuffer(titleBack, spriteCommon, 24);
+	titleBack.SpriteUpdate(titleBack, spriteCommon_);
+
+	//stageBack
+	stageBack.LoadTexture(spriteCommon_, 25, L"Resources/stageSelectBack_01.png", dXCommon->GetDevice());
+	stageBack.SetColor(Vector4(1, 1, 1, 1));
+	stageBack.SpriteCreate(dXCommon->GetDevice(), 360, 47, 25, spriteCommon, Vector2(0.5f, 0.5f), false, false);
+	stageBack.SetPosition(Vector3(650, 520, 0));
+	stageBack.SetScale(Vector2(360, 47));
+	stageBack.SetRotation(0.0f);
+	stageBack.SpriteTransferVertexBuffer(stageBack, spriteCommon, 25);
+	stageBack.SpriteUpdate(stageBack, spriteCommon_);
 
 	//レールカメラ初期化
 	railCamera->Initialize();
@@ -384,7 +404,7 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		}
 		break;
 	case 4://ポーズ画面
-		postEffect_->SetColor(Vector4(0.3,0.3,0.3,1));
+		postEffect_->SetColor(Vector4(0.5,0.5,0.5,1));
 		if (input->TriggerKey(DIK_W) || input->TriggerKey(DIK_UP)) {
 			if (selectPause <= 0) {
 				selectPause++;
@@ -513,7 +533,8 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 
 	//ポーズ画面描画
 	if (sceneNum == 4) {
-
+		titleBack.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), titleBack.vbView);
+		stageBack.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), stageBack.vbView);
 	}
 
 	// スプライト描画後処理
