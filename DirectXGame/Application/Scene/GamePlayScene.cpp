@@ -604,12 +604,6 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 		spaButton.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), spaButton.vbView);
 	}
 
-	//ポーズ画面描画
-	if (sceneNum == 4) {
-		titleBack.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), titleBack.vbView);
-		stageBack.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), stageBack.vbView);
-	}
-
 	// スプライト描画後処理
 	Sprite::PostDraw();
 
@@ -630,6 +624,17 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 	// 3Dオブジェクト描画後処理
 	Object3d::PostDraw();
 
+	// スプライト描画前処理
+	Sprite::PreDraw(dXCommon->GetCommandList(), spriteCommon_);
+
+	//ポーズ画面描画
+	if (sceneNum == 4) {
+		titleBack.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), titleBack.vbView);
+		stageBack.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), stageBack.vbView);
+	}
+
+	// スプライト描画後処理
+	Sprite::PostDraw();
 #pragma endregion
 }
 
