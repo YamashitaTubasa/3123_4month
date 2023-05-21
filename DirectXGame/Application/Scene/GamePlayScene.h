@@ -17,6 +17,7 @@
 #include <sstream>
 #include "Line.h"
 #include "PostEffect.h"
+#include "Building.h"
 
 //====================//
 // ゲームプレイシーン
@@ -60,6 +61,7 @@ public:
 
 	//敵発生データの読み込み
 	void LoadEnemyPopData();
+	void LoadStage(int stageNum);
 
 	//敵発生コマンドの更新
 	void UpdateEnemyPopCommands();
@@ -71,7 +73,10 @@ public:
 	void LoadAttackEffect(SpriteCommon& spriteCommon);
 
 	// フェードアウト処理
-	void FadeOut();
+	void FadeOut(float pColor_, float fadeOutTimer_);
+
+	//ステージ選択
+	void StageSelect();
 
 	void Reset();
 
@@ -106,11 +111,14 @@ private:
 	Model* floorModel;
 	Model* skyModel;
 	Model* lineModel;
+	
 	// オブジェクト
 	Player* player;
 	Enemy* enemy;
+	Building* building;
 	Object3d* floor;
 	Object3d* sky;
+	
 	Line* line[3];
 	//カメラ
 	ViewProjection* viewProjection = nullptr;
@@ -164,8 +172,6 @@ private:
 	//敵の打ち出すまでの時間
 	float enemyDalayTimer = 0.0f;
 
-	bool isWait_ = false;
-
 	int waitTimer = 300;
 
 	//ゲージ
@@ -184,6 +190,8 @@ private:
 	const float PI = 3.141592;
 
 	float alpha = 1;
+
+	bool isPushKey = false;
 
 	static int sceneNum;
 
@@ -205,5 +213,9 @@ private:
 
 	int selectPause;
 
-	float worldTime;
+	//タイトル画面のタイマー
+	float titleTimer;
+
+	//ステージ
+	int stageNum;
 };

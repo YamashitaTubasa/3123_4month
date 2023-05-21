@@ -1,6 +1,6 @@
 # Blender v3.1.2 OBJ File: 'buildung_01.blend'
 # www.blender.org
-mtllib buildung_01.mtl
+mtllib building_01.mtl
 o 立方体
 v -1.331415 1.023583 2.329604
 v -1.331415 1.572623 2.329604

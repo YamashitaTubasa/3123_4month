@@ -12,7 +12,7 @@ void Enemy::EnemyInitialize(const Vector3& v)
 {
 	Initialize();
 	// OBJからモデルデータを読み込む
-	enemyModel = Model::LoadFromOBJ("ironSphere");
+	enemyModel = Model::LoadFromOBJ("ironSphere_01");
 	// 3Dオブジェクト生成
 	Create();
 	// オブジェクトにモデルをひも付ける

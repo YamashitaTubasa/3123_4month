@@ -153,11 +153,14 @@
     <ClCompile Include="DirectXGame\Engin\3d\Line.cpp">
       <Filter>ソースファイル\Engine\3d</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\Engin\3d\Building.cpp">
-      <Filter>ソースファイル\Engine\3d</Filter>
-    </ClCompile>
     <ClCompile Include="DirectXGame\Engin\Math\MathFunc.cpp">
       <Filter>ソースファイル\Engine\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\Engin\3d\InvisibleEnemy.cpp">
+      <Filter>ソースファイル\Engine\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\Engin\3d\Building.cpp">
+      <Filter>ソースファイル\Engine\GameObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -281,11 +284,14 @@
     <ClInclude Include="DirectXGame\Engin\3d\Line.h">
       <Filter>ヘッダーファイル\Engine\3d</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXGame\Engin\3d\Building.h">
-      <Filter>ヘッダーファイル\Engine\3d</Filter>
-    </ClInclude>
     <ClInclude Include="DirectXGame\Engin\Math\MathFunc.h">
       <Filter>ヘッダーファイル\Engine\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Engin\3d\InvisibleEnemy.h">
+      <Filter>ヘッダーファイル\Engine\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\Engin\3d\Building.h">
+      <Filter>ヘッダーファイル\Engine\GameObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
