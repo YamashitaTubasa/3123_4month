@@ -87,45 +87,45 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 
 	// HP
 	for (int i = 0; i < 3; i++) {
-		hP[i].LoadTexture(spriteCommon_, 3, L"Resources/hitPoint.png", dXCommon->GetDevice());
+		hP[i].LoadTexture(spriteCommon_, 3, L"Resources/lineHP_03.png", dXCommon->GetDevice());
 		hP[i].SetColor(Vector4(1, 1, 1, 1));
-		hP[i].SpriteCreate(dXCommon->GetDevice(), 50, 50, 3, spriteCommon, Vector2(0.0f, 0.0f), false, false);
-		hP[i].SetPosition(Vector3(40 + (i * 60), 30, 0));
-		hP[i].SetScale(Vector2(40 * 1, 40 * 1));
+		hP[i].SpriteCreate(dXCommon->GetDevice(), 63, 20, 3, spriteCommon, Vector2(0.0f, 0.0f), false, false);
+		hP[i].SetPosition(Vector3(40 + (i * 66), 40, 0));
+		hP[i].SetScale(Vector2(63 * 1, 20 * 1));
 		hP[i].SetRotation(0.0f);
 		hP[i].SpriteTransferVertexBuffer(hP[i], spriteCommon, 3);
 		hP[i].SpriteUpdate(hP[i], spriteCommon_);
 	}
 
 	//gaugeFlame
-	gaugeFlame.LoadTexture(spriteCommon_, 20, L"Resources/gaugeFlame_01.png", dXCommon->GetDevice());
+	gaugeFlame.LoadTexture(spriteCommon_, 20, L"Resources/HPframe_03.png", dXCommon->GetDevice());
 	gaugeFlame.SetColor(Vector4(1, 1, 1, 1));
-	gaugeFlame.SpriteCreate(dXCommon->GetDevice(), 128, 64, 20, spriteCommon, Vector2(0.0f, 0.0f), false, false);
-	gaugeFlame.SetPosition(Vector3(45, 120, 0));
-	gaugeFlame.SetScale(Vector2(150, 35));
+	gaugeFlame.SpriteCreate(dXCommon->GetDevice(), 204, 24, 20, spriteCommon, Vector2(0.0f, 0.0f), false, false);
+	gaugeFlame.SetPosition(Vector3(35, 64, 0));
+	gaugeFlame.SetScale(Vector2(204, 24));
 	gaugeFlame.SetRotation(0.0f);
 	gaugeFlame.SpriteTransferVertexBuffer(gaugeFlame, spriteCommon, 20);
 	gaugeFlame.SpriteUpdate(gaugeFlame, spriteCommon_);
 
 	//gauge
-	gauge.LoadTexture(spriteCommon_, 21, L"Resources/gaugeOne.png", dXCommon->GetDevice());
+	gauge.LoadTexture(spriteCommon_, 21, L"Resources/gauge_02.png", dXCommon->GetDevice());
 	gauge.SetColor(Vector4(1, 1, 1, 1));
-	gauge.SpriteCreate(dXCommon->GetDevice(), 110, 26, 21, spriteCommon, Vector2(0.0f, 0.5f), false, false);
+	gauge.SpriteCreate(dXCommon->GetDevice(), 110, 10, 21, spriteCommon, Vector2(0.0f, 0.5f), false, false);
 	gauge.SetPosition(Vector3(gaugePosition.x, gaugePosition.y, gaugePosition.z));
 	gauge.SetScale(Vector2(gaugeScale.x, gaugeScale.y));
 	gauge.SetRotation(0.0f);
 	gauge.SpriteTransferVertexBuffer(gauge, spriteCommon, 21);
 	gauge.SpriteUpdate(gauge, spriteCommon_);
 
-	//UIboard
-	//board.LoadTexture(spriteCommon_, 22, L"Resources/UIboard.png", dXCommon->GetDevice());
-	//board.SetColor(Vector4(1, 1, 1, 0.9));
-	//board.SpriteCreate(dXCommon->GetDevice(), 128, 128, 22, spriteCommon, Vector2(0.0f, 0.0f), false, false);
-	//board.SetPosition(Vector3(0, 0, 0));
-	//board.SetScale(Vector2(240, 225));
-	//board.SetRotation(0.0f);
-	//board.SpriteTransferVertexBuffer(board, spriteCommon, 22);
-	//board.SpriteUpdate(board, spriteCommon_);
+	//HPframe
+	HPframe.LoadTexture(spriteCommon_, 22, L"Resources/HPframe_03.png", dXCommon->GetDevice());
+	HPframe.SetColor(Vector4(1, 1, 1, 1));
+	HPframe.SpriteCreate(dXCommon->GetDevice(), 204, 24, 22, spriteCommon, Vector2(0.0f, 0.0f), false, false);
+	HPframe.SetPosition(Vector3(35, 38, 0));
+	HPframe.SetScale(Vector2(204, 24));
+	HPframe.SetRotation(0.0f);
+	HPframe.SpriteTransferVertexBuffer(HPframe, spriteCommon, 22);
+	HPframe.SpriteUpdate(HPframe, spriteCommon_);
 
 	//SpaceButton
 	spaButton.LoadTexture(spriteCommon_, 23, L"Resources/space.png", dXCommon->GetDevice());
@@ -136,6 +136,13 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	spaButton.SetRotation(0.0f);
 	spaButton.SpriteTransferVertexBuffer(spaButton, spriteCommon, 23);
 	spaButton.SpriteUpdate(spaButton, spriteCommon_);
+
+	//斜めフレーム
+	/*diagonalFrame.LoadTexture(spriteCommon_, 24, L"Resources/DiaFrame_01.png", dXCommon->GetDevice());
+	diagonalFrame.SetColor(Vector4(1, 1, 1, 1));
+	diagonalFrame.SpriteCreate(dXCommon->GetDevice(), 204, 24, 24, spriteCommon, Vector2(0.0f, 0.0f), false, false);
+	diagonalFrame.SetPosition(Vector3(35, 38, 0));*/
+	//diagonalFrame.
 
 	LoadEffect(spriteCommon);
 	LoadAttackEffect(spriteCommon);
@@ -158,6 +165,7 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	clear.SetRotation(0.0f);
 	clear.SpriteTransferVertexBuffer(clear, spriteCommon, 18);
 	clear.SpriteUpdate(clear, spriteCommon_);
+
 	//over
 	over.LoadTexture(spriteCommon_, 19, L"Resources/GameOver_01.png", dXCommon->GetDevice());
 	over.SetColor(Vector4(1, 1, 1, 1));
@@ -167,6 +175,7 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	over.SetRotation(0.0f);
 	over.SpriteTransferVertexBuffer(over, spriteCommon, 19);
 	over.SpriteUpdate(over, spriteCommon_);
+
 	//back
 	back.LoadTexture(spriteCommon_, 7, L"Resources/back.png", dXCommon->GetDevice());
 	back.SetColor(Vector4(1, 1, 1, 1));
@@ -176,6 +185,26 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	back.SetRotation(0.0f);
 	back.SpriteTransferVertexBuffer(back, spriteCommon, 7);
 	back.SpriteUpdate(back, spriteCommon_);
+
+	//titleBack
+	titleBack.LoadTexture(spriteCommon_, 24, L"Resources/titleBack_02.png", dXCommon->GetDevice());
+	titleBack.SetColor(Vector4(1, 1, 1, 1));
+	titleBack.SpriteCreate(dXCommon->GetDevice(), 360, 47, 24, spriteCommon, Vector2(0.5f, 0.5f), false, false);
+	titleBack.SetPosition(Vector3(650, 600, 0));
+	titleBack.SetScale(Vector2(360, 47));
+	titleBack.SetRotation(0.0f);
+	titleBack.SpriteTransferVertexBuffer(titleBack, spriteCommon, 24);
+	titleBack.SpriteUpdate(titleBack, spriteCommon_);
+
+	//stageBack
+	stageBack.LoadTexture(spriteCommon_, 25, L"Resources/stageSelectBack_01.png", dXCommon->GetDevice());
+	stageBack.SetColor(Vector4(1, 1, 1, 1));
+	stageBack.SpriteCreate(dXCommon->GetDevice(), 360, 47, 25, spriteCommon, Vector2(0.5f, 0.5f), false, false);
+	stageBack.SetPosition(Vector3(650, 530, 0));
+	stageBack.SetScale(Vector2(360, 47));
+	stageBack.SetRotation(0.0f);
+	stageBack.SpriteTransferVertexBuffer(stageBack, spriteCommon, 25);
+	stageBack.SpriteUpdate(stageBack, spriteCommon_);
 
 	//レールカメラ初期化
 	railCamera->Initialize();
@@ -277,29 +306,29 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 
 		if (isMaxGauge == true) {
 			if (gaugeScale.x >= 4) {
-				gaugeScale.x -= 0.55;
+				gaugeScale.x -= 0.8;
 			}
 			else {
 				isMaxGauge = false;
 			}
 		}
 
-		gauge.SetPosition(gauge.GetPosition() + Vector3(1, 0, 0));
+		//gauge.SetPosition(gauge.GetPosition() + Vector3(1, 0, 0));
 		//gauge.SpriteUpdate(gauge, spriteCommon_);
 
 		if (player->GetGaugeAdd() == true) {
 			player->SetGaugeAdd(false);
-			calRes = static_cast<float>(140) / (player->GetDivide() + 1);
+			calRes = static_cast<float>(195) / (player->GetDivide() + 1);
 			gaugeScale.x += calRes;
 
 		}
-		if (gaugeScale.x >= 140) {
+		if (gaugeScale.x >= 195) {
 			if (isMaxGauge == false) {
 				isMaxGauge = true;
 			}
 		}
 
-		gauge.SetScale(Vector2(gaugeScale.x, gaugeScale.y));
+ 		gauge.SetScale(Vector2(gaugeScale.x, gaugeScale.y));
 		gauge.SpriteTransferVertexBuffer(gauge, spriteCommon, 21);
 
 		// ダメージを受けた時の画面演出
@@ -546,6 +575,7 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 	}
 	else if (sceneNum == 1 || sceneNum == 4) {
 		//board.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), board.vbView);
+		HPframe.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), HPframe.vbView);
 		for (int i = 0; i < player->GetHP(); i++) {
 			hP[i].SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), hP[i].vbView);
 		}
@@ -563,6 +593,7 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 		}
 		gaugeFlame.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), gaugeFlame.vbView);
 		gauge.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), gauge.vbView);
+		
 	}
 	else if (sceneNum == 2) {
 		clear.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), clear.vbView);
@@ -575,7 +606,8 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 
 	//ポーズ画面描画
 	if (sceneNum == 4) {
-
+		titleBack.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), titleBack.vbView);
+		stageBack.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), stageBack.vbView);
 	}
 
 	// スプライト描画後処理
@@ -862,7 +894,7 @@ void GamePlayScene::Reset() {
 
 	waitTimer = 300;
 
-	gaugeScale = { 3,25 };
+	gaugeScale = { 3,20 };
 
 	gaugePosition = { 50,167.5f,0 };
 

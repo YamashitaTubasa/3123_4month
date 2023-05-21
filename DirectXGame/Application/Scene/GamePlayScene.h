@@ -132,8 +132,10 @@ private:
 	// スプライト
 	Sprite* sprite = nullptr;
 	Sprite hP[3];
+	Sprite HPframe;
 	Sprite gaugeFlame;
 	Sprite gauge;
+	Sprite diagonalFrame;
 	Sprite board;
 	Sprite effectL[6];
 	Sprite effectR[6];
@@ -141,6 +143,8 @@ private:
 	Sprite clear;
 	Sprite over;
 	Sprite back;
+	Sprite titleBack;
+	Sprite stageBack;
 	Sprite spaButton;
 	SpriteCommon spriteCommon_;
 	Sprite attackEffect[8];
@@ -171,9 +175,9 @@ private:
 	int waitTimer = 300;
 
 	//ゲージ
-	Vector2 gaugeScale = { 3,25 };
+	Vector2 gaugeScale = { 3,10 };
 
-	Vector3 gaugePosition = { 50,137.5f,0 };
+	Vector3 gaugePosition = { 40,76,0 };
 
 	//攻撃エフェクト
 	Vector2 airScale = { 0,0 };
