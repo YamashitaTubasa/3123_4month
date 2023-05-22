@@ -64,7 +64,7 @@ void Player::Update(std::vector <Vector3>& point)
 {
 	input = Input::GetInstance();
 
-	if (GamePlayScene::GetScene() == 1)
+	if (GamePlayScene::GetScene() == 2)
 	{
 		//UŒ‚‚àˆÚ“®‚à‚µ‚Ä‚È‚¢
 		if (isPush == false && isMove == false)

@@ -213,22 +213,6 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	selectPause = 1;
 	stageNum = 1;
 
-	////制御点
-	//start = { 0.0f, 0.0f, -800.0f };		//スタート地点
-	//p2 = { 100.0f, 0.0f, -750.0f };			//制御点その1
-	//p3 = { -200.0f, 0.0f, -600.0f };			//制御点その2
-	//p4 = { -400.0f, -50.0f, -400.0 };
-	//p5 = { -200.0f, 50.0f, -100.0 };
-	//p6 = { -100.0f, 0.0f, 0.0 };
-	//p7 = { 100.0f, 0.0f, 200.0 };
-	//p8 = { 100.0f, 50.0f, 400.0 };
-	//p9 = { -100.0f, 100.0f, 600.0 };
-	//end = { -300.0f, 100.0f, 800.0f };
-
-	//points = { start,start,p2,p3,p4,p5,p6,p7,p8,p9,end,end };
-
-	CreatThreeLine(points);
-
 }
 
 void GamePlayScene::Update(SpriteCommon& spriteCommon) {
@@ -288,12 +272,37 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		if (titleT >= 100) {
 			Reset();
 			railCamera->SetPlayer(player);
-			sceneNum = 5;
+			sceneNum = 1;
 		}
 		titleTimer++;
 		break;
+	case 1://ステージ選択
+		FadeOut(0.01, 100);
 
-	case 1:
+		//天球
+		sky->Update();
+		floor->Update();
+		player->Update(points);
+		//ステージ
+		//天球
+		floor->Update();
+		sky->Update();
+
+		if (input->PushKey(DIK_H)) {
+			player->SetPosition(player->GetPosition() + Vector3(0, 0, 0.5));
+			//railCamera->GetCamera()->SetPosition(railCamera->GetCamera()->GetPosition() + Vector3(0, 0, 0.5));
+			railCamera->GetView()->target.z -= 0.5;
+			//railCamera->TitleR(player);
+		}
+		if (input->PushKey(DIK_N)) {
+			player->SetPosition(player->GetPosition() + Vector3(0, 0, -0.5));
+		}
+
+		//ステージ選択関数
+		StageSelect();
+		break;
+
+	case 2:
 		// ゲーム画面フェードアウト演出
 		FadeOut(0.01, 100);
 
@@ -313,8 +322,6 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 			}
 		}
 
-		//gauge.SetPosition(gauge.GetPosition() + Vector3(1, 0, 0));
-		//gauge.SpriteUpdate(gauge, spriteCommon_);
 
 		if (player->GetGaugeAdd() == true) {
 			player->SetGaugeAdd(false);
@@ -393,13 +400,13 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 
 		//ポーズ画面
 		if (input->TriggerKey(DIK_P) || input->TriggerKey(DIK_TAB)) {
-			selectPause = 1;
-			sceneNum = 4;
+			selectPause = 2;
+			sceneNum = 5;
 		}
 
 		//ゲームオーバー
 		if (player->GetHP() == 0) {
-			sceneNum = 3;
+			sceneNum = 4;
 		}
 		//クリア
 		if (railCamera->GetIsEnd() == true) {
@@ -414,7 +421,7 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 
 		}
 		if (cStagingT >= 100) {
-			sceneNum = 2;
+			sceneNum = 3;
 			isClearStaging = false;
 			Reset();
 		}
@@ -439,7 +446,7 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 
 		break;
 		//クリア
-	case 2:
+	case 3:
 		// クリア画面フェードアウト演出
 		FadeOut(0.01, 100);
 		player->Update(points);
@@ -451,7 +458,7 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		}
 		break;
 		//ゲームオーバー
-	case 3:
+	case 4:
 		// ゲームオーバー画面フェードアウト演出
 		FadeOut(0.01, 100);
 
@@ -460,7 +467,7 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 			sceneNum = 0;
 		}
 		break;
-	case 4://ポーズ画面
+	case 5://ポーズ画面
 		postEffect_->SetColor(Vector4(0.3, 0.3, 0.3, 1));
 		if (input->TriggerKey(DIK_W) || input->TriggerKey(DIK_UP)) {
 			if (selectPause <= 0) {
@@ -474,49 +481,21 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		}
 		//戻る
 		if (input->TriggerKey(DIK_SPACE)) {
-			if (selectPause == 0) {
+			if (selectPause <= 1) {
 				Reset();
+				if (selectPause == 1) {
+					railCamera->SetPlayer(player);
+				}
 			}
 			postEffect_->SetColor(Vector4(1, 1, 1, 1));
 			sceneNum = selectPause;
 		}
 		if (input->TriggerKey(DIK_P) || input->TriggerKey(DIK_TAB)) {
 			postEffect_->SetColor(Vector4(1, 1, 1, 1));
-			sceneNum = 1;
+			sceneNum = 2;
 		}
 		break;
-	case 5:
-		FadeOut(0.01, 100);
-
-		//天球
-		sky->Update();
-		floor->Update();
-		player->Update(points);
-		//ステージ
-		//天球
-		floor->Update();
-		sky->Update();
-
-		//railCamera->GetCamera()->Update();
-
-		//railCamera->SetPlayer(player);
-
-		//railCamera->GetView()->target = { 0, -15, -750 };
-
-
-		//railCamera->GetView()->eye = { 0, 5, -10.0f };
-		if (input->PushKey(DIK_H)) {
-			player->SetPosition(player->GetPosition() + Vector3(0, 0, 0.5));
-			//railCamera->GetCamera()->SetPosition(railCamera->GetCamera()->GetPosition() + Vector3(0, 0, 0.5));
-			railCamera->GetView()->target.z -= 0.5;
-			//railCamera->TitleR(player);
-		}
-		if (input->PushKey(DIK_N)) {
-			player->SetPosition(player->GetPosition() + Vector3(0, 0, -0.5));
-		}
-
-		//ステージ選択関数
-		StageSelect();
+	
 	}
 }
 
@@ -526,7 +505,7 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 	// 3Dオブジェクト描画前処理
 	Line::PreDraw(dXCommon->GetCommandList());
 
-	if (sceneNum == 1 || sceneNum == 4) {
+	if (sceneNum == 2 || sceneNum == 5) {
 		if (isClearStaging == false) {
 			for (int i = 0; i < 3; i++) {
 				line[i]->Draw(railCamera->GetView());
@@ -544,7 +523,7 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 
 	sky->Draw(railCamera->GetView());
 
-	if (sceneNum == 1 || sceneNum == 4) {
+	if (sceneNum == 2 || sceneNum == 5) {
 		floor->Draw(railCamera->GetView());
 		building->Draw(railCamera);
 		//敵キャラの描画
@@ -553,7 +532,7 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 		}
 	}
 
-	if (sceneNum == 5) {
+	if (sceneNum == 1) {
 		floor->Draw(railCamera->GetView());
 	}
 
@@ -594,7 +573,7 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 			spaButton.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), spaButton.vbView);
 		}
 	}
-	else if (sceneNum == 1 || sceneNum == 4) {
+	else if (sceneNum == 2 || sceneNum == 5) {
 		//board.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), board.vbView);
 		HPframe.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), HPframe.vbView);
 		for (int i = 0; i < player->GetHP(); i++) {
@@ -616,11 +595,11 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 		gauge.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), gauge.vbView);
 		
 	}
-	else if (sceneNum == 2) {
+	else if (sceneNum == 3) {
 		clear.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), clear.vbView);
 		spaButton.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), spaButton.vbView);
 	}
-	else if (sceneNum == 3) {
+	else if (sceneNum == 4) {
 		over.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), over.vbView);
 		spaButton.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), spaButton.vbView);
 	}
@@ -634,13 +613,9 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 
 	// 3Dオブジェクト描画前処理
 	Object3d::PreDraw(dXCommon->GetCommandList());
-	if (sceneNum == 0 || sceneNum == 1|| sceneNum == 4 || sceneNum == 5) {
+	if (sceneNum == 0 || sceneNum == 1|| sceneNum == 2 || sceneNum == 5) {
 		////playerを画像より手前に出したい
 		player->Draw(railCamera->GetView());
-		////敵キャラの描画
-		//for (const std::unique_ptr<Enemy>& enemy : enemys_) {
-		//	enemy->Draw(railCamera->GetView());
-		//}
 	}
 	// 3Dオブジェクト描画後処理
 	Object3d::PostDraw();
@@ -649,7 +624,7 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 	Sprite::PreDraw(dXCommon->GetCommandList(), spriteCommon_);
 
 	//ポーズ画面描画
-	if (sceneNum == 4) {
+	if (sceneNum == 5) {
 		titleBack.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), titleBack.vbView);
 		stageBack.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), stageBack.vbView);
 	}
@@ -660,13 +635,26 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 }
 
 void GamePlayScene::Finalize() {
+	delete floorModel;
+	delete skyModel;
 	delete player;
 	delete enemy;
 	delete building;
 	delete floor;
-	delete floorModel;
 	delete sky;
-	delete skyModel;
+	delete viewProjection;
+	delete railCamera;
+	delete xmViewProjection;
+	delete worldTransform;
+	delete particle_1;
+	delete pm_1;
+	delete particle_2;
+	delete pm_2;
+	delete p_dmg;
+	delete pm_dmg;
+	for (int i = 0; i < 3; i++) {
+		delete line[i];
+	}
 
 	// スプライト解放
 	delete sprite;
@@ -835,26 +823,7 @@ void GamePlayScene::LoadAttackEffect(SpriteCommon& spriteCommon) {
 }
 
 void GamePlayScene::Reset() {
-	delete floorModel;
-	delete skyModel;
-	delete player;
-	delete enemy;
-	delete building;
-	delete floor;
-	delete sky;
-	delete viewProjection;
-	delete railCamera;
-	delete xmViewProjection;
-	delete worldTransform;
-	delete particle_1;
-	delete pm_1;
-	delete particle_2;
-	delete pm_2;
-	delete p_dmg;
-	delete pm_dmg;
-	for (int i = 0; i < 3; i++) {
-		delete line[i];
-	}
+	Finalize();
 
 	if (stageNum != 0) {
 		LoadStage(stageNum);
@@ -912,7 +881,6 @@ void GamePlayScene::Reset() {
 	railCamera->Initialize();
 
 
-	CreatThreeLine(points);
 
 	//変数
 	//敵の打ち出すまでの時間
@@ -977,17 +945,17 @@ void GamePlayScene::FadeOut(float pColor_, float fadeOutTimer_) {
 
 //ステージ選択
 void GamePlayScene::StageSelect() {
-	static const int STAGE_MAX = 1;
+	static const int STAGE_MAX = 2;
 
 	//StageMaxはステージよりも一つ少なく(ゲームオーバーの一つ前まで)
-	if (input->TriggerKey(DIK_RIGHT)) {
+	if (input->TriggerKey(DIK_RIGHT) || input->TriggerKey(DIK_D)) {
 		if (stageNum < STAGE_MAX) {
 			stageNum++;
 		}
 	}
 
 	//SceneNumが0よりも下にいかないように
-	if (input->TriggerKey(DIK_LEFT)) {
+	if (input->TriggerKey(DIK_LEFT) || input->TriggerKey(DIK_A)) {
 		if (stageNum > 0) {
 			stageNum--;
 		}
@@ -999,8 +967,9 @@ void GamePlayScene::StageSelect() {
 			sceneNum = 0;
 		}
 		else {
-			sceneNum = 1;
+			sceneNum = 2;
 			LoadStage(stageNum);
+			
 		}
 		FadeOut(0.01, 100);
 	}
@@ -1044,4 +1013,6 @@ void GamePlayScene::LoadStage(int stageNum) {
 	}
 	// ファイルと閉じる
 	file.close();
+
+	CreatThreeLine(points);
 }
