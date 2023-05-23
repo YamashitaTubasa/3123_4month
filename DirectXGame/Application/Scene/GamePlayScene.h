@@ -219,6 +219,7 @@ private:
 	int selectPause;
 	//チュートリアル
 	int tutorialStep;
+	int tutoTime;
 
 
 	//タイトル画面のタイマー
