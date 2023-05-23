@@ -15,10 +15,10 @@ public:
 	//デストラクタ
 	~InvisibleEnemy();
 	//初期化
-	void InvEnemyInitialize(const Vector3& v);
+	void InvEnemyInitialize();
 
 	//敵リスト
-	const std::list<std::unique_ptr<InvisibleEnemy>>& GetEnemys() { return invEnemys_; }
+	const std::list<std::unique_ptr<InvisibleEnemy>>& GetInvEnemys() { return invEnemys_; }
 
 	//gameSceneのsetter
 	void SetGameScene(GamePlayScene* gameScene) { gameScene_ = gameScene; }

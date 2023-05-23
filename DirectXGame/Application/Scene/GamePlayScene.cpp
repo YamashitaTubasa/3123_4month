@@ -57,12 +57,6 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	//半径分だけ足元から浮いた座標を球の中心にする
 	player->SetCollider(new SphereCollider);
 
-	//敵の情報の初期化
-	LoadEnemyPopData();
-
-	//更新コマンド
-	UpdateEnemyPopCommands();
-
 	//パーティクル初期化
 	particle_1 = Particle::LoadParticleTexture("effect1.png");
 	pm_1 = ParticleManager::Create();
@@ -91,8 +85,8 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 		hP[i].LoadTexture(spriteCommon_, 3, L"Resources/lineHP_03.png", dXCommon->GetDevice());
 		hP[i].SetColor(Vector4(1, 1, 1, 1));
 		hP[i].SpriteCreate(dXCommon->GetDevice(), 63, 20, 3, spriteCommon, Vector2(0.0f, 0.0f), false, false);
-		hP[i].SetPosition(Vector3(40 + (i * 66), 40, 0));
-		hP[i].SetScale(Vector2(63 * 1, 20 * 1));
+		hP[i].SetPosition(Vector3(40.0f + (i * 66.0f), 40.0f, 0.0f));
+		hP[i].SetScale(Vector2(63.0f * 1.0f, 20.0f * 1.0f));
 		hP[i].SetRotation(0.0f);
 		hP[i].SpriteTransferVertexBuffer(hP[i], spriteCommon, 3);
 		hP[i].SpriteUpdate(hP[i], spriteCommon_);
@@ -102,15 +96,15 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	gaugeFlame.LoadTexture(spriteCommon_, 20, L"Resources/HPframe_03.png", dXCommon->GetDevice());
 	gaugeFlame.SetColor(Vector4(1, 1, 1, 1));
 	gaugeFlame.SpriteCreate(dXCommon->GetDevice(), 204, 24, 20, spriteCommon, Vector2(0.0f, 0.0f), false, false);
-	gaugeFlame.SetPosition(Vector3(35, 64, 0));
-	gaugeFlame.SetScale(Vector2(204, 24));
+	gaugeFlame.SetPosition(Vector3(35.0f, 64.0f, 0.0f));
+	gaugeFlame.SetScale(Vector2(204.0f, 24.0f));
 	gaugeFlame.SetRotation(0.0f);
 	gaugeFlame.SpriteTransferVertexBuffer(gaugeFlame, spriteCommon, 20);
 	gaugeFlame.SpriteUpdate(gaugeFlame, spriteCommon_);
 
 	//gauge
 	gauge.LoadTexture(spriteCommon_, 21, L"Resources/gauge_02.png", dXCommon->GetDevice());
-	gauge.SetColor(Vector4(1, 1, 1, 1));
+	gauge.SetColor(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
 	gauge.SpriteCreate(dXCommon->GetDevice(), 110, 10, 21, spriteCommon, Vector2(0.0f, 0.5f), false, false);
 	gauge.SetPosition(Vector3(gaugePosition.x, gaugePosition.y, gaugePosition.z));
 	gauge.SetScale(Vector2(gaugeScale.x, gaugeScale.y));
@@ -120,10 +114,10 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 
 	//HPframe
 	HPframe.LoadTexture(spriteCommon_, 22, L"Resources/HPframe_03.png", dXCommon->GetDevice());
-	HPframe.SetColor(Vector4(1, 1, 1, 1));
+	HPframe.SetColor(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
 	HPframe.SpriteCreate(dXCommon->GetDevice(), 204, 24, 22, spriteCommon, Vector2(0.0f, 0.0f), false, false);
-	HPframe.SetPosition(Vector3(35, 38, 0));
-	HPframe.SetScale(Vector2(204, 24));
+	HPframe.SetPosition(Vector3(35.0f, 38.0f, 0.0f));
+	HPframe.SetScale(Vector2(204.0f, 24.0f));
 	HPframe.SetRotation(0.0f);
 	HPframe.SpriteTransferVertexBuffer(HPframe, spriteCommon, 22);
 	HPframe.SpriteUpdate(HPframe, spriteCommon_);
@@ -354,7 +348,7 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		if (isBack == true) {
 			backT++;
 		}
-		if (backT >= 50) {
+		if (backT >= 50.0f) {
 			isBack = false;
 			backT = 0.0f;
 		}
@@ -363,7 +357,7 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		if (player->GetIsBurst() == true) {
 			isDeadT++;
 		}
-		if (isDeadT >= 20) {
+		if (isDeadT >= 20.0f) {
 			player->SetIsBurst(false);
 			isDeadT = 0.0f;
 		}
@@ -396,6 +390,11 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		for (const std::unique_ptr<Enemy>& enemy : enemys_) {
 			enemy->SetGameScene(this);
 			enemy->Update();
+		}
+		//敵キャラの更新
+		for (const std::unique_ptr<InvisibleEnemy>& invEnemy : invEnemys_) {
+			invEnemy->SetGameScene(this);
+			invEnemy->Update();
 		}
 
 		//全ての衝突をチェック
@@ -555,7 +554,7 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 			if (isBack == true) {
 				backT++;
 			}
-			if (backT >= 50) {
+			if (backT >= 50.0f) {
 				isBack = false;
 				backT = 0.0f;
 			}
@@ -564,7 +563,7 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 			if (player->GetIsBurst() == true) {
 				isDeadT++;
 			}
-			if (isDeadT >= 20) {
+			if (isDeadT >= 20.0f) {
 				player->SetIsBurst(false);
 				isDeadT = 0.0f;
 			}
@@ -594,6 +593,10 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 			for (const std::unique_ptr<Enemy>& enemy : enemys_) {
 				enemy->SetGameScene(this);
 				enemy->Update();
+			}
+			for (const std::unique_ptr<InvisibleEnemy>& invEnemy : invEnemys_) {
+				invEnemy->SetGameScene(this);
+				invEnemy->Update();
 			}
 
 			//全ての衝突をチェック
@@ -713,6 +716,10 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 		//敵キャラの描画
 		for (const std::unique_ptr<Enemy>& enemy : enemys_) {
 			enemy->Draw(railCamera->GetView());
+		}
+		//敵キャラの描画
+		for (const std::unique_ptr<InvisibleEnemy>& invEnemy : invEnemys_) {
+			invEnemy->Draw(railCamera->GetView());
 		}
 	}
 
@@ -842,6 +849,7 @@ void GamePlayScene::Finalize() {
 	delete builModel04;
 	delete player;
 	delete enemy;
+	delete invEnemy;
 	delete buil;
 	delete floor;
 	delete sky;
@@ -862,70 +870,6 @@ void GamePlayScene::Finalize() {
 	// スプライト解放
 	delete sprite;
 	sprite = nullptr;
-}
-
-void GamePlayScene::EnemyOcurrence(const Vector3& v) {
-	//敵の生成
-	std::unique_ptr<Enemy> newEnemy = std::make_unique<Enemy>();
-	//敵の初期化
-	newEnemy->EnemyInitialize(Vector3(v.x, v.y, v.z));
-	//コライダーの追加
-	newEnemy->SetCollider(new SphereCollider(Vector3(0, 0, 0), 2.0f));
-	//敵の登録
-	enemys_.push_back(std::move(newEnemy));
-}
-
-void GamePlayScene::LoadEnemyPopData() {
-	//ファイルを開く
-	std::ifstream file;
-	file.open("Resources/csv/enemyPop.csv");
-	assert(file.is_open());
-
-	//ファイルの内容を文字列ストリームにコピー
-	enemyPopCommands << file.rdbuf();
-
-	//ファイルを閉じる
-	file.close();
-}
-
-void GamePlayScene::UpdateEnemyPopCommands() {
-
-	//1桁分の文字列を入れる変数
-	std::string line;
-
-	//コマンド実行ループ
-	while (getline(enemyPopCommands, line)) {
-		//1桁分文字列をストリームに変換して解析しやすくする
-		std::istringstream line_stream(line);
-
-		std::string word;
-		//,区切りで行の先頭文字列を取得
-		getline(line_stream, word, ',');
-
-		//"//"から始まる行はコメント
-		if (word.find("//") == 0) {
-			//コメント行を飛ばす
-			continue;
-		}
-
-		//POPコマンド
-		if (word.find("POP") == 0) {
-			//x座標
-			getline(line_stream, word, ',');
-			float x = (float)std::atof(word.c_str());
-
-			//y座標
-			getline(line_stream, word, ',');
-			float y = (float)std::atof(word.c_str());
-
-			//z座標
-			getline(line_stream, word, ',');
-			float z = (float)std::atof(word.c_str());
-
-			//敵を発生させる
-			EnemyOcurrence(Vector3(x, y, z));
-		}
-	}
 }
 
 void GamePlayScene::LoadEffect(SpriteCommon& spriteCommon) {
@@ -1061,9 +1005,6 @@ void GamePlayScene::Reset() {
 	//半径分だけ足元から浮いた座標を球の中心にする
 	player->SetCollider(new SphereCollider);
 
-	//敵の情報の初期化
-	LoadEnemyPopData();
-
 	//パーティクル初期化
 	particle_1 = Particle::LoadParticleTexture("effect1.png");
 	pm_1 = ParticleManager::Create();
@@ -1083,10 +1024,6 @@ void GamePlayScene::Reset() {
 	railCamera->Initialize();
 
 	//変数
-	//敵の打ち出すまでの時間
-	enemyDalayTimer = 0.0f;
-
-	waitTimer = 300;
 
 	gaugeScale = { 3,20 };
 
@@ -1171,13 +1108,83 @@ void GamePlayScene::StageSelect() {
 		}
 		else {
 			sceneNum = 2;
+			//ステージ
 			LoadStage(stageNum);
 			//建物
 			LoadBuil(stageNum);
-
+			//敵
+			LoadEnemy(stageNum);
 		}
 		FadeOut(0.01, 100);
 	}
+}
+
+void GamePlayScene::LoadEnemy(int stageNum) {
+
+	enemys_.clear();
+	invEnemys_.clear();
+
+	//ファイルを開く
+	std::ifstream file;
+	file.open("Resources/csv/EnemyPop.csv");
+	assert(file.is_open());
+
+	HRESULT result = S_FALSE;
+
+	std::string num;
+	num = stageNum + 48;
+
+	// １行ずつ読み込む
+	string line;
+	while (getline(file, line)) {
+
+		// １行分の文字列をストリームに変換して解析しやすくする
+		std::istringstream line_stream(line);
+
+		// 半角スパース区切りで行の先頭文字列を取得
+		string key;
+		getline(line_stream, key, ' ');
+
+
+		// 先頭文字列がｖなら頂点座標
+		if (key == "ea" + num) {
+			//敵の生成
+			std::unique_ptr<Enemy> newEnemy = std::make_unique<Enemy>();
+			//敵の初期化
+			newEnemy->EnemyInitialize();
+			//コライダーの追加
+			newEnemy->SetCollider(new SphereCollider(Vector3(0, 0, 0), 2.0f));
+			// X,Y,Z座標読み込み
+			Vector3 position{};
+			line_stream >> position.x;
+			line_stream >> position.y;
+			line_stream >> position.z;
+			// 座標データに追加
+			newEnemy->SetPosition(position);
+			//登録
+			enemys_.push_back(std::move(newEnemy));
+		}
+		// 先頭文字列がｖなら頂点座標
+		if (key == "eb" + num) {
+			//敵の生成
+			std::unique_ptr<InvisibleEnemy> newInvEnemy = std::make_unique<InvisibleEnemy>();
+			//敵の初期化
+			newInvEnemy->InvEnemyInitialize();
+			//コライダーの追加
+			newInvEnemy->SetCollider(new SphereCollider(Vector3(0, 0, 0), 2.0f));
+			// X,Y,Z座標読み込み
+			Vector3 position{};
+			line_stream >> position.x;
+			line_stream >> position.y;
+			line_stream >> position.z;
+			// 座標データに追加
+			newInvEnemy->SetPosition(position);
+			//登録
+			invEnemys_.push_back(std::move(newInvEnemy));
+		}
+	}
+	// ファイルと閉じる
+	file.close();
 }
 
 void GamePlayScene::LoadStage(int stageNum) {

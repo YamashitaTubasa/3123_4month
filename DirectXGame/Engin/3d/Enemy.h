@@ -14,7 +14,7 @@ public:
 	//デストラクタ
 	~Enemy();
 	//初期化
-	void EnemyInitialize(const Vector3& v);
+	void EnemyInitialize();
 
 	//敵リスト
 	const std::list<std::unique_ptr<Enemy>>& GetEnemys() { return enemys_; }

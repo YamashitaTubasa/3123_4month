@@ -6,7 +6,7 @@ InvisibleEnemy::~InvisibleEnemy()
 	delete invEnemyModel;
 }
 
-void InvisibleEnemy::InvEnemyInitialize(const Vector3& v)
+void InvisibleEnemy::InvEnemyInitialize()
 {
 	Initialize();
 	// OBJからモデルデータを読み込む
@@ -15,5 +15,4 @@ void InvisibleEnemy::InvEnemyInitialize(const Vector3& v)
 	Create();
 	// オブジェクトにモデルをひも付ける
 	SetModel(invEnemyModel);
-	SetPosition(Vector3(v.x, v.y, v.z));
 }

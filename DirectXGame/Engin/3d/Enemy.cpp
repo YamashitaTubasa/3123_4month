@@ -8,7 +8,7 @@ Enemy::~Enemy() {
 }
 
 //初期化
-void Enemy::EnemyInitialize(const Vector3& v)
+void Enemy::EnemyInitialize()
 {
 	Initialize();
 	// OBJからモデルデータを読み込む
@@ -17,7 +17,6 @@ void Enemy::EnemyInitialize(const Vector3& v)
 	Create();
 	// オブジェクトにモデルをひも付ける
 	SetModel(enemyModel);
-	SetPosition(Vector3(v.x, v.y, v.z));
 	isDead_ = false;
 }
 
