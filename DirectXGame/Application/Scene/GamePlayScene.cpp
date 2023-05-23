@@ -207,6 +207,27 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	stageBack.SpriteTransferVertexBuffer(stageBack, spriteCommon, 25);
 	stageBack.SpriteUpdate(stageBack, spriteCommon_);
 
+	//close
+	close.LoadTexture(spriteCommon_, 33, L"Resources/close.png", dXCommon->GetDevice());
+	close.SetColor(Vector4(1, 1, 1, 1));
+	close.SpriteCreate(dXCommon->GetDevice(), 360, 47, 33, spriteCommon, Vector2(0.5f, 0.5f), false, false);
+	close.SetPosition(Vector3(650, 460, 0));
+	close.SetScale(Vector2(360, 47));
+	close.SetRotation(0.0f);
+	close.SpriteTransferVertexBuffer(close, spriteCommon, 33);
+	close.SpriteUpdate(close, spriteCommon_);
+
+	//pause
+	pause.LoadTexture(spriteCommon_, 34, L"Resources/black.png", dXCommon->GetDevice());
+	pause.SetColor(Vector4(1, 1, 1, 1));
+	pause.SpriteCreate(dXCommon->GetDevice(), 1280, 720, 34, spriteCommon, Vector2(0.0f, 0.0f), false, false);
+	pause.SetAlpha(pause, 0.7);
+	pause.SetPosition(Vector3(0, 0, 0));
+	pause.SetScale(Vector2(1280, 720));
+	pause.SetRotation(0.0f);
+	pause.SpriteTransferVertexBuffer(pause, spriteCommon, 34);
+	pause.SpriteUpdate(pause, spriteCommon_);
+
 	//レールカメラ初期化
 	railCamera->Initialize();
 
@@ -482,7 +503,6 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		}
 		break;
 	case 5://ポーズ画面
-		postEffect_->SetColor(Vector4(0.3, 0.3, 0.3, 1));
 		if (input->TriggerKey(DIK_W) || input->TriggerKey(DIK_UP)) {
 			if (selectPause <= 0) {
 				selectPause++;
@@ -816,6 +836,8 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 
 	//ポーズ画面描画
 	if (sceneNum == 5) {
+		pause.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), pause.vbView);
+		close.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), close.vbView);
 		titleBack.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), titleBack.vbView);
 		stageBack.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), stageBack.vbView);
 	}
