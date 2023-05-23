@@ -695,7 +695,6 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 			//天球
 			floor->Update();
 			sky->Update();
-			building->Update();
 
 			//パーティクル
 			pm_1->Update();
