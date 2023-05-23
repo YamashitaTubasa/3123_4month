@@ -17,7 +17,6 @@
 #include <sstream>
 #include "Line.h"
 #include "PostEffect.h"
-#include "Building.h"
 
 //====================//
 // ゲームプレイシーン
@@ -25,8 +24,6 @@
 
 class CollisionManager;
 class Player;
-
-
 
 class GamePlayScene
 {
@@ -113,13 +110,20 @@ private:
 	Model* floorModel;
 	Model* skyModel;
 	Model* lineModel;
-	
+	Model* builModel01;
+	Model* builModel02;
+	Model* builModel03;
+	Model* ringModel;
+
 	// オブジェクト
 	Player* player;
 	Enemy* enemy;
-	Building* building;
 	Object3d* floor;
 	Object3d* sky;
+	Object3d* buil_01[5];
+	Object3d* buil_02[5];
+	Object3d* buil_03[5];
+	Object3d* ring[5];
 	
 	Line* line[3];
 	//カメラ
