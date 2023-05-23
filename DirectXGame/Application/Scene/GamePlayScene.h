@@ -17,7 +17,6 @@
 #include <sstream>
 #include "Line.h"
 #include "PostEffect.h"
-#include "Building.h"
 
 //====================//
 // ゲームプレイシーン
@@ -59,9 +58,10 @@ public:
 	/// 敵発生
 	void EnemyOcurrence(const Vector3& v);
 
-	//敵発生データの読み込み
+	//発生データの読み込み
 	void LoadEnemyPopData();
 	void LoadStage(int stageNum);
+	void LoadBuil(int stageNum);
 
 	//敵発生コマンドの更新
 	void UpdateEnemyPopCommands();
@@ -113,13 +113,17 @@ private:
 	Model* floorModel;
 	Model* skyModel;
 	Model* lineModel;
+	Model* builModel01;
+	Model* builModel02;
+	Model* builModel03;
+	Model* builModel04;
 	
 	// オブジェクト
 	Player* player;
 	Enemy* enemy;
-	Building* building;
 	Object3d* floor;
 	Object3d* sky;
+	Object3d* buil;
 	
 	Line* line[3];
 	//カメラ
@@ -170,6 +174,7 @@ private:
 
 	//敵
 	std::list<std::unique_ptr<Enemy>> enemys_;
+	std::list<std::unique_ptr<Object3d>> buils_;
 
 	//敵の打ち出すまでの時間
 	float enemyDalayTimer = 0.0f;
