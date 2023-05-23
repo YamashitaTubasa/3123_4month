@@ -151,6 +151,7 @@ private:
 	Sprite stageBack;
 	Sprite close;
 	Sprite pause;
+	Sprite black;
 	Sprite spaButton;
 	SpriteCommon spriteCommon_;
 	Sprite attackEffect[8];

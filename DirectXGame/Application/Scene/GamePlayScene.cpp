@@ -208,14 +208,24 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	close.SpriteTransferVertexBuffer(close, spriteCommon, 33);
 	close.SpriteUpdate(close, spriteCommon_);
 
+	//black
+	black.LoadTexture(spriteCommon_, 34, L"Resources/black.png", dXCommon->GetDevice());
+	black.SpriteCreate(dXCommon->GetDevice(), 1280, 720, 34, spriteCommon, Vector2(0.0f, 0.0f), false, false);
+	black.SetAlpha(black, 0.7);
+	black.SetPosition(Vector3(0, 0, 0));
+	black.SetScale(Vector2(1280, 720));
+	black.SetRotation(0.0f);
+	black.SpriteTransferVertexBuffer(black, spriteCommon, 34);
+	black.SpriteUpdate(black, spriteCommon_);
+
 	//pause
-	pause.LoadTexture(spriteCommon_, 34, L"Resources/black.png", dXCommon->GetDevice());
-	pause.SpriteCreate(dXCommon->GetDevice(), 1280, 720, 34, spriteCommon, Vector2(0.0f, 0.0f), false, false);
-	pause.SetAlpha(pause, 0.7);
-	pause.SetPosition(Vector3(0, 0, 0));
-	pause.SetScale(Vector2(1280, 720));
+	pause.LoadTexture(spriteCommon_, 35, L"Resources/pause_01.png", dXCommon->GetDevice());
+	pause.SpriteCreate(dXCommon->GetDevice(), 498, 72, 35, spriteCommon, Vector2(0.5f, 0.5f), false, false);
+	pause.SetColor(pause, Vector4(1, 1, 1, 1));
+	pause.SetPosition(Vector3(650, 200, 0));
+	pause.SetScale(Vector2(498, 72));
 	pause.SetRotation(0.0f);
-	pause.SpriteTransferVertexBuffer(pause, spriteCommon, 34);
+	pause.SpriteTransferVertexBuffer(pause, spriteCommon, 35);
 	pause.SpriteUpdate(pause, spriteCommon_);
 
 	//レールカメラ初期化
@@ -304,7 +314,9 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		if (input->PushKey(DIK_H)) {
 			player->SetPosition(player->GetPosition() + Vector3(0, 0, 0.5));
 			//railCamera->GetCamera()->SetPosition(railCamera->GetCamera()->GetPosition() + Vector3(0, 0, 0.5));
-			railCamera->GetView()->target.z -= 0.5;
+			railCamera->GetView()->target.z += 0.5;
+			railCamera->GetView()->eye.z += 0.5;
+			railCamera->ViewUpdate();
 			//railCamera->TitleR(player);
 		}
 		if (input->PushKey(DIK_N)) {
@@ -318,6 +330,8 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 	case 2:
 		// ゲーム画面フェードアウト演出
 		FadeOut(0.01, 100);
+
+		player->SetPosition(Vector3(0, 0, 0));
 
 		//デスフラグの立った敵を削除
 		enemys_.remove_if([](std::unique_ptr < Enemy>& enemy_) {
@@ -537,6 +551,10 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		if (input->TriggerKey(DIK_P) || input->TriggerKey(DIK_TAB)) {
 			postEffect_->SetColor(Vector4(1, 1, 1, 1));
 			sceneNum = 2;
+			titleBack.SetColor(titleBack, Vector4(0.5, 0.5, 0.5, 0.9));
+			stageBack.SetColor(stageBack, Vector4(0.5, 0.5, 0.5, 0.9));
+			close.SetColor(close, Vector4(1, 1, 0, 1));
+			selectPause = 2;
 		}
 		break;
 	case 6://チュートリアル
@@ -846,10 +864,11 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 
 	//ポーズ画面描画
 	if (sceneNum == 5) {
-		pause.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), pause.vbView);
+		black.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), black.vbView);
 		close.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), close.vbView);
 		titleBack.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), titleBack.vbView);
 		stageBack.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), stageBack.vbView);
+		pause.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), pause.vbView);
 	}
 	//チュートリアルテキスト描画
 	if (sceneNum == 6) {
