@@ -14,6 +14,7 @@
 #include "WorldTransform.h"
 #include "RailCamera.h"
 #include "Enemy.h"
+#include "InvisibleEnemy.h"
 #include <sstream>
 #include "Line.h"
 #include "PostEffect.h"
@@ -53,16 +54,10 @@ public:
 	/// </summary>
 	void Finalize();
 
-	/// 敵発生
-	void EnemyOcurrence(const Vector3& v);
-
 	//発生データの読み込み
-	void LoadEnemyPopData();
+	void LoadEnemy(int stageNum);
 	void LoadStage(int stageNum);
 	void LoadBuil(int stageNum);
-
-	//敵発生コマンドの更新
-	void UpdateEnemyPopCommands();
 
 	//フィーバーエフェクト
 	void LoadEffect(SpriteCommon& spriteCommon);
@@ -119,6 +114,7 @@ private:
 	// オブジェクト
 	Player* player;
 	Enemy* enemy;
+	InvisibleEnemy* invEnemy;
 	Object3d* floor;
 	Object3d* sky;
 	Object3d* buil;
@@ -172,14 +168,9 @@ private:
 	Vector3 rotation[5]{};
 	Vector3 scale[5]{};
 
-	//敵
+	std::list<std::unique_ptr<InvisibleEnemy>> invEnemys_;
 	std::list<std::unique_ptr<Enemy>> enemys_;
 	std::list<std::unique_ptr<Object3d>> buils_;
-
-	//敵の打ち出すまでの時間
-	float enemyDalayTimer = 0.0f;
-
-	int waitTimer = 300;
 
 	//ゲージ
 	Vector2 gaugeScale = { 3,10 };
@@ -190,9 +181,6 @@ private:
 	Vector2 airScale = { 0,0 };
 
 	Vector3 airPosition = { 0,0,0 };
-
-	//敵発生コマンド
-	std::stringstream enemyPopCommands;
 
 	const float PI = 3.141592;
 

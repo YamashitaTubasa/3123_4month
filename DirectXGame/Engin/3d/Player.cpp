@@ -196,10 +196,6 @@ void Player::Update(std::vector <Vector3>& point)
 				if (pushTime == 20)
 				{
 					pushTime = 0;
-					if (isHit == true)
-					{
-						isHit = false;
-					}
 					isPush = false;
 
 				}
@@ -355,6 +351,7 @@ void Player::GoesFever()
 
 void Player::OnCollision(const CollisionInfo& info) {
 	const char* str = "class Enemy";
+	const char* str2 = "class InvisibleEnemy";
 	if (strcmp(toCollisionName, str) == 0) {
 		if (isHit == false) {
 			if (isPush == true) {
@@ -374,6 +371,12 @@ void Player::OnCollision(const CollisionInfo& info) {
 			}
 			isHit = true;
 		}
+	}
+	if (strcmp(toCollisionName, str2) == 0) {
+		if (isHit == false) {
+			hp--;
+		}
+		isHit = true;
 	}
 }
 
