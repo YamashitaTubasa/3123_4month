@@ -136,6 +136,8 @@ private:
 	Sprite gaugeFlame;
 	Sprite gauge;
 	Sprite diagonalFrame;
+	Sprite pauseSelect;
+	Sprite continueGame;
 	Sprite board;
 	Sprite effectL[6];
 	Sprite effectR[6];
