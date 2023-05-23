@@ -201,7 +201,7 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	//close
 	close.LoadTexture(spriteCommon_, 33, L"Resources/close.png", dXCommon->GetDevice());
 	close.SpriteCreate(dXCommon->GetDevice(), 360, 47, 33, spriteCommon, Vector2(0.5f, 0.5f), false, false);
-	close.SetColor(close,Vector4(1, 1, 1, 1));
+	close.SetColor(close,Vector4(0.1, 0.7, 0, 1));
 	close.SetPosition(Vector3(650, 480, 0));
 	close.SetScale(Vector2(360, 47));
 	close.SetRotation(0.0f);
@@ -499,11 +499,11 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 				if (selectPause == 2) {
 					titleBack.SetColor(titleBack, Vector4(0.5, 0.5, 0.5, 0.9));
 					stageBack.SetColor(stageBack, Vector4(0.5, 0.5, 0.5, 0.9));
-					close.SetColor(close, Vector4(1, 1, 1, 1));
+					close.SetColor(close, Vector4(1, 1, 0, 1));
 				}
 				else if (selectPause == 1) {
 					titleBack.SetColor(titleBack, Vector4(0.5, 0.5, 0.5, 0.9));
-					stageBack.SetColor(stageBack, Vector4(1, 1, 1, 1));
+					stageBack.SetColor(stageBack, Vector4(1, 1, 0, 1));
 					close.SetColor(close, Vector4(0.5, 0.5, 0.5, 0.9));
 				}
 			}
@@ -513,11 +513,11 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 				selectPause--;
 				if (selectPause == 1) {
 					titleBack.SetColor(titleBack, Vector4(0.5, 0.5, 0.5, 0.9));
-					stageBack.SetColor(stageBack, Vector4(1, 1, 1, 1));
+					stageBack.SetColor(stageBack, Vector4(1, 1, 0, 1));
 					close.SetColor(close, Vector4(0.5, 0.5, 0.5, 0.9));
 				}
 				else if (selectPause == 0) {
-					titleBack.SetColor(titleBack, Vector4(1, 1, 1, 1));
+					titleBack.SetColor(titleBack, Vector4(1, 1, 0, 1));
 					stageBack.SetColor(stageBack, Vector4(0.5, 0.5, 0.5, 0.9));
 					close.SetColor(close, Vector4(0.5, 0.5, 0.5, 0.9));
 				}
@@ -1112,6 +1112,10 @@ void GamePlayScene::Reset() {
 	pm_dmg->SetXMViewProjection(xmViewProjection);
 
 	railCamera->Initialize();
+
+	titleBack.SetColor(titleBack, Vector4(0.5, 0.5, 0.5, 0.9));
+	stageBack.SetColor(stageBack, Vector4(0.5, 0.5, 0.5, 0.9));
+	close.SetColor(close, Vector4(1, 1, 0, 1));
 
 	//変数
 	//敵の打ち出すまでの時間
