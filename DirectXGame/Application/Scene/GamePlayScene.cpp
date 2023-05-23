@@ -313,6 +313,8 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 			return enemy_->GetIsDead();
 			});
 
+		TutorialUpdate();
+
 		gauge.GetScale();
 
 		if (isMaxGauge == true) {
@@ -532,7 +534,7 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 	// 3Dオブジェクト描画前処理
 	Line::PreDraw(dXCommon->GetCommandList());
 
-	if (sceneNum == 2 || sceneNum == 5) {
+	if (sceneNum == 2 || sceneNum == 5 || sceneNum == 6) {
 		if (isClearStaging == false) {
 			for (int i = 0; i < 3; i++) {
 				line[i]->Draw(railCamera->GetView());
@@ -550,7 +552,7 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 
 	sky->Draw(railCamera->GetView());
 
-	if (sceneNum == 2 || sceneNum == 5) {
+	if (sceneNum == 2 || sceneNum == 5 ||sceneNum == 6) {
 		floor->Draw(railCamera->GetView());
 		building->Draw(railCamera);
 		//敵キャラの描画
@@ -640,7 +642,7 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 
 	// 3Dオブジェクト描画前処理
 	Object3d::PreDraw(dXCommon->GetCommandList());
-	if (sceneNum == 0 || sceneNum == 1|| sceneNum == 2 || sceneNum == 5) {
+	if (sceneNum == 0 || sceneNum == 1|| sceneNum == 2 || sceneNum == 5 || sceneNum == 6) {
 		////playerを画像より手前に出したい
 		player->Draw(railCamera->GetView());
 	}
@@ -654,6 +656,10 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 	if (sceneNum == 5) {
 		titleBack.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), titleBack.vbView);
 		stageBack.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), stageBack.vbView);
+	}
+	//チュートリアルテキスト描画
+	if (sceneNum == 6) {
+
 	}
 
 	// スプライト描画後処理
@@ -1030,7 +1036,7 @@ void GamePlayScene::LoadStage(int stageNum) {
 
 
 		// 先頭文字列がｖなら頂点座標
-		if (key == "v" + num) {
+		if (key == "st" + num) {
 			// X,Y,Z座標読み込み
 			Vector3 position{};
 			line_stream >> position.x;
@@ -1050,7 +1056,12 @@ void GamePlayScene::TutorialUpdate() {
 	if (stageNum == 1) {
 		//ステップ1
 		if (tutorialStep == 0) {
-			sceneNum = 6;
+			tutoTime++;
+
+			if (tutoTime == 25) {
+				tutoTime = 0;
+				sceneNum = 6;
+			}
 		}
 
 
