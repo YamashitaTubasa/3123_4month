@@ -25,8 +25,6 @@
 class CollisionManager;
 class Player;
 
-
-
 class GamePlayScene
 {
 public:
@@ -117,7 +115,7 @@ private:
 	Model* builModel02;
 	Model* builModel03;
 	Model* builModel04;
-	
+
 	// オブジェクト
 	Player* player;
 	Enemy* enemy;
@@ -225,6 +223,7 @@ private:
 	//チュートリアル
 	int tutorialStep;
 	int tutoTime;
+	bool isShowText;
 
 
 	//タイトル画面のタイマー

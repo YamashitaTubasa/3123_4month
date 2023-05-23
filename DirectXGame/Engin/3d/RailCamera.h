@@ -6,8 +6,6 @@
 #include "input.h"
 #include "Spline.h"
 #include "Player.h"
-#include "PlayerAttack.h"
-
 
 class RailCamera {
 public:
@@ -24,6 +22,7 @@ public:
 
 	void SetPlayer(Player* player_);
 	void SetEye(Vector3 view);
+	void ShakeCamera();
 
 	//ƒxƒNƒgƒ‹‚ðŽæ“¾
 	void GetVec(Vector3 a, Vector3 b);

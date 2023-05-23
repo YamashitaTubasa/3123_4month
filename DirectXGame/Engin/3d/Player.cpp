@@ -150,6 +150,93 @@ void Player::Update(std::vector <Vector3>& point)
 			}
 		}
 	}
+	//チュートリアル
+	if (GamePlayScene::GetScene() == 6)
+	{
+		//攻撃も移動もしてない時
+		if (isPush == false && isMove == false)
+		{
+			//SPACEキーを押したら
+			if (input->TriggerKey(DIK_SPACE))
+			{
+				//攻撃する
+				isPush = true;
+				isAttack = true;
+			}
+			if (isAttack == false)
+			{
+				//左以外の時に左キーを押したら
+				if (input->TriggerKey(DIK_A) || input->TriggerKey(DIK_LEFT))
+				{
+					if (isMove == 0 && railPos != LEFT)
+					{
+						isMove = 1;
+					}
+				}
+				//右以外の時に右キーを押したら
+				if (input->TriggerKey(DIK_D) || input->TriggerKey(DIK_RIGHT))
+				{
+					if (isMove == 0 && railPos != RIGHT)
+					{
+						isMove = 2;
+					}
+				}
+			}
+		}
+		Move(point);
+		//攻撃中なら更新する
+		if (isPush == true) {
+
+			// ワールドトランスフォームの行列更新と転送
+			worldTransform_.UpdateMatrix();
+
+			if (isFever == false)
+			{
+				pushTime++;
+				if (pushTime == 20)
+				{
+					pushTime = 0;
+					if (isHit == true)
+					{
+						isHit = false;
+					}
+					isPush = false;
+
+				}
+			}
+		}
+		if (isAttack == true)
+		{
+			attackTime++;
+			worldTransform_.rotation_.z = attackS + (attackE - attackS) * -MathFunc::easeOutSine(attackTime / 30);
+			if (attackNum <= 6)
+			{
+				attackNum++;
+			}
+			if (attackTime == 30)
+			{
+				attackTime = 0;
+				attackNum = 0;
+				worldTransform_.rotation_.z = 0;
+				isAttack = false;
+			}
+		}
+
+		//カメラ距離演出
+		if (len > 6) {
+			len -= 0.125f;
+		}
+
+		if (isHit == true)
+		{
+			coolTime++;
+			if (coolTime == 50)
+			{
+				coolTime = 0;
+				isHit = false;
+			}
+		}
+	}
 
 	if (val >= 0.0075)
 	{
