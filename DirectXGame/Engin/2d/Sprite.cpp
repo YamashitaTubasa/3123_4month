@@ -559,3 +559,11 @@ void Sprite::SetAlpha(Sprite sprite,float alpha_) {
 	sprite.constBuffB0->Unmap(0, nullptr);
 	assert(SUCCEEDED(result));
 }
+
+void Sprite::SetColor(Sprite sprite, const Vector4& color_) {
+	// 定数バッファの転送
+	HRESULT result = sprite.constBuffB0->Map(0, nullptr, (void**)&constMap);
+	constMap->color = color_;
+	sprite.constBuffB0->Unmap(0, nullptr);
+	assert(SUCCEEDED(result));
+}

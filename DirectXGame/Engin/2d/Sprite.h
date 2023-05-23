@@ -111,7 +111,7 @@ public: // セッター
 	// 番号
 	void SetTexNumber(UINT texNumber) { this->texNumber = texNumber; }
 	// 色
-	void SetColor(const Vector4& color) { this->color_ = color; }
+	void SetColor(Sprite sprite,const Vector4& color_);
 	void SetAlpha(Sprite sprite, float alpha_);
 	// フリップ
 	void SetIsFlipX(bool isFlipX) { this->isFlipX_ = isFlipX; } // X

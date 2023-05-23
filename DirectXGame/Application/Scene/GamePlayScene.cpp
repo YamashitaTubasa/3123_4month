@@ -83,7 +83,6 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	// HP
 	for (int i = 0; i < 3; i++) {
 		hP[i].LoadTexture(spriteCommon_, 3, L"Resources/lineHP_03.png", dXCommon->GetDevice());
-		hP[i].SetColor(Vector4(1, 1, 1, 1));
 		hP[i].SpriteCreate(dXCommon->GetDevice(), 63, 20, 3, spriteCommon, Vector2(0.0f, 0.0f), false, false);
 		hP[i].SetPosition(Vector3(40.0f + (i * 66.0f), 40.0f, 0.0f));
 		hP[i].SetScale(Vector2(63.0f * 1.0f, 20.0f * 1.0f));
@@ -94,7 +93,6 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 
 	//gaugeFlame
 	gaugeFlame.LoadTexture(spriteCommon_, 20, L"Resources/HPframe_03.png", dXCommon->GetDevice());
-	gaugeFlame.SetColor(Vector4(1, 1, 1, 1));
 	gaugeFlame.SpriteCreate(dXCommon->GetDevice(), 204, 24, 20, spriteCommon, Vector2(0.0f, 0.0f), false, false);
 	gaugeFlame.SetPosition(Vector3(35.0f, 64.0f, 0.0f));
 	gaugeFlame.SetScale(Vector2(204.0f, 24.0f));
@@ -104,7 +102,6 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 
 	//gauge
 	gauge.LoadTexture(spriteCommon_, 21, L"Resources/gauge_02.png", dXCommon->GetDevice());
-	gauge.SetColor(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
 	gauge.SpriteCreate(dXCommon->GetDevice(), 110, 10, 21, spriteCommon, Vector2(0.0f, 0.5f), false, false);
 	gauge.SetPosition(Vector3(gaugePosition.x, gaugePosition.y, gaugePosition.z));
 	gauge.SetScale(Vector2(gaugeScale.x, gaugeScale.y));
@@ -114,7 +111,6 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 
 	//HPframe
 	HPframe.LoadTexture(spriteCommon_, 22, L"Resources/HPframe_03.png", dXCommon->GetDevice());
-	HPframe.SetColor(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
 	HPframe.SpriteCreate(dXCommon->GetDevice(), 204, 24, 22, spriteCommon, Vector2(0.0f, 0.0f), false, false);
 	HPframe.SetPosition(Vector3(35.0f, 38.0f, 0.0f));
 	HPframe.SetScale(Vector2(204.0f, 24.0f));
@@ -124,7 +120,6 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 
 	//SpaceButton
 	spaButton.LoadTexture(spriteCommon_, 23, L"Resources/space.png", dXCommon->GetDevice());
-	spaButton.SetColor(Vector4(1, 1, 1, 1));
 	spaButton.SpriteCreate(dXCommon->GetDevice(), 412, 95, 23, spriteCommon, Vector2(0.0f, 0.0f), false, false);
 	spaButton.SetPosition(Vector3(440, 610, 0));
 	spaButton.SetScale(Vector2(412, 95));
@@ -144,7 +139,6 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 
 	//title
 	title.LoadTexture(spriteCommon_, 17, L"Resources/RideLight.png", dXCommon->GetDevice());
-	title.SetColor(Vector4(1, 1, 1, 1));
 	title.SpriteCreate(dXCommon->GetDevice(), 1280, 720, 17, spriteCommon, Vector2(0.0f, 0.0f), false, false);
 	title.SetPosition(Vector3(730, 10, 0));
 	title.SetScale(Vector2(640 * 1, 360 * 1));
@@ -153,7 +147,6 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	title.SpriteUpdate(title, spriteCommon_);
 	//clear
 	clear.LoadTexture(spriteCommon_, 18, L"Resources/GameClear.png", dXCommon->GetDevice());
-	clear.SetColor(Vector4(1, 1, 1, 1));
 	clear.SpriteCreate(dXCommon->GetDevice(), 1280, 720, 18, spriteCommon, Vector2(0.0f, 0.0f), false, false);
 	clear.SetPosition(Vector3(0, 0, 0));
 	clear.SetScale(Vector2(1280 * 1, 720 * 1));
@@ -163,7 +156,6 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 
 	//over
 	over.LoadTexture(spriteCommon_, 19, L"Resources/GameOver_01.png", dXCommon->GetDevice());
-	over.SetColor(Vector4(1, 1, 1, 1));
 	over.SpriteCreate(dXCommon->GetDevice(), 1280, 720, 19, spriteCommon, Vector2(0.0f, 0.0f), false, false);
 	over.SetPosition(Vector3(0, 0, 0));
 	over.SetScale(Vector2(1280 * 1, 720 * 1));
@@ -173,7 +165,6 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 
 	//back
 	back.LoadTexture(spriteCommon_, 7, L"Resources/back.png", dXCommon->GetDevice());
-	back.SetColor(Vector4(1, 1, 1, 1));
 	back.SpriteCreate(dXCommon->GetDevice(), 1280, 720, 7, spriteCommon, Vector2(0.0f, 0.0f), false, false);
 	back.SetPosition(Vector3(0, 0, 0));
 	back.SetScale(Vector2(1280 * 1, 720 * 1));
@@ -183,9 +174,9 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 
 	//titleBack
 	titleBack.LoadTexture(spriteCommon_, 24, L"Resources/titleBack_03.png", dXCommon->GetDevice());
-	titleBack.SetColor(Vector4(1, 1, 1, 1));
 	titleBack.SpriteCreate(dXCommon->GetDevice(), 360, 47, 24, spriteCommon, Vector2(0.5f, 0.5f), false, false);
-	titleBack.SetPosition(Vector3(650, 600, 0));
+	titleBack.SetColor(titleBack,Vector4(0.5, 0.5, 0.5, 0.9));
+	titleBack.SetPosition(Vector3(650, 620, 0));
 	titleBack.SetScale(Vector2(360, 47));
 	titleBack.SetRotation(0.0f);
 	titleBack.SpriteTransferVertexBuffer(titleBack, spriteCommon, 24);
@@ -193,13 +184,33 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 
 	//stageBack
 	stageBack.LoadTexture(spriteCommon_, 25, L"Resources/stageSelectBack_02.png", dXCommon->GetDevice());
-	stageBack.SetColor(Vector4(1, 1, 1, 1));
 	stageBack.SpriteCreate(dXCommon->GetDevice(), 360, 47, 25, spriteCommon, Vector2(0.5f, 0.5f), false, false);
-	stageBack.SetPosition(Vector3(650, 530, 0));
+	stageBack.SetColor(stageBack,Vector4(0.5, 0.5, 0.5, 0.9));
+	stageBack.SetPosition(Vector3(650, 550, 0));
 	stageBack.SetScale(Vector2(360, 47));
 	stageBack.SetRotation(0.0f);
 	stageBack.SpriteTransferVertexBuffer(stageBack, spriteCommon, 25);
 	stageBack.SpriteUpdate(stageBack, spriteCommon_);
+
+	//close
+	close.LoadTexture(spriteCommon_, 33, L"Resources/close.png", dXCommon->GetDevice());
+	close.SpriteCreate(dXCommon->GetDevice(), 360, 47, 33, spriteCommon, Vector2(0.5f, 0.5f), false, false);
+	close.SetColor(close,Vector4(0.1, 0.7, 0, 1));
+	close.SetPosition(Vector3(650, 480, 0));
+	close.SetScale(Vector2(360, 47));
+	close.SetRotation(0.0f);
+	close.SpriteTransferVertexBuffer(close, spriteCommon, 33);
+	close.SpriteUpdate(close, spriteCommon_);
+
+	//pause
+	pause.LoadTexture(spriteCommon_, 34, L"Resources/black.png", dXCommon->GetDevice());
+	pause.SpriteCreate(dXCommon->GetDevice(), 1280, 720, 34, spriteCommon, Vector2(0.0f, 0.0f), false, false);
+	pause.SetAlpha(pause, 0.7);
+	pause.SetPosition(Vector3(0, 0, 0));
+	pause.SetScale(Vector2(1280, 720));
+	pause.SetRotation(0.0f);
+	pause.SpriteTransferVertexBuffer(pause, spriteCommon, 34);
+	pause.SpriteUpdate(pause, spriteCommon_);
 
 	//レールカメラ初期化
 	railCamera->Initialize();
@@ -481,15 +492,34 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		}
 		break;
 	case 5://ポーズ画面
-		postEffect_->SetColor(Vector4(0.3, 0.3, 0.3, 1));
 		if (input->TriggerKey(DIK_W) || input->TriggerKey(DIK_UP)) {
-			if (selectPause <= 0) {
+			if (selectPause <= 1) {
 				selectPause++;
+				if (selectPause == 2) {
+					titleBack.SetColor(titleBack, Vector4(0.5, 0.5, 0.5, 0.9));
+					stageBack.SetColor(stageBack, Vector4(0.5, 0.5, 0.5, 0.9));
+					close.SetColor(close, Vector4(1, 1, 0, 1));
+				}
+				else if (selectPause == 1) {
+					titleBack.SetColor(titleBack, Vector4(0.5, 0.5, 0.5, 0.9));
+					stageBack.SetColor(stageBack, Vector4(1, 1, 0, 1));
+					close.SetColor(close, Vector4(0.5, 0.5, 0.5, 0.9));
+				}
 			}
 		}
 		if (input->TriggerKey(DIK_S) || input->TriggerKey(DIK_DOWN)) {
 			if (selectPause > 0) {
 				selectPause--;
+				if (selectPause == 1) {
+					titleBack.SetColor(titleBack, Vector4(0.5, 0.5, 0.5, 0.9));
+					stageBack.SetColor(stageBack, Vector4(1, 1, 0, 1));
+					close.SetColor(close, Vector4(0.5, 0.5, 0.5, 0.9));
+				}
+				else if (selectPause == 0) {
+					titleBack.SetColor(titleBack, Vector4(1, 1, 0, 1));
+					stageBack.SetColor(stageBack, Vector4(0.5, 0.5, 0.5, 0.9));
+					close.SetColor(close, Vector4(0.5, 0.5, 0.5, 0.9));
+				}
 			}
 		}
 		//戻る
@@ -823,6 +853,8 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 
 	//ポーズ画面描画
 	if (sceneNum == 5) {
+		pause.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), pause.vbView);
+		close.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), close.vbView);
 		titleBack.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), titleBack.vbView);
 		stageBack.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), stageBack.vbView);
 	}
@@ -895,8 +927,8 @@ void GamePlayScene::LoadEffect(SpriteCommon& spriteCommon) {
 		else {
 			effectL[i].LoadTexture(spriteCommon_, 4 + i, L"Resources/EfL6.bmp", dXCommon->GetDevice());
 		}
-		effectL[i].SetColor(Vector4(1, 1, 1, 0.8));
 		effectL[i].SpriteCreate(dXCommon->GetDevice(), 1280, 720, 4 + i, spriteCommon, Vector2(0.0f, 0.0f), false, false);
+		effectL[i].SetAlpha(effectL[i], 0.7);
 		effectL[i].SetScale(Vector2(1280 * 1, 720 * 1));
 		effectL[i].SetRotation(0.0f);
 		effectL[i].SetPosition(Vector3(-640, 0, 0));
@@ -923,8 +955,8 @@ void GamePlayScene::LoadEffect(SpriteCommon& spriteCommon) {
 		else {
 			effectR[i].LoadTexture(spriteCommon_, 10 + i, L"Resources/EfR6.jpg", dXCommon->GetDevice());
 		}
-		effectR[i].SetColor(Vector4(1, 1, 1, 0.8));
 		effectR[i].SpriteCreate(dXCommon->GetDevice(), 1280, 720, 10 + i, spriteCommon, Vector2(0.0f, 0.0f), false, false);
+		effectR[i].SetAlpha(effectR[i], 0.7);
 		effectR[i].SetScale(Vector2(640 * 1, 720 * 1));
 		effectR[i].SetRotation(0.0f);
 		effectR[i].SetPosition(Vector3(640, 0, 0));
@@ -959,7 +991,6 @@ void GamePlayScene::LoadAttackEffect(SpriteCommon& spriteCommon) {
 		else {
 			attackEffect[i].LoadTexture(spriteCommon_, 25 + i, L"Resources/airRing_08.png", dXCommon->GetDevice());
 		}
-		attackEffect[i].SetColor(Vector4(1, 1, 1, 0.8));
 		attackEffect[i].SpriteCreate(dXCommon->GetDevice(), 1280, 720, 25 + i, spriteCommon, Vector2(0.0f, 0.0f), false, false);
 		attackEffect[i].SetScale(Vector2(1280 * 1, 720 * 1));
 		attackEffect[i].SetRotation(0.0f);
@@ -1022,6 +1053,10 @@ void GamePlayScene::Reset() {
 	pm_dmg->SetXMViewProjection(xmViewProjection);
 
 	railCamera->Initialize();
+
+	titleBack.SetColor(titleBack, Vector4(0.5, 0.5, 0.5, 0.9));
+	stageBack.SetColor(stageBack, Vector4(0.5, 0.5, 0.5, 0.9));
+	close.SetColor(close, Vector4(1, 1, 0, 1));
 
 	//変数
 
