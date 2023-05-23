@@ -227,6 +227,26 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	pauseSelect.SpriteTransferVertexBuffer(pauseSelect, spriteCommon, 26);
 	pauseSelect.SpriteUpdate(pauseSelect, spriteCommon_);
 
+	//continueSelect
+	continueSelect.LoadTexture(spriteCommon_, 27, L"Resources/pauseSelect.png", dXCommon->GetDevice());
+	continueSelect.SetColor(Vector4(1, 1, 1, 1));
+	continueSelect.SpriteCreate(dXCommon->GetDevice(), 365, 52, 27, spriteCommon, Vector2(0.5f, 0.5f), false, false);
+	continueSelect.SetPosition(Vector3(650, 460, 0));
+	continueSelect.SetScale(Vector2(365, 52));
+	continueSelect.SetRotation(0.0f);
+	continueSelect.SpriteTransferVertexBuffer(continueSelect, spriteCommon, 27);
+	continueSelect.SpriteUpdate(continueSelect, spriteCommon_);
+
+	//continueSelect
+	titleSelect.LoadTexture(spriteCommon_, 28, L"Resources/pauseSelect.png", dXCommon->GetDevice());
+	titleSelect.SetColor(Vector4(1, 1, 1, 1));
+	titleSelect.SpriteCreate(dXCommon->GetDevice(), 365, 52, 28, spriteCommon, Vector2(0.5f, 0.5f), false, false);
+	titleSelect.SetPosition(Vector3(650, 600, 0));
+	titleSelect.SetScale(Vector2(365, 52));
+	titleSelect.SetRotation(0.0f);
+	titleSelect.SpriteTransferVertexBuffer(titleSelect, spriteCommon, 28);
+	titleSelect.SpriteUpdate(titleSelect, spriteCommon_);
+
 	//レールカメラ初期化
 	railCamera->Initialize();
 
@@ -490,15 +510,13 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		case 5://ポーズ画面
 			postEffect_->SetColor(Vector4(0.3, 0.3, 0.3, 1));
 			if (input->TriggerKey(DIK_W) || input->TriggerKey(DIK_UP)) {
-				pauseSelect.SetPosition(Vector3(650, 460, 0));
-				pauseSelect.SpriteUpdate(pauseSelect, spriteCommon_);
+				isSelect = 1;
 				if (selectPause <= 0) {
 					selectPause++;
 				}
 			}
 			if (input->TriggerKey(DIK_S) || input->TriggerKey(DIK_DOWN)) {
-				pauseSelect.SetPosition(Vector3(650, 530, 0));
-				pauseSelect.SpriteUpdate(pauseSelect, spriteCommon_);
+				isSelect = 2;
 				if (selectPause > 0) {
 					selectPause--;
 				}
@@ -652,6 +670,12 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 		titleBack.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), titleBack.vbView);
 		stageBack.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), stageBack.vbView);
 		continueGame.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), continueGame.vbView);
+		if (isSelect == 1) {
+			continueSelect.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), continueSelect.vbView);
+		}
+		if (isSelect == 2) {
+			titleSelect.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), titleSelect.vbView);
+		}
 		pauseSelect.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), pauseSelect.vbView);
 	}
 

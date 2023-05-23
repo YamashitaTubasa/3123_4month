@@ -136,7 +136,11 @@ private:
 	Sprite gaugeFlame;
 	Sprite gauge;
 	Sprite diagonalFrame;
+
 	Sprite pauseSelect;
+	Sprite continueSelect;
+	Sprite titleSelect;
+
 	Sprite continueGame;
 	Sprite board;
 	Sprite effectL[6];
@@ -216,6 +220,8 @@ private:
 	float calRes = 0.0f;
 
 	int selectPause;
+
+	int isSelect = 0;
 
 	//タイトル画面のタイマー
 	float titleTimer;
