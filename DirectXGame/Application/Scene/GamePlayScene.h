@@ -138,6 +138,7 @@ private:
 	Sprite diagonalFrame;
 	Sprite pauseSelect;
 	Sprite continueGame;
+	Sprite pause;
 	Sprite board;
 	Sprite effectL[6];
 	Sprite effectR[6];
@@ -167,6 +168,8 @@ private:
 	Vector3 position[5]{};
 	Vector3 rotation[5]{};
 	Vector3 scale[5]{};
+
+	Vector3 pausePosition{};
 
 	//敵
 	std::list<std::unique_ptr<Enemy>> enemys_;

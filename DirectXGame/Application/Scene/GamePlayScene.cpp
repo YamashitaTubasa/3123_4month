@@ -208,7 +208,7 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 
 
 	//continueGame
-	continueGame.LoadTexture(spriteCommon_, 33, L"Resources/continueGame.png", dXCommon->GetDevice());
+	continueGame.LoadTexture(spriteCommon_, 33, L"Resources/close.png", dXCommon->GetDevice());
 	continueGame.SetColor(Vector4(1, 1, 1, 1));
 	continueGame.SpriteCreate(dXCommon->GetDevice(), 360, 47, 33, spriteCommon, Vector2(0.5f, 0.5f), false, false);
 	continueGame.SetPosition(Vector3(650, 460, 0));
@@ -221,11 +221,24 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	pauseSelect.LoadTexture(spriteCommon_, 26, L"Resources/pauseSelect.png", dXCommon->GetDevice());
 	pauseSelect.SetColor(Vector4(1, 1, 1, 1));
 	pauseSelect.SpriteCreate(dXCommon->GetDevice(), 365, 52, 26, spriteCommon, Vector2(0.5f, 0.5f), false, false);
-	pauseSelect.SetPosition(Vector3(650, 530, 0));
+	pausePosition = { 650, 530, 0 };
+	pauseSelect.SetPosition(pausePosition);
 	pauseSelect.SetScale(Vector2(365, 52));
 	pauseSelect.SetRotation(0.0f);
 	pauseSelect.SpriteTransferVertexBuffer(pauseSelect, spriteCommon, 26);
 	pauseSelect.SpriteUpdate(pauseSelect, spriteCommon_);
+
+	//pause
+	pause.LoadTexture(spriteCommon_, 34, L"Resources/black.png", dXCommon->GetDevice());
+	pause.SetColor(Vector4(1, 1, 1, 1));
+	pause.SpriteCreate(dXCommon->GetDevice(),1280, 720, 34, spriteCommon, Vector2(0.0f, 0.0f), false, false);
+	pause.SetAlpha(pause, 0.7);
+	pause.SetPosition(Vector3(0, 0, 0));
+	pause.SetScale(Vector2(1280, 720));
+	pause.SetRotation(0.0f);
+	pause.SpriteTransferVertexBuffer(pause, spriteCommon, 34);
+	pause.SpriteUpdate(pause, spriteCommon_);
+
 
 	//レールカメラ初期化
 	railCamera->Initialize();
@@ -488,17 +501,15 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 			}
 			break;
 		case 5://ポーズ画面
-			postEffect_->SetColor(Vector4(0.3, 0.3, 0.3, 1));
 			if (input->TriggerKey(DIK_W) || input->TriggerKey(DIK_UP)) {
-				pauseSelect.SetPosition(Vector3(650, 460, 0));
-				pauseSelect.SpriteUpdate(pauseSelect, spriteCommon_);
+				pausePosition = { 650,440,0 };
+				pauseSelect.SetPosition(pausePosition);
 				if (selectPause <= 0) {
 					selectPause++;
 				}
 			}
 			if (input->TriggerKey(DIK_S) || input->TriggerKey(DIK_DOWN)) {
 				pauseSelect.SetPosition(Vector3(650, 530, 0));
-				pauseSelect.SpriteUpdate(pauseSelect, spriteCommon_);
 				if (selectPause > 0) {
 					selectPause--;
 				}
@@ -518,6 +529,7 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 				postEffect_->SetColor(Vector4(1, 1, 1, 1));
 				sceneNum = 2;
 			}
+			pauseSelect.SpriteUpdate(pauseSelect, spriteCommon_);
 			break;
 
 	}
@@ -649,6 +661,7 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 
 	//ポーズ画面描画
 	if (sceneNum == 5) {
+		pause.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), pause.vbView);
 		titleBack.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), titleBack.vbView);
 		stageBack.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), stageBack.vbView);
 		continueGame.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), continueGame.vbView);
