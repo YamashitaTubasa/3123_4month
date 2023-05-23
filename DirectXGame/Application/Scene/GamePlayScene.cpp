@@ -212,6 +212,7 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	sceneNum = 0;
 	selectPause = 1;
 	stageNum = 1;
+	tutorialStep = 0;
 
 }
 
@@ -494,6 +495,8 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 			postEffect_->SetColor(Vector4(1, 1, 1, 1));
 			sceneNum = 2;
 		}
+		break;
+	case 6://チュートリアル
 		break;
 	
 	}
@@ -904,6 +907,7 @@ void GamePlayScene::Reset() {
 	isTitleT = false;
 	isClearStaging = false;
 	cStagingT = 0.0f;
+	tutorialStep = 0;
 }
 
 void GamePlayScene::CreatThreeLine(std::vector<Vector3>& points) {
@@ -1015,4 +1019,12 @@ void GamePlayScene::LoadStage(int stageNum) {
 	file.close();
 
 	CreatThreeLine(points);
+}
+
+void GamePlayScene::TutorialUpdate() {
+	if (stageNum == 1) {
+
+
+
+	}
 }

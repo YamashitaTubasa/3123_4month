@@ -84,6 +84,8 @@ public:
 
 	void CreatThreeLine(std::vector<Vector3>& points);
 
+	void TutorialUpdate();
+
 	//補間で使うデータ
 	//start → end を5秒で完了させる
 	Vector3 start;		//スタート地点
@@ -213,7 +215,11 @@ private:
 
 	float calRes = 0.0f;
 
+	//ポーズ
 	int selectPause;
+	//チュートリアル
+	int tutorialStep;
+
 
 	//タイトル画面のタイマー
 	float titleTimer;
