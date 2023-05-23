@@ -36,7 +36,7 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	builModel01 = Model::LoadFromOBJ("building_01");
 	builModel02 = Model::LoadFromOBJ("building_02");
 	builModel03 = Model::LoadFromOBJ("building_03");
-	ringModel = Model::LoadFromOBJ("ring");
+	builModel04 = Model::LoadFromOBJ("ring");
 
 	// 3Dオブジェクト生成
 	//床
@@ -50,47 +50,6 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	// オブジェクトにモデルをひも付ける
 	sky->SetModel(skyModel);
 	sky->SetScale(Vector3({ 1000, 1000, 1000 }));
-
-	//建物
-	for (int i = 0; i < 5; i++)
-	{
-		buil_01[i] = Object3d::Create();
-		buil_02[i] = Object3d::Create();
-		buil_03[i] = Object3d::Create();
-		ring[i] = Object3d::Create();
-
-		// オブジェクトにモデルをひも付ける
-		buil_01[i]->SetModel(builModel01);
-		buil_01[i]->SetScale(Vector3({ 10, 10, 10 }));
-		buil_02[i]->SetModel(builModel02);
-		buil_02[i]->SetScale(Vector3({ 12, 12, 12 }));
-		buil_03[i]->SetModel(builModel03);
-		buil_03[i]->SetScale(Vector3({ 10, 10, 10 }));
-		ring[i]->SetModel(ringModel);
-		ring[i]->SetScale(Vector3({ 3, 10, 10 }));
-	}
-	buil_02[0]->SetPosition(Vector3(200, -60, -750));
-	buil_02[1]->SetPosition(Vector3(-350, -60, -575));
-	buil_02[2]->SetPosition(Vector3(-200, -60, -100));
-	buil_02[3]->SetPosition(Vector3(170, -60, 200));
-	buil_02[4]->SetPosition(Vector3(-200, -60, 600));
-
-	buil_03[0]->SetPosition(Vector3(70, -60, -750));
-	buil_03[1]->SetPosition(Vector3(-175, -60, -575));
-	buil_03[2]->SetPosition(Vector3(-360, -60, -375));
-	buil_03[3]->SetPosition(Vector3(70, -60, 200));
-	buil_03[4]->SetPosition(Vector3(-100, -60, 600));
-
-	ring[0]->SetPosition(Vector3(-200, 0, -600));
-	ring[0]->SetRotation(Vector3(0, 30, 0));
-	ring[1]->SetPosition(Vector3(-400, -50, -400));
-	ring[1]->SetRotation(Vector3(0, 90, 0));
-	ring[2]->SetPosition(Vector3(-200, 50, -100));
-	ring[2]->SetRotation(Vector3(0, 135, 0));
-	ring[3]->SetPosition(Vector3(-100, 0, 0));
-	ring[3]->SetRotation(Vector3(0, 135, 0));
-	ring[4]->SetPosition(Vector3(100, 50, 400));
-	ring[4]->SetRotation(Vector3(0, 60, 0));
 
 	//player初期化
 	player = new Player;
@@ -285,13 +244,6 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		//天球
 		floor->Update();
 		sky->Update();
-		for (int i = 0; i < 5; i++)
-		{
-			buil_01[i]->Update();
-			buil_02[i]->Update();
-			buil_03[i]->Update();
-			ring[i]->Update();
-		}
 
 		if (titleTimer <= 50) {
 			player->worldTransform_.position_.y += MathFunc::easeInOutSine(titleTimer / 50) / 30;
@@ -436,6 +388,9 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 				blurT = 0;
 			}
 		}
+		for (const std::unique_ptr<Object3d>& buil : buils_) {
+			buil->Update();
+		}
 
 		//敵キャラの更新
 		for (const std::unique_ptr<Enemy>& enemy : enemys_) {
@@ -497,13 +452,6 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		//天球
 		floor->Update();
 		sky->Update();
-		for (int i = 0; i < 5; i++)
-		{
-			buil_01[i]->Update();
-			buil_02[i]->Update();
-			buil_03[i]->Update();
-			ring[i]->Update();
-		}
 
 		//パーティクル
 		pm_1->Update();
@@ -759,12 +707,8 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 
 	if (sceneNum == 2 || sceneNum == 5 || sceneNum == 6) {
 		floor->Draw(railCamera->GetView());
-		for (int i = 0; i < 5; i++)
-		{
-			/*buil_01[i]->Draw(railCamera->GetView());*/
-			buil_02[i]->Draw(railCamera->GetView());
-			buil_03[i]->Draw(railCamera->GetView());
-			ring[i]->Draw(railCamera->GetView());
+		for (const std::unique_ptr<Object3d>& buil : buils_) {
+			buil->Draw(railCamera->GetView());
 		}
 		//敵キャラの描画
 		for (const std::unique_ptr<Enemy>& enemy : enemys_) {
@@ -892,19 +836,13 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 void GamePlayScene::Finalize() {
 	delete floorModel;
 	delete skyModel;
-	delete player;
-	delete enemy;
 	delete builModel01;
 	delete builModel02;
 	delete builModel03;
-	delete ringModel;
-	for (int i = 0; i < 5; i++)
-	{
-		delete buil_01[i];
-		delete buil_02[i];
-		delete buil_03[i];
-		delete ring[i];
-	}
+	delete builModel04;
+	delete player;
+	delete enemy;
+	delete buil;
 	delete floor;
 	delete sky;
 	delete viewProjection;
@@ -1089,21 +1027,20 @@ void GamePlayScene::LoadAttackEffect(SpriteCommon& spriteCommon) {
 
 void GamePlayScene::Reset() {
 	Finalize();
+	// OBJからモデルデータを読み込む
+	floorModel = Model::LoadFromOBJ("floor");
+	skyModel = Model::LoadFromOBJ("skydome");
+
+	builModel01 = Model::LoadFromOBJ("building_01");
+	builModel02 = Model::LoadFromOBJ("building_02");
+	builModel03 = Model::LoadFromOBJ("building_03");
+	builModel04 = Model::LoadFromOBJ("ring");
 
 	if (stageNum != 0) {
 		LoadStage(stageNum);
 	}
 	railCamera = new RailCamera;
 	xmViewProjection = new XMViewProjection();
-
-	// OBJからモデルデータを読み込む
-	floorModel = Model::LoadFromOBJ("floor");
-	skyModel = Model::LoadFromOBJ("skydome");
-	builModel01 = Model::LoadFromOBJ("building_01");
-	builModel02 = Model::LoadFromOBJ("building_02");
-	builModel03 = Model::LoadFromOBJ("building_03");
-	ringModel = Model::LoadFromOBJ("ring");
-
 	// 3Dオブジェクト生成
 	//床
 	floor = Object3d::Create();
@@ -1116,48 +1053,6 @@ void GamePlayScene::Reset() {
 	// オブジェクトにモデルをひも付ける
 	sky->SetModel(skyModel);
 	sky->SetScale(Vector3({ 1000, 1000, 1000 }));
-
-	//建物
-	for (int i = 0; i < 5; i++)
-	{
-		buil_01[i] = Object3d::Create();
-		buil_02[i] = Object3d::Create();
-		buil_03[i] = Object3d::Create();
-		ring[i] = Object3d::Create();
-
-		// オブジェクトにモデルをひも付ける
-		buil_01[i]->SetModel(builModel01);
-		buil_01[i]->SetScale(Vector3({ 10, 10, 10 }));
-		buil_02[i]->SetModel(builModel02);
-		buil_02[i]->SetScale(Vector3({ 12, 12, 12 }));
-		buil_03[i]->SetModel(builModel03);
-		buil_03[i]->SetScale(Vector3({ 10, 10, 10 }));
-		ring[i]->SetModel(ringModel);
-		ring[i]->SetScale(Vector3({ 3, 10, 10 }));
-	}
-	buil_02[0]->SetPosition(Vector3(200, -60, -750));
-	buil_02[1]->SetPosition(Vector3(-350, -60, -575));
-	buil_02[2]->SetPosition(Vector3(-200, -60, -100));
-	buil_02[3]->SetPosition(Vector3(170, -60, 200));
-	buil_02[4]->SetPosition(Vector3(-200, -60, 600));
-
-	buil_03[0]->SetPosition(Vector3(70, -60, -750));
-	buil_03[1]->SetPosition(Vector3(-175, -60, -575));
-	buil_03[2]->SetPosition(Vector3(-360, -60, -375));
-	buil_03[3]->SetPosition(Vector3(70, -60, 200));
-	buil_03[4]->SetPosition(Vector3(-100, -60, 600));
-
-	ring[0]->SetPosition(Vector3(-200, 0, -600));
-	ring[0]->SetRotation(Vector3(0, 30, 0));
-	ring[1]->SetPosition(Vector3(-400, -50, -400));
-	ring[1]->SetRotation(Vector3(0, 90, 0));
-	ring[2]->SetPosition(Vector3(-200, 50, -100));
-	ring[2]->SetRotation(Vector3(0, 135, 0));
-	ring[3]->SetPosition(Vector3(-100, 0, 0));
-	ring[3]->SetRotation(Vector3(0, 135, 0));
-	ring[4]->SetPosition(Vector3(100, 50, 400));
-	ring[4]->SetRotation(Vector3(0, 60, 0));
-	
 
 	//player初期化
 	player = new Player;
@@ -1277,6 +1172,8 @@ void GamePlayScene::StageSelect() {
 		else {
 			sceneNum = 2;
 			LoadStage(stageNum);
+			//建物
+			LoadBuil(stageNum);
 
 		}
 		FadeOut(0.01, 100);
@@ -1323,6 +1220,105 @@ void GamePlayScene::LoadStage(int stageNum) {
 	file.close();
 
 	CreatThreeLine(points);
+}
+
+void GamePlayScene::LoadBuil(int stageNum)
+{
+	buils_.clear();
+
+	//ファイルを開く
+	std::ifstream file;
+	file.open("Resources/csv/builPop.csv");
+	assert(file.is_open());
+
+	HRESULT result = S_FALSE;
+
+	std::string num;
+	num = stageNum + 48;
+
+	// １行ずつ読み込む
+	string line;
+	while (getline(file, line)) {
+
+		// １行分の文字列をストリームに変換して解析しやすくする
+		std::istringstream line_stream(line);
+
+		// 半角スパース区切りで行の先頭文字列を取得
+		string key;
+		getline(line_stream, key, ' ');
+
+		// 先頭文字列がbなら頂点座標
+		if (key == "ba" + num) {
+			//初期化
+			std::unique_ptr<Object3d> newBuil = std::make_unique<Object3d>();
+			newBuil->Initialize();
+			newBuil->SetModel(builModel01);
+			newBuil->SetScale(Vector3{ 10,10,10 });
+			// X,Y,Z座標読み込み
+			Vector3 position{};
+			line_stream >> position.x;
+			line_stream >> position.y;
+			line_stream >> position.z;
+			// 座標データに追加
+			newBuil->SetPosition(position);
+			//登録
+			buils_.push_back(std::move(newBuil));
+		}
+		if (key == "bb" + num) {
+			//初期化
+			std::unique_ptr<Object3d> newBuil = std::make_unique<Object3d>();
+			newBuil->Initialize();
+			newBuil->SetModel(builModel02);
+			newBuil->SetScale(Vector3{ 12,12,12 });
+			// X,Y,Z座標読み込み
+			Vector3 position{};
+			line_stream >> position.x;
+			line_stream >> position.y;
+			line_stream >> position.z;
+			// 座標データに追加
+			newBuil->SetPosition(position);
+			//登録
+			buils_.push_back(std::move(newBuil));
+		}
+		if (key == "bc" + num) {
+			//初期化
+			std::unique_ptr<Object3d> newBuil = std::make_unique<Object3d>();
+			newBuil->Initialize();
+			newBuil->SetModel(builModel03);
+			newBuil->SetScale(Vector3{ 10,10,10 });
+			// X,Y,Z座標読み込み
+			Vector3 position{};
+			line_stream >> position.x;
+			line_stream >> position.y;
+			line_stream >> position.z;
+			// 座標データに追加
+			newBuil->SetPosition(position);
+			//登録
+			buils_.push_back(std::move(newBuil));
+		}
+		if (key == "bd" + num) {
+			//初期化
+			std::unique_ptr<Object3d> newBuil = std::make_unique<Object3d>();
+			newBuil->Initialize();
+			newBuil->SetModel(builModel04);
+			newBuil->SetScale(Vector3{ 3,10,10 });
+			// X,Y,Z座標読み込み
+			Vector3 position{};
+			Vector3 rotation{};
+			line_stream >> position.x;
+			line_stream >> position.y;
+			line_stream >> position.z;
+			line_stream >> rotation.y;
+			// 座標データに追加
+			newBuil->SetPosition(position);
+			newBuil->SetRotation(rotation);
+			//登録
+			buils_.push_back(std::move(newBuil));
+		}
+	}
+	// ファイルと閉じる
+	file.close();
+
 }
 
 void GamePlayScene::TutorialUpdate() {
