@@ -220,6 +220,7 @@ private:
 	//チュートリアル
 	int tutorialStep;
 	int tutoTime;
+	bool isShowText;
 
 
 	//タイトル画面のタイマー
