@@ -213,6 +213,7 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	selectPause = 1;
 	stageNum = 1;
 	tutorialStep = 0;
+	tutoTime = 0;
 
 }
 
@@ -497,6 +498,29 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		}
 		break;
 	case 6://チュートリアル
+		postEffect_->SetColor(Vector4(0.3, 0.3, 0.3, 1));
+
+		//操作説明
+		if (tutorialStep == 0) {
+			if (input->TriggerKey(DIK_SPACE)) {
+				postEffect_->SetColor(Vector4(1, 1, 1, 1));
+				tutorialStep = 1;
+				sceneNum = 2;
+			}
+		}
+		//敵(ダメージ)
+		else if (tutorialStep == 1) {
+
+		}
+		//敵(倒す)
+		else if (tutorialStep == 2) {
+
+		}
+		//フィーバータイム
+		else if (tutorialStep == 3) {
+
+		}
+
 		break;
 	
 	}
@@ -908,6 +932,7 @@ void GamePlayScene::Reset() {
 	isClearStaging = false;
 	cStagingT = 0.0f;
 	tutorialStep = 0;
+	tutoTime = 0;
 }
 
 void GamePlayScene::CreatThreeLine(std::vector<Vector3>& points) {
@@ -1023,7 +1048,10 @@ void GamePlayScene::LoadStage(int stageNum) {
 
 void GamePlayScene::TutorialUpdate() {
 	if (stageNum == 1) {
-
+		//ステップ1
+		if (tutorialStep == 0) {
+			sceneNum = 6;
+		}
 
 
 	}
