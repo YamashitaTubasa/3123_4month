@@ -75,6 +75,8 @@ public:
 
 	static int GetScene() { return sceneNum; }
 	static int GetTutorialStep() { return tutorialStep; }
+	static bool GetIsBack() { return isBack; }
+	static void SetIsBack(bool isBack_) { isBack = isBack_; }
 
 	void CreatThreeLine(std::vector<Vector3>& points);
 
@@ -193,7 +195,7 @@ private:
 
 
 	bool isMaxGauge = false;
-	bool isBack = false;          // ダメージ演出フラグ
+	static bool isBack;          // ダメージ演出フラグ
 	int backT = 0;                // ダメージ演出タイマー
 	bool isFadeOut = false;       // フェードアウト処理フラグ
 	int fadeOut = 0;              // フェードアウト処理タイマー

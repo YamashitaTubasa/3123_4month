@@ -153,7 +153,7 @@ void Player::Update(std::vector <Vector3>& point)
 		if (isPush == false && isMove == false)
 		{
 			//SPACEÉLÅ[ÇâüÇµÇΩÇÁ
-			if (input->TriggerKey(DIK_SPACE) && GamePlayScene::GetTutorialStep() != 0)
+			if (input->TriggerKey(DIK_SPACE) && GamePlayScene::GetTutorialStep() > 1)
 			{
 				//çUåÇÇ∑ÇÈ
 				isPush = true;
@@ -230,7 +230,7 @@ void Player::Update(std::vector <Vector3>& point)
 		}
 	}
 
-	if (val >= 0.0045)
+	if (val >= 0.0061)
 	{
 		GoesFever();
 	}
@@ -355,15 +355,14 @@ void Player::OnCollision(const CollisionInfo& info) {
 					if (isGauge_ == false) {
 						isGauge_ = true;
 					}
-					/*res = val / speedUpCount;*/
-					/*val -= res;*/
-					val += 0.0015f;
+					val += 0.002f;
 					len = 15;
 				}
 				isBurst = true;
 			}
 			else {
 				hp--;
+				GamePlayScene::SetIsBack(true);
 			}
 			isHit = true;
 		}
@@ -372,6 +371,7 @@ void Player::OnCollision(const CollisionInfo& info) {
 		if (isHit == false) {
 			hp--;
 			isHit = true;
+			GamePlayScene::SetIsBack(true);
 		}
 	}
 }

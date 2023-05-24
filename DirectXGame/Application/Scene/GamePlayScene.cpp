@@ -8,6 +8,7 @@
 
 int GamePlayScene::sceneNum = 0;
 int GamePlayScene::tutorialStep = 0;
+bool GamePlayScene::isBack = false;
 
 GamePlayScene::GamePlayScene() {
 }
@@ -176,7 +177,7 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	//titleBack
 	titleBack.LoadTexture(spriteCommon_, 24, L"Resources/titleBack_03.png", dXCommon->GetDevice());
 	titleBack.SpriteCreate(dXCommon->GetDevice(), 360, 47, 24, spriteCommon, Vector2(0.5f, 0.5f), false, false);
-	titleBack.SetColor(titleBack,Vector4(0.5, 0.5, 0.5, 0.9));
+	titleBack.SetColor(titleBack, Vector4(0.5, 0.5, 0.5, 0.9));
 	titleBack.SetPosition(Vector3(650, 620, 0));
 	titleBack.SetScale(Vector2(360, 47));
 	titleBack.SetRotation(0.0f);
@@ -186,7 +187,7 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	//stageBack
 	stageBack.LoadTexture(spriteCommon_, 25, L"Resources/stageSelectBack_02.png", dXCommon->GetDevice());
 	stageBack.SpriteCreate(dXCommon->GetDevice(), 360, 47, 25, spriteCommon, Vector2(0.5f, 0.5f), false, false);
-	stageBack.SetColor(stageBack,Vector4(0.5, 0.5, 0.5, 0.9));
+	stageBack.SetColor(stageBack, Vector4(0.5, 0.5, 0.5, 0.9));
 	stageBack.SetPosition(Vector3(650, 550, 0));
 	stageBack.SetScale(Vector2(360, 47));
 	stageBack.SetRotation(0.0f);
@@ -196,7 +197,7 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	//close
 	close.LoadTexture(spriteCommon_, 33, L"Resources/close.png", dXCommon->GetDevice());
 	close.SpriteCreate(dXCommon->GetDevice(), 360, 47, 33, spriteCommon, Vector2(0.5f, 0.5f), false, false);
-	close.SetColor(close,Vector4(0.1, 0.7, 0, 1));
+	close.SetColor(close, Vector4(0.1, 0.7, 0, 1));
 	close.SetPosition(Vector3(650, 480, 0));
 	close.SetScale(Vector2(360, 47));
 	close.SetRotation(0.0f);
@@ -206,7 +207,7 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	//pause
 	pause.LoadTexture(spriteCommon_, 34, L"Resources/black.png", dXCommon->GetDevice());
 	pause.SpriteCreate(dXCommon->GetDevice(), 1280, 720, 34, spriteCommon, Vector2(0.0f, 0.0f), false, false);
-	pause.SetAlpha(pause, 0.7);
+	pause.SetAlpha(pause, 0.5);
 	pause.SetPosition(Vector3(0, 0, 0));
 	pause.SetScale(Vector2(1280, 720));
 	pause.SetRotation(0.0f);
@@ -353,11 +354,6 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		gauge.SpriteTransferVertexBuffer(gauge, spriteCommon, 21);
 
 		// ダメージを受けた時の画面演出
-		if (player->GetIsPush() == false) {
-			if (player->GetIsHit() == true) {
-				isBack = true;
-			}
-		}
 		if (isBack == true) {
 			backT++;
 		}
@@ -578,11 +574,6 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 			gauge.SpriteTransferVertexBuffer(gauge, spriteCommon, 21);
 
 			// ダメージを受けた時の画面演出
-			if (player->GetIsPush() == false) {
-				if (player->GetIsHit() == true) {
-					isBack = true;
-				}
-			}
 			if (isBack == true) {
 				backT++;
 			}
@@ -693,7 +684,6 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 				if (input->TriggerKey(DIK_SPACE)) {
 					postEffect_->SetColor(Vector4(1, 1, 1, 1));
 					isShowText = false;
-					player->Update(points);
 				}
 			}
 			//敵(倒す)
@@ -740,6 +730,12 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 					postEffect_->SetColor(Vector4(1, 1, 1, 1));
 					isShowText = false;
 					player->Update(points);
+				}
+			}
+			else if (tutorialStep == 8) {
+				if (input->TriggerKey(DIK_SPACE)) {
+					postEffect_->SetColor(Vector4(1, 1, 1, 1));
+					isShowText = false;
 				}
 			}
 		}
@@ -830,15 +826,14 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 			spaButton.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), spaButton.vbView);
 		}
 	}
-	else if (sceneNum == 2 || sceneNum == 5) {
-		//board.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), board.vbView);
-		HPframe.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), HPframe.vbView);
-		for (int i = 0; i < player->GetHP(); i++) {
-			hP[i].SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), hP[i].vbView);
-		}
+	else if (sceneNum == 2) {
 		if (player->GetFever() == true) {
 			effectR[player->GetFeverNum()].SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), effectR[player->GetFeverNum()].vbView);
 			effectL[player->GetFeverNum()].SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), effectL[player->GetFeverNum()].vbView);
+		}
+		HPframe.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), HPframe.vbView);
+		for (int i = 0; i < player->GetHP(); i++) {
+			hP[i].SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), hP[i].vbView);
 		}
 		if (railCamera->GetIsEnd() == false) {
 			if (player->GetAttackTime() <= 8 && player->GetIsAttack() == true) {
@@ -860,7 +855,31 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 		over.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), over.vbView);
 		spaButton.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), spaButton.vbView);
 	}
+	else if (sceneNum == 5) {
+		HPframe.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), HPframe.vbView);
+		for (int i = 0; i < player->GetHP(); i++) {
+			hP[i].SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), hP[i].vbView);
+		}
+		gaugeFlame.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), gaugeFlame.vbView);
+		gauge.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), gauge.vbView);
+
+	}
 	else if (sceneNum == 6) {
+		if (player->GetFever() == true) {
+			effectR[player->GetFeverNum()].SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), effectR[player->GetFeverNum()].vbView);
+			effectL[player->GetFeverNum()].SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), effectL[player->GetFeverNum()].vbView);
+		}
+		HPframe.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), HPframe.vbView);
+		for (int i = 0; i < player->GetHP(); i++) {
+			hP[i].SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), hP[i].vbView);
+		}
+		if (isBack == true && isShowText == false) {
+			back.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), back.vbView);
+		}
+		if (tutorialStep > 1) {
+			gaugeFlame.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), gaugeFlame.vbView);
+			gauge.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), gauge.vbView);
+		}
 		if (railCamera->GetIsEnd() == false) {
 			if (player->GetAttackTime() <= 8 && player->GetIsAttack() == true) {
 				attackEffect[player->GetAttackNum()].SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), attackEffect[player->GetAttackNum()].vbView);
@@ -896,10 +915,39 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 	}
 	//チュートリアルテキスト描画
 	if (sceneNum == 6) {
-
 		//text
 		if (isShowText == true) {
+			if (tutorialStep == 0) {
 
+			}
+			else if (tutorialStep == 1) {
+
+			}
+			else if (tutorialStep == 2) {
+
+			}
+			else if (tutorialStep == 3) {
+
+			}
+			else if (tutorialStep == 4) {
+				HPframe.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), HPframe.vbView);
+				for (int i = 0; i < player->GetHP(); i++) {
+					hP[i].SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), hP[i].vbView);
+				}
+			}
+			else if (tutorialStep == 5) {
+
+			}
+			else if (tutorialStep == 6) {
+
+			}
+			else if (tutorialStep == 7) {
+
+			}
+			else if (tutorialStep == 8) {
+				gaugeFlame.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), gaugeFlame.vbView);
+				gauge.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), gauge.vbView);
+			}
 		}
 	}
 
@@ -1440,9 +1488,15 @@ void GamePlayScene::TutorialUpdate() {
 			}
 		}
 		else if (tutorialStep == 6) {
-			if (railCamera->GetCamera()->GetPosition().z >= -480) {
+			if (railCamera->GetCamera()->GetPosition().z >= -470) {
 				isShowText = true;
 				tutorialStep = 7;
+			}
+		}
+		else if (tutorialStep == 7) {
+			if (player->GetFever() == true) {
+				isShowText = true;
+				tutorialStep = 8;
 			}
 		}
 
