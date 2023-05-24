@@ -35,11 +35,11 @@ public:
 
 	//フラグ
 	bool GetIsHit() { return isHit; }
-	void SetIsHit(bool isHit_) { this->isHit = isHit_; }
+	/*void SetIsHit(bool isHit_) { this->isHit = isHit_; }*/
 
 	//hp
 	int GetHP() { return hp; }
-	void SetHP(int hp_) { this->hp = hp_; }
+	/*void SetHP(int hp_) { this->hp = hp_; }*/
 
 	//Getter
 	bool GetIsPush() { return isPush; }

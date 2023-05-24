@@ -7,6 +7,7 @@
 #include "WorldTransform.h"
 
 int GamePlayScene::sceneNum = 0;
+int GamePlayScene::tutorialStep = 0;
 
 GamePlayScene::GamePlayScene() {
 }
@@ -221,6 +222,7 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	tutorialStep = 0;
 	tutoTime = 0;
 	isShowText = false;
+	tutoText = 0;
 }
 
 void GamePlayScene::Update(SpriteCommon& spriteCommon) {
@@ -686,25 +688,59 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		else {
 			postEffect_->SetColor(Vector4(0.3, 0.3, 0.3, 1));
 
-			//操作説明
-			if (tutorialStep == 0) {
+			//welcome
+			if (tutorialStep == 1) {
 				if (input->TriggerKey(DIK_SPACE)) {
 					postEffect_->SetColor(Vector4(1, 1, 1, 1));
-					tutorialStep = 1;
 					isShowText = false;
+					player->Update(points);
 				}
-			}
-			//敵(ダメージ)
-			else if (tutorialStep == 1) {
-
 			}
 			//敵(倒す)
 			else if (tutorialStep == 2) {
-
+				if (input->TriggerKey(DIK_SPACE)) {
+					postEffect_->SetColor(Vector4(1, 1, 1, 1));
+					isShowText = false;
+					player->Update(points);
+				}
 			}
-			//フィーバータイム
+			//敵(ダメージ)
 			else if (tutorialStep == 3) {
-
+				if (input->TriggerKey(DIK_SPACE)) {
+					postEffect_->SetColor(Vector4(1, 1, 1, 1));
+					isShowText = false;
+					player->Update(points);
+				}
+			}
+			//HP
+			else if (tutorialStep == 4) {
+				if (input->TriggerKey(DIK_SPACE)) {
+					postEffect_->SetColor(Vector4(1, 1, 1, 1));
+					isShowText = false;
+				}
+			}
+			//移動
+			else if (tutorialStep == 5) {
+				if (input->TriggerKey(DIK_D) || input->TriggerKey(DIK_A)) {
+					postEffect_->SetColor(Vector4(1, 1, 1, 1));
+					isShowText = false;
+					player->Update(points);
+				}
+			}
+			//移動して攻撃
+			else if (tutorialStep == 6) {
+				if (input->TriggerKey(DIK_SPACE)) {
+					postEffect_->SetColor(Vector4(1, 1, 1, 1));
+					isShowText = false;
+					player->Update(points);
+				}
+			}
+			else if (tutorialStep == 7) {
+				if (input->TriggerKey(DIK_D) || input->TriggerKey(DIK_A)) {
+					postEffect_->SetColor(Vector4(1, 1, 1, 1));
+					isShowText = false;
+					player->Update(points);
+				}
 			}
 		}
 
@@ -1079,6 +1115,7 @@ void GamePlayScene::Reset() {
 	tutorialStep = 0;
 	tutoTime = 0;
 	isShowText = false;
+	tutoText = 0;
 }
 
 void GamePlayScene::CreatThreeLine(std::vector<Vector3>& points) {
@@ -1367,11 +1404,45 @@ void GamePlayScene::TutorialUpdate() {
 	if (stageNum == 1) {
 		//ステップ1
 		if (tutorialStep == 0) {
-			tutoTime++;
-
-			if (tutoTime == 25) {
-				tutoTime = 0;
+			if (railCamera->GetCamera()->GetPosition().z >= -790) {
 				isShowText = true;
+				tutorialStep = 1;
+			}
+		}
+		else if (tutorialStep == 1) {
+			if (railCamera->GetCamera()->GetPosition().z >= -760) {
+				isShowText = true;
+				tutorialStep = 2;
+			}
+		}
+		else if (tutorialStep == 2) {
+			if (railCamera->GetCamera()->GetPosition().z >= -610) {
+				isShowText = true;
+				tutorialStep = 3;
+			}
+		}
+		else if (tutorialStep == 3) {
+			if (railCamera->GetCamera()->GetPosition().z >= -580) {
+				isShowText = true;
+				tutorialStep = 4;
+			}
+		}
+		else if (tutorialStep == 4) {
+			if (railCamera->GetCamera()->GetPosition().z >= -550) {
+				isShowText = true;
+				tutorialStep = 5;
+			}
+		}
+		else if (tutorialStep == 5) {
+			if (railCamera->GetCamera()->GetPosition().z >= -510) {
+				isShowText = true;
+				tutorialStep = 6;
+			}
+		}
+		else if (tutorialStep == 6) {
+			if (railCamera->GetCamera()->GetPosition().z >= -480) {
+				isShowText = true;
+				tutorialStep = 7;
 			}
 		}
 

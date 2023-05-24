@@ -109,10 +109,6 @@ void Player::Update(std::vector <Vector3>& point)
 				if (pushTime == 20)
 				{
 					pushTime = 0;
-					if (isHit == true)
-					{
-						isHit = false;
-					}
 					isPush = false;
 
 				}
@@ -157,13 +153,13 @@ void Player::Update(std::vector <Vector3>& point)
 		if (isPush == false && isMove == false)
 		{
 			//SPACEキーを押したら
-			if (input->TriggerKey(DIK_SPACE))
+			if (input->TriggerKey(DIK_SPACE) && GamePlayScene::GetTutorialStep() != 0)
 			{
 				//攻撃する
 				isPush = true;
 				isAttack = true;
 			}
-			if (isAttack == false)
+			if (isAttack == false && GamePlayScene::GetTutorialStep() > 3)
 			{
 				//左以外の時に左キーを押したら
 				if (input->TriggerKey(DIK_A) || input->TriggerKey(DIK_LEFT))
@@ -234,7 +230,7 @@ void Player::Update(std::vector <Vector3>& point)
 		}
 	}
 
-	if (val >= 0.0075)
+	if (val >= 0.0045)
 	{
 		GoesFever();
 	}
@@ -361,7 +357,7 @@ void Player::OnCollision(const CollisionInfo& info) {
 					}
 					/*res = val / speedUpCount;*/
 					/*val -= res;*/
-					val += 0.0025f;
+					val += 0.0015f;
 					len = 15;
 				}
 				isBurst = true;
@@ -375,8 +371,8 @@ void Player::OnCollision(const CollisionInfo& info) {
 	if (strcmp(toCollisionName, str2) == 0) {
 		if (isHit == false) {
 			hp--;
+			isHit = true;
 		}
-		isHit = true;
 	}
 }
 

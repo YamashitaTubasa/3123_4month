@@ -74,6 +74,7 @@ public:
 	void Reset();
 
 	static int GetScene() { return sceneNum; }
+	static int GetTutorialStep() { return tutorialStep; }
 
 	void CreatThreeLine(std::vector<Vector3>& points);
 
@@ -211,9 +212,10 @@ private:
 	//ポーズ
 	int selectPause;
 	//チュートリアル
-	int tutorialStep;
+	static int tutorialStep;
 	int tutoTime;
 	bool isShowText;
+	int tutoText;
 
 
 	//タイトル画面のタイマー
