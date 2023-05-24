@@ -980,7 +980,9 @@ void GamePlayScene::Finalize() {
 	delete p_dmg;
 	delete pm_dmg;
 	for (int i = 0; i < 3; i++) {
-		delete line[i];
+		if (line[i] != nullptr) {
+			delete line[i];
+		}
 	}
 
 	// スプライト解放
@@ -1085,7 +1087,29 @@ void GamePlayScene::LoadAttackEffect(SpriteCommon& spriteCommon) {
 }
 
 void GamePlayScene::Reset() {
-	Finalize();
+	delete floorModel;
+	delete skyModel;
+	delete builModel01;
+	delete builModel02;
+	delete builModel03;
+	delete builModel04;
+	delete player;
+	delete enemy;
+	delete invEnemy;
+	delete buil;
+	delete floor;
+	delete sky;
+	delete viewProjection;
+	delete railCamera;
+	delete xmViewProjection;
+	delete worldTransform;
+	delete particle_1;
+	delete pm_1;
+	delete particle_2;
+	delete pm_2;
+	delete p_dmg;
+	delete pm_dmg;
+
 	// OBJからモデルデータを読み込む
 	floorModel = Model::LoadFromOBJ("floor");
 	skyModel = Model::LoadFromOBJ("skydome");
