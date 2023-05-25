@@ -720,14 +720,29 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 			}
 			//敵(倒す)
 			else if (tutorialStep == 2) {
+				if (tutoText == 0) {
+					if (input->TriggerKey(DIK_SPACE)) {
+						tutoText = 1;
+					}
+				}
+				else {
+					if (input->TriggerKey(DIK_SPACE)) {
+						postEffect_->SetColor(Vector4(1, 1, 1, 1));
+						isShowText = false;
+						tutoText = 0;
+						player->Update(points);
+					}
+				}
+			}
+			//スピードアップ
+			else if (tutorialStep == 3) {
 				if (input->TriggerKey(DIK_SPACE)) {
 					postEffect_->SetColor(Vector4(1, 1, 1, 1));
 					isShowText = false;
-					player->Update(points);
 				}
 			}
 			//敵(ダメージ)
-			else if (tutorialStep == 3) {
+			else if (tutorialStep == 4) {
 				if (input->TriggerKey(DIK_SPACE)) {
 					postEffect_->SetColor(Vector4(1, 1, 1, 1));
 					isShowText = false;
@@ -735,7 +750,7 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 				}
 			}
 			//HP
-			else if (tutorialStep == 4) {
+			else if (tutorialStep == 5) {
 				if (tutoText == 0) {
 					if (input->TriggerKey(DIK_SPACE)) {
 						tutoText = 1;
@@ -750,15 +765,23 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 				}
 			}
 			//移動
-			else if (tutorialStep == 5) {
-				if (input->TriggerKey(DIK_D) || input->TriggerKey(DIK_A)) {
-					postEffect_->SetColor(Vector4(1, 1, 1, 1));
-					isShowText = false;
-					player->Update(points);
+			else if (tutorialStep == 6) {
+				if (tutoText == 0) {
+					if (input->TriggerKey(DIK_SPACE)) {
+						tutoText = 1;
+					}
+				}
+				else {
+					if (input->TriggerKey(DIK_D) || input->TriggerKey(DIK_A)) {
+						postEffect_->SetColor(Vector4(1, 1, 1, 1));
+						isShowText = false;
+						tutoText = 0;
+						player->Update(points);
+					}
 				}
 			}
 			//移動して攻撃
-			else if (tutorialStep == 6) {
+			else if (tutorialStep == 7) {
 				if (input->TriggerKey(DIK_SPACE)) {
 					postEffect_->SetColor(Vector4(1, 1, 1, 1));
 					isShowText = false;
@@ -766,7 +789,7 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 				}
 			}
 			//移動
-			else if (tutorialStep == 7) {
+			else if (tutorialStep == 8) {
 				if (input->TriggerKey(DIK_D) || input->TriggerKey(DIK_A)) {
 					postEffect_->SetColor(Vector4(1, 1, 1, 1));
 					isShowText = false;
@@ -774,7 +797,7 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 				}
 			}
 			//フィーバー
-			else if (tutorialStep == 8) {
+			else if (tutorialStep == 9) {
 				if (tutoText == 0) {
 					if (input->TriggerKey(DIK_SPACE)) {
 						tutoText = 1;
@@ -789,7 +812,7 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 				}
 			}
 			//フィーバー終わり
-			else if (tutorialStep == 9) {
+			else if (tutorialStep == 10) {
 				if (tutoText == 0) {
 					if (input->TriggerKey(DIK_SPACE)) {
 						tutoText = 1;
@@ -936,7 +959,7 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 
 	}
 	else if (sceneNum == 6) {
-		if (player->GetFever() == true) {
+		if (player->GetFever() == true && isShowText == false) {
 			effectR[player->GetFeverNum()].SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), effectR[player->GetFeverNum()].vbView);
 			effectL[player->GetFeverNum()].SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), effectL[player->GetFeverNum()].vbView);
 		}
@@ -988,7 +1011,7 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 	if (sceneNum == 6) {
 		//text
 		if (isShowText == true) {
-			if (tutorialStep == 0) {
+			if (tutorialStep == 1) {
 				if (tutoText == 0) {
 
 				}
@@ -996,16 +1019,21 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 
 				}
 			}
-			else if (tutorialStep == 1) {
-
-			}
 			else if (tutorialStep == 2) {
+				if (tutoText == 0) {
 
+				}
+				else {
+
+				}
 			}
 			else if (tutorialStep == 3) {
 
 			}
 			else if (tutorialStep == 4) {
+
+			}
+			else if (tutorialStep == 5) {
 				HPframe.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), HPframe.vbView);
 				for (int i = 0; i < player->GetHP(); i++) {
 					hP[i].SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), hP[i].vbView);
@@ -1017,16 +1045,21 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 
 				}
 			}
-			else if (tutorialStep == 5) {
-
-			}
 			else if (tutorialStep == 6) {
+				if (tutoText == 0) {
 
+				}
+				else {
+
+				}
 			}
 			else if (tutorialStep == 7) {
 
 			}
 			else if (tutorialStep == 8) {
+
+			}
+			else if (tutorialStep == 9) {
 				gaugeFlame.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), gaugeFlame.vbView);
 				gauge.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), gauge.vbView);
 				if (tutoText == 0) {
@@ -1036,7 +1069,7 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 
 				}
 			}
-			else if (tutorialStep == 9) {
+			else if (tutorialStep == 10) {
 				gaugeFlame.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), gaugeFlame.vbView);
 				gauge.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), gauge.vbView);
 				if (tutoText == 0) {
@@ -1636,45 +1669,51 @@ void GamePlayScene::TutorialUpdate() {
 			}
 		}
 		else if (tutorialStep == 2) {
-			if (railCamera->GetCamera()->GetPosition().z >= -610) {
+			if (railCamera->GetCamera()->GetPosition().z >= -740) {
 				isShowText = true;
 				tutorialStep = 3;
 			}
 		}
 		else if (tutorialStep == 3) {
-			if (railCamera->GetCamera()->GetPosition().z >= -580) {
+			if (railCamera->GetCamera()->GetPosition().z >= -610) {
 				isShowText = true;
 				tutorialStep = 4;
 			}
 		}
 		else if (tutorialStep == 4) {
-			if (railCamera->GetCamera()->GetPosition().z >= -550) {
+			if (railCamera->GetCamera()->GetPosition().z >= -580) {
 				isShowText = true;
 				tutorialStep = 5;
 			}
 		}
 		else if (tutorialStep == 5) {
-			if (railCamera->GetCamera()->GetPosition().z >= -510) {
+			if (railCamera->GetCamera()->GetPosition().z >= -550) {
 				isShowText = true;
 				tutorialStep = 6;
 			}
 		}
 		else if (tutorialStep == 6) {
-			if (railCamera->GetCamera()->GetPosition().z >= -430) {
+			if (railCamera->GetCamera()->GetPosition().z >= -510) {
 				isShowText = true;
 				tutorialStep = 7;
 			}
 		}
 		else if (tutorialStep == 7) {
-			if (player->GetFever() == true) {
+			if (railCamera->GetCamera()->GetPosition().z >= -430) {
 				isShowText = true;
 				tutorialStep = 8;
 			}
 		}
 		else if (tutorialStep == 8) {
-			if (player->GetFever() == false) {
+			if (player->GetFever() == true) {
 				isShowText = true;
 				tutorialStep = 9;
+			}
+		}
+		else if (tutorialStep == 9) {
+			if (player->GetFever() == false) {
+				isShowText = true;
+				tutorialStep = 10;
 			}
 		}
 
