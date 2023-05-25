@@ -5,7 +5,7 @@
 #include "CollisionManager.h"
 #include "Player.h"
 #include "WorldTransform.h"
-
+#include "Spline.h"
 int GamePlayScene::sceneNum = 0;
 int GamePlayScene::tutorialStep = 0;
 bool GamePlayScene::isBack = false;
@@ -1265,6 +1265,18 @@ void GamePlayScene::StageSelect() {
 
 void GamePlayScene::LoadEnemy(int stageNum) {
 
+	Spline spline;
+	spline.Initialize();
+
+	pointsL = points;
+	pointsR = points;
+
+	for (int i = 0; i < points.size(); i++)
+	{
+		pointsL[i] += Vector3(-10, 0, 0);
+		pointsR[i] += Vector3(10, 0, 0);
+	}
+
 	enemys_.clear();
 	invEnemys_.clear();
 
@@ -1289,6 +1301,8 @@ void GamePlayScene::LoadEnemy(int stageNum) {
 		string key;
 		getline(line_stream, key, ' ');
 
+		string word;
+		getline(line_stream, word, ' ');
 
 		// 先頭文字列がｖなら頂点座標
 		if (key == "ea" + num) {
@@ -1300,9 +1314,24 @@ void GamePlayScene::LoadEnemy(int stageNum) {
 			newEnemy->SetCollider(new SphereCollider(Vector3(0, 0, 0), 2.0f));
 			// X,Y,Z座標読み込み
 			Vector3 position{};
-			line_stream >> position.x;
-			line_stream >> position.y;
-			line_stream >> position.z;
+			float t;
+		
+			if (word.find("L") == 0)
+			{
+				line_stream >> t;
+				position = spline.EnemyPosition(pointsL, t);
+			}
+			else if (word.find("M") == 0) 
+			{
+				line_stream >> t;
+				position = spline.EnemyPosition(points, t);
+			}
+			else if (word.find("R") == 0) 
+			{
+				line_stream >> t;
+				position = spline.EnemyPosition(pointsR, t);
+			}
+
 			// 座標データに追加
 			newEnemy->SetPosition(position);
 			//登録
@@ -1318,9 +1347,22 @@ void GamePlayScene::LoadEnemy(int stageNum) {
 			newInvEnemy->SetCollider(new SphereCollider(Vector3(0, 0, 0), 2.0f));
 			// X,Y,Z座標読み込み
 			Vector3 position{};
-			line_stream >> position.x;
-			line_stream >> position.y;
-			line_stream >> position.z;
+			float t;
+			if (word.find("L") == 0)
+			{
+				line_stream >> t;
+				position = spline.EnemyPosition(pointsL, t);
+			}
+			else if (word.find("M") == 0)
+			{
+				line_stream >> t;
+				position = spline.EnemyPosition(points, t);
+			}
+			else if (word.find("R") == 0)
+			{
+				line_stream >> t;
+				position = spline.EnemyPosition(pointsR, t);
+			}
 			// 座標データに追加
 			newInvEnemy->SetPosition(position);
 			//登録

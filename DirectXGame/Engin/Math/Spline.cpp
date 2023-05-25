@@ -36,6 +36,16 @@ Vector3 Spline::Update(std::vector<Vector3>& points, float val) {
 	return pos;
 }
 
+Vector3 Spline::EnemyPosition(std::vector<Vector3>& points, float val)
+{
+	float integer = floor(val);
+	float few = fmod(val, 1);
+
+	Vector3 pos = SplinePosition(points, integer, few);
+
+	return pos;
+}
+
 Vector3 Spline::pointCal(std::vector<Vector3>& points) {
 
 	const int INDEXMAX = points.size() - 1;
