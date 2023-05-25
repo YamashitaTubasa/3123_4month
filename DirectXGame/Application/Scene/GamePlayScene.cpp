@@ -705,9 +705,17 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 
 			//welcome
 			if (tutorialStep == 1) {
-				if (input->TriggerKey(DIK_SPACE)) {
-					postEffect_->SetColor(Vector4(1, 1, 1, 1));
-					isShowText = false;
+				if (tutoText == 0) {
+					if (input->TriggerKey(DIK_SPACE)) {
+						tutoText = 1;
+					}
+				}
+				else {
+					if (input->TriggerKey(DIK_SPACE)) {
+						postEffect_->SetColor(Vector4(1, 1, 1, 1));
+						tutoText = 0;
+						isShowText = false;
+					}
 				}
 			}
 			//敵(倒す)
@@ -728,9 +736,17 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 			}
 			//HP
 			else if (tutorialStep == 4) {
-				if (input->TriggerKey(DIK_SPACE)) {
-					postEffect_->SetColor(Vector4(1, 1, 1, 1));
-					isShowText = false;
+				if (tutoText == 0) {
+					if (input->TriggerKey(DIK_SPACE)) {
+						tutoText = 1;
+					}
+				}
+				else {
+					if (input->TriggerKey(DIK_SPACE)) {
+						postEffect_->SetColor(Vector4(1, 1, 1, 1));
+						tutoText = 0;
+						isShowText = false;
+					}
 				}
 			}
 			//移動
@@ -749,17 +765,42 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 					player->Update(points);
 				}
 			}
+			//移動
 			else if (tutorialStep == 7) {
-				if (input->TriggerKey(DIK_D)) {
+				if (input->TriggerKey(DIK_D) || input->TriggerKey(DIK_A)) {
 					postEffect_->SetColor(Vector4(1, 1, 1, 1));
 					isShowText = false;
 					player->Update(points);
 				}
 			}
+			//フィーバー
 			else if (tutorialStep == 8) {
-				if (input->TriggerKey(DIK_SPACE)) {
-					postEffect_->SetColor(Vector4(1, 1, 1, 1));
-					isShowText = false;
+				if (tutoText == 0) {
+					if (input->TriggerKey(DIK_SPACE)) {
+						tutoText = 1;
+					}
+				}
+				else {
+					if (input->TriggerKey(DIK_SPACE)) {
+						postEffect_->SetColor(Vector4(1, 1, 1, 1));
+						isShowText = false;
+						tutoText = 0;
+					}
+				}
+			}
+			//フィーバー終わり
+			else if (tutorialStep == 9) {
+				if (tutoText == 0) {
+					if (input->TriggerKey(DIK_SPACE)) {
+						tutoText = 1;
+					}
+				}
+				else {
+					if (input->TriggerKey(DIK_SPACE)) {
+						postEffect_->SetColor(Vector4(1, 1, 1, 1));
+						isShowText = false;
+						tutoText = 0;
+					}
 				}
 			}
 		}
@@ -948,7 +989,12 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 		//text
 		if (isShowText == true) {
 			if (tutorialStep == 0) {
+				if (tutoText == 0) {
 
+				}
+				else {
+
+				}
 			}
 			else if (tutorialStep == 1) {
 
@@ -964,6 +1010,12 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 				for (int i = 0; i < player->GetHP(); i++) {
 					hP[i].SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), hP[i].vbView);
 				}
+				if (tutoText == 0) {
+
+				}
+				else {
+
+				}
 			}
 			else if (tutorialStep == 5) {
 
@@ -977,6 +1029,22 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 			else if (tutorialStep == 8) {
 				gaugeFlame.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), gaugeFlame.vbView);
 				gauge.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), gauge.vbView);
+				if (tutoText == 0) {
+
+				}
+				else {
+
+				}
+			}
+			else if (tutorialStep == 9) {
+				gaugeFlame.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), gaugeFlame.vbView);
+				gauge.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), gauge.vbView);
+				if (tutoText == 0) {
+
+				}
+				else {
+
+				}
 			}
 		}
 	}
@@ -1601,6 +1669,12 @@ void GamePlayScene::TutorialUpdate() {
 			if (player->GetFever() == true) {
 				isShowText = true;
 				tutorialStep = 8;
+			}
+		}
+		else if (tutorialStep == 8) {
+			if (player->GetFever() == false) {
+				isShowText = true;
+				tutorialStep = 9;
 			}
 		}
 
