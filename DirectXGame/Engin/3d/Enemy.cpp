@@ -23,19 +23,10 @@ void Enemy::EnemyInitialize()
 void Enemy::OnCollision(const CollisionInfo& info)
 {
 	const char* str1 = "class Player";
-	const char* str2 = "class PlayerAttack";
 
 	//‘Šè‚ªplayer
 	if (strcmp(toCollisionName, str1) == 0) {
-
-	}
-
-	//‘Šè‚ªplayer‚ÌUŒ‚
-	if (strcmp(toCollisionName, str2) == 0) {
-		if (isDead_ == false)
-		{
-			isDead_ = true;
-		}
+		isDead_ = true;
 	}
 }
 
