@@ -181,7 +181,7 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	//titleBack
 	titleBack.LoadTexture(spriteCommon_, 24, L"Resources/titleBack_03.png", dXCommon->GetDevice());
 	titleBack.SpriteCreate(dXCommon->GetDevice(), 360, 47, 24, spriteCommon, Vector2(0.5f, 0.5f), false, false);
-	titleBack.SetColor(titleBack,Vector4(0.5, 0.5, 0.5, 0.9));
+	titleBack.SetColor(titleBack, Vector4(0.5, 0.5, 0.5, 0.9));
 	titleBack.SetPosition(Vector3(650, 620, 0));
 	titleBack.SetScale(Vector2(360, 47));
 	titleBack.SetRotation(0.0f);
@@ -191,7 +191,7 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	//stageBack
 	stageBack.LoadTexture(spriteCommon_, 25, L"Resources/stageSelectBack_02.png", dXCommon->GetDevice());
 	stageBack.SpriteCreate(dXCommon->GetDevice(), 360, 47, 25, spriteCommon, Vector2(0.5f, 0.5f), false, false);
-	stageBack.SetColor(stageBack,Vector4(0.5, 0.5, 0.5, 0.9));
+	stageBack.SetColor(stageBack, Vector4(0.5, 0.5, 0.5, 0.9));
 	stageBack.SetPosition(Vector3(650, 550, 0));
 	stageBack.SetScale(Vector2(360, 47));
 	stageBack.SetRotation(0.0f);
@@ -201,7 +201,7 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	//close
 	close.LoadTexture(spriteCommon_, 33, L"Resources/close.png", dXCommon->GetDevice());
 	close.SpriteCreate(dXCommon->GetDevice(), 360, 47, 33, spriteCommon, Vector2(0.5f, 0.5f), false, false);
-	close.SetColor(close,Vector4(0.1, 0.7, 0, 1));
+	close.SetColor(close, Vector4(1, 1, 1, 1));
 	close.SetPosition(Vector3(650, 480, 0));
 	close.SetScale(Vector2(360, 47));
 	close.SetRotation(0.0f);
@@ -228,6 +228,89 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	pause.SpriteTransferVertexBuffer(pause, spriteCommon, 35);
 	pause.SpriteUpdate(pause, spriteCommon_);
 
+	//ポーズ中にタイトル戻るか否か
+	//pauseQuestion
+	pauseQuestion.LoadTexture(spriteCommon_, 36, L"Resources/PauseQuestion.png", dXCommon->GetDevice());
+	pauseQuestion.SpriteCreate(dXCommon->GetDevice(), 750, 150, 36, spriteCommon, Vector2(0.5f, 0.5f), false, false);
+	pauseQuestion.SetColor(pauseQuestion, Vector4(1, 1, 1, 0.6));
+	pauseQuestion.SetPosition(Vector3(650, 200, 0));
+	pauseQuestion.SetScale(Vector2(750, 150));
+	pauseQuestion.SetRotation(0.0f);
+	pauseQuestion.SpriteTransferVertexBuffer(pauseQuestion, spriteCommon, 36);
+	pauseQuestion.SpriteUpdate(pauseQuestion, spriteCommon_);
+
+	//pauseYes
+	pauseYes.LoadTexture(spriteCommon_, 37, L"Resources/PauseYes.png", dXCommon->GetDevice());
+	pauseYes.SpriteCreate(dXCommon->GetDevice(), 360, 47, 37, spriteCommon, Vector2(0.5f, 0.5f), false, false);
+	pauseYes.SetColor(pauseYes, Vector4(1, 1, 1, 0.6));
+	pauseYes.SetPosition(Vector3(650, 540, 0));
+	pauseYes.SetScale(Vector2(360, 47));
+	pauseYes.SetRotation(0.0f);
+	pauseYes.SpriteTransferVertexBuffer(pauseYes, spriteCommon, 37);
+	pauseYes.SpriteUpdate(pauseYes, spriteCommon_);
+
+	//pauseNo
+	pauseNo.LoadTexture(spriteCommon_, 38, L"Resources/PauseNo.png", dXCommon->GetDevice());
+	pauseNo.SpriteCreate(dXCommon->GetDevice(), 360, 47, 38, spriteCommon, Vector2(0.5f, 0.5f), false, false);
+	pauseNo.SetColor(pauseNo, Vector4(1, 1, 1, 0.6));
+	pauseNo.SetPosition(Vector3(650, 580, 0));
+	pauseNo.SetScale(Vector2(360, 47));
+	pauseNo.SetRotation(0.0f);
+	pauseNo.SpriteTransferVertexBuffer(pauseNo, spriteCommon, 38);
+	pauseNo.SpriteUpdate(pauseNo, spriteCommon_);
+
+
+	////-----チュートリアル-----//
+	//textBox
+	textBox.LoadTexture(spriteCommon_, 39, L"Resources/textBox.png", dXCommon->GetDevice());
+	textBox.SpriteCreate(dXCommon->GetDevice(), 750, 170, 39, spriteCommon, Vector2(0.5f, 0.5f), false, false);
+	textBox.SetColor(textBox, Vector4(1, 1, 1, 0.6));
+	textBox.SetPosition(Vector3(650, 600, 0));
+	textBox.SetScale(Vector2(750, 170));
+	textBox.SetRotation(0.0f);
+	textBox.SpriteTransferVertexBuffer(textBox, spriteCommon, 39);
+	textBox.SpriteUpdate(textBox, spriteCommon_);
+
+	//railMove
+	railMove.LoadTexture(spriteCommon_, 40, L"Resources/railMove.png", dXCommon->GetDevice());
+	railMove.SpriteCreate(dXCommon->GetDevice(), 750, 150, 40, spriteCommon, Vector2(0.5f, 0.5f), false, false);
+	railMove.SetColor(railMove, Vector4(1, 1, 1, 1));
+	railMove.SetPosition(Vector3(650, 600, 0));
+	railMove.SetScale(Vector2(750, 150));
+	railMove.SetRotation(0.0f);
+	railMove.SpriteTransferVertexBuffer(railMove, spriteCommon, 40);
+	railMove.SpriteUpdate(railMove, spriteCommon_);
+
+	//playerDamage
+	playerDamage.LoadTexture(spriteCommon_, 41, L"Resources/playerDamage.png", dXCommon->GetDevice());
+	playerDamage.SpriteCreate(dXCommon->GetDevice(), 750, 150, 41, spriteCommon, Vector2(0.5f, 0.5f), false, false);
+	playerDamage.SetColor(playerDamage, Vector4(1, 1, 1, 1));
+	playerDamage.SetPosition(Vector3(650, 600, 0));
+	playerDamage.SetScale(Vector2(750, 150));
+	playerDamage.SetRotation(0.0f);
+	playerDamage.SpriteTransferVertexBuffer(playerDamage, spriteCommon, 41);
+	playerDamage.SpriteUpdate(playerDamage, spriteCommon_);
+
+	//highSpeed
+	highSpeed.LoadTexture(spriteCommon_, 42, L"Resources/highSpeed.png", dXCommon->GetDevice());
+	highSpeed.SpriteCreate(dXCommon->GetDevice(), 730, 180, 42, spriteCommon, Vector2(0.5f, 0.5f), false, false);
+	highSpeed.SetColor(highSpeed, Vector4(1, 1, 1, 1));
+	highSpeed.SetPosition(Vector3(650, 600, 0));
+	highSpeed.SetScale(Vector2(730, 180));
+	highSpeed.SetRotation(0.0f);
+	highSpeed.SpriteTransferVertexBuffer(highSpeed, spriteCommon, 42);
+	highSpeed.SpriteUpdate(highSpeed, spriteCommon_);
+
+	//spaceNext
+	spaceNext.LoadTexture(spriteCommon_, 43, L"Resources/spaceNext.png", dXCommon->GetDevice());
+	spaceNext.SpriteCreate(dXCommon->GetDevice(), 300, 90, 43, spriteCommon, Vector2(0.5f, 0.5f), false, false);
+	spaceNext.SetColor(spaceNext, Vector4(1, 1, 1, 1));
+	spaceNext.SetPosition(Vector3(950, 670, 0));
+	spaceNext.SetScale(Vector2(300, 90));
+	spaceNext.SetRotation(0.0f);
+	spaceNext.SpriteTransferVertexBuffer(spaceNext, spriteCommon, 43);
+	spaceNext.SpriteUpdate(spaceNext, spriteCommon_);
+
 	//レールカメラ初期化
 	railCamera->Initialize();
 
@@ -241,331 +324,104 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 
 void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 	switch (sceneNum) {
-	case 0:
-		// スタート画面フェードアウト演出
-		FadeOut(0.01, 100);
+		case 0:
+			// スタート画面フェードアウト演出
+			FadeOut(0.01, 100);
 
-		if (titleTimer <= 50)
-		{
-			player->worldTransform_.position_.y += MathFunc::easeInOutSine(titleTimer / 50) / 30;
-		}
-		else if (titleTimer <= 100)
-		{
-			player->worldTransform_.position_.y -= MathFunc::easeInOutSine((titleTimer - 50.0f) / 50) / 30;
-		}
-		else
-		{
-			titleTimer = 0;
-		}
-		//プレイヤー
-		player->Update(points);
-		railCamera->GetView()->target = { 0, -15, -750 };
-		//カメラ更新
-		railCamera->ViewUpdate();
-		//天球
-		floor->Update();
-		sky->Update();
-
-		if (titleTimer <= 50) {
-			player->worldTransform_.position_.y += MathFunc::easeInOutSine(titleTimer / 50) / 30;
-		}
-		else if (titleTimer <= 100) {
-			player->worldTransform_.position_.y -= MathFunc::easeInOutSine((titleTimer - 50.0f) / 50) / 30;
-		}
-		else {
-			titleTimer = 0;
-		}
-		//プレイヤー
-		player->Update(points);
-		railCamera->GetView()->target = { 0, -15, -750 };
-		//カメラ更新
-		railCamera->ViewUpdate();
-		//天球
-		floor->Update();
-		sky->Update();
-
-		if (input->TriggerKey(DIK_SPACE)) {
-
-			isTitleT = true;
-		}
-		if (isTitleT == true) {
-			railCamera->TitleR(player);
-			titleT++;
-		}
-		if (titleT >= 100) {
-			Reset();
-			railCamera->SetPlayer(player);
-			sceneNum = 1;
-		}
-		titleTimer++;
-		break;
-	case 1://ステージ選択
-		FadeOut(0.01, 100);
-
-		//天球
-		sky->Update();
-		floor->Update();
-		player->Update(points);
-		//ステージ
-		//天球
-		floor->Update();
-		sky->Update();
-
-		if (input->PushKey(DIK_H)) {
-			player->SetPosition(player->GetPosition() + Vector3(0, 0, 0.5));
-			//railCamera->GetCamera()->SetPosition(railCamera->GetCamera()->GetPosition() + Vector3(0, 0, 0.5));
-			railCamera->GetView()->target.z += 0.5;
-			railCamera->GetView()->eye.z += 0.5;
-			railCamera->ViewUpdate();
-			//railCamera->TitleR(player);
-		}
-		if (input->PushKey(DIK_N)) {
-			player->SetPosition(player->GetPosition() + Vector3(0, 0, -0.5));
-		}
-
-		//ステージ選択関数
-		StageSelect();
-		break;
-
-	case 2:
-		// ゲーム画面フェードアウト演出
-		FadeOut(0.01, 100);
-
-		player->SetPosition(Vector3(0, 0, 0));
-
-		//デスフラグの立った敵を削除
-		enemys_.remove_if([](std::unique_ptr < Enemy>& enemy_) {
-			return enemy_->GetIsDead();
-			});
-
-		//チュートリアルステージならチュートリアルに移行
-		if (stageNum == 1) {
-			sceneNum = 6;
-		}
-
-		gauge.GetScale();
-
-		if (isMaxGauge == true) {
-			if (gaugeScale.x >= 4) {
-				gaugeScale.x -= 0.8;
+			if (titleTimer <= 50) {
+				player->worldTransform_.position_.y += MathFunc::easeInOutSine(titleTimer / 50) / 30;
+			}
+			else if (titleTimer <= 100) {
+				player->worldTransform_.position_.y -= MathFunc::easeInOutSine((titleTimer - 50.0f) / 50) / 30;
 			}
 			else {
-				isMaxGauge = false;
+				titleTimer = 0;
 			}
-		}
-
-
-		if (player->GetGaugeAdd() == true) {
-			player->SetGaugeAdd(false);
-			calRes = static_cast<float>(195) / (player->GetDivide() + 1);
-			gaugeScale.x += calRes;
-
-		}
-		if (gaugeScale.x >= 195) {
-			if (isMaxGauge == false) {
-				isMaxGauge = true;
-			}
-		}
-
-		gauge.SetScale(Vector2(gaugeScale.x, gaugeScale.y));
-		gauge.SpriteTransferVertexBuffer(gauge, spriteCommon, 21);
-
-		// ダメージを受けた時の画面演出
-		if (player->GetIsPush() == false) {
-			if (player->GetIsHit() == true) {
-				isBack = true;
-			}
-		}
-		if (isBack == true) {
-			backT++;
-		}
-		if (backT >= 50) {
-			isBack = false;
-			backT = 0.0f;
-		}
-
-		// 敵を倒した時の演出
-		if (player->GetIsBurst() == true) {
-			isDeadT++;
-		}
-		if (isDeadT >= 20) {
-			player->SetIsBurst(false);
-			isDeadT = 0.0f;
-		}
-		if (player->GetIsBurst() == true) {
-			pm_dmg->Fire(p_dmg, 30, 0.2f, 0, 3, { 4.0f, 0.0f });
-		}
-
-		// 加速時のブラー処理
-		if (player->GetIsBurst() == true) {
-			isBlur = true;
-		}
-		if (isBlur == true) {
-			blurT++;
-			postEffect_->SetBlur(true);
-		}
-		if (blurT >= 10) {
-			isBlur = false;
-			if (isBlur == false) {
-				postEffect_->SetBlur(false);
-			}
-			if (player->GetFever() == false) {
-				blurT = 0;
-			}
-		}
-		for (const std::unique_ptr<Object3d>& buil : buils_) {
-			buil->Update();
-		}
-
-		//敵キャラの更新
-		for (const std::unique_ptr<Enemy>& enemy : enemys_) {
-			enemy->SetGameScene(this);
-			enemy->Update();
-		}
-
-		//全ての衝突をチェック
-		collisionManager->CheckAllCollisions();
-
-		//パーティクル発生実験
-		/*if (player->GetIsHit() == true)
-		{
-			pm_1->Fire(particle_1, 30, 0.2f, 0, 20, { 8.0f, 0.0f });
-			pm_2->Fire(particle_2, 70, 0.2f, 0, 20, { 4.0f,0.0f });
-		}*/
-
-		//ポーズ画面
-		if (input->TriggerKey(DIK_P) || input->TriggerKey(DIK_TAB)) {
-			selectPause = 2;
-			sceneNum = 5;
-		}
-
-		//ゲームオーバー
-		if (player->GetHP() == 0) {
-			sceneNum = 4;
-		}
-		//クリア
-		if (railCamera->GetIsEnd() == true) {
-			cStagingT++;
-			player->worldTransform_.rotation_.z = 0;
-			isClearStaging = true;
-			player->SetPosition(player->GetPosition() + Vector3(0, 0, 0.8));
-			player->worldTransform_.UpdateMatrix();
-			Vector3 behindVec = (railCamera->GetView()->target - railCamera->GetView()->eye) * -1;
-			behindVec /= 80;
-			railCamera->SetEye(railCamera->GetView()->eye + behindVec);
-
-		}
-		if (cStagingT >= 100) {
-			sceneNum = 3;
-			isClearStaging = false;
-			Reset();
-		}
-
-
-		//カメラ更新
-		if (railCamera->GetIsEnd() == false) {
-			railCamera->Update(player, points);
 			//プレイヤー
 			player->Update(points);
-		}
-		if (isBack == true) {
-			if (backT < 8) {
-				railCamera->ShakeCamera();
+			railCamera->GetView()->target = { 0, -15, -750 };
+			//カメラ更新
+			railCamera->ViewUpdate();
+			//天球
+			floor->Update();
+			sky->Update();
+
+			if (titleTimer <= 50) {
+				player->worldTransform_.position_.y += MathFunc::easeInOutSine(titleTimer / 50) / 30;
 			}
-		}
-		//ステージ
-		//天球
-		floor->Update();
-		sky->Update();
-
-		//パーティクル
-		pm_1->Update();
-		pm_2->Update();
-		pm_dmg->Update();
-
-		break;
-		//クリア
-	case 3:
-		// クリア画面フェードアウト演出
-		FadeOut(0.01, 100);
-		player->Update(points);
-
-		//player->SetPosition({ 0,0,0 });
-		if (input->TriggerKey(DIK_SPACE)) {
-			Reset();
-			sceneNum = 0;
-		}
-		break;
-		//ゲームオーバー
-	case 4:
-		// ゲームオーバー画面フェードアウト演出
-		FadeOut(0.01, 100);
-
-		if (input->TriggerKey(DIK_SPACE)) {
-			Reset();
-			sceneNum = 0;
-		}
-		break;
-	case 5://ポーズ画面
-		if (input->TriggerKey(DIK_W) || input->TriggerKey(DIK_UP)) {
-			if (selectPause <= 1) {
-				selectPause++;
-				if (selectPause == 2) {
-					titleBack.SetColor(titleBack, Vector4(0.5, 0.5, 0.5, 0.9));
-					stageBack.SetColor(stageBack, Vector4(0.5, 0.5, 0.5, 0.9));
-					close.SetColor(close, Vector4(1, 1, 0, 1));
-				}
-				else if (selectPause == 1) {
-					titleBack.SetColor(titleBack, Vector4(0.5, 0.5, 0.5, 0.9));
-					stageBack.SetColor(stageBack, Vector4(1, 1, 0, 1));
-					close.SetColor(close, Vector4(0.5, 0.5, 0.5, 0.9));
-				}
+			else if (titleTimer <= 100) {
+				player->worldTransform_.position_.y -= MathFunc::easeInOutSine((titleTimer - 50.0f) / 50) / 30;
 			}
-		}
-		if (input->TriggerKey(DIK_S) || input->TriggerKey(DIK_DOWN)) {
-			if (selectPause > 0) {
-				selectPause--;
-				if (selectPause == 1) {
-					titleBack.SetColor(titleBack, Vector4(0.5, 0.5, 0.5, 0.9));
-					stageBack.SetColor(stageBack, Vector4(1, 1, 0, 1));
-					close.SetColor(close, Vector4(0.5, 0.5, 0.5, 0.9));
-				}
-				else if (selectPause == 0) {
-					titleBack.SetColor(titleBack, Vector4(1, 1, 0, 1));
-					stageBack.SetColor(stageBack, Vector4(0.5, 0.5, 0.5, 0.9));
-					close.SetColor(close, Vector4(0.5, 0.5, 0.5, 0.9));
-				}
+			else {
+				titleTimer = 0;
 			}
-		}
-		//戻る
-		if (input->TriggerKey(DIK_SPACE)) {
-			if (selectPause <= 1) {
+			//プレイヤー
+			player->Update(points);
+			railCamera->GetView()->target = { 0, -15, -750 };
+			//カメラ更新
+			railCamera->ViewUpdate();
+			//天球
+			floor->Update();
+			sky->Update();
+
+			if (input->TriggerKey(DIK_SPACE)) {
+
+				isTitleT = true;
+			}
+			if (isTitleT == true) {
+				railCamera->TitleR(player);
+				titleT++;
+			}
+			if (titleT >= 100) {
 				Reset();
-				if (selectPause == 1) {
-					railCamera->SetPlayer(player);
-				}
+				railCamera->SetPlayer(player);
+				sceneNum = 1;
 			}
-			postEffect_->SetColor(Vector4(1, 1, 1, 1));
-			sceneNum = selectPause;
-		}
-		if (input->TriggerKey(DIK_P) || input->TriggerKey(DIK_TAB)) {
-			postEffect_->SetColor(Vector4(1, 1, 1, 1));
-			sceneNum = 2;
-			titleBack.SetColor(titleBack, Vector4(0.5, 0.5, 0.5, 0.9));
-			stageBack.SetColor(stageBack, Vector4(0.5, 0.5, 0.5, 0.9));
-			close.SetColor(close, Vector4(1, 1, 0, 1));
-			selectPause = 2;
-		}
-		break;
-	case 6://チュートリアル
-		if (isShowText == false) {
+			titleTimer++;
+			break;
+		case 1://ステージ選択
 			FadeOut(0.01, 100);
+
+			//天球
+			sky->Update();
+			floor->Update();
+			player->Update(points);
+			//ステージ
+			//天球
+			floor->Update();
+			sky->Update();
+
+			if (input->PushKey(DIK_H)) {
+				player->SetPosition(player->GetPosition() + Vector3(0, 0, 0.5));
+				//railCamera->GetCamera()->SetPosition(railCamera->GetCamera()->GetPosition() + Vector3(0, 0, 0.5));
+				railCamera->GetView()->target.z += 0.5;
+				railCamera->GetView()->eye.z += 0.5;
+				railCamera->ViewUpdate();
+				//railCamera->TitleR(player);
+			}
+			if (input->PushKey(DIK_N)) {
+				player->SetPosition(player->GetPosition() + Vector3(0, 0, -0.5));
+			}
+
+			//ステージ選択関数
+			StageSelect();
+			break;
+
+		case 2:
+			// ゲーム画面フェードアウト演出
+			FadeOut(0.01, 100);
+
+			player->SetPosition(Vector3(0, 0, 0));
+
 			//デスフラグの立った敵を削除
 			enemys_.remove_if([](std::unique_ptr < Enemy>& enemy_) {
 				return enemy_->GetIsDead();
-				});
+							  });
 
-			TutorialUpdate();
+			//チュートリアルステージならチュートリアルに移行
+			if (stageNum == 1) {
+				sceneNum = 6;
+			}
 
 			gauge.GetScale();
 
@@ -637,6 +493,9 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 					blurT = 0;
 				}
 			}
+			for (const std::unique_ptr<Object3d>& buil : buils_) {
+				buil->Update();
+			}
 
 			//敵キャラの更新
 			for (const std::unique_ptr<Enemy>& enemy : enemys_) {
@@ -646,6 +505,13 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 
 			//全ての衝突をチェック
 			collisionManager->CheckAllCollisions();
+
+			//パーティクル発生実験
+			/*if (player->GetIsHit() == true)
+			{
+				pm_1->Fire(particle_1, 30, 0.2f, 0, 20, { 8.0f, 0.0f });
+				pm_2->Fire(particle_2, 70, 0.2f, 0, 20, { 4.0f,0.0f });
+			}*/
 
 			//ポーズ画面
 			if (input->TriggerKey(DIK_P) || input->TriggerKey(DIK_TAB)) {
@@ -696,35 +562,262 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 			pm_1->Update();
 			pm_2->Update();
 			pm_dmg->Update();
-		}
-		//テキスト
-		else {
-			postEffect_->SetColor(Vector4(0.3, 0.3, 0.3, 1));
 
-			//操作説明
-			if (tutorialStep == 0) {
-				if (input->TriggerKey(DIK_SPACE)) {
-					postEffect_->SetColor(Vector4(1, 1, 1, 1));
-					tutorialStep = 1;
-					isShowText = false;
+			break;
+			//クリア
+		case 3:
+			// クリア画面フェードアウト演出
+			FadeOut(0.01, 100);
+			player->Update(points);
+
+			//player->SetPosition({ 0,0,0 });
+			if (input->TriggerKey(DIK_SPACE)) {
+				Reset();
+				sceneNum = 0;
+			}
+			break;
+			//ゲームオーバー
+		case 4:
+			// ゲームオーバー画面フェードアウト演出
+			FadeOut(0.01, 100);
+
+			if (input->TriggerKey(DIK_SPACE)) {
+				Reset();
+				sceneNum = 0;
+			}
+			break;
+		case 5://ポーズ画面
+			if (input->TriggerKey(DIK_W) || input->TriggerKey(DIK_UP)) {
+				if (selectPause <= 1) {
+					selectPause++;
+					if (selectPause == 2) {
+						titleBack.SetColor(titleBack, Vector4(0.5, 0.5, 0.5, 0.9));
+						stageBack.SetColor(stageBack, Vector4(0.5, 0.5, 0.5, 0.9));
+						close.SetColor(close, Vector4(1, 1, 0, 1));
+					}
+					else if (selectPause == 1) {
+						titleBack.SetColor(titleBack, Vector4(0.5, 0.5, 0.5, 0.9));
+						stageBack.SetColor(stageBack, Vector4(1, 1, 0, 1));
+						close.SetColor(close, Vector4(0.5, 0.5, 0.5, 0.9));
+					}
 				}
 			}
-			//敵(ダメージ)
-			else if (tutorialStep == 1) {
-
+			if (input->TriggerKey(DIK_S) || input->TriggerKey(DIK_DOWN)) {
+				if (selectPause > 0) {
+					selectPause--;
+					if (selectPause == 1) {
+						titleBack.SetColor(titleBack, Vector4(0.5, 0.5, 0.5, 0.9));
+						stageBack.SetColor(stageBack, Vector4(1, 1, 0, 1));
+						close.SetColor(close, Vector4(0.5, 0.5, 0.5, 0.9));
+					}
+					else if (selectPause == 0) {
+						titleBack.SetColor(titleBack, Vector4(1, 1, 0, 1));
+						stageBack.SetColor(stageBack, Vector4(0.5, 0.5, 0.5, 0.9));
+						close.SetColor(close, Vector4(0.5, 0.5, 0.5, 0.9));
+					}
+				}
 			}
-			//敵(倒す)
-			else if (tutorialStep == 2) {
-
+			//戻る
+			if (input->TriggerKey(DIK_SPACE)) {
+				if (selectPause <= 1) {
+					Reset();
+					sceneNum == 7;
+					if (selectPause == 1) {
+						railCamera->SetPlayer(player);
+						sceneNum == 1;
+					}
+				}
+				postEffect_->SetColor(Vector4(1, 1, 1, 1));
+				//sceneNum = selectPause;
 			}
-			//フィーバータイム
-			else if (tutorialStep == 3) {
-
+			if (input->TriggerKey(DIK_P) || input->TriggerKey(DIK_TAB)) {
+				postEffect_->SetColor(Vector4(1, 1, 1, 1));
+				sceneNum = 2;
+				titleBack.SetColor(titleBack, Vector4(0.5, 0.5, 0.5, 0.9));
+				stageBack.SetColor(stageBack, Vector4(0.5, 0.5, 0.5, 0.9));
+				close.SetColor(close, Vector4(1, 1, 0, 1));
+				selectPause = 2;
 			}
-		}
+			break;
+		case 6://チュートリアル
+			if (isShowText == false) {
+				FadeOut(0.01, 100);
+				//デスフラグの立った敵を削除
+				enemys_.remove_if([](std::unique_ptr < Enemy>& enemy_) {
+					return enemy_->GetIsDead();
+								  });
+
+				TutorialUpdate();
+
+				gauge.GetScale();
+
+				if (isMaxGauge == true) {
+					if (gaugeScale.x >= 4) {
+						gaugeScale.x -= 0.8;
+					}
+					else {
+						isMaxGauge = false;
+					}
+				}
 
 
-		break;
+				if (player->GetGaugeAdd() == true) {
+					player->SetGaugeAdd(false);
+					calRes = static_cast<float>(195) / (player->GetDivide() + 1);
+					gaugeScale.x += calRes;
+
+				}
+				if (gaugeScale.x >= 195) {
+					if (isMaxGauge == false) {
+						isMaxGauge = true;
+					}
+				}
+
+				gauge.SetScale(Vector2(gaugeScale.x, gaugeScale.y));
+				gauge.SpriteTransferVertexBuffer(gauge, spriteCommon, 21);
+
+				// ダメージを受けた時の画面演出
+				if (player->GetIsPush() == false) {
+					if (player->GetIsHit() == true) {
+						isBack = true;
+					}
+				}
+				if (isBack == true) {
+					backT++;
+				}
+				if (backT >= 50) {
+					isBack = false;
+					backT = 0.0f;
+				}
+
+				// 敵を倒した時の演出
+				if (player->GetIsBurst() == true) {
+					isDeadT++;
+				}
+				if (isDeadT >= 20) {
+					player->SetIsBurst(false);
+					isDeadT = 0.0f;
+				}
+				if (player->GetIsBurst() == true) {
+					pm_dmg->Fire(p_dmg, 30, 0.2f, 0, 3, { 4.0f, 0.0f });
+				}
+
+				// 加速時のブラー処理
+				if (player->GetIsBurst() == true) {
+					isBlur = true;
+				}
+				if (isBlur == true) {
+					blurT++;
+					postEffect_->SetBlur(true);
+				}
+				if (blurT >= 10) {
+					isBlur = false;
+					if (isBlur == false) {
+						postEffect_->SetBlur(false);
+					}
+					if (player->GetFever() == false) {
+						blurT = 0;
+					}
+				}
+
+				//敵キャラの更新
+				for (const std::unique_ptr<Enemy>& enemy : enemys_) {
+					enemy->SetGameScene(this);
+					enemy->Update();
+				}
+
+				//全ての衝突をチェック
+				collisionManager->CheckAllCollisions();
+
+				//ポーズ画面
+				if (input->TriggerKey(DIK_P) || input->TriggerKey(DIK_TAB)) {
+					selectPause = 2;
+					sceneNum = 5;
+				}
+
+				//ゲームオーバー
+				if (player->GetHP() == 0) {
+					sceneNum = 4;
+				}
+				//クリア
+				if (railCamera->GetIsEnd() == true) {
+					cStagingT++;
+					player->worldTransform_.rotation_.z = 0;
+					isClearStaging = true;
+					player->SetPosition(player->GetPosition() + Vector3(0, 0, 0.8));
+					player->worldTransform_.UpdateMatrix();
+					Vector3 behindVec = (railCamera->GetView()->target - railCamera->GetView()->eye) * -1;
+					behindVec /= 80;
+					railCamera->SetEye(railCamera->GetView()->eye + behindVec);
+
+				}
+				if (cStagingT >= 100) {
+					sceneNum = 3;
+					isClearStaging = false;
+					Reset();
+				}
+
+
+				//カメラ更新
+				if (railCamera->GetIsEnd() == false) {
+					railCamera->Update(player, points);
+					//プレイヤー
+					player->Update(points);
+				}
+				if (isBack == true) {
+					if (backT < 8) {
+						railCamera->ShakeCamera();
+					}
+				}
+				//ステージ
+				//天球
+				floor->Update();
+				sky->Update();
+
+				//パーティクル
+				pm_1->Update();
+				pm_2->Update();
+				pm_dmg->Update();
+			}
+			//テキスト
+			else {
+
+				//操作説明
+				if (tutorialStep == 0) {
+					tutorialText = 1;
+					if (input->TriggerKey(DIK_SPACE)) {
+						tutorialStep = 1;
+						isShowText = false;
+					}
+				}
+				//敵(ダメージ)
+				else if (tutorialStep == 1) {
+					tutorialText = 2;
+					if (input->TriggerKey(DIK_SPACE)) {
+						tutorialStep = 2;
+						isShowText = false;
+					}
+				}
+				//敵(倒す)
+				else if (tutorialStep == 2) {
+					tutorialText = 3;
+					if (input->TriggerKey(DIK_SPACE)) {
+						tutorialStep = 3;
+						isShowText = false;
+					}
+				}
+				//フィーバータイム
+				else if (tutorialStep == 3) {
+					tutorialText = 4;
+					if (input->TriggerKey(DIK_SPACE)) {
+						tutorialStep = 4;
+						isShowText = false;
+					}
+				}
+			}
+
+
+			break;
 
 	}
 }
@@ -864,18 +957,41 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 
 	//ポーズ画面描画
 	if (sceneNum == 5) {
-		black.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), black.vbView);
-		close.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), close.vbView);
-		titleBack.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), titleBack.vbView);
-		stageBack.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), stageBack.vbView);
-		pause.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), pause.vbView);
+		if (isQuestion == true) {
+			pauseQuestion.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), pauseQuestion.vbView);
+			pauseYes.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), pauseYes.vbView);
+			pauseNo.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), pauseNo.vbView);
+		}
+		else {
+			black.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), black.vbView);
+			close.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), close.vbView);
+			titleBack.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), titleBack.vbView);
+			stageBack.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), stageBack.vbView);
+			pause.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), pause.vbView);
+		}
 	}
 	//チュートリアルテキスト描画
 	if (sceneNum == 6) {
-
 		//text
 		if (isShowText == true) {
-
+			black.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), black.vbView);
+			textBox.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), textBox.vbView);
+			spaceNext.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), spaceNext.vbView);
+		}
+		if (tutorialStep == 0) {
+			if (tutorialText == 1) {
+				railMove.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), railMove.vbView);
+			}
+		}
+		if (tutorialStep == 1) {
+			if (tutorialText == 2) {
+				playerDamage.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), railMove.vbView);
+			}
+		}
+		if (tutorialStep == 2) {
+			if (tutorialText == 3) {
+				highSpeed.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), railMove.vbView);
+			}
 		}
 	}
 
@@ -1276,8 +1392,7 @@ void GamePlayScene::LoadStage(int stageNum) {
 	CreatThreeLine(points);
 }
 
-void GamePlayScene::LoadBuil(int stageNum)
-{
+void GamePlayScene::LoadBuil(int stageNum) {
 	buils_.clear();
 
 	//ファイルを開く
@@ -1380,13 +1495,25 @@ void GamePlayScene::TutorialUpdate() {
 		//ステップ1
 		if (tutorialStep == 0) {
 			tutoTime++;
-
 			if (tutoTime == 25) {
 				tutoTime = 0;
 				isShowText = true;
 			}
 		}
-
+		if (tutorialStep == 1) {
+			tutoTime++;
+			if (tutoTime == 25) {
+				tutoTime = 0;
+				isShowText = true;
+			}
+		}
+		if (tutorialStep == 2) {
+			tutoTime++;
+			if (tutoTime == 25) {
+				tutoTime = 0;
+				isShowText = true;
+			}
+		}
 
 	}
 }

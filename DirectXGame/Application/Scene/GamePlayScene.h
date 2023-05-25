@@ -155,6 +155,23 @@ private:
 	Sprite spaButton;
 	SpriteCommon spriteCommon_;
 	Sprite attackEffect[8];
+	Sprite pauseP;
+
+	//タイトルに戻るか戻らないかスプライト
+	Sprite pauseQuestion;
+	Sprite pauseYes;
+	Sprite pauseNo;
+
+	//チュートリアルスプライト
+	Sprite textBox;
+	Sprite attackMethod;
+	Sprite clearCondition;
+	Sprite enemyCaution;
+	Sprite highSpeed;
+	Sprite playerDamage;
+	Sprite playerDead;
+	Sprite railMove;
+	Sprite spaceNext;
 
 	DirectXCommon* dXCommon = nullptr;
 	ImGuiManager* imGuiManager = nullptr;
@@ -223,10 +240,12 @@ private:
 
 	//ポーズ
 	int selectPause;
+	bool isQuestion = false;
 	//チュートリアル
 	int tutorialStep;
 	int tutoTime;
 	bool isShowText;
+	int tutorialText;
 
 
 	//タイトル画面のタイマー
