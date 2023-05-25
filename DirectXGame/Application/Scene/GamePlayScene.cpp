@@ -65,14 +65,22 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	pm_2 = ParticleManager::Create();
 	p_dmg = Particle::LoadParticleTexture("dmg.png");
 	pm_dmg = ParticleManager::Create();
+	pBomb = Particle::LoadParticleTexture("fire2.png");
+	pBombM = ParticleManager::Create();
+	pFire = Particle::LoadParticleTexture("fire2.png");
+	pFireM = ParticleManager::Create();
 	//オブジェクトにモデルを紐付ける
 	pm_1->SetParticleModel(particle_1);
 	pm_2->SetParticleModel(particle_2);
 	pm_dmg->SetParticleModel(p_dmg);
+	pBombM->SetParticleModel(pBomb);
+	pFireM->SetParticleModel(pFire);
 	//カメラをセット
 	pm_1->SetXMViewProjection(xmViewProjection);
 	pm_2->SetXMViewProjection(xmViewProjection);
 	pm_dmg->SetXMViewProjection(xmViewProjection);
+	pBombM->SetXMViewProjection(xmViewProjection);
+	pFireM->SetXMViewProjection(xmViewProjection);
 
 	// スプライトの初期化
 	// スプライト
@@ -215,10 +223,30 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		postEffect_->SetColor(pColor);
 		isPlayerE = true;
 
+		postEffect_->SetBlur(false);
+
 		railCamera->GetView()->target = player->GetPosition();
 
+		//railCamera->GetCamera()->SetRotationY(railCamera->GetCamera()->GetRotation().y + rotateSpeed);
+		//player->SetRotationY(player->GetRotation().y + rotateSpeed);
+		player->SetPosition(player->GetPosition() + Vector3(0, -0.5, 0.6));
+		railCamera->GetView()->eye.y -= 0.3;
+		railCamera->GetView()->eye.z += 0.4;
 
-		railCamera->GetCamera()->SetRotationX(railCamera->GetCamera()->GetRotation().x + rotateSpeed);
+		if (input->TriggerKey(DIK_P)) {
+			int a = 1;
+		}
+		p = player->GetPosition();
+
+		//パーティクル
+		//particleP = { 0,-450,-790 };
+		//float length = particleP.length();
+		pFireM->Update();
+		pBombM->Update();
+		pFireM->Fire(pFire, 55, { 0,-450,-790 }, 10.0f, 10.0f, 0.0f, 0, 0, 0, 0, 0, 1.0f, 0, 0, 0, 0, 5, { 5.0f, 0.0f });
+		
+		pBombM->Fire(pBomb, 50, { 0,-450,-790 }, 100.0f, 100.0f, 70.0f, 70.0f, 0, 0, 0, 0, 0.0f, 0.0f, 0, 0, 0, 5, { 5.0f, 40.0f });
+		
 		//railCamera->GetView()->eye.x += 0.2;
 		//railCamera->GetView()->eye.z += 0.3;
 
@@ -286,6 +314,16 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 			else {
 				isMaxGauge = false;
 			}
+		}
+
+		if (input->TriggerKey(DIK_U)) {
+			isPB = true;
+		}
+		if (isPB == true) {
+			player->SetPosition(player->GetPosition() + Vector3(0, -0.5, 0.6));
+			railCamera->GetView()->eye.y -= 0.3;
+			railCamera->GetView()->eye.z += 0.4;
+			railCamera->ViewUpdate();
 		}
 
 		gauge.SetPosition(gauge.GetPosition() + Vector3(1, 0, 0));
@@ -358,7 +396,7 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 			isDeadT = 0.0f;
 		}
 		if (player->GetIsBurst() == true) {
-			pm_dmg->Fire(p_dmg, 30, 0.2f, 0, 3, { 4.0f, 0.0f });
+			pm_dmg->Fire(p_dmg, 50, { 0,0,0 }, 30.0f, 30.0f, 30.0f, 30.0f, 0, 0, 0, 0, 0.2f, 0.2f, 0, 0, 0, 3, { 4.0f, 0.0f });
 		}
 
 		//更新コマンド
@@ -501,7 +539,7 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 
 	sky->Draw(railCamera->GetView());
 
-	if (sceneNum == 1 || sceneNum == 4) {
+	if (sceneNum == 0 || sceneNum == 1 || sceneNum == 4) {
 		floor->Draw(railCamera->GetView());
 		//敵キャラの描画
 		for (const std::unique_ptr<Enemy>& enemy : enemys_) {
@@ -524,6 +562,7 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 	pm_1->Draw();
 	pm_2->Draw();
 	pm_dmg->Draw();
+	pBombM->Draw();
 
 	// パーティクル描画後処理
 	ParticleManager::PostDraw();
@@ -600,6 +639,16 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 	}
 	// 3Dオブジェクト描画後処理
 	Object3d::PostDraw();
+
+	ParticleManager::PreDraw(dXCommon->GetCommandList());
+
+	///==== パーティクル描画 ====///
+	//パーティクル
+	//pFireM->Draw();
+	
+
+	// パーティクル描画後処理
+	ParticleManager::PostDraw();
 
 #pragma endregion
 }
@@ -783,6 +832,10 @@ void GamePlayScene::Reset() {
 	delete pm_2;
 	delete p_dmg;
 	delete pm_dmg;
+	delete pFireM;
+	delete pFire;
+	delete pBomb;
+	delete pBombM;
 	for (int i = 0; i < 3; i++) {
 		delete line[i];
 	}
@@ -824,14 +877,22 @@ void GamePlayScene::Reset() {
 	pm_2 = ParticleManager::Create();
 	p_dmg = Particle::LoadParticleTexture("dmg.png");
 	pm_dmg = ParticleManager::Create();
+	pBomb = Particle::LoadParticleTexture("bomb.png");
+	pBombM = ParticleManager::Create();
+	pFire = Particle::LoadParticleTexture("fire.png");
+	pFireM = ParticleManager::Create();
 	//オブジェクトにモデルを紐付ける
 	pm_1->SetParticleModel(particle_1);
 	pm_2->SetParticleModel(particle_2);
 	pm_dmg->SetParticleModel(p_dmg);
+	pBombM->SetParticleModel(pBomb);
+	pFireM->SetParticleModel(pFire);
 	//カメラをセット
 	pm_1->SetXMViewProjection(xmViewProjection);
 	pm_2->SetXMViewProjection(xmViewProjection);
 	pm_dmg->SetXMViewProjection(xmViewProjection);
+	pBombM->SetXMViewProjection(xmViewProjection);
+	pFireM->SetXMViewProjection(xmViewProjection);
 
 	railCamera->Initialize();
 

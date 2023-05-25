@@ -147,6 +147,12 @@ private:
 	ParticleManager* pm_2 = nullptr;
 	Particle* p_dmg = nullptr;
 	ParticleManager* pm_dmg = nullptr;
+	Particle* pBomb = nullptr;
+	ParticleManager* pBombM = nullptr;
+	Particle* pFire = nullptr;
+	ParticleManager* pFireM = nullptr;
+
+
 	WinApp* winApp = nullptr;
 
 	PostEffect* postEffect_ = nullptr;
@@ -154,6 +160,11 @@ private:
 	Vector3 position[5]{};
 	Vector3 rotation[5]{};
 	Vector3 scale[5]{};
+	
+	Vector3 p{};
+	Vector3 particleP{};
+	int pTimer = 0;
+	bool isP = false;
 
 	//敵
 	std::list<std::unique_ptr<Enemy>> enemys_;
@@ -212,4 +223,7 @@ private:
 	float viewAngle = 0.0f;
 	float kEyeRotSpeed = 0.3f;
 	float rotateSpeed = 1.0f;
+	float d = 0.0f;
+
+	bool isPB = false;
 };

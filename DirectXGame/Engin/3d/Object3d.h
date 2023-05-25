@@ -91,8 +91,10 @@ public: // メンバ関数
 	// オブジェクトの回転
 	void SetRotation(const Vector3& rotation) { this->worldTransform_.rotation_ = rotation; }
 	const Vector3& GetRotation() const { return worldTransform_.rotation_; }
+	const float GetRotationX() { return worldTransform_.rotation_.x; }
 	void SetRotationX(const float& rotation) { this->worldTransform_.rotation_.x = rotation; }
 	void SetRotationY(const float& rotation) { this->worldTransform_.rotation_.y = rotation; }
+	WorldTransform GetWorld() const { return worldTransform_; }
 
 	const char* GetName() const { return name; }
 public:
