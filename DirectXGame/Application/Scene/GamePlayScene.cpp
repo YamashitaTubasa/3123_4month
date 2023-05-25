@@ -1660,7 +1660,7 @@ void GamePlayScene::TutorialUpdate() {
 			}
 		}
 		else if (tutorialStep == 6) {
-			if (railCamera->GetCamera()->GetPosition().z >= -470) {
+			if (railCamera->GetCamera()->GetPosition().z >= -430) {
 				isShowText = true;
 				tutorialStep = 7;
 			}

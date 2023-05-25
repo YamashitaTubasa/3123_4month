@@ -1,15 +1,27 @@
 //STAGE1
-ea1 L 5.1
-ea1 M 5.1
-ea1 R 5.1
+ea1 M 1.31
+eb1 M 2.0
 
-ea1 L 2.1
-ea1 M 2.1
-ea1 R 2.1
+ea1 L 2.5
+eb1 M 2.5
+ea1 R 2.5
 
-eb1 L 3.1
 eb1 L 3.2
-eb1 L 3.3
+ea1 M 3.2
+eb1 R 3.2
+
+ea1 L 3.9
+ea1 M 3.9
+eb1 R 3.9
+
+ea1 L 4.5
+ea1 M 4.5
+ea1 R 4.5
+
+ea1 L 5.5
+ea1 M 5.5
+ea1 R 5.5
+
 
 //STAGE2
 ea2 L 5.1

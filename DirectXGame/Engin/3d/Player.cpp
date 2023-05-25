@@ -369,9 +369,11 @@ void Player::OnCollision(const CollisionInfo& info) {
 	}
 	if (strcmp(toCollisionName, str2) == 0) {
 		if (isHit == false) {
-			hp--;
-			isHit = true;
-			GamePlayScene::SetIsBack(true);
+			if (isFever == false) {
+				hp--;
+				isHit = true;
+				GamePlayScene::SetIsBack(true);
+			}
 		}
 	}
 }
