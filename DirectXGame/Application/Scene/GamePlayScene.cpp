@@ -262,21 +262,21 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 
 	////-----チュートリアル-----//
 	//textBox
-	textBox.LoadTexture(spriteCommon_, 39, L"Resources/textBox.png", dXCommon->GetDevice());
-	textBox.SpriteCreate(dXCommon->GetDevice(), 750, 170, 39, spriteCommon, Vector2(0.5f, 0.5f), false, false);
+	textBox.LoadTexture(spriteCommon_, 39, L"Resources/textBox_01.png", dXCommon->GetDevice());
+	textBox.SpriteCreate(dXCommon->GetDevice(), 720, 240, 39, spriteCommon, Vector2(0.5f, 0.5f), false, false);
 	textBox.SetColor(textBox, Vector4(1, 1, 1, 0.6));
 	textBox.SetPosition(Vector3(650, 600, 0));
-	textBox.SetScale(Vector2(750, 170));
+	textBox.SetScale(Vector2(720, 240));
 	textBox.SetRotation(0.0f);
 	textBox.SpriteTransferVertexBuffer(textBox, spriteCommon, 39);
 	textBox.SpriteUpdate(textBox, spriteCommon_);
 
 	//railMove
-	railMove.LoadTexture(spriteCommon_, 40, L"Resources/railMove.png", dXCommon->GetDevice());
-	railMove.SpriteCreate(dXCommon->GetDevice(), 750, 150, 40, spriteCommon, Vector2(0.5f, 0.5f), false, false);
+	railMove.LoadTexture(spriteCommon_, 40, L"Resources/welcomeGame.png", dXCommon->GetDevice());
+	railMove.SpriteCreate(dXCommon->GetDevice(), 720, 240, 40, spriteCommon, Vector2(0.5f, 0.5f), false, false);
 	railMove.SetColor(railMove, Vector4(1, 1, 1, 1));
 	railMove.SetPosition(Vector3(650, 600, 0));
-	railMove.SetScale(Vector2(750, 150));
+	railMove.SetScale(Vector2(720, 240));
 	railMove.SetRotation(0.0f);
 	railMove.SpriteTransferVertexBuffer(railMove, spriteCommon, 40);
 	railMove.SpriteUpdate(railMove, spriteCommon_);
@@ -302,11 +302,11 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	highSpeed.SpriteUpdate(highSpeed, spriteCommon_);
 
 	//spaceNext
-	spaceNext.LoadTexture(spriteCommon_, 43, L"Resources/spaceNext.png", dXCommon->GetDevice());
-	spaceNext.SpriteCreate(dXCommon->GetDevice(), 300, 90, 43, spriteCommon, Vector2(0.5f, 0.5f), false, false);
+	spaceNext.LoadTexture(spriteCommon_, 43, L"Resources/spaceNext_01.png", dXCommon->GetDevice());
+	spaceNext.SpriteCreate(dXCommon->GetDevice(), 350, 150, 43, spriteCommon, Vector2(0.5f, 0.5f), false, false);
 	spaceNext.SetColor(spaceNext, Vector4(1, 1, 1, 1));
-	spaceNext.SetPosition(Vector3(950, 670, 0));
-	spaceNext.SetScale(Vector2(300, 90));
+	spaceNext.SetPosition(Vector3(1150, 670, 0));
+	spaceNext.SetScale(Vector2(350, 150));
 	spaceNext.SetRotation(0.0f);
 	spaceNext.SpriteTransferVertexBuffer(spaceNext, spriteCommon, 43);
 	spaceNext.SpriteUpdate(spaceNext, spriteCommon_);
