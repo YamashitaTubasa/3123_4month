@@ -66,14 +66,22 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	pm_2 = ParticleManager::Create();
 	p_dmg = Particle::LoadParticleTexture("dmg.png");
 	pm_dmg = ParticleManager::Create();
+	pBomb = Particle::LoadParticleTexture("dmg.png");
+	pBombM = ParticleManager::Create();
+	pFire = Particle::LoadParticleTexture("dmg.png");
+	pFireM = ParticleManager::Create();
 	//オブジェクトにモデルを紐付ける
 	pm_1->SetParticleModel(particle_1);
 	pm_2->SetParticleModel(particle_2);
 	pm_dmg->SetParticleModel(p_dmg);
+	pBombM->SetParticleModel(pBomb);
+	pFireM->SetParticleModel(pFire);
 	//カメラをセット
 	pm_1->SetXMViewProjection(xmViewProjection);
 	pm_2->SetXMViewProjection(xmViewProjection);
 	pm_dmg->SetXMViewProjection(xmViewProjection);
+	pBombM->SetXMViewProjection(xmViewProjection);
+	pFireM->SetXMViewProjection(xmViewProjection);
 
 	// スプライトの初期化
 	// スプライト
@@ -157,7 +165,7 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	clear.SpriteUpdate(clear, spriteCommon_);
 
 	//over
-	over.LoadTexture(spriteCommon_, 19, L"Resources/GameOver_01.png", dXCommon->GetDevice());
+	over.LoadTexture(spriteCommon_, 19, L"Resources/gameOver.png", dXCommon->GetDevice());
 	over.SpriteCreate(dXCommon->GetDevice(), 1280, 720, 19, spriteCommon, Vector2(0.0f, 0.0f), false, false);
 	over.SetPosition(Vector3(0, 0, 0));
 	over.SetScale(Vector2(1280 * 1, 720 * 1));
@@ -371,7 +379,7 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 			isDeadT = 0.0f;
 		}
 		if (player->GetIsBurst() == true) {
-			pm_dmg->Fire(p_dmg, 30, 0.2f, 0, 3, { 4.0f, 0.0f });
+			pm_dmg->Fire(p_dmg, 50, { 0,0,0 }, 30.0f, 30.0f, 30.0f, 30.0f, 0, 0, 0, 0, 0.2f, 0.2f, 0, 0, 0, 3, { 4.0f, 0.0f });
 		}
 
 		// 加速時のブラー処理
@@ -424,8 +432,20 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 
 		//ゲームオーバー
 		if (player->GetHP() == 0) {
-			sceneNum = 4;
+			isOStaging = true;
+			oStagingT++;
 		}
+		if (isOStaging == true) {
+			pBombM->Fire(pBomb, 50, { 0,0,0 }, 70.0f, 70.0f, 50.0f, 50.0f, 0, 0, 0, 0, 0.0f, 0.0f, 0, 0, 0, 5, { 5.0f, 40.0f });
+		}
+		if (oStagingT >= 40) {
+			isOStaging = false;
+			oStagingT = 0;
+			sceneNum = 4;
+			player->SetPosition({ 0,0,0 });
+		}
+		pBombM->Update();
+			
 		//クリア
 		if (railCamera->GetIsEnd() == true) {
 			cStagingT++;
@@ -471,7 +491,6 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 	case 3:
 		// クリア画面フェードアウト演出
 		FadeOut(0.01, 100);
-		player->Update(points);
 
 		//player->SetPosition({ 0,0,0 });
 		if (input->TriggerKey(DIK_SPACE)) {
@@ -483,6 +502,11 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 	case 4:
 		// ゲームオーバー画面フェードアウト演出
 		FadeOut(0.01, 100);
+
+		player->Update(points);
+
+		pFireM->Fire(pFire, 55, { 0, 0,-790 }, 10.0f, 10.0f, -10.0f, -10.0f, 0, 0, 0, 0, 1.0f, 0, 0, 0, 0, 5, { 5.0f, 0.0f });
+		pFireM->Update();
 
 		if (input->TriggerKey(DIK_SPACE)) {
 			Reset();
@@ -591,7 +615,7 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 				isDeadT = 0.0f;
 			}
 			if (player->GetIsBurst() == true) {
-				pm_dmg->Fire(p_dmg, 30, 0.2f, 0, 3, { 4.0f, 0.0f });
+				pm_dmg->Fire(p_dmg, 50, { 0,0,0 }, 30.0f, 30.0f, 30.0f, 30.0f, 0, 0, 0, 0, 0.2f, 0.2f, 0, 0, 0, 3, { 4.0f, 0.0f });
 			}
 
 			// 加速時のブラー処理
@@ -804,6 +828,12 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 	pm_1->Draw();
 	pm_2->Draw();
 	pm_dmg->Draw();
+	if (sceneNum == 2) {
+		pBombM->Draw();
+	}
+	if (sceneNum == 4) {
+		pFireM->Draw();
+	}
 
 	// パーティクル描画後処理
 	ParticleManager::PostDraw();
@@ -896,7 +926,7 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 
 	// 3Dオブジェクト描画前処理
 	Object3d::PreDraw(dXCommon->GetCommandList());
-	if (sceneNum == 0 || sceneNum == 1 || sceneNum == 2 || sceneNum == 5 || sceneNum == 6) {
+	if (sceneNum == 0 || sceneNum == 1 || sceneNum == 2 || sceneNum == 4 || sceneNum == 5 || sceneNum == 6) {
 		////playerを画像より手前に出したい
 		player->Draw(railCamera->GetView());
 	}
@@ -1151,14 +1181,22 @@ void GamePlayScene::Reset() {
 	pm_2 = ParticleManager::Create();
 	p_dmg = Particle::LoadParticleTexture("dmg.png");
 	pm_dmg = ParticleManager::Create();
+	pBomb = Particle::LoadParticleTexture("dmg.png");
+	pBombM = ParticleManager::Create();
+	pFire = Particle::LoadParticleTexture("dmg.png");
+	pFireM = ParticleManager::Create();
 	//オブジェクトにモデルを紐付ける
 	pm_1->SetParticleModel(particle_1);
 	pm_2->SetParticleModel(particle_2);
 	pm_dmg->SetParticleModel(p_dmg);
+	pBombM->SetParticleModel(pBomb);
+	pFireM->SetParticleModel(pFire);
 	//カメラをセット
 	pm_1->SetXMViewProjection(xmViewProjection);
 	pm_2->SetXMViewProjection(xmViewProjection);
 	pm_dmg->SetXMViewProjection(xmViewProjection);
+	pBombM->SetXMViewProjection(xmViewProjection);
+	pFireM->SetXMViewProjection(xmViewProjection);
 
 	railCamera->Initialize();
 

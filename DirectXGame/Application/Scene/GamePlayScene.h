@@ -163,9 +163,18 @@ private:
 	ParticleManager* pm_2 = nullptr;
 	Particle* p_dmg = nullptr;
 	ParticleManager* pm_dmg = nullptr;
+	Particle* pBomb = nullptr;
+	ParticleManager* pBombM = nullptr;
+	Particle* pFire = nullptr;
+	ParticleManager* pFireM = nullptr;
 	WinApp* winApp = nullptr;
 
 	PostEffect* postEffect_ = nullptr;
+
+	Vector3 p{};
+	Vector3 particleP{};
+	int pTimer = 0;
+	bool isP = false;
 	
 	Vector3 position[5]{};
 	Vector3 rotation[5]{};
@@ -195,7 +204,7 @@ private:
 
 
 	bool isMaxGauge = false;
-	static bool isBack;          // ダメージ演出フラグ
+	static bool isBack;           // ダメージ演出フラグ
 	int backT = 0;                // ダメージ演出タイマー
 	bool isFadeOut = false;       // フェードアウト処理フラグ
 	int fadeOut = 0;              // フェードアウト処理タイマー
@@ -203,6 +212,8 @@ private:
 	int titleT = 0;               // タイトル画面の演出タイマー
 	bool isClearStaging = false;  // クリア演出フラグ
 	int cStagingT = 0;            // クリア演出タイマー
+	bool isOStaging = false;      // ゲームオーバー画面演出フラグ
+	int oStagingT = 0;            // ゲームオーバー画面演出タイマー
 	int isDeadT = 0;              // 敵を倒したかのフラグ
 	float pAlpha = 1.0f;          // ポストエフェクトアルファ
 	Vector4 pColor = { 0,0,0,1 }; // ポストエフェクトカラー
