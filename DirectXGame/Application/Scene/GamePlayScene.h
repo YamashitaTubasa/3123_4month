@@ -99,6 +99,8 @@ public:
 	//					先頭(p0)と最後(p5)に制御点を追加している
 	//								p0	p1	p2	p3	p4	p5
 	std::vector<Vector3> points{start,start,p2,p3,p4,p5,p6,p7,p8,p9,end,end};
+	std::vector<Vector3> pointsL;
+	std::vector<Vector3> pointsR;
 
 	float timeRate;						//何％時間が進んだか
 

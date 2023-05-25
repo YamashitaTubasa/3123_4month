@@ -12,6 +12,8 @@ public:
 	//更新
 	Vector3 Update(std::vector<Vector3>& points,float val);
 
+	Vector3 EnemyPosition(std::vector<Vector3>& points, float val);
+
 	//更新
 	Vector3 pointCal(std::vector<Vector3>& points);
 
