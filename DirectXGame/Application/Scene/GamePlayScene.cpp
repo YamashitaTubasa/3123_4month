@@ -166,12 +166,12 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	over.SpriteUpdate(over, spriteCommon_);
 
 	//back
-	back.LoadTexture(spriteCommon_, 7, L"Resources/back.png", dXCommon->GetDevice());
-	back.SpriteCreate(dXCommon->GetDevice(), 1280, 720, 7, spriteCommon, Vector2(0.0f, 0.0f), false, false);
+	back.LoadTexture(spriteCommon_, 35, L"Resources/back.png", dXCommon->GetDevice());
+	back.SpriteCreate(dXCommon->GetDevice(), 1280, 720, 35, spriteCommon, Vector2(0.0f, 0.0f), false, false);
 	back.SetPosition(Vector3(0, 0, 0));
 	back.SetScale(Vector2(1280 * 1, 720 * 1));
 	back.SetRotation(0.0f);
-	back.SpriteTransferVertexBuffer(back, spriteCommon, 7);
+	back.SpriteTransferVertexBuffer(back, spriteCommon, 35);
 	back.SpriteUpdate(back, spriteCommon_);
 
 	//titleBack
@@ -726,7 +726,7 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 				}
 			}
 			else if (tutorialStep == 7) {
-				if (input->TriggerKey(DIK_D) || input->TriggerKey(DIK_A)) {
+				if (input->TriggerKey(DIK_D)) {
 					postEffect_->SetColor(Vector4(1, 1, 1, 1));
 					isShowText = false;
 					player->Update(points);
