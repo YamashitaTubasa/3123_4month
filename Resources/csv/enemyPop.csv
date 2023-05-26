@@ -22,6 +22,18 @@ ea1 L 5.5
 ea1 M 5.5
 ea1 R 5.5
 
+eb1 L 6.6
+ea1 M 6.5
+ea1 R 6.5
+
+ea1 L 7.7
+eb1 M 7.9
+ea1 R 7.7
+
+ea1 L 8.5
+ea1 M 8.5
+ea1 R 8.5
+
 
 //STAGE2
 ea2 L 5.1

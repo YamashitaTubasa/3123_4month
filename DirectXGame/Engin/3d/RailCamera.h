@@ -22,6 +22,7 @@ public:
 
 	void SetPlayer(Player* player_);
 	void SetEye(Vector3 view);
+	void SetTarget(Vector3 target_);
 	void ShakeCamera();
 
 	//ƒxƒNƒgƒ‹‚ğæ“¾

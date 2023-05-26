@@ -223,15 +223,6 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	pause.SpriteUpdate(pause, spriteCommon_);
 
 	//チュートリアル
-	//テキストボックス
-	textBox.LoadTexture(spriteCommon_, 35, L"Resources/textBox.png", dXCommon->GetDevice());
-	textBox.SpriteCreate(dXCommon->GetDevice(), 720, 240, 35, spriteCommon, Vector2(0.5f, 0.5f), false, false);
-	textBox.SetColor(textBox, Vector4(1, 1, 1, 1));
-	textBox.SetPosition(Vector3(650, 600, 0));
-	textBox.SetScale(Vector2(720, 240));
-	textBox.SetRotation(0.0f);
-	textBox.SpriteTransferVertexBuffer(textBox, spriteCommon, 35);
-	textBox.SpriteUpdate(textBox, spriteCommon_);
 	 
 	//攻撃
 	attackMethod_First.LoadTexture(spriteCommon_, 36, L"Resources/attackMethod.png", dXCommon->GetDevice());
@@ -363,6 +354,16 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	welcomeGame.SpriteTransferVertexBuffer(welcomeGame, spriteCommon, 48);
 	welcomeGame.SpriteUpdate(welcomeGame, spriteCommon_);
 
+	//テキストボックス
+	textBox.LoadTexture(spriteCommon_, 49, L"Resources/textBox.png", dXCommon->GetDevice());
+	textBox.SpriteCreate(dXCommon->GetDevice(), 720, 240, 49, spriteCommon, Vector2(0.5f, 0.5f), false, false);
+	textBox.SetColor(textBox, Vector4(1, 1, 1, 1));
+	textBox.SetPosition(Vector3(650, 600, 0));
+	textBox.SetScale(Vector2(720, 240));
+	textBox.SetRotation(0.0f);
+	textBox.SpriteTransferVertexBuffer(textBox, spriteCommon, 49);
+	textBox.SpriteUpdate(textBox, spriteCommon_);
+
 	//レールカメラ初期化
 	railCamera->Initialize();
 
@@ -430,35 +431,26 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		}
 		if (titleT >= 100) {
 			Reset();
-			railCamera->SetPlayer(player);
 			sceneNum = 1;
+			railCamera->SetPlayer(player);
+			railCamera->SetEye({ 0,30,-770 });
+			player->SetPosition({ 0,0,-700 });
+			player->SetScale({ 2,2,2 });
 		}
 		titleTimer++;
 		break;
 	case 1://ステージ選択
 		FadeOut(0.01, 100);
-
+		//ステージ選択関数
+		StageSelect();
 		//天球
 		sky->Update();
 		floor->Update();
-		player->Update(points);
 		//ステージ
 		//天球
 		floor->Update();
 		sky->Update();
-
-		if (input->PushKey(DIK_H)) {
-			player->SetPosition(player->GetPosition() + Vector3(0, 0, 0.5));
-			//railCamera->GetCamera()->SetPosition(railCamera->GetCamera()->GetPosition() + Vector3(0, 0, 0.5));
-			railCamera->GetView()->target.z -= 0.5;
-			//railCamera->TitleR(player);
-		}
-		if (input->PushKey(DIK_N)) {
-			player->SetPosition(player->GetPosition() + Vector3(0, 0, -0.5));
-		}
-
-		//ステージ選択関数
-		StageSelect();
+		railCamera->ViewUpdate();
 		break;
 
 	case 2:
@@ -690,7 +682,9 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 			if (selectPause <= 1) {
 				Reset();
 				if (selectPause == 1) {
-					railCamera->SetPlayer(player);
+					railCamera->SetEye({ 0,30,-770 });
+					player->SetPosition({ 0,0,-700 });
+					player->SetScale({ 2,2,2 });
 				}
 			}
 			postEffect_->SetColor(Vector4(1, 1, 1, 1));
@@ -1162,29 +1156,39 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 	if (sceneNum == 6) {
 		//text
 		if (isShowText == true) {
+			if (player->GetFever() == true && tutorialStep == 9) {
+				effectR[player->GetFeverNum()].SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), effectR[player->GetFeverNum()].vbView);
+				effectL[player->GetFeverNum()].SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), effectL[player->GetFeverNum()].vbView);
+			}
 			pause.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), pause.vbView);
+			textBox.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), textBox.vbView);
+			//ようこそ
 			if (tutorialStep == 1) {
 				if (tutoText == 0) {
-
+					welcomeGame.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), welcomeGame.vbView);
 				}
 				else {
-
+					clearMethod.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), clearMethod.vbView);
 				}
 			}
+			//敵倒す
 			else if (tutorialStep == 2) {
 				if (tutoText == 0) {
-
+					attackMethod_First.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), attackMethod_First.vbView);
 				}
 				else {
-
+					attackMethod_Second.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), attackMethod_Second.vbView);
 				}
 			}
+			//スピードアップ
 			else if (tutorialStep == 3) {
-
+				feverMode_First.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), feverMode_First.vbView);
 			}
+			//倒せない敵
 			else if (tutorialStep == 4) {
-
+				attackMethod_Second.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), attackMethod_Second.vbView);
 			}
+			//HP
 			else if (tutorialStep == 5) {
 				if (tutoTime < 51) {
 					HPframe.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), HPframe.vbView);
@@ -1193,55 +1197,55 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 					}
 				}
 				if (tutoText == 0) {
-
+					enemyCaution.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), enemyCaution.vbView);
 				}
 				else if(tutoText == 1) {
-
+					playerDamage_First.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), playerDamage_First.vbView);
 				}
 				else {
-
+					playerDamage_Second.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), playerDamage_Second.vbView);
 				}
 			}
+			//移動
 			else if (tutorialStep == 6) {
 				if (tutoText == 0) {
-
+					playerMove_First.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), playerMove_First.vbView);
 				}
 				else {
-
+					playerMove_Second.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), playerMove_Second.vbView);
 				}
 			}
+			//攻撃
 			else if (tutorialStep == 7) {
-
+				attackMethod_Second.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), attackMethod_Second.vbView);
 			}
 			else if (tutorialStep == 8) {
-
+				playerMove_Second.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), playerMove_Second.vbView);
 			}
+			//フィーバー
 			else if (tutorialStep == 9) {
-				if (player->GetFever() == true) {
-					effectR[player->GetFeverNum()].SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), effectR[player->GetFeverNum()].vbView);
-					effectL[player->GetFeverNum()].SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), effectL[player->GetFeverNum()].vbView);
-				}
 				if (tutoTime < 51) {
 					gaugeFlame.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), gaugeFlame.vbView);
 					gauge.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), gauge.vbView);
 				}
 				if (tutoText == 0) {
-
+					feverMode_Second.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), feverMode_Second.vbView);
 				}
 				else {
-
+				
 				}
 			}
+			//フィーバー終わり
 			else if (tutorialStep == 10) {
 				if (tutoTime < 51) {
 					gaugeFlame.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), gaugeFlame.vbView);
 					gauge.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), gauge.vbView);
 				}
 				if (tutoText == 0) {
-
+					feverEnd_First.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), feverEnd_First.vbView);
 				}
 				else {
-
+					feverEnd_Second.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), feverEnd_Second.vbView);
 				}
 			}
 		}
@@ -1535,6 +1539,20 @@ void GamePlayScene::FadeOut(float pColor_, float fadeOutTimer_) {
 void GamePlayScene::StageSelect() {
 	static const int STAGE_MAX = 2;
 
+	//演出
+	if (input->TriggerKey(DIK_A)) {
+		if (stageNum > 0) {
+			player->SetPosition(player->GetPosition() + Vector3(-15, 0, 0));
+			railCamera->GetView()->eye.x -= 15;
+		}
+	}
+	if (input->TriggerKey(DIK_D)) {
+		if (stageNum < STAGE_MAX) {
+			player->SetPosition(player->GetPosition() + Vector3(15, 0, 0));
+			railCamera->GetView()->eye.x += 15;
+		}
+	}
+
 	//StageMaxはステージよりも一つ少なく(ゲームオーバーの一つ前まで)
 	if (input->TriggerKey(DIK_RIGHT) || input->TriggerKey(DIK_D)) {
 		if (stageNum < STAGE_MAX) {
@@ -1548,7 +1566,9 @@ void GamePlayScene::StageSelect() {
 			stageNum--;
 		}
 	}
-
+	railCamera->SetTarget(player->GetPosition());
+	player->Update(points);
+	//決定
 	if (input->TriggerKey(DIK_SPACE)) {
 		if (stageNum == 0) {
 			Reset();
@@ -1562,6 +1582,11 @@ void GamePlayScene::StageSelect() {
 			LoadBuil(stageNum);
 			//敵
 			LoadEnemy(stageNum);
+			//親子構造のセット
+			railCamera->SetEye({ 0,5,-800 });
+			railCamera->SetTarget({ 0,-5,-750 });
+			railCamera->SetPlayer(player);
+			player->SetScale(Vector3(0.2, 0.2, 0.2));
 		}
 		FadeOut(0.01, 100);
 	}
