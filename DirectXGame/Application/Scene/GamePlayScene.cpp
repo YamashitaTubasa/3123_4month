@@ -222,6 +222,147 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	pause.SpriteTransferVertexBuffer(pause, spriteCommon, 34);
 	pause.SpriteUpdate(pause, spriteCommon_);
 
+	//チュートリアル
+	//テキストボックス
+	textBox.LoadTexture(spriteCommon_, 35, L"Resources/textBox.png", dXCommon->GetDevice());
+	textBox.SpriteCreate(dXCommon->GetDevice(), 720, 240, 35, spriteCommon, Vector2(0.5f, 0.5f), false, false);
+	textBox.SetColor(textBox, Vector4(1, 1, 1, 1));
+	textBox.SetPosition(Vector3(650, 600, 0));
+	textBox.SetScale(Vector2(720, 240));
+	textBox.SetRotation(0.0f);
+	textBox.SpriteTransferVertexBuffer(textBox, spriteCommon, 35);
+	textBox.SpriteUpdate(textBox, spriteCommon_);
+	 
+	//攻撃
+	attackMethod_First.LoadTexture(spriteCommon_, 36, L"Resources/attackMethod.png", dXCommon->GetDevice());
+	attackMethod_First.SpriteCreate(dXCommon->GetDevice(), 720, 240, 36, spriteCommon, Vector2(0.5f, 0.5f), false, false);
+	attackMethod_First.SetColor(attackMethod_First, Vector4(1, 1, 1, 1));
+	attackMethod_First.SetPosition(Vector3(650, 600, 0));
+	attackMethod_First.SetScale(Vector2(720, 240));
+	attackMethod_First.SetRotation(0.0f);
+	attackMethod_First.SpriteTransferVertexBuffer(attackMethod_First, spriteCommon, 36);
+	attackMethod_First.SpriteUpdate(attackMethod_First, spriteCommon_);
+
+	//攻撃(2ページ目)
+	attackMethod_Second.LoadTexture(spriteCommon_, 37, L"Resources/attackMethod_2page.png", dXCommon->GetDevice());
+	attackMethod_Second.SpriteCreate(dXCommon->GetDevice(), 720, 240, 37, spriteCommon, Vector2(0.5f, 0.5f), false, false);
+	attackMethod_Second.SetColor(attackMethod_Second, Vector4(1, 1, 1, 1));
+	attackMethod_Second.SetPosition(Vector3(650, 600, 0));
+	attackMethod_Second.SetScale(Vector2(720, 240));
+	attackMethod_Second.SetRotation(0.0f);
+	attackMethod_Second.SpriteTransferVertexBuffer(attackMethod_Second, spriteCommon, 37);
+	attackMethod_Second.SpriteUpdate(attackMethod_Second, spriteCommon_);
+
+	//クリア条件
+	clearMethod.LoadTexture(spriteCommon_, 38, L"Resources/clear.png", dXCommon->GetDevice());
+	clearMethod.SpriteCreate(dXCommon->GetDevice(), 720, 240, 38, spriteCommon, Vector2(0.5f, 0.5f), false, false);
+	clearMethod.SetColor(clear, Vector4(1, 1, 1, 1));
+	clearMethod.SetPosition(Vector3(650, 600, 0));
+	clearMethod.SetScale(Vector2(720, 240));
+	clearMethod.SetRotation(0.0f);
+	clearMethod.SpriteTransferVertexBuffer(clearMethod, spriteCommon, 38);
+	clearMethod.SpriteUpdate(clearMethod, spriteCommon_);
+
+	//倒せない敵
+	enemyCaution.LoadTexture(spriteCommon_, 39, L"Resources/enemyCaution.png", dXCommon->GetDevice());
+	enemyCaution.SpriteCreate(dXCommon->GetDevice(), 720, 240, 39, spriteCommon, Vector2(0.5f, 0.5f), false, false);
+	enemyCaution.SetColor(clear, Vector4(1, 1, 1, 1));
+	enemyCaution.SetPosition(Vector3(650, 600, 0));
+	enemyCaution.SetScale(Vector2(720, 240));
+	enemyCaution.SetRotation(0.0f);
+	enemyCaution.SpriteTransferVertexBuffer(enemyCaution, spriteCommon, 39);
+	enemyCaution.SpriteUpdate(enemyCaution, spriteCommon_);
+
+	//フィーバー終了
+	feverEnd_First.LoadTexture(spriteCommon_, 40, L"Resources/feverEnd.png", dXCommon->GetDevice());
+	feverEnd_First.SpriteCreate(dXCommon->GetDevice(), 720, 240, 40, spriteCommon, Vector2(0.5f, 0.5f), false, false);
+	feverEnd_First.SetColor(clear, Vector4(1, 1, 1, 1));
+	feverEnd_First.SetPosition(Vector3(650, 600, 0));
+	feverEnd_First.SetScale(Vector2(720, 240));
+	feverEnd_First.SetRotation(0.0f);
+	feverEnd_First.SpriteTransferVertexBuffer(feverEnd_First, spriteCommon, 40);
+	feverEnd_First.SpriteUpdate(feverEnd_First, spriteCommon_);
+
+	//フィーバー終了(2ページ)
+	feverEnd_Second.LoadTexture(spriteCommon_, 41, L"Resources/feverEnd_2page.png", dXCommon->GetDevice());
+	feverEnd_Second.SpriteCreate(dXCommon->GetDevice(), 720, 240, 41, spriteCommon, Vector2(0.5f, 0.5f), false, false);
+	feverEnd_Second.SetColor(clear, Vector4(1, 1, 1, 1));
+	feverEnd_Second.SetPosition(Vector3(650, 600, 0));
+	feverEnd_Second.SetScale(Vector2(720, 240));
+	feverEnd_Second.SetRotation(0.0f);
+	feverEnd_Second.SpriteTransferVertexBuffer(feverEnd_Second, spriteCommon, 41);
+	feverEnd_Second.SpriteUpdate(feverEnd_Second, spriteCommon_);
+
+	//フィーバー開始
+	feverMode_First.LoadTexture(spriteCommon_, 42, L"Resources/feverMode.png", dXCommon->GetDevice());
+	feverMode_First.SpriteCreate(dXCommon->GetDevice(), 720, 240, 42, spriteCommon, Vector2(0.5f, 0.5f), false, false);
+	feverMode_First.SetColor(clear, Vector4(1, 1, 1, 1));
+	feverMode_First.SetPosition(Vector3(650, 600, 0));
+	feverMode_First.SetScale(Vector2(720, 240));
+	feverMode_First.SetRotation(0.0f);
+	feverMode_First.SpriteTransferVertexBuffer(feverMode_First, spriteCommon, 42);
+	feverMode_First.SpriteUpdate(feverMode_First, spriteCommon_);
+
+	//フィーバー開始(2ページ)
+	feverMode_Second.LoadTexture(spriteCommon_, 43, L"Resources/feverMode_2page.png", dXCommon->GetDevice());
+	feverMode_Second.SpriteCreate(dXCommon->GetDevice(), 720, 240, 43, spriteCommon, Vector2(0.5f, 0.5f), false, false);
+	feverMode_Second.SetColor(clear, Vector4(1, 1, 1, 1));
+	feverMode_Second.SetPosition(Vector3(650, 600, 0));
+	feverMode_Second.SetScale(Vector2(720, 240));
+	feverMode_Second.SetRotation(0.0f);
+	feverMode_Second.SpriteTransferVertexBuffer(feverMode_Second, spriteCommon, 43);
+	feverMode_Second.SpriteUpdate(feverMode_Second, spriteCommon_);
+
+	//プレイヤーダメージ
+	playerDamage_First.LoadTexture(spriteCommon_, 44, L"Resources/playerDamage.png", dXCommon->GetDevice());
+	playerDamage_First.SpriteCreate(dXCommon->GetDevice(), 720, 240, 44, spriteCommon, Vector2(0.5f, 0.5f), false, false);
+	playerDamage_First.SetColor(clear, Vector4(1, 1, 1, 1));
+	playerDamage_First.SetPosition(Vector3(650, 600, 0));
+	playerDamage_First.SetScale(Vector2(720, 240));
+	playerDamage_First.SetRotation(0.0f);
+	playerDamage_First.SpriteTransferVertexBuffer(playerDamage_First, spriteCommon, 44);
+	playerDamage_First.SpriteUpdate(playerDamage_First, spriteCommon_);
+
+	//プレイヤーダメージ
+	playerDamage_Second.LoadTexture(spriteCommon_, 45, L"Resources/playerDamage_2page.png", dXCommon->GetDevice());
+	playerDamage_Second.SpriteCreate(dXCommon->GetDevice(), 720, 240, 45, spriteCommon, Vector2(0.5f, 0.5f), false, false);
+	playerDamage_Second.SetColor(clear, Vector4(1, 1, 1, 1));
+	playerDamage_Second.SetPosition(Vector3(650, 600, 0));
+	playerDamage_Second.SetScale(Vector2(720, 240));
+	playerDamage_Second.SetRotation(0.0f);
+	playerDamage_Second.SpriteTransferVertexBuffer(playerDamage_Second, spriteCommon, 45);
+	playerDamage_Second.SpriteUpdate(playerDamage_Second, spriteCommon_);
+
+	//プレイヤー移動
+	playerMove_First.LoadTexture(spriteCommon_, 46, L"Resources/playerMove.png", dXCommon->GetDevice());
+	playerMove_First.SpriteCreate(dXCommon->GetDevice(), 720, 240, 46, spriteCommon, Vector2(0.5f, 0.5f), false, false);
+	playerMove_First.SetColor(clear, Vector4(1, 1, 1, 1));
+	playerMove_First.SetPosition(Vector3(650, 600, 0));
+	playerMove_First.SetScale(Vector2(720, 240));
+	playerMove_First.SetRotation(0.0f);
+	playerMove_First.SpriteTransferVertexBuffer(playerMove_First, spriteCommon, 46);
+	playerMove_First.SpriteUpdate(playerMove_First, spriteCommon_);
+
+	//プレイヤー移動
+	playerMove_Second.LoadTexture(spriteCommon_, 47, L"Resources/playerMove_2page.png", dXCommon->GetDevice());
+	playerMove_Second.SpriteCreate(dXCommon->GetDevice(), 720, 240, 47, spriteCommon, Vector2(0.5f, 0.5f), false, false);
+	playerMove_Second.SetColor(clear, Vector4(1, 1, 1, 1));
+	playerMove_Second.SetPosition(Vector3(650, 600, 0));
+	playerMove_Second.SetScale(Vector2(720, 240));
+	playerMove_Second.SetRotation(0.0f);
+	playerMove_Second.SpriteTransferVertexBuffer(playerMove_Second, spriteCommon, 47);
+	playerMove_Second.SpriteUpdate(playerMove_Second, spriteCommon_);
+
+	//挨拶
+	welcomeGame.LoadTexture(spriteCommon_, 48, L"Resources/welcomeGame.png", dXCommon->GetDevice());
+	welcomeGame.SpriteCreate(dXCommon->GetDevice(), 720, 240, 48, spriteCommon, Vector2(0.5f, 0.5f), false, false);
+	welcomeGame.SetColor(clear, Vector4(1, 1, 1, 1));
+	welcomeGame.SetPosition(Vector3(650, 600, 0));
+	welcomeGame.SetScale(Vector2(720, 240));
+	welcomeGame.SetRotation(0.0f);
+	welcomeGame.SpriteTransferVertexBuffer(welcomeGame, spriteCommon, 48);
+	welcomeGame.SpriteUpdate(welcomeGame, spriteCommon_);
+
 	//レールカメラ初期化
 	railCamera->Initialize();
 
