@@ -364,6 +364,15 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	textBox.SpriteTransferVertexBuffer(textBox, spriteCommon, 49);
 	textBox.SpriteUpdate(textBox, spriteCommon_);
 
+	AorD.LoadTexture(spriteCommon_, 50, L"Resources/AandD.png", dXCommon->GetDevice());
+	AorD.SpriteCreate(dXCommon->GetDevice(), 720, 240, 50, spriteCommon, Vector2(0.5f, 0.5f), false, false);
+	AorD.SetColor(AorD, Vector4(1, 1, 1, 1));
+	AorD.SetPosition(Vector3(545, 720, 0));
+	AorD.SetScale(Vector2(480, 180));
+	AorD.SetRotation(0.0f);
+	AorD.SpriteTransferVertexBuffer(AorD, spriteCommon, 50);
+	AorD.SpriteUpdate(AorD, spriteCommon_);
+
 	//レールカメラ初期化
 	railCamera->Initialize();
 
@@ -1212,6 +1221,7 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 					playerMove_First.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), playerMove_First.vbView);
 				}
 				else {
+					AorD.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), AorD.vbView);
 					playerMove_Second.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), playerMove_Second.vbView);
 				}
 			}
@@ -1220,6 +1230,7 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 				attackMethod_Second.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), attackMethod_Second.vbView);
 			}
 			else if (tutorialStep == 8) {
+				AorD.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), AorD.vbView);
 				playerMove_Second.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), playerMove_Second.vbView);
 			}
 			//フィーバー
@@ -1242,10 +1253,10 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 					gauge.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), gauge.vbView);
 				}
 				if (tutoText == 0) {
-					feverEnd_First.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), feverEnd_First.vbView);
+					feverEnd_Second.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), feverEnd_Second.vbView);
 				}
 				else {
-					feverEnd_Second.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), feverEnd_Second.vbView);
+					feverEnd_First.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), feverEnd_First.vbView);
 				}
 			}
 		}

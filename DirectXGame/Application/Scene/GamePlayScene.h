@@ -161,6 +161,7 @@ private:
 
 	//テキストボックス
 	Sprite textBox;
+	Sprite AorD;
 
 	//攻撃方法(2ページ)
 	Sprite attackMethod_First;
