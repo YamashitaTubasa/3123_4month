@@ -156,6 +156,43 @@ private:
 	SpriteCommon spriteCommon_;
 	Sprite attackEffect[8];
 
+
+	//-----チュートリアルスプライト-----//
+
+	//テキストボックス
+	Sprite textBox;
+
+	//攻撃方法(2ページ)
+	Sprite attackMethod_First;
+	Sprite attackMethod_Second;	//2回使う方
+
+	//クリア方法
+	Sprite clearMethod;
+
+	//倒せない敵
+	Sprite enemyCaution;
+
+	//フィーバー終了(2ページ)
+	Sprite feverEnd_First;
+	Sprite feverEnd_Second;
+
+	//フィーバー開始(2ページ)
+	Sprite feverMode_First;
+	Sprite feverMode_Second;
+
+	//プレイヤーダメージ(2ページ)
+	Sprite playerDamage_First;
+	Sprite playerDamage_Second;
+
+	//移動
+	Sprite playerMove_First;
+	Sprite playerMove_Second;	//2回使う方
+
+	//最初の挨拶
+	Sprite welcomeGame;
+
+	//---------------------------------//
+
 	DirectXCommon* dXCommon = nullptr;
 	ImGuiManager* imGuiManager = nullptr;
 	//パーティクル
