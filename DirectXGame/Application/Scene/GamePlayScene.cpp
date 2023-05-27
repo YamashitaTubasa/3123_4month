@@ -39,6 +39,7 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	builModel02 = Model::LoadFromOBJ("building_02");
 	builModel03 = Model::LoadFromOBJ("building_03");
 	builModel04 = Model::LoadFromOBJ("ring");
+	sphere = Model::LoadFromOBJ("triangle_mat");
 
 	// 3Dオブジェクト生成
 	//床
@@ -58,6 +59,51 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	player->PlayerInitialize();
 	//半径分だけ足元から浮いた座標を球の中心にする
 	player->SetCollider(new SphereCollider);
+
+	//ステージモデル
+	for (int i = 0; i < 11; i++) {
+		std::unique_ptr<Object3d> newStage = std::make_unique<Object3d>();
+		newStage->Initialize();
+		newStage->SetModel(sphere);
+		newStage->SetScale(Vector3{ 7,7,7 });
+		if (i == 0) {
+			newStage->SetPosition({ -597,-5,-660 });
+		}
+		else if(i == 1) {
+			newStage->SetPosition({ -550 ,-5,-660 });
+		}
+		else if (i == 2) {
+			newStage->SetPosition({ -502,-5,-660 });
+		}
+		else if(i == 3) {
+			newStage->SetPosition({ -470 ,-5,-660 });
+		}
+		else if (i == 4) {
+			newStage->SetPosition({ -425,-5,-660 });
+		}
+		else if (i == 5) {
+			newStage->SetPosition({ -383,-5,-660 });
+		}
+		else if (i == 6) {
+			newStage->SetPosition({ -345 ,-5,-660 });
+		}
+		else if (i == 7) {
+			newStage->SetPosition({ -301 ,-5,-660 });
+		}
+		else if (i == 8) {
+			newStage->SetPosition({ -259 ,-5,-660 });
+		}
+		else if (i == 9) {
+			newStage->SetPosition({ -215 ,-5,-660 });
+		}
+		else if (i == 10) {
+			newStage->SetPosition({ -177,-5,-660 });
+		}
+		else {
+			newStage->SetPosition({ -550 ,-5,-660 });
+		}
+		stages_.push_back(std::move(newStage));
+	}
 
 	//パーティクル初期化
 	particle_1 = Particle::LoadParticleTexture("effect1.png");
@@ -383,6 +429,11 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	tutoTime = 0;
 	isShowText = false;
 	tutoText = 0;
+	selectTime = 0.0f;
+	isMoveSel = 0;
+	selPlayerTmp = { -550,-5,-700 };
+	selEyeTmp = { -550,30,-780 };
+	selTargetTmp = { -550,0,-700 };
 }
 
 void GamePlayScene::Update(SpriteCommon& spriteCommon) {
@@ -442,9 +493,10 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 			Reset();
 			sceneNum = 1;
 			railCamera->SetPlayer(player);
-			railCamera->SetEye({ 0,30,-770 });
-			player->SetPosition({ 0,0,-700 });
-			player->SetScale({ 2,2,2 });
+			railCamera->SetEye(selEyeTmp);
+			railCamera->SetTarget(selTargetTmp);
+			player->SetPosition(selPlayerTmp);
+			player->SetScale({ 1.5,1.5,1.5 });
 		}
 		titleTimer++;
 		break;
@@ -459,6 +511,9 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		//天球
 		floor->Update();
 		sky->Update();
+		for (const std::unique_ptr<Object3d>& stage : stages_) {
+			stage->Update();
+		}
 		railCamera->ViewUpdate();
 		break;
 
@@ -691,9 +746,10 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 			if (selectPause <= 1) {
 				Reset();
 				if (selectPause == 1) {
-					railCamera->SetEye({ 0,30,-770 });
-					player->SetPosition({ 0,0,-700 });
-					player->SetScale({ 2,2,2 });
+					railCamera->SetEye(selEyeTmp);
+					railCamera->SetTarget(selTargetTmp);
+					player->SetPosition(selPlayerTmp);
+					player->SetScale({ 1.5,1.5,1.5 });
 				}
 			}
 			postEffect_->SetColor(Vector4(1, 1, 1, 1));
@@ -1009,6 +1065,11 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 	Object3d::PreDraw(dXCommon->GetCommandList());
 
 	sky->Draw(railCamera->GetView());
+	if (sceneNum == 1) {
+		for (const std::unique_ptr<Object3d>& stage : stages_) {
+			stage->Draw(railCamera->GetView());
+		}
+	}
 
 	if (sceneNum == 2 || sceneNum == 5 || sceneNum == 6) {
 		floor->Draw(railCamera->GetView());
@@ -1507,6 +1568,8 @@ void GamePlayScene::Reset() {
 	tutoTime = 0;
 	isShowText = false;
 	tutoText = 0;
+	selectTime = 0.0f;
+	isMoveSel = 0;
 }
 
 void GamePlayScene::CreatThreeLine(std::vector<Vector3>& points) {
@@ -1548,39 +1611,77 @@ void GamePlayScene::FadeOut(float pColor_, float fadeOutTimer_) {
 
 //ステージ選択
 void GamePlayScene::StageSelect() {
-	static const int STAGE_MAX = 2;
-
+	static const int STAGE_MAX = 10;
 	//演出
-	if (input->TriggerKey(DIK_A)) {
-		if (stageNum > 0) {
-			player->SetPosition(player->GetPosition() + Vector3(-15, 0, 0));
-			railCamera->GetView()->eye.x -= 15;
+	if (input->TriggerKey(DIK_A) || input->TriggerKey(DIK_LEFT)) {
+		if (stageNum > 0 && isMoveSel == 0) {
+			isMoveSel = 1;
+			stageNum--;
 		}
 	}
-	if (input->TriggerKey(DIK_D)) {
-		if (stageNum < STAGE_MAX) {
-			player->SetPosition(player->GetPosition() + Vector3(15, 0, 0));
-			railCamera->GetView()->eye.x += 15;
-		}
-	}
-
-	//StageMaxはステージよりも一つ少なく(ゲームオーバーの一つ前まで)
-	if (input->TriggerKey(DIK_RIGHT) || input->TriggerKey(DIK_D)) {
-		if (stageNum < STAGE_MAX) {
+	if (input->TriggerKey(DIK_D) || input->TriggerKey(DIK_RIGHT)) {
+		if (stageNum < STAGE_MAX && isMoveSel == 0) {
+			isMoveSel = 2;
 			stageNum++;
 		}
 	}
 
-	//SceneNumが0よりも下にいかないように
-	if (input->TriggerKey(DIK_LEFT) || input->TriggerKey(DIK_A)) {
-		if (stageNum > 0) {
-			stageNum--;
+	//移動
+	if (isMoveSel == 0) {
+		if (player->worldTransform_.rotation_.y > 0) {
+			player->SetRotation(player->GetRotation() + Vector3(0, -5, 0));
 		}
+		else if (player->worldTransform_.rotation_.y < 0) {
+			player->SetRotation(player->GetRotation() + Vector3(0, 5, 0));
+		}
+		else{}
 	}
-	railCamera->SetTarget(player->GetPosition());
+	if (isMoveSel > 0) {
+		if (isMoveSel == 1) {
+			if (player->worldTransform_.rotation_.y > -90) {
+				player->SetRotation(player->GetRotation() + Vector3(0, -5, 0));
+			}
+			if ((stageNum + 1) % 3 == 0) {
+				player->worldTransform_.position_.x -= MathFunc::easeInSine(selectTime / 50) * 2.65;
+				if (selectTime >= 25) {
+					railCamera->GetView()->eye.x -= MathFunc::easeInOutSine(selectTime / 50) * 50;
+					railCamera->GetView()->target.x -= MathFunc::easeInOutSine(selectTime / 50) * 50;
+				}
+			}
+			else {
+				player->worldTransform_.position_.x -= MathFunc::easeInSine(selectTime / 50) * 2;
+			}
+		}
+		else if (isMoveSel == 2) {
+			if (player->worldTransform_.rotation_.y < 90) {
+				player->SetRotation(player->GetRotation() + Vector3(0, 5, 0));
+			}
+			if (stageNum % 3 == 0) {
+				player->worldTransform_.position_.x += MathFunc::easeInSine(selectTime / 50) * 2.65;
+				if (selectTime >= 25) {
+					railCamera->GetView()->eye.x += MathFunc::easeInOutSine(selectTime / 50) * 50;
+					railCamera->GetView()->target.x += MathFunc::easeInOutSine(selectTime / 50) * 50;
+				}
+			}
+			else {
+				player->worldTransform_.position_.x += MathFunc::easeInSine(selectTime / 50) * 2;
+			}
+		}
+
+		if (selectTime == 50) {
+			selectTime = 0;
+			isMoveSel = 0;
+		}
+		selectTime++;
+	}
+	railCamera->ViewUpdate();
 	player->Update(points);
 	//決定
-	if (input->TriggerKey(DIK_SPACE)) {
+	if (input->TriggerKey(DIK_SPACE) && isMoveSel == 0) {
+		selPlayerTmp = player->GetPosition();
+		selEyeTmp = railCamera->GetView()->eye;
+		selTargetTmp = railCamera->GetView()->target;
+		FadeOut(0.01, 100);
 		if (stageNum == 0) {
 			Reset();
 			sceneNum = 0;
@@ -1599,7 +1700,6 @@ void GamePlayScene::StageSelect() {
 			railCamera->SetPlayer(player);
 			player->SetScale(Vector3(0.2, 0.2, 0.2));
 		}
-		FadeOut(0.01, 100);
 	}
 }
 
@@ -1747,6 +1847,28 @@ void GamePlayScene::LoadStage(int stageNum) {
 			line_stream >> position.z;
 			// 座標データに追加
 			points.emplace_back(position);
+		}
+		if (stageNum == 10) {
+			if (key == "st10") {
+				// X,Y,Z座標読み込み
+				Vector3 position{};
+				line_stream >> position.x;
+				line_stream >> position.y;
+				line_stream >> position.z;
+				// 座標データに追加
+				points.emplace_back(position);
+			}
+		}
+		else if (stageNum > 10) {
+			if (key == "st1" + stageNum - 10) {
+				// X,Y,Z座標読み込み
+				Vector3 position{};
+				line_stream >> position.x;
+				line_stream >> position.y;
+				line_stream >> position.z;
+				// 座標データに追加
+				points.emplace_back(position);
+			}
 		}
 	}
 	// ファイルと閉じる

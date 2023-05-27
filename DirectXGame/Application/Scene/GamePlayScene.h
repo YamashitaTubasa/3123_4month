@@ -115,6 +115,7 @@ private:
 	Model* builModel02;
 	Model* builModel03;
 	Model* builModel04;
+	Model* sphere;
 
 	// オブジェクト
 	Player* player;
@@ -123,6 +124,7 @@ private:
 	Object3d* floor;
 	Object3d* sky;
 	Object3d* buil;
+	Object3d* stageObj;
 	
 	Line* line[3];
 	//カメラ
@@ -223,6 +225,7 @@ private:
 	std::list<std::unique_ptr<InvisibleEnemy>> invEnemys_;
 	std::list<std::unique_ptr<Enemy>> enemys_;
 	std::list<std::unique_ptr<Object3d>> buils_;
+	std::list<std::unique_ptr<Object3d>> stages_;
 
 	//ゲージ
 	Vector2 gaugeScale = { 3,10 };
@@ -276,4 +279,10 @@ private:
 
 	//ステージ
 	int stageNum;
+	//セレクト画面
+	float selectTime;
+	int isMoveSel;
+	Vector3 selPlayerTmp;
+	Vector3 selEyeTmp;
+	Vector3 selTargetTmp;
 };
