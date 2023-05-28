@@ -223,7 +223,7 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	pause.SpriteUpdate(pause, spriteCommon_);
 
 	//チュートリアル
-	 
+
 	//攻撃
 	attackMethod_First.LoadTexture(spriteCommon_, 36, L"Resources/attackMethod.png", dXCommon->GetDevice());
 	attackMethod_First.SpriteCreate(dXCommon->GetDevice(), 720, 240, 36, spriteCommon, Vector2(0.5f, 0.5f), false, false);
@@ -387,332 +387,91 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 
 void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 	switch (sceneNum) {
-	case 0:
-		// スタート画面フェードアウト演出
-		FadeOut(0.01, 100);
+		case 0:
+			// スタート画面フェードアウト演出
+			FadeOut(0.01, 100);
 
-		if (titleTimer <= 50)
-		{
-			player->worldTransform_.position_.y += MathFunc::easeInOutSine(titleTimer / 50) / 30;
-		}
-		else if (titleTimer <= 100)
-		{
-			player->worldTransform_.position_.y -= MathFunc::easeInOutSine((titleTimer - 50.0f) / 50) / 30;
-		}
-		else
-		{
-			titleTimer = 0;
-		}
-		//プレイヤー
-		player->Update(points);
-		railCamera->GetView()->target = { 0, -15, -750 };
-		//カメラ更新
-		railCamera->ViewUpdate();
-		//天球
-		floor->Update();
-		sky->Update();
-
-		if (titleTimer <= 50) {
-			player->worldTransform_.position_.y += MathFunc::easeInOutSine(titleTimer / 50) / 30;
-		}
-		else if (titleTimer <= 100) {
-			player->worldTransform_.position_.y -= MathFunc::easeInOutSine((titleTimer - 50.0f) / 50) / 30;
-		}
-		else {
-			titleTimer = 0;
-		}
-		//プレイヤー
-		player->Update(points);
-		railCamera->GetView()->target = { 0, -15, -750 };
-		//カメラ更新
-		railCamera->ViewUpdate();
-		//天球
-		floor->Update();
-		sky->Update();
-
-		if (input->TriggerKey(DIK_SPACE)) {
-
-			isTitleT = true;
-		}
-		if (isTitleT == true) {
-			railCamera->TitleR(player);
-			titleT++;
-		}
-		if (titleT >= 100) {
-			Reset();
-			sceneNum = 1;
-			railCamera->SetPlayer(player);
-			railCamera->SetEye({ 0,30,-770 });
-			player->SetPosition({ 0,0,-700 });
-			player->SetScale({ 2,2,2 });
-		}
-		titleTimer++;
-		break;
-	case 1://ステージ選択
-		FadeOut(0.01, 100);
-		//ステージ選択関数
-		StageSelect();
-		//天球
-		sky->Update();
-		floor->Update();
-		//ステージ
-		//天球
-		floor->Update();
-		sky->Update();
-		railCamera->ViewUpdate();
-		break;
-
-	case 2:
-		// ゲーム画面フェードアウト演出
-		FadeOut(0.01, 100);
-
-		//デスフラグの立った敵を削除
-		enemys_.remove_if([](std::unique_ptr < Enemy>& enemy_) {
-			return enemy_->GetIsDead();
-			});
-
-		//チュートリアルステージならチュートリアルに移行
-		if (stageNum == 1) {
-			sceneNum = 6;
-		}
-
-		gauge.GetScale();
-
-		if (isMaxGauge == true) {
-			if (gaugeScale.x >= 4) {
-				gaugeScale.x -= 0.8;
+			if (titleTimer <= 50) {
+				player->worldTransform_.position_.y += MathFunc::easeInOutSine(titleTimer / 50) / 30;
+			}
+			else if (titleTimer <= 100) {
+				player->worldTransform_.position_.y -= MathFunc::easeInOutSine((titleTimer - 50.0f) / 50) / 30;
 			}
 			else {
-				isMaxGauge = false;
+				titleTimer = 0;
 			}
-		}
-
-
-		if (player->GetGaugeAdd() == true) {
-			player->SetGaugeAdd(false);
-			calRes = static_cast<float>(195) / (player->GetDivide() + 1);
-			gaugeScale.x += calRes;
-
-		}
-		if (gaugeScale.x >= 195) {
-			if (isMaxGauge == false) {
-				isMaxGauge = true;
-			}
-		}
-
-		gauge.SetScale(Vector2(gaugeScale.x, gaugeScale.y));
-		gauge.SpriteTransferVertexBuffer(gauge, spriteCommon, 21);
-
-		// ダメージを受けた時の画面演出
-		if (isBack == true) {
-			backT++;
-		}
-		if (backT >= 50.0f) {
-			isBack = false;
-			backT = 0.0f;
-		}
-
-		// 敵を倒した時の演出
-		if (player->GetIsBurst() == true) {
-			isDeadT++;
-		}
-		if (isDeadT >= 20.0f) {
-			player->SetIsBurst(false);
-			isDeadT = 0.0f;
-		}
-		if (player->GetIsBurst() == true) {
-			pm_dmg->Fire(p_dmg, 50, { 0,0,0 }, 30.0f, 30.0f, 30.0f, 30.0f, 0, 0, 0, 0, 0.2f, 0.2f, 0, 0, 0, 3, { 4.0f, 0.0f });
-		}
-
-		// 加速時のブラー処理
-		if (player->GetIsBurst() == true) {
-			isBlur = true;
-		}
-		if (isBlur == true) {
-			blurT++;
-			postEffect_->SetBlur(true);
-		}
-		if (blurT >= 10) {
-			isBlur = false;
-			if (isBlur == false) {
-				postEffect_->SetBlur(false);
-			}
-			if (player->GetFever() == false) {
-				blurT = 0;
-			}
-		}
-		for (const std::unique_ptr<Object3d>& buil : buils_) {
-			buil->Update();
-		}
-
-		//敵キャラの更新
-		for (const std::unique_ptr<Enemy>& enemy : enemys_) {
-			enemy->SetGameScene(this);
-			enemy->Update();
-		}
-		//敵キャラの更新
-		for (const std::unique_ptr<InvisibleEnemy>& invEnemy : invEnemys_) {
-			invEnemy->SetGameScene(this);
-			invEnemy->Update();
-		}
-
-		//全ての衝突をチェック
-		collisionManager->CheckAllCollisions();
-
-		//パーティクル発生実験
-		/*if (player->GetIsHit() == true)
-		{
-			pm_1->Fire(particle_1, 30, 0.2f, 0, 20, { 8.0f, 0.0f });
-			pm_2->Fire(particle_2, 70, 0.2f, 0, 20, { 4.0f,0.0f });
-		}*/
-
-		//ポーズ画面
-		if (input->TriggerKey(DIK_P) || input->TriggerKey(DIK_TAB)) {
-			selectPause = 2;
-			sceneNum = 5;
-		}
-
-		//ゲームオーバー
-		if (player->GetHP() == 0) {
-			isOStaging = true;
-			oStagingT++;
-		}
-		if (isOStaging == true) {
-			pBombM->Fire(pBomb, 50, { 0,0,0 }, 70.0f, 70.0f, 50.0f, 50.0f, 0, 0, 0, 0, 0.0f, 0.0f, 0, 0, 0, 5, { 5.0f, 40.0f });
-		}
-		if (oStagingT >= 40) {
-			isOStaging = false;
-			oStagingT = 0;
-			sceneNum = 4;
-			player->SetPosition({ 0,0,0 });
-		}
-		pBombM->Update();
-			
-		//クリア
-		if (railCamera->GetIsEnd() == true) {
-			cStagingT++;
-			player->worldTransform_.rotation_.z = 0;
-			isClearStaging = true;
-			player->SetPosition(player->GetPosition() + Vector3(0, 0, 0.8));
-			player->worldTransform_.UpdateMatrix();
-			Vector3 behindVec = (railCamera->GetView()->target - railCamera->GetView()->eye) * -1;
-			behindVec /= 80;
-			railCamera->SetEye(railCamera->GetView()->eye + behindVec);
-
-		}
-		if (cStagingT >= 100) {
-			sceneNum = 3;
-			isClearStaging = false;
-			Reset();
-		}
-
-
-		//カメラ更新
-		if (railCamera->GetIsEnd() == false) {
-			railCamera->Update(player, points);
 			//プレイヤー
 			player->Update(points);
-		}
-		if (isBack == true) {
-			if (backT < 8) {
-				railCamera->ShakeCamera();
+			railCamera->GetView()->target = { 0, -15, -750 };
+			//カメラ更新
+			railCamera->ViewUpdate();
+			//天球
+			floor->Update();
+			sky->Update();
+
+			if (titleTimer <= 50) {
+				player->worldTransform_.position_.y += MathFunc::easeInOutSine(titleTimer / 50) / 30;
 			}
-		}
-		//ステージ
-		//天球
-		floor->Update();
-		sky->Update();
-
-		//パーティクル
-		pm_1->Update();
-		pm_2->Update();
-		pm_dmg->Update();
-
-		break;
-		//クリア
-	case 3:
-		// クリア画面フェードアウト演出
-		FadeOut(0.01, 100);
-
-		//player->SetPosition({ 0,0,0 });
-		if (input->TriggerKey(DIK_SPACE)) {
-			Reset();
-			sceneNum = 0;
-		}
-		break;
-		//ゲームオーバー
-	case 4:
-		// ゲームオーバー画面フェードアウト演出
-		FadeOut(0.01, 100);
-
-		player->Update(points);
-
-		pFireM->Fire(pFire, 55, { 0, 0,-790 }, 10.0f, 10.0f, -10.0f, -10.0f, 0, 0, 0, 0, 1.0f, 0, 0, 0, 0, 5, { 5.0f, 0.0f });
-		pFireM->Update();
-
-		if (input->TriggerKey(DIK_SPACE)) {
-			Reset();
-			sceneNum = 0;
-		}
-		break;
-	case 5://ポーズ画面
-		if (input->TriggerKey(DIK_W) || input->TriggerKey(DIK_UP)) {
-			if (selectPause <= 1) {
-				selectPause++;
-				if (selectPause == 2) {
-					titleBack.SetColor(titleBack, Vector4(0.5, 0.5, 0.5, 0.9));
-					stageBack.SetColor(stageBack, Vector4(0.5, 0.5, 0.5, 0.9));
-					close.SetColor(close, Vector4(1, 1, 0, 1));
-				}
-				else if (selectPause == 1) {
-					titleBack.SetColor(titleBack, Vector4(0.5, 0.5, 0.5, 0.9));
-					stageBack.SetColor(stageBack, Vector4(1, 1, 0, 1));
-					close.SetColor(close, Vector4(0.5, 0.5, 0.5, 0.9));
-				}
+			else if (titleTimer <= 100) {
+				player->worldTransform_.position_.y -= MathFunc::easeInOutSine((titleTimer - 50.0f) / 50) / 30;
 			}
-		}
-		if (input->TriggerKey(DIK_S) || input->TriggerKey(DIK_DOWN)) {
-			if (selectPause > 0) {
-				selectPause--;
-				if (selectPause == 1) {
-					titleBack.SetColor(titleBack, Vector4(0.5, 0.5, 0.5, 0.9));
-					stageBack.SetColor(stageBack, Vector4(1, 1, 0, 1));
-					close.SetColor(close, Vector4(0.5, 0.5, 0.5, 0.9));
-				}
-				else if (selectPause == 0) {
-					titleBack.SetColor(titleBack, Vector4(1, 1, 0, 1));
-					stageBack.SetColor(stageBack, Vector4(0.5, 0.5, 0.5, 0.9));
-					close.SetColor(close, Vector4(0.5, 0.5, 0.5, 0.9));
-				}
+			else {
+				titleTimer = 0;
 			}
-		}
-		//戻る
-		if (input->TriggerKey(DIK_SPACE)) {
-			if (selectPause <= 1) {
+			//プレイヤー
+			player->Update(points);
+			railCamera->GetView()->target = { 0, -15, -750 };
+			//カメラ更新
+			railCamera->ViewUpdate();
+			//天球
+			floor->Update();
+			sky->Update();
+
+			if (input->TriggerKey(DIK_SPACE)) {
+
+				isTitleT = true;
+			}
+			if (isTitleT == true) {
+				railCamera->TitleR(player);
+				titleT++;
+			}
+			if (titleT >= 100) {
 				Reset();
-				if (selectPause == 1) {
-					railCamera->SetEye({ 0,30,-770 });
-					player->SetPosition({ 0,0,-700 });
-					player->SetScale({ 2,2,2 });
-				}
+				sceneNum = 1;
+				railCamera->SetPlayer(player);
+				railCamera->SetEye({ 0,30,-770 });
+				player->SetPosition({ 0,0,-700 });
+				player->SetScale({ 2,2,2 });
 			}
-			postEffect_->SetColor(Vector4(1, 1, 1, 1));
-			sceneNum = selectPause;
-		}
-		if (input->TriggerKey(DIK_P) || input->TriggerKey(DIK_TAB)) {
-			postEffect_->SetColor(Vector4(1, 1, 1, 1));
-			sceneNum = 2;
-		}
-		break;
-	case 6://チュートリアル
-		if (isShowText == false) {
+			titleTimer++;
+			break;
+		case 1://ステージ選択
 			FadeOut(0.01, 100);
+			//ステージ選択関数
+			StageSelect();
+			//天球
+			sky->Update();
+			floor->Update();
+			//ステージ
+			//天球
+			floor->Update();
+			sky->Update();
+			railCamera->ViewUpdate();
+			break;
+
+		case 2:
+			// ゲーム画面フェードアウト演出
+			FadeOut(0.01, 100);
+
 			//デスフラグの立った敵を削除
 			enemys_.remove_if([](std::unique_ptr < Enemy>& enemy_) {
 				return enemy_->GetIsDead();
-				});
+							  });
 
-			TutorialUpdate();
+			//チュートリアルステージならチュートリアルに移行
+			if (stageNum == 1) {
+				sceneNum = 6;
+			}
 
 			gauge.GetScale();
 
@@ -728,11 +487,11 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 
 			if (player->GetGaugeAdd() == true) {
 				player->SetGaugeAdd(false);
-				calRes = static_cast<float>(195) / (player->GetDivide() + 1);
+				calRes = static_cast<float>(190) / (player->GetDivide() + 1);
 				gaugeScale.x += calRes;
 
 			}
-			if (gaugeScale.x >= 195) {
+			if (gaugeScale.x >= 190) {
 				if (isMaxGauge == false) {
 					isMaxGauge = true;
 				}
@@ -779,12 +538,16 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 					blurT = 0;
 				}
 			}
+			for (const std::unique_ptr<Object3d>& buil : buils_) {
+				buil->Update();
+			}
 
 			//敵キャラの更新
 			for (const std::unique_ptr<Enemy>& enemy : enemys_) {
 				enemy->SetGameScene(this);
 				enemy->Update();
 			}
+			//敵キャラの更新
 			for (const std::unique_ptr<InvisibleEnemy>& invEnemy : invEnemys_) {
 				invEnemy->SetGameScene(this);
 				invEnemy->Update();
@@ -792,6 +555,13 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 
 			//全ての衝突をチェック
 			collisionManager->CheckAllCollisions();
+
+			//パーティクル発生実験
+			/*if (player->GetIsHit() == true)
+			{
+				pm_1->Fire(particle_1, 30, 0.2f, 0, 20, { 8.0f, 0.0f });
+				pm_2->Fire(particle_2, 70, 0.2f, 0, 20, { 4.0f,0.0f });
+			}*/
 
 			//ポーズ画面
 			if (input->TriggerKey(DIK_P) || input->TriggerKey(DIK_TAB)) {
@@ -801,8 +571,20 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 
 			//ゲームオーバー
 			if (player->GetHP() == 0) {
-				sceneNum = 4;
+				isOStaging = true;
+				oStagingT++;
 			}
+			if (isOStaging == true) {
+				pBombM->Fire(pBomb, 50, { 0,0,0 }, 70.0f, 70.0f, 50.0f, 50.0f, 0, 0, 0, 0, 0.0f, 0.0f, 0, 0, 0, 5, { 5.0f, 40.0f });
+			}
+			if (oStagingT >= 40) {
+				isOStaging = false;
+				oStagingT = 0;
+				sceneNum = 4;
+				player->SetPosition({ 0,0,0 });
+			}
+			pBombM->Update();
+
 			//クリア
 			if (railCamera->GetIsEnd() == true) {
 				cStagingT++;
@@ -842,146 +624,361 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 			pm_1->Update();
 			pm_2->Update();
 			pm_dmg->Update();
-		}
-		//テキスト
-		else {
-		if (isBlur == true) {
-			postEffect_->SetBlur(false);
-		}
-			//welcome
-			if (tutorialStep == 1) {
-				if (tutoText == 0) {
-					if (input->TriggerKey(DIK_SPACE)) {
-						tutoText = 1;
+
+			break;
+			//クリア
+		case 3:
+			// クリア画面フェードアウト演出
+			FadeOut(0.01, 100);
+
+			//player->SetPosition({ 0,0,0 });
+			if (input->TriggerKey(DIK_SPACE)) {
+				Reset();
+				sceneNum = 0;
+			}
+			break;
+			//ゲームオーバー
+		case 4:
+			// ゲームオーバー画面フェードアウト演出
+			FadeOut(0.01, 100);
+
+			player->Update(points);
+
+			pFireM->Fire(pFire, 55, { 0, 0,-790 }, 10.0f, 10.0f, -10.0f, -10.0f, 0, 0, 0, 0, 1.0f, 0, 0, 0, 0, 5, { 5.0f, 0.0f });
+			pFireM->Update();
+
+			if (input->TriggerKey(DIK_SPACE)) {
+				Reset();
+				sceneNum = 0;
+			}
+			break;
+		case 5://ポーズ画面
+			if (input->TriggerKey(DIK_W) || input->TriggerKey(DIK_UP)) {
+				if (selectPause <= 1) {
+					selectPause++;
+					if (selectPause == 2) {
+						titleBack.SetColor(titleBack, Vector4(0.5, 0.5, 0.5, 0.9));
+						stageBack.SetColor(stageBack, Vector4(0.5, 0.5, 0.5, 0.9));
+						close.SetColor(close, Vector4(1, 1, 0, 1));
 					}
-				}
-				else {
-					if (input->TriggerKey(DIK_SPACE)) {
-						tutoText = 0;
-						isShowText = false;
+					else if (selectPause == 1) {
+						titleBack.SetColor(titleBack, Vector4(0.5, 0.5, 0.5, 0.9));
+						stageBack.SetColor(stageBack, Vector4(1, 1, 0, 1));
+						close.SetColor(close, Vector4(0.5, 0.5, 0.5, 0.9));
 					}
 				}
 			}
-			//敵(倒す)
-			else if (tutorialStep == 2) {
-				if (tutoText == 0) {
-					if (input->TriggerKey(DIK_SPACE)) {
-						tutoText = 1;
+			if (input->TriggerKey(DIK_S) || input->TriggerKey(DIK_DOWN)) {
+				if (selectPause > 0) {
+					selectPause--;
+					if (selectPause == 1) {
+						titleBack.SetColor(titleBack, Vector4(0.5, 0.5, 0.5, 0.9));
+						stageBack.SetColor(stageBack, Vector4(1, 1, 0, 1));
+						close.SetColor(close, Vector4(0.5, 0.5, 0.5, 0.9));
+					}
+					else if (selectPause == 0) {
+						titleBack.SetColor(titleBack, Vector4(1, 1, 0, 1));
+						stageBack.SetColor(stageBack, Vector4(0.5, 0.5, 0.5, 0.9));
+						close.SetColor(close, Vector4(0.5, 0.5, 0.5, 0.9));
 					}
 				}
-				else {
+			}
+			//戻る
+			if (input->TriggerKey(DIK_SPACE)) {
+				if (selectPause <= 1) {
+					Reset();
+					if (selectPause == 1) {
+						railCamera->SetEye({ 0,30,-770 });
+						player->SetPosition({ 0,0,-700 });
+						player->SetScale({ 2,2,2 });
+					}
+				}
+				postEffect_->SetColor(Vector4(1, 1, 1, 1));
+				sceneNum = selectPause;
+			}
+			if (input->TriggerKey(DIK_P) || input->TriggerKey(DIK_TAB)) {
+				postEffect_->SetColor(Vector4(1, 1, 1, 1));
+				sceneNum = 2;
+			}
+			break;
+		case 6://チュートリアル
+			if (isShowText == false) {
+				FadeOut(0.01, 100);
+				//デスフラグの立った敵を削除
+				enemys_.remove_if([](std::unique_ptr < Enemy>& enemy_) {
+					return enemy_->GetIsDead();
+								  });
+
+				TutorialUpdate();
+
+				gauge.GetScale();
+
+				if (isMaxGauge == true) {
+					if (gaugeScale.x >= 4) {
+						gaugeScale.x -= 0.8;
+					}
+					else {
+						isMaxGauge = false;
+					}
+				}
+
+
+				if (player->GetGaugeAdd() == true) {
+					player->SetGaugeAdd(false);
+					calRes = static_cast<float>(190) / (player->GetDivide() + 1);
+					gaugeScale.x += calRes;
+
+				}
+				if (gaugeScale.x >= 190) {
+					if (isMaxGauge == false) {
+						isMaxGauge = true;
+					}
+				}
+
+				gauge.SetScale(Vector2(gaugeScale.x, gaugeScale.y));
+				gauge.SpriteTransferVertexBuffer(gauge, spriteCommon, 21);
+
+				// ダメージを受けた時の画面演出
+				if (isBack == true) {
+					backT++;
+				}
+				if (backT >= 50.0f) {
+					isBack = false;
+					backT = 0.0f;
+				}
+
+				// 敵を倒した時の演出
+				if (player->GetIsBurst() == true) {
+					isDeadT++;
+				}
+				if (isDeadT >= 20.0f) {
+					player->SetIsBurst(false);
+					isDeadT = 0.0f;
+				}
+				if (player->GetIsBurst() == true) {
+					pm_dmg->Fire(p_dmg, 50, { 0,0,0 }, 30.0f, 30.0f, 30.0f, 30.0f, 0, 0, 0, 0, 0.2f, 0.2f, 0, 0, 0, 3, { 4.0f, 0.0f });
+				}
+
+				// 加速時のブラー処理
+				if (player->GetIsBurst() == true) {
+					isBlur = true;
+				}
+				if (isBlur == true) {
+					blurT++;
+					postEffect_->SetBlur(true);
+				}
+				if (blurT >= 10) {
+					isBlur = false;
+					if (isBlur == false) {
+						postEffect_->SetBlur(false);
+					}
+					if (player->GetFever() == false) {
+						blurT = 0;
+					}
+				}
+
+				//敵キャラの更新
+				for (const std::unique_ptr<Enemy>& enemy : enemys_) {
+					enemy->SetGameScene(this);
+					enemy->Update();
+				}
+				for (const std::unique_ptr<InvisibleEnemy>& invEnemy : invEnemys_) {
+					invEnemy->SetGameScene(this);
+					invEnemy->Update();
+				}
+
+				//全ての衝突をチェック
+				collisionManager->CheckAllCollisions();
+
+				//ポーズ画面
+				if (input->TriggerKey(DIK_P) || input->TriggerKey(DIK_TAB)) {
+					selectPause = 2;
+					sceneNum = 5;
+				}
+
+				//ゲームオーバー
+				if (player->GetHP() == 0) {
+					sceneNum = 4;
+				}
+				//クリア
+				if (railCamera->GetIsEnd() == true) {
+					cStagingT++;
+					player->worldTransform_.rotation_.z = 0;
+					isClearStaging = true;
+					player->SetPosition(player->GetPosition() + Vector3(0, 0, 0.8));
+					player->worldTransform_.UpdateMatrix();
+					Vector3 behindVec = (railCamera->GetView()->target - railCamera->GetView()->eye) * -1;
+					behindVec /= 80;
+					railCamera->SetEye(railCamera->GetView()->eye + behindVec);
+
+				}
+				if (cStagingT >= 100) {
+					sceneNum = 3;
+					isClearStaging = false;
+					Reset();
+				}
+
+
+				//カメラ更新
+				if (railCamera->GetIsEnd() == false) {
+					railCamera->Update(player, points);
+					//プレイヤー
+					player->Update(points);
+				}
+				if (isBack == true) {
+					if (backT < 8) {
+						railCamera->ShakeCamera();
+					}
+				}
+				//ステージ
+				//天球
+				floor->Update();
+				sky->Update();
+
+				//パーティクル
+				pm_1->Update();
+				pm_2->Update();
+				pm_dmg->Update();
+			}
+			//テキスト
+			else {
+				if (isBlur == true) {
+					postEffect_->SetBlur(false);
+				}
+				//welcome
+				if (tutorialStep == 1) {
+					if (tutoText == 0) {
+						if (input->TriggerKey(DIK_SPACE)) {
+							tutoText = 1;
+						}
+					}
+					else {
+						if (input->TriggerKey(DIK_SPACE)) {
+							tutoText = 0;
+							isShowText = false;
+						}
+					}
+				}
+				//敵(倒す)
+				else if (tutorialStep == 2) {
+					if (tutoText == 0) {
+						if (input->TriggerKey(DIK_SPACE)) {
+							tutoText = 1;
+						}
+					}
+					else {
+						if (input->TriggerKey(DIK_SPACE)) {
+							isShowText = false;
+							tutoText = 0;
+							player->Update(points);
+						}
+					}
+				}
+				//スピードアップ
+				else if (tutorialStep == 3) {
 					if (input->TriggerKey(DIK_SPACE)) {
 						isShowText = false;
-						tutoText = 0;
+					}
+				}
+				//敵(ダメージ)
+				else if (tutorialStep == 4) {
+					if (input->TriggerKey(DIK_SPACE)) {
+						isShowText = false;
 						player->Update(points);
 					}
 				}
-			}
-			//スピードアップ
-			else if (tutorialStep == 3) {
-				if (input->TriggerKey(DIK_SPACE)) {
-					isShowText = false;
+				//HP
+				else if (tutorialStep == 5) {
+					if (tutoText == 0) {
+						if (input->TriggerKey(DIK_SPACE)) {
+							tutoText = 1;
+						}
+					}
+					else if (tutoText == 1) {
+						if (input->TriggerKey(DIK_SPACE)) {
+							tutoText = 2;
+						}
+					}
+					else {
+						if (input->TriggerKey(DIK_SPACE)) {
+							tutoText = 0;
+							isShowText = false;
+						}
+					}
+					if (tutoTime == 100) {
+						tutoTime = 0;
+					}
+					tutoTime++;
 				}
-			}
-			//敵(ダメージ)
-			else if (tutorialStep == 4) {
-				if (input->TriggerKey(DIK_SPACE)) {
-					isShowText = false;
-					player->Update(points);
-				}
-			}
-			//HP
-			else if (tutorialStep == 5) {
-				if (tutoText == 0) {
-					if (input->TriggerKey(DIK_SPACE)) {
-						tutoText = 1;
+				//移動
+				else if (tutorialStep == 6) {
+					if (tutoText == 0) {
+						if (input->TriggerKey(DIK_SPACE)) {
+							tutoText = 1;
+						}
+					}
+					else {
+						if (input->TriggerKey(DIK_D) || input->TriggerKey(DIK_A)) {
+							isShowText = false;
+							tutoText = 0;
+							player->Update(points);
+						}
 					}
 				}
-				else if(tutoText == 1) {
+				//移動して攻撃
+				else if (tutorialStep == 7) {
 					if (input->TriggerKey(DIK_SPACE)) {
-						tutoText = 2;
-					}
-				}
-				else {
-					if (input->TriggerKey(DIK_SPACE)) {
-						tutoText = 0;
 						isShowText = false;
+						player->Update(points);
 					}
 				}
-				if (tutoTime == 100) {
-					tutoTime = 0;
-				}
-				tutoTime++;
-			}
-			//移動
-			else if (tutorialStep == 6) {
-				if (tutoText == 0) {
-					if (input->TriggerKey(DIK_SPACE)) {
-						tutoText = 1;
-					}
-				}
-				else {
+				//移動
+				else if (tutorialStep == 8) {
 					if (input->TriggerKey(DIK_D) || input->TriggerKey(DIK_A)) {
 						isShowText = false;
-						tutoText = 0;
 						player->Update(points);
 					}
 				}
-			}
-			//移動して攻撃
-			else if (tutorialStep == 7) {
-				if (input->TriggerKey(DIK_SPACE)) {
-					isShowText = false;
-					player->Update(points);
-				}
-			}
-			//移動
-			else if (tutorialStep == 8) {
-				if (input->TriggerKey(DIK_D) || input->TriggerKey(DIK_A)) {
-					isShowText = false;
-					player->Update(points);
-				}
-			}
-			//フィーバー
-			else if (tutorialStep == 9) {
-				if (tutoText == 0) {
-					if (input->TriggerKey(DIK_SPACE)) {
-						tutoText = 1;
+				//フィーバー
+				else if (tutorialStep == 9) {
+					if (tutoText == 0) {
+						if (input->TriggerKey(DIK_SPACE)) {
+							tutoText = 1;
+						}
 					}
-				}
-				else {
-					if (input->TriggerKey(DIK_SPACE)) {
-						isShowText = false;
-						tutoText = 0;
+					else {
+						if (input->TriggerKey(DIK_SPACE)) {
+							isShowText = false;
+							tutoText = 0;
+						}
 					}
+					if (tutoTime == 100) {
+						tutoTime = 0;
+					}
+					tutoTime++;
 				}
-				if (tutoTime == 100) {
-					tutoTime = 0;
+				//フィーバー終わり
+				else if (tutorialStep == 10) {
+					if (tutoText == 0) {
+						if (input->TriggerKey(DIK_SPACE)) {
+							tutoText = 1;
+						}
+					}
+					else {
+						if (input->TriggerKey(DIK_SPACE)) {
+							isShowText = false;
+							tutoText = 0;
+						}
+					}
+					if (tutoTime == 100) {
+						tutoTime = 0;
+					}
+					tutoTime++;
 				}
-				tutoTime++;
 			}
-			//フィーバー終わり
-			else if (tutorialStep == 10) {
-				if (tutoText == 0) {
-					if (input->TriggerKey(DIK_SPACE)) {
-						tutoText = 1;
-					}
-				}
-				else {
-					if (input->TriggerKey(DIK_SPACE)) {
-						isShowText = false;
-						tutoText = 0;
-					}
-				}
-				if (tutoTime == 100) {
-					tutoTime = 0;
-				}
-				tutoTime++;
-			}
-		}
 
 
-		break;
+			break;
 
 	}
 }
@@ -1208,7 +1205,7 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 				if (tutoText == 0) {
 					enemyCaution.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), enemyCaution.vbView);
 				}
-				else if(tutoText == 1) {
+				else if (tutoText == 1) {
 					playerDamage_First.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), playerDamage_First.vbView);
 				}
 				else {
@@ -1243,7 +1240,7 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 					feverMode_Second.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), feverMode_Second.vbView);
 				}
 				else {
-				
+
 				}
 			}
 			//フィーバー終わり
@@ -1552,15 +1549,28 @@ void GamePlayScene::StageSelect() {
 
 	//演出
 	if (input->TriggerKey(DIK_A)) {
-		if (stageNum > 0) {
-			player->SetPosition(player->GetPosition() + Vector3(-15, 0, 0));
-			railCamera->GetView()->eye.x -= 15;
+		if (isEasing == false) {
+			isEasing = true;
+		}
+		if (isEasing == true) {
+			easingTimer++;
+		}
+		if (easingTimer <= 150) {
+			if (stageNum > 0) {
+				player->worldTransform_.position_.x -= 150;//MathFunc::easeOutSine(easingTimer / 150) / 30;
+				player->SetRotationY(-90.0f);
+				railCamera->GetView()->eye.x -= 150;
+			}
+		}
+		if(easingTimer == 150){
+			isEasing = false;
 		}
 	}
 	if (input->TriggerKey(DIK_D)) {
 		if (stageNum < STAGE_MAX) {
-			player->SetPosition(player->GetPosition() + Vector3(15, 0, 0));
-			railCamera->GetView()->eye.x += 15;
+			player->SetPosition(player->GetPosition() + Vector3(150, 0, 0));
+			player->SetRotationY(90.0f);
+			railCamera->GetView()->eye.x += 150;
 		}
 	}
 
@@ -1581,6 +1591,7 @@ void GamePlayScene::StageSelect() {
 	player->Update(points);
 	//決定
 	if (input->TriggerKey(DIK_SPACE)) {
+		player->SetRotation(Vector3(0, 0, 0));
 		if (stageNum == 0) {
 			Reset();
 			sceneNum = 0;
@@ -1611,8 +1622,7 @@ void GamePlayScene::LoadEnemy(int stageNum) {
 	pointsL = points;
 	pointsR = points;
 
-	for (int i = 0; i < points.size(); i++)
-	{
+	for (int i = 0; i < points.size(); i++) {
 		pointsL[i] += Vector3(-10, 0, 0);
 		pointsR[i] += Vector3(10, 0, 0);
 	}
@@ -1655,19 +1665,16 @@ void GamePlayScene::LoadEnemy(int stageNum) {
 			// X,Y,Z座標読み込み
 			Vector3 position{};
 			float t;
-		
-			if (word.find("L") == 0)
-			{
+
+			if (word.find("L") == 0) {
 				line_stream >> t;
 				position = spline.EnemyPosition(pointsL, t);
 			}
-			else if (word.find("M") == 0) 
-			{
+			else if (word.find("M") == 0) {
 				line_stream >> t;
 				position = spline.EnemyPosition(points, t);
 			}
-			else if (word.find("R") == 0) 
-			{
+			else if (word.find("R") == 0) {
 				line_stream >> t;
 				position = spline.EnemyPosition(pointsR, t);
 			}
@@ -1688,18 +1695,15 @@ void GamePlayScene::LoadEnemy(int stageNum) {
 			// X,Y,Z座標読み込み
 			Vector3 position{};
 			float t;
-			if (word.find("L") == 0)
-			{
+			if (word.find("L") == 0) {
 				line_stream >> t;
 				position = spline.EnemyPosition(pointsL, t);
 			}
-			else if (word.find("M") == 0)
-			{
+			else if (word.find("M") == 0) {
 				line_stream >> t;
 				position = spline.EnemyPosition(points, t);
 			}
-			else if (word.find("R") == 0)
-			{
+			else if (word.find("R") == 0) {
 				line_stream >> t;
 				position = spline.EnemyPosition(pointsR, t);
 			}
@@ -1755,8 +1759,7 @@ void GamePlayScene::LoadStage(int stageNum) {
 	CreatThreeLine(points);
 }
 
-void GamePlayScene::LoadBuil(int stageNum)
-{
+void GamePlayScene::LoadBuil(int stageNum) {
 	buils_.clear();
 
 	//ファイルを開く

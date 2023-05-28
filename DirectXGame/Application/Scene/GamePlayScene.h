@@ -260,6 +260,8 @@ private:
 	int blurT = 0;                // ポストエフェクトブラータイマー
 	bool isBlur = false;          // ポストエフェクトブラーフラグ
 
+	bool isEasing = false;
+
 	float calRes = 0.0f;
 
 	//ポーズ
@@ -273,6 +275,8 @@ private:
 
 	//タイトル画面のタイマー
 	float titleTimer;
+
+	float easingTimer;
 
 	//ステージ
 	int stageNum;
