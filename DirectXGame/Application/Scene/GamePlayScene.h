@@ -124,7 +124,7 @@ private:
 	Object3d* floor;
 	Object3d* sky;
 	Object3d* buil;
-	Object3d* stageObj;
+	Object3d* stageObj[11];
 	
 	Line* line[3];
 	//カメラ
@@ -225,7 +225,6 @@ private:
 	std::list<std::unique_ptr<InvisibleEnemy>> invEnemys_;
 	std::list<std::unique_ptr<Enemy>> enemys_;
 	std::list<std::unique_ptr<Object3d>> buils_;
-	std::list<std::unique_ptr<Object3d>> stages_;
 
 	//ゲージ
 	Vector2 gaugeScale = { 3,10 };

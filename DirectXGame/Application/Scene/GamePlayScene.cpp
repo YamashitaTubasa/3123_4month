@@ -62,47 +62,46 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 
 	//ステージモデル
 	for (int i = 0; i < 11; i++) {
-		std::unique_ptr<Object3d> newStage = std::make_unique<Object3d>();
-		newStage->Initialize();
-		newStage->SetModel(sphere);
-		newStage->SetScale(Vector3{ 7,7,7 });
+		stageObj[i] = Object3d::Create();
+		stageObj[i]->Initialize();
+		stageObj[i]->SetModel(sphere);
+		stageObj[i]->SetScale(Vector3{ 7,7,7 });
 		if (i == 0) {
-			newStage->SetPosition({ -597,-5,-660 });
+			stageObj[i]->SetPosition({ -597,-5,-660 });
 		}
 		else if(i == 1) {
-			newStage->SetPosition({ -550 ,-5,-660 });
+			stageObj[i]->SetPosition({ -550 ,-5,-660 });
 		}
 		else if (i == 2) {
-			newStage->SetPosition({ -502,-5,-660 });
+			stageObj[i]->SetPosition({ -502,-5,-660 });
 		}
 		else if(i == 3) {
-			newStage->SetPosition({ -470 ,-5,-660 });
+			stageObj[i]->SetPosition({ -470 ,-5,-660 });
 		}
 		else if (i == 4) {
-			newStage->SetPosition({ -425,-5,-660 });
+			stageObj[i]->SetPosition({ -425,-5,-660 });
 		}
 		else if (i == 5) {
-			newStage->SetPosition({ -383,-5,-660 });
+			stageObj[i]->SetPosition({ -383,-5,-660 });
 		}
 		else if (i == 6) {
-			newStage->SetPosition({ -345 ,-5,-660 });
+			stageObj[i]->SetPosition({ -345 ,-5,-660 });
 		}
 		else if (i == 7) {
-			newStage->SetPosition({ -301 ,-5,-660 });
+			stageObj[i]->SetPosition({ -301 ,-5,-660 });
 		}
 		else if (i == 8) {
-			newStage->SetPosition({ -259 ,-5,-660 });
+			stageObj[i]->SetPosition({ -259 ,-5,-660 });
 		}
 		else if (i == 9) {
-			newStage->SetPosition({ -215 ,-5,-660 });
+			stageObj[i]->SetPosition({ -215 ,-5,-660 });
 		}
 		else if (i == 10) {
-			newStage->SetPosition({ -177,-5,-660 });
+			stageObj[i]->SetPosition({ -177,-5,-660 });
 		}
 		else {
-			newStage->SetPosition({ -550 ,-5,-660 });
+			stageObj[i]->SetPosition({ -550 ,-5,-660 });
 		}
-		stages_.push_back(std::move(newStage));
 	}
 
 	//パーティクル初期化
@@ -501,7 +500,9 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		titleTimer++;
 		break;
 	case 1://ステージ選択
-		FadeOut(0.01, 100);
+		if (isMoveSel != 3) {
+			FadeOut(0.02, 50);
+		}
 		//ステージ選択関数
 		StageSelect();
 		//天球
@@ -511,8 +512,8 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		//天球
 		floor->Update();
 		sky->Update();
-		for (const std::unique_ptr<Object3d>& stage : stages_) {
-			stage->Update();
+		for (int i = 0; i < 11; i++) {
+			stageObj[i]->Update();
 		}
 		railCamera->ViewUpdate();
 		break;
@@ -1066,8 +1067,16 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 
 	sky->Draw(railCamera->GetView());
 	if (sceneNum == 1) {
-		for (const std::unique_ptr<Object3d>& stage : stages_) {
-			stage->Draw(railCamera->GetView());
+		for (int i = 0; i < 11; i++) {
+			stageObj[i]->Draw(railCamera->GetView());
+		}
+		if (isMoveSel != 3) {
+			player->Draw(railCamera->GetView());
+		}
+		else {
+			if (selectTime < 10) {
+				player->Draw(railCamera->GetView());
+			}
 		}
 	}
 
@@ -1205,7 +1214,7 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 
 	// 3Dオブジェクト描画前処理
 	Object3d::PreDraw(dXCommon->GetCommandList());
-	if (sceneNum == 0 || sceneNum == 1 || sceneNum == 2 || sceneNum == 4 || sceneNum == 5 || sceneNum == 6) {
+	if (sceneNum == 0 || sceneNum == 2 || sceneNum == 4 || sceneNum == 5 || sceneNum == 6) {
 		////playerを画像より手前に出したい
 		player->Draw(railCamera->GetView());
 	}
@@ -1545,6 +1554,9 @@ void GamePlayScene::Reset() {
 	titleBack.SetColor(titleBack, Vector4(0.5, 0.5, 0.5, 0.9));
 	stageBack.SetColor(stageBack, Vector4(0.5, 0.5, 0.5, 0.9));
 	close.SetColor(close, Vector4(1, 1, 0, 1));
+	for (int i = 0; i < 11; i++) {
+		stageObj[i]->SetScale({7,7,7});
+	}
 
 	//変数
 
@@ -1636,7 +1648,7 @@ void GamePlayScene::StageSelect() {
 		}
 		else{}
 	}
-	if (isMoveSel > 0) {
+	if (isMoveSel > 0 && isMoveSel < 3) {
 		if (isMoveSel == 1) {
 			if (player->worldTransform_.rotation_.y > -90) {
 				player->SetRotation(player->GetRotation() + Vector3(0, -5, 0));
@@ -1674,32 +1686,63 @@ void GamePlayScene::StageSelect() {
 		}
 		selectTime++;
 	}
+	else if (isMoveSel == 3) {
+		postEffect_->SetColor(pColor);
+		if (selectTime < 11) {
+			player->worldTransform_.position_.z += MathFunc::easeInSine(selectTime / 10) * 5;
+		}
+		else if(selectTime < 21) {
+			stageObj[stageNum]->worldTransform_.scale_.x += MathFunc::easeInSine(selectTime / 10);
+			stageObj[stageNum]->worldTransform_.scale_.y += MathFunc::easeInSine(selectTime / 10);
+			stageObj[stageNum]->worldTransform_.scale_.z += MathFunc::easeInSine(selectTime / 10);
+		}
+		else if (selectTime < 26) {
+
+		}
+		else if (selectTime < 38) {
+			stageObj[stageNum]->worldTransform_.scale_.x -= MathFunc::easeInSine(selectTime / 12);
+			stageObj[stageNum]->worldTransform_.scale_.y -= MathFunc::easeInSine(selectTime / 12);
+			stageObj[stageNum]->worldTransform_.scale_.z -= MathFunc::easeInSine(selectTime / 12);
+		}
+		if (selectTime > 50) {
+			if (pColor.x > 0) {
+				pColor -= Vector4(0.1, 0.1, 0.1, 0);
+			}
+		}
+
+		if (selectTime == 70) {
+			selectTime = 0;
+			isMoveSel = 0;
+			if (stageNum == 0) {
+				Reset();
+				sceneNum = 0;
+			}
+			else {
+				sceneNum = 2;
+				//ステージ
+				LoadStage(stageNum);
+				//建物
+				LoadBuil(stageNum);
+				//敵
+				LoadEnemy(stageNum);
+				//親子構造のセット
+				railCamera->SetEye({ 0,5,-800 });
+				railCamera->SetTarget({ 0,-5,-750 });
+				railCamera->SetPlayer(player);
+				player->SetScale(Vector3(0.2, 0.2, 0.2));
+			}
+		}
+		selectTime++;
+	}
+
 	railCamera->ViewUpdate();
 	player->Update(points);
 	//決定
-	if (input->TriggerKey(DIK_SPACE) && isMoveSel == 0) {
+	if (input->TriggerKey(DIK_SPACE) && isMoveSel == 0 && pColor.x == 1) {
 		selPlayerTmp = player->GetPosition();
 		selEyeTmp = railCamera->GetView()->eye;
 		selTargetTmp = railCamera->GetView()->target;
-		FadeOut(0.01, 100);
-		if (stageNum == 0) {
-			Reset();
-			sceneNum = 0;
-		}
-		else {
-			sceneNum = 2;
-			//ステージ
-			LoadStage(stageNum);
-			//建物
-			LoadBuil(stageNum);
-			//敵
-			LoadEnemy(stageNum);
-			//親子構造のセット
-			railCamera->SetEye({ 0,5,-800 });
-			railCamera->SetTarget({ 0,-5,-750 });
-			railCamera->SetPlayer(player);
-			player->SetScale(Vector3(0.2, 0.2, 0.2));
-		}
+		isMoveSel = 3;
 	}
 }
 
