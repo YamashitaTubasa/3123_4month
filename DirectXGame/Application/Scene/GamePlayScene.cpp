@@ -1704,13 +1704,22 @@ void GamePlayScene::StageSelect() {
 			stageObj[stageNum]->worldTransform_.scale_.y -= MathFunc::easeInSine(selectTime / 12);
 			stageObj[stageNum]->worldTransform_.scale_.z -= MathFunc::easeInSine(selectTime / 12);
 		}
-		if (selectTime > 50) {
+		else if (selectTime < 41) {
+			stageObj[stageNum]->worldTransform_.position_.x -= 1;
+		}
+		else if (selectTime < 47) {
+			stageObj[stageNum]->worldTransform_.position_.x += 1;
+		}
+		else if (selectTime < 50) {
+			stageObj[stageNum]->worldTransform_.position_.x -= 1;
+		}
+		if (selectTime > 60) {
 			if (pColor.x > 0) {
 				pColor -= Vector4(0.1, 0.1, 0.1, 0);
 			}
 		}
 
-		if (selectTime == 70) {
+		if (selectTime == 80) {
 			selectTime = 0;
 			isMoveSel = 0;
 			if (stageNum == 0) {
@@ -1742,6 +1751,7 @@ void GamePlayScene::StageSelect() {
 		selPlayerTmp = player->GetPosition();
 		selEyeTmp = railCamera->GetView()->eye;
 		selTargetTmp = railCamera->GetView()->target;
+		player->SetRotation({ 0,0,0 });
 		isMoveSel = 3;
 	}
 }
