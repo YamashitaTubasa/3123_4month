@@ -1698,7 +1698,6 @@ void GamePlayScene::FadeOut(float pColor_, float fadeOutTimer_) {
 		isFadeOut = false;
 		pColor = { 1,1,1,1 };
 		postEffect_->SetColor(pColor);
-		fadeOut = 0;
 	}
 }
 
