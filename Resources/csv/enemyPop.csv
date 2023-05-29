@@ -53,14 +53,50 @@ ea1 R 9.4
 
 
 //STAGE2
-ea2 L 5.1
-ea2 M 5.1
-ea2 R 5.1
-
 ea2 L 2.1
 ea2 M 2.1
 ea2 R 2.1
 
+ea2 L 2.5
+ea2 M 2.5
+ea2 R 2.5
+
 eb2 L 3.1
 eb2 L 3.2
 eb2 L 3.3
+
+eb2 L 4.2
+ea2 M 4.2
+eb2 R 4.2
+
+ea2 L 5.1
+ea2 M 5.1
+ea2 R 5.1
+
+eb2 L 5.7
+ea2 M 5.7
+eb2 R 5.7
+
+ea2 L 6.4
+ea2 M 6.4
+eb2 R 6.4
+
+ea2 L 7.2
+eb2 M 7.2
+eb2 R 7.2
+
+eb2 L 7.8
+eb2 M 7.8
+ea2 R 7.8
+
+ea2 L 8.5
+eb2 M 8.5
+ea2 R 8.5
+
+ea2 L 9.2
+ea2 M 9.4
+ea2 R 9.6
+
+
+
+
