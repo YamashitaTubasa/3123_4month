@@ -115,7 +115,7 @@ private:
 	Model* builModel02;
 	Model* builModel03;
 	Model* builModel04;
-	Model* sphere;
+	Model* stageModel[11];
 
 	// オブジェクト
 	Player* player;

@@ -39,7 +39,6 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	builModel02 = Model::LoadFromOBJ("building_02");
 	builModel03 = Model::LoadFromOBJ("building_03");
 	builModel04 = Model::LoadFromOBJ("ring");
-	sphere = Model::LoadFromOBJ("triangle_mat");
 
 	// 3Dオブジェクト生成
 	//床
@@ -62,41 +61,52 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 
 	//ステージモデル
 	for (int i = 0; i < 11; i++) {
+		stageModel[i] = Model::LoadFromOBJ("triangle_mat");
 		stageObj[i] = Object3d::Create();
 		stageObj[i]->Initialize();
-		stageObj[i]->SetModel(sphere);
+		stageObj[i]->SetModel(stageModel[i]);
 		stageObj[i]->SetScale(Vector3{ 7,7,7 });
 		if (i == 0) {
+			stageModel[i]->LoadTexture("Resources/numbers/0.png");
 			stageObj[i]->SetPosition({ -597,-5,-660 });
 		}
 		else if(i == 1) {
 			stageObj[i]->SetPosition({ -550 ,-5,-660 });
 		}
 		else if (i == 2) {
+			stageModel[i]->LoadTexture("Resources/numbers/2.png");
 			stageObj[i]->SetPosition({ -502,-5,-660 });
 		}
 		else if(i == 3) {
+			stageModel[i]->LoadTexture("Resources/numbers/3.png");
 			stageObj[i]->SetPosition({ -470 ,-5,-660 });
 		}
 		else if (i == 4) {
+			stageModel[i]->LoadTexture("Resources/numbers/4.png");
 			stageObj[i]->SetPosition({ -425,-5,-660 });
 		}
 		else if (i == 5) {
+			stageModel[i]->LoadTexture("Resources/numbers/5.png");
 			stageObj[i]->SetPosition({ -383,-5,-660 });
 		}
 		else if (i == 6) {
+			stageModel[i]->LoadTexture("Resources/numbers/6.png");
 			stageObj[i]->SetPosition({ -345 ,-5,-660 });
 		}
 		else if (i == 7) {
+			stageModel[i]->LoadTexture("Resources/numbers/7.png");
 			stageObj[i]->SetPosition({ -301 ,-5,-660 });
 		}
 		else if (i == 8) {
+			stageModel[i]->LoadTexture("Resources/numbers/8.png");
 			stageObj[i]->SetPosition({ -259 ,-5,-660 });
 		}
 		else if (i == 9) {
+			stageModel[i]->LoadTexture("Resources/numbers/9.png");
 			stageObj[i]->SetPosition({ -215 ,-5,-660 });
 		}
 		else if (i == 10) {
+			stageModel[i]->LoadTexture("Resources/numbers/10.png");
 			stageObj[i]->SetPosition({ -177,-5,-660 });
 		}
 		else {
