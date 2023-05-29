@@ -640,6 +640,8 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 			isOStaging = false;
 			oStagingT = 0;
 			sceneNum = 4;
+			isBack = false;
+			backT = 0.0f;
 			player->SetPosition({ 0,0,0 });
 		}
 		pBombM->Update();
@@ -763,7 +765,9 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		break;
 	case 6://チュートリアル
 		if (isShowText == false) {
+			// ゲーム画面フェードアウト演出
 			FadeOut(0.01, 100);
+
 			//デスフラグの立った敵を削除
 			enemys_.remove_if([](std::unique_ptr < Enemy>& enemy_) {
 				return enemy_->GetIsDead();
@@ -836,12 +840,16 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 					blurT = 0;
 				}
 			}
+			for (const std::unique_ptr<Object3d>& buil : buils_) {
+				buil->Update();
+			}
 
 			//敵キャラの更新
 			for (const std::unique_ptr<Enemy>& enemy : enemys_) {
 				enemy->SetGameScene(this);
 				enemy->Update();
 			}
+			//敵キャラの更新
 			for (const std::unique_ptr<InvisibleEnemy>& invEnemy : invEnemys_) {
 				invEnemy->SetGameScene(this);
 				invEnemy->Update();
@@ -858,8 +866,22 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 
 			//ゲームオーバー
 			if (player->GetHP() == 0) {
-				sceneNum = 4;
+				isOStaging = true;
+				oStagingT++;
 			}
+			if (isOStaging == true) {
+				pBombM->Fire(pBomb, 50, { 0,0,0 }, 70.0f, 70.0f, 50.0f, 50.0f, 0, 0, 0, 0, 0.0f, 0.0f, 0, 0, 0, 5, { 5.0f, 40.0f });
+			}
+			if (oStagingT >= 40) {
+				isOStaging = false;
+				oStagingT = 0;
+				isBack = false;
+				backT = 0.0f;
+				sceneNum = 4;
+				player->SetPosition({ 0,0,0 });
+			}
+			pBombM->Update();
+
 			//クリア
 			if (railCamera->GetIsEnd() == true) {
 				cStagingT++;
@@ -978,7 +1000,7 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 					}
 				}
 				else {
-					if (input->TriggerKey(DIK_D) || input->TriggerKey(DIK_A)) {
+					if (input->TriggerKey(DIK_D) || input->TriggerKey(DIK_A) || input->TriggerKey(DIK_LEFT) || input->TriggerKey(DIK_RIGHT)) {
 						isShowText = false;
 						tutoText = 0;
 						player->Update(points);
@@ -994,7 +1016,7 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 			}
 			//移動
 			else if (tutorialStep == 8) {
-				if (input->TriggerKey(DIK_D) || input->TriggerKey(DIK_A)) {
+				if (input->TriggerKey(DIK_D) || input->TriggerKey(DIK_A) || input->TriggerKey(DIK_LEFT) || input->TriggerKey(DIK_RIGHT)) {
 					isShowText = false;
 					player->Update(points);
 				}
@@ -1323,10 +1345,10 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 					gauge.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), gauge.vbView);
 				}
 				if (tutoText == 0) {
-					feverEnd_Second.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), feverEnd_Second.vbView);
+					feverEnd_First.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), feverEnd_First.vbView);
 				}
 				else {
-					feverEnd_First.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), feverEnd_First.vbView);
+					feverEnd_Second.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), feverEnd_Second.vbView);
 				}
 			}
 		}
