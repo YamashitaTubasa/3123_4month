@@ -67,6 +67,7 @@ public:
 
 	// フェードアウト処理
 	void FadeOut(float pColor_, float fadeOutTimer_);
+	void FadeIn(float pColor_, float fadeInTimer_);
 
 	//ステージ選択
 	void StageSelect();
@@ -250,6 +251,10 @@ private:
 	int backT = 0;                // ダメージ演出タイマー
 	bool isFadeOut = false;       // フェードアウト処理フラグ
 	int fadeOut = 0;              // フェードアウト処理タイマー
+	bool isFadeIn = false;        // フェードイン処理フラグ
+	int fadeIn = 0;               // フェードイン処理タイマー
+	int fadeTimer = 0;            // フェードアウト処理フラグ
+	bool isFade = false;		  // フェードアウト処理タイマー
 	bool isTitleT = false;        // タイトル画面の演出フラグ
 	int titleT = 0;               // タイトル画面の演出タイマー
 	bool isClearStaging = false;  // クリア演出フラグ
