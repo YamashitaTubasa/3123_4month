@@ -111,9 +111,9 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	pm_2 = ParticleManager::Create();
 	p_dmg = Particle::LoadParticleTexture("dmg.png");
 	pm_dmg = ParticleManager::Create();
-	pBomb = Particle::LoadParticleTexture("dmg.png");
+	pBomb = Particle::LoadParticleTexture("fire2.png");
 	pBombM = ParticleManager::Create();
-	pFire = Particle::LoadParticleTexture("dmg.png");
+	pFire = Particle::LoadParticleTexture("fire2.png");
 	pFireM = ParticleManager::Create();
 	//オブジェクトにモデルを紐付ける
 	pm_1->SetParticleModel(particle_1);
@@ -201,10 +201,10 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	title.SpriteTransferVertexBuffer(title, spriteCommon, 17);
 	title.SpriteUpdate(title, spriteCommon_);
 	//clear
-	clear.LoadTexture(spriteCommon_, 18, L"Resources/GameClear.png", dXCommon->GetDevice());
+	clear.LoadTexture(spriteCommon_, 18, L"Resources/gameClear1.png", dXCommon->GetDevice());
 	clear.SpriteCreate(dXCommon->GetDevice(), 1280, 720, 18, spriteCommon, Vector2(0.0f, 0.0f), false, false);
-	clear.SetPosition(Vector3(0, 0, 0));
-	clear.SetScale(Vector2(1280 * 1, 720 * 1));
+	clear.SetPosition(Vector3(730, 10, 0));
+	clear.SetScale(Vector2(640 * 1, 360 * 1));
 	clear.SetRotation(0.0f);
 	clear.SpriteTransferVertexBuffer(clear, spriteCommon, 18);
 	clear.SpriteUpdate(clear, spriteCommon_);
@@ -212,8 +212,8 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	//over
 	over.LoadTexture(spriteCommon_, 19, L"Resources/gameOver.png", dXCommon->GetDevice());
 	over.SpriteCreate(dXCommon->GetDevice(), 1280, 720, 19, spriteCommon, Vector2(0.0f, 0.0f), false, false);
-	over.SetPosition(Vector3(0, 0, 0));
-	over.SetScale(Vector2(1280 * 1, 720 * 1));
+	over.SetPosition(Vector3(730, 10, 0));
+	over.SetScale(Vector2(640 * 1, 360 * 1));
 	over.SetRotation(0.0f);
 	over.SpriteTransferVertexBuffer(over, spriteCommon, 19);
 	over.SpriteUpdate(over, spriteCommon_);
@@ -636,13 +636,18 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		if (isOStaging == true) {
 			pBombM->Fire(pBomb, 50, { 0,0,0 }, 70.0f, 70.0f, 50.0f, 50.0f, 0, 0, 0, 0, 0.0f, 0.0f, 0, 0, 0, 5, { 5.0f, 40.0f });
 		}
-		if (oStagingT >= 40) {
+		if (oStagingT >= 50) {
 			isOStaging = false;
 			oStagingT = 0;
-			sceneNum = 4;
 			isBack = false;
 			backT = 0.0f;
+			sceneNum = 4;
 			player->SetPosition({ 0,0,0 });
+			isFadeOut = false;
+			fadeOut = 0.0f;
+			isFadeIn = false;
+			fadeIn = 0.0f;
+			Reset();
 		}
 		pBombM->Update();
 			
@@ -685,6 +690,7 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		pm_1->Update();
 		pm_2->Update();
 		pm_dmg->Update();
+		pBombM->Update();
 
 		break;
 		//クリア
@@ -692,7 +698,20 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		// クリア画面フェードアウト演出
 		FadeOut(0.01, 100);
 
-		//player->SetPosition({ 0,0,0 });
+		player->worldTransform_.rotation_.x = 2;
+		player->worldTransform_.rotation_.y += 0.6;
+		railCamera->GetView()->eye = { -6, 2, -780 };
+		railCamera->ViewUpdate();
+
+		//プレイヤー
+		player->Update(points);
+		//カメラ更新
+		railCamera->ViewUpdate();
+		//天球
+		floor->Update();
+		floor->SetPosition({ 0,-200,0 });
+		sky->Update();
+
 		if (input->TriggerKey(DIK_SPACE)) {
 			Reset();
 			sceneNum = 0;
@@ -703,10 +722,22 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		// ゲームオーバー画面フェードアウト演出
 		FadeOut(0.01, 100);
 
+		railCamera->GetView()->target = player->GetPosition();
+		if (player->GetPosition().y >= -50) {
+			player->SetPosition(player->GetPosition() + Vector3(0, -0.5, 0.6));
+		}
+		
+		//プレイヤー
 		player->Update(points);
-
-		pFireM->Fire(pFire, 55, { 0, 0,-790 }, 10.0f, 10.0f, -10.0f, -10.0f, 0, 0, 0, 0, 1.0f, 0, 0, 0, 0, 5, { 5.0f, 0.0f });
+		//カメラ更新
+		railCamera->ViewUpdate();
+		//天球
+		floor->Update();
+		floor->SetPosition({ 0,-200,0 });
+		sky->Update();
+		
 		pFireM->Update();
+		pFireM->Fire(pFire, 100, { 5050, 0, 0 }, 10.0f, 10.0f, 5.0f, 0.0f, 0, 0, 0, 0, 1.0f, 0, 0, 0, 0, 1, { 7.0f, 0.0f });
 
 		if (input->TriggerKey(DIK_SPACE)) {
 			Reset();
@@ -872,13 +903,18 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 			if (isOStaging == true) {
 				pBombM->Fire(pBomb, 50, { 0,0,0 }, 70.0f, 70.0f, 50.0f, 50.0f, 0, 0, 0, 0, 0.0f, 0.0f, 0, 0, 0, 5, { 5.0f, 40.0f });
 			}
-			if (oStagingT >= 40) {
+			if (oStagingT >= 50) {
 				isOStaging = false;
 				oStagingT = 0;
 				isBack = false;
 				backT = 0.0f;
 				sceneNum = 4;
 				player->SetPosition({ 0,0,0 });
+				isFadeOut = false;
+				fadeOut = 0.0f;
+				isFadeIn = false;
+				fadeIn = 0.0f;
+				Reset();
 			}
 			pBombM->Update();
 
@@ -921,6 +957,7 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 			pm_1->Update();
 			pm_2->Update();
 			pm_dmg->Update();
+			pBombM->Update();
 		}
 		//テキスト
 		else {
@@ -1117,7 +1154,7 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 		}
 	}
 
-	if (sceneNum == 1) {
+	if (sceneNum == 1 || sceneNum == 3 || sceneNum == 4) {
 		floor->Draw(railCamera->GetView());
 	}
 
@@ -1236,7 +1273,7 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 
 	// 3Dオブジェクト描画前処理
 	Object3d::PreDraw(dXCommon->GetCommandList());
-	if (sceneNum == 0 || sceneNum == 2 || sceneNum == 4 || sceneNum == 5 || sceneNum == 6) {
+	if (sceneNum == 0 || sceneNum == 2 || sceneNum == 3 || sceneNum == 4 || sceneNum == 5 || sceneNum == 6) {
 		////playerを画像より手前に出したい
 		player->Draw(railCamera->GetView());
 	}
@@ -1356,6 +1393,17 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 
 	// スプライト描画後処理
 	Sprite::PostDraw();
+
+	// パーティクル描画前処理
+	ParticleManager::PreDraw(dXCommon->GetCommandList());
+
+	///==== パーティクル描画 ====///
+	//パーティクル
+
+	pFireM->Draw();
+
+	// パーティクル描画後処理
+	ParticleManager::PostDraw();
 #pragma endregion
 }
 
@@ -1382,6 +1430,10 @@ void GamePlayScene::Finalize() {
 	delete pm_2;
 	delete p_dmg;
 	delete pm_dmg;
+	delete pFire;
+	delete pFireM;
+	delete pBomb;
+	delete pBombM;
 	for (int i = 0; i < 3; i++) {
 		if (line[i] != nullptr) {
 			delete line[i];
@@ -1512,6 +1564,10 @@ void GamePlayScene::Reset() {
 	delete pm_2;
 	delete p_dmg;
 	delete pm_dmg;
+	delete pFire;
+	delete pFireM;
+	delete pBomb;
+	delete pBombM;
 
 	// OBJからモデルデータを読み込む
 	floorModel = Model::LoadFromOBJ("floor");
@@ -1554,9 +1610,9 @@ void GamePlayScene::Reset() {
 	pm_2 = ParticleManager::Create();
 	p_dmg = Particle::LoadParticleTexture("dmg.png");
 	pm_dmg = ParticleManager::Create();
-	pBomb = Particle::LoadParticleTexture("dmg.png");
+	pBomb = Particle::LoadParticleTexture("fire2.png");
 	pBombM = ParticleManager::Create();
-	pFire = Particle::LoadParticleTexture("dmg.png");
+	pFire = Particle::LoadParticleTexture("fire2.png");
 	pFireM = ParticleManager::Create();
 	//オブジェクトにモデルを紐付ける
 	pm_1->SetParticleModel(particle_1);
@@ -1592,7 +1648,9 @@ void GamePlayScene::Reset() {
 
 	isFadeOut = false;
 	fadeOut = 0.0f;
-	pColor = { 0,0,0,1 }; // ポストエフェクトカラー
+	isFadeIn = false;
+	fadeIn = 0.0f;
+	//pColor = { 0,0,0,1 }; // ポストエフェクトカラー
 	postEffect_->SetColor(pColor);
 	titleT = 0.0f;
 	isTitleT = false;
@@ -1636,10 +1694,28 @@ void GamePlayScene::FadeOut(float pColor_, float fadeOutTimer_) {
 		}
 		postEffect_->SetColor(pColor);
 	}
-	if (fadeOut > 100) {
+	if (fadeOut > fadeOutTimer_) {
 		isFadeOut = false;
 		pColor = { 1,1,1,1 };
 		postEffect_->SetColor(pColor);
+		fadeOut = 0;
+	}
+}
+
+void GamePlayScene::FadeIn(float pColor_, float fadeInTimer_) {
+	fadeIn++;
+	if (0 < fadeIn && fadeIn < fadeInTimer_) {
+		isFadeIn = true;
+		if (pColor.x >= 0) {
+			pColor -= Vector4(pColor_, pColor_, pColor_, 1);
+		}
+		postEffect_->SetColor(pColor);
+	}
+	if (fadeIn > fadeInTimer_) {
+		isFadeIn = false;
+		pColor = { 0,0,0,1 };
+		postEffect_->SetColor(pColor);
+		fadeIn = 0;
 	}
 }
 
