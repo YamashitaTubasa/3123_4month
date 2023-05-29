@@ -658,6 +658,7 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 			isFadeIn = false;
 			fadeIn = 0.0f;
 			Reset();
+			selectPause = 1;
 		}
 		pBombM->Update();
 			
@@ -671,7 +672,7 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 			Vector3 behindVec = (railCamera->GetView()->target - railCamera->GetView()->eye) * -1;
 			behindVec /= 80;
 			railCamera->SetEye(railCamera->GetView()->eye + behindVec);
-
+			selectPause = 1;
 		}
 		if (cStagingT >= 100) {
 			sceneNum = 3;
@@ -722,10 +723,29 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		floor->SetPosition({ 0,-200,0 });
 		sky->Update();
 
-		if (input->TriggerKey(DIK_SPACE)) {
-			Reset();
-			sceneNum = 0;
+		if (input->TriggerKey(DIK_W) || input->TriggerKey(DIK_UP)) {
+			if (selectPause == 0) {
+				selectPause++;
+			}
 		}
+		if (input->TriggerKey(DIK_S) || input->TriggerKey(DIK_DOWN)) {
+			if (selectPause == 1) {
+				selectPause--;
+			}
+		}
+		if (input->TriggerKey(DIK_SPACE)) {
+			if (selectPause == 1) {
+				Reset();
+				if (selectPause == 1) {
+					railCamera->SetEye(selEyeTmp);
+					railCamera->SetTarget(selTargetTmp);
+					player->SetPosition(selPlayerTmp);
+					player->SetScale({ 1.5,1.5,1.5 });
+				}
+			}
+			sceneNum = selectPause;
+		}
+
 		break;
 		//ゲームオーバー
 	case 4:
@@ -749,40 +769,42 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		pFireM->Update();
 		pFireM->Fire(pFire, 100, { 5050, 0, 0 }, 10.0f, 10.0f, 5.0f, 0.0f, 0, 0, 0, 0, 1.0f, 0, 0, 0, 0, 1, { 7.0f, 0.0f });
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="spriteCommon"></param>
+		if (input->TriggerKey(DIK_W) || input->TriggerKey(DIK_UP)) {
+			if (selectPause == 0) {
+				selectPause++;
+			}
+		}
+		if (input->TriggerKey(DIK_S) || input->TriggerKey(DIK_DOWN)) {
+			if (selectPause == 1) {
+				selectPause--;
+			}
+		}
 		if (input->TriggerKey(DIK_SPACE)) {
-			Reset();
-			sceneNum = 0;
+			if (selectPause == 1) {
+				Reset();
+				if (selectPause == 1) {
+					railCamera->SetEye(selEyeTmp);
+					railCamera->SetTarget(selTargetTmp);
+					player->SetPosition(selPlayerTmp);
+					player->SetScale({ 1.5,1.5,1.5 });
+				}
+			}
+			sceneNum = selectPause;
 		}
 		break;
 	case 5://ポーズ画面
 		if (input->TriggerKey(DIK_W) || input->TriggerKey(DIK_UP)) {
 			if (selectPause <= 1) {
 				selectPause++;
-				if (selectPause == 2) {
-					titleBack.SetColor(titleBack, Vector4(0.5, 0.5, 0.5, 0.9));
-					stageBack.SetColor(stageBack, Vector4(0.5, 0.5, 0.5, 0.9));
-					close.SetColor(close, Vector4(1, 1, 0, 1));
-				}
-				else if (selectPause == 1) {
-					titleBack.SetColor(titleBack, Vector4(0.5, 0.5, 0.5, 0.9));
-					stageBack.SetColor(stageBack, Vector4(1, 1, 0, 1));
-					close.SetColor(close, Vector4(0.5, 0.5, 0.5, 0.9));
-				}
 			}
 		}
 		if (input->TriggerKey(DIK_S) || input->TriggerKey(DIK_DOWN)) {
 			if (selectPause > 0) {
 				selectPause--;
-				if (selectPause == 1) {
-					titleBack.SetColor(titleBack, Vector4(0.5, 0.5, 0.5, 0.9));
-					stageBack.SetColor(stageBack, Vector4(1, 1, 0, 1));
-					close.SetColor(close, Vector4(0.5, 0.5, 0.5, 0.9));
-				}
-				else if (selectPause == 0) {
-					titleBack.SetColor(titleBack, Vector4(1, 1, 0, 1));
-					stageBack.SetColor(stageBack, Vector4(0.5, 0.5, 0.5, 0.9));
-					close.SetColor(close, Vector4(0.5, 0.5, 0.5, 0.9));
-				}
 			}
 		}
 		//戻る
@@ -925,6 +947,7 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 				isFadeIn = false;
 				fadeIn = 0.0f;
 				Reset();
+				selectPause = 1;
 			}
 			pBombM->Update();
 
@@ -938,7 +961,7 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 				Vector3 behindVec = (railCamera->GetView()->target - railCamera->GetView()->eye) * -1;
 				behindVec /= 80;
 				railCamera->SetEye(railCamera->GetView()->eye + behindVec);
-
+				selectPause = 1;
 			}
 			if (cStagingT >= 100) {
 				sceneNum = 3;
@@ -1234,11 +1257,9 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 	}
 	else if (sceneNum == 3) {
 		clear.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), clear.vbView);
-		spaButton.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), spaButton.vbView);
 	}
 	else if (sceneNum == 4) {
 		over.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), over.vbView);
-		spaButton.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), spaButton.vbView);
 	}
 	else if (sceneNum == 5) {
 		HPframe.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), HPframe.vbView);
@@ -1292,7 +1313,26 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 
 	// スプライト描画前処理
 	Sprite::PreDraw(dXCommon->GetCommandList(), spriteCommon_);
-
+	if (selectPause == 2) {
+		titleBack.SetColor(titleBack, Vector4(0.5, 0.5, 0.5, 0.9));
+		stageBack.SetColor(stageBack, Vector4(0.5, 0.5, 0.5, 0.9));
+		close.SetColor(close, Vector4(1, 1, 0, 1));
+	}
+	else if (selectPause == 1) {
+		titleBack.SetColor(titleBack, Vector4(0.5, 0.5, 0.5, 0.9));
+		stageBack.SetColor(stageBack, Vector4(1, 1, 0, 1));
+		close.SetColor(close, Vector4(0.5, 0.5, 0.5, 0.9));
+	}
+	else {
+		titleBack.SetColor(titleBack, Vector4(1, 1, 0, 1));
+		stageBack.SetColor(stageBack, Vector4(0.5, 0.5, 0.5, 1));
+		close.SetColor(close, Vector4(0.5, 0.5, 0.5, 0.9));
+	}
+	//
+	if (sceneNum == 3 || sceneNum == 4) {
+		titleBack.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), titleBack.vbView);
+		stageBack.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), stageBack.vbView);
+	}
 	//ポーズ画面描画
 	if (sceneNum == 5) {
 		pause.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), pause.vbView);
