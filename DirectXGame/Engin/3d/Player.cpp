@@ -349,22 +349,22 @@ void Player::OnCollision(const CollisionInfo& info) {
 	const char* str = "class Enemy";
 	const char* str2 = "class InvisibleEnemy";
 	if (strcmp(toCollisionName, str) == 0) {
-		if (isHit == false) {
-			if (isPush == true) {
-				if (isFever == false) {
-					if (isGauge_ == false) {
-						isGauge_ = true;
-					}
-					val += 0.002f;
-					len = 15;
+		if (isPush == true) {
+			if (isFever == false) {
+				if (isGauge_ == false) {
+					isGauge_ = true;
 				}
-				isBurst = true;
+				val += 0.002f;
+				len = 15;
 			}
-			else {
-				hp--;
-				GamePlayScene::SetIsBack(true);
+			isBurst = true;
+		}
+		else {
+			if (isHit == false) {
+				isHit = true;
 			}
-			isHit = true;
+			hp--;
+			GamePlayScene::SetIsBack(true);
 		}
 	}
 	if (strcmp(toCollisionName, str2) == 0) {
