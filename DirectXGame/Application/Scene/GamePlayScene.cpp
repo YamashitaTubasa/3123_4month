@@ -70,14 +70,14 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 			stageModel[i]->LoadTexture("Resources/numbers/0.png");
 			stageObj[i]->SetPosition({ -597,-5,-660 });
 		}
-		else if(i == 1) {
+		else if (i == 1) {
 			stageObj[i]->SetPosition({ -550 ,-5,-660 });
 		}
 		else if (i == 2) {
 			stageModel[i]->LoadTexture("Resources/numbers/2.png");
 			stageObj[i]->SetPosition({ -502,-5,-660 });
 		}
-		else if(i == 3) {
+		else if (i == 3) {
 			stageModel[i]->LoadTexture("Resources/numbers/3.png");
 			stageObj[i]->SetPosition({ -470 ,-5,-660 });
 		}
@@ -278,7 +278,7 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	pause.SpriteUpdate(pause, spriteCommon_);
 
 	//チュートリアル
-	 
+
 	//攻撃
 	attackMethod_First.LoadTexture(spriteCommon_, 36, L"Resources/attackMethod.png", dXCommon->GetDevice());
 	attackMethod_First.SpriteCreate(dXCommon->GetDevice(), 720, 240, 36, spriteCommon, Vector2(0.5f, 0.5f), false, false);
@@ -661,7 +661,7 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 			selectPause = 1;
 		}
 		pBombM->Update();
-			
+
 		//クリア
 		if (railCamera->GetIsEnd() == true) {
 			cStagingT++;
@@ -734,14 +734,12 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 			}
 		}
 		if (input->TriggerKey(DIK_SPACE)) {
+			Reset();
 			if (selectPause == 1) {
-				Reset();
-				if (selectPause == 1) {
-					railCamera->SetEye(selEyeTmp);
-					railCamera->SetTarget(selTargetTmp);
-					player->SetPosition(selPlayerTmp);
-					player->SetScale({ 1.5,1.5,1.5 });
-				}
+				railCamera->SetEye(selEyeTmp);
+				railCamera->SetTarget(selTargetTmp);
+				player->SetPosition(selPlayerTmp);
+				player->SetScale({ 1.5,1.5,1.5 });
 			}
 			sceneNum = selectPause;
 		}
@@ -756,7 +754,7 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		if (player->GetPosition().y >= -50) {
 			player->SetPosition(player->GetPosition() + Vector3(0, -0.5, 0.6));
 		}
-		
+
 		//プレイヤー
 		player->Update(points);
 		//カメラ更新
@@ -765,7 +763,7 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		floor->Update();
 		floor->SetPosition({ 0,-200,0 });
 		sky->Update();
-		
+
 		pFireM->Update();
 		pFireM->Fire(pFire, 100, { 5050, 0, 0 }, 10.0f, 10.0f, 5.0f, 0.0f, 0, 0, 0, 0, 1.0f, 0, 0, 0, 0, 1, { 7.0f, 0.0f });
 
@@ -784,14 +782,12 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 			}
 		}
 		if (input->TriggerKey(DIK_SPACE)) {
+			Reset();
 			if (selectPause == 1) {
-				Reset();
-				if (selectPause == 1) {
-					railCamera->SetEye(selEyeTmp);
-					railCamera->SetTarget(selTargetTmp);
-					player->SetPosition(selPlayerTmp);
-					player->SetScale({ 1.5,1.5,1.5 });
-				}
+				railCamera->SetEye(selEyeTmp);
+				railCamera->SetTarget(selTargetTmp);
+				player->SetPosition(selPlayerTmp);
+				player->SetScale({ 1.5,1.5,1.5 });
 			}
 			sceneNum = selectPause;
 		}
@@ -994,9 +990,9 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		}
 		//テキスト
 		else {
-		if (isBlur == true) {
-			postEffect_->SetBlur(false);
-		}
+			if (isBlur == true) {
+				postEffect_->SetBlur(false);
+			}
 			//welcome
 			if (tutorialStep == 1) {
 				if (tutoText == 0) {
@@ -1046,7 +1042,7 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 						tutoText = 1;
 					}
 				}
-				else if(tutoText == 1) {
+				else if (tutoText == 1) {
 					if (input->TriggerKey(DIK_SPACE)) {
 						tutoText = 2;
 					}
@@ -1387,7 +1383,7 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 				if (tutoText == 0) {
 					enemyCaution.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), enemyCaution.vbView);
 				}
-				else if(tutoText == 1) {
+				else if (tutoText == 1) {
 					playerDamage_First.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), playerDamage_First.vbView);
 				}
 				else {
@@ -1422,7 +1418,7 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 					feverMode_Second.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), feverMode_Second.vbView);
 				}
 				else {
-				
+
 				}
 			}
 			//フィーバー終わり
@@ -1683,7 +1679,7 @@ void GamePlayScene::Reset() {
 	stageBack.SetColor(stageBack, Vector4(0.5, 0.5, 0.5, 0.9));
 	close.SetColor(close, Vector4(1, 1, 0, 1));
 	for (int i = 0; i < 11; i++) {
-		stageObj[i]->SetScale({7,7,7});
+		stageObj[i]->SetScale({ 7,7,7 });
 	}
 
 	//変数
@@ -1793,7 +1789,7 @@ void GamePlayScene::StageSelect() {
 		else if (player->worldTransform_.rotation_.y < 0) {
 			player->SetRotation(player->GetRotation() + Vector3(0, 5, 0));
 		}
-		else{}
+		else {}
 	}
 	if (isMoveSel > 0 && isMoveSel < 3) {
 		if (isMoveSel == 1) {
@@ -1838,7 +1834,7 @@ void GamePlayScene::StageSelect() {
 		if (selectTime < 11) {
 			player->worldTransform_.position_.z += MathFunc::easeInSine(selectTime / 10) * 5;
 		}
-		else if(selectTime < 21) {
+		else if (selectTime < 21) {
 			stageObj[stageNum]->worldTransform_.scale_.x += MathFunc::easeInSine(selectTime / 10);
 			stageObj[stageNum]->worldTransform_.scale_.y += MathFunc::easeInSine(selectTime / 10);
 			stageObj[stageNum]->worldTransform_.scale_.z += MathFunc::easeInSine(selectTime / 10);
@@ -1955,18 +1951,18 @@ void GamePlayScene::LoadEnemy(int stageNum) {
 			// X,Y,Z座標読み込み
 			Vector3 position{};
 			float t;
-		
+
 			if (word.find("L") == 0)
 			{
 				line_stream >> t;
 				position = spline.EnemyPosition(pointsL, t);
 			}
-			else if (word.find("M") == 0) 
+			else if (word.find("M") == 0)
 			{
 				line_stream >> t;
 				position = spline.EnemyPosition(points, t);
 			}
-			else if (word.find("R") == 0) 
+			else if (word.find("R") == 0)
 			{
 				line_stream >> t;
 				position = spline.EnemyPosition(pointsR, t);
