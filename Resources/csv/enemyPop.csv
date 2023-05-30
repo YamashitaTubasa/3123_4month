@@ -1,4 +1,4 @@
-//STAGE1
+//STAGE0
 ea1 M 1.31
 eb1 M 2.0
 
@@ -48,7 +48,7 @@ ea1 M 8.9
 ea1 R 8.9
 
 
-//STAGE2
+//STAGE1
 ea2 L 5.1
 ea2 M 5.1
 ea2 R 5.1
@@ -60,3 +60,68 @@ ea2 R 2.1
 eb2 L 3.1
 eb2 L 3.2
 eb2 L 3.3
+
+//STAGE2
+ea3 L 1.5
+ea3 M 1.5
+eb3 R 1.5
+
+ea3 L 2.0
+eb3 M 2.0
+ea3 R 2.0
+
+ea3 L 2.5
+eb3 M 2.5
+eb3 R 2.5
+
+eb3 L 3.0
+ea3 M 3.0
+ea3 R 3.0
+
+eb3 L 3.5
+ea3 M 3.5
+ea3 R 3.5
+
+eb3 L 4.0
+eb3 M 4.2
+eb3 R 4.0
+
+eb3 L 4.5
+ea3 M 4.7
+eb3 R 4.5
+
+eb3 L 5.0
+ea3 M 5.0
+ea3 R 5.0
+
+eb3 L 5.5
+
+eb3 R 5.5
+
+eb3 L 6.0
+eb3 M 5.8
+ea3 R 6.0
+
+eb3 L 6.5
+eb3 M 6.5
+ea3 R 6.5
+
+eb3 L 7.0
+eb3 M 7.1
+eb3 R 7.0
+
+ea3 L 7.5
+eb3 M 7.5
+eb3 R 7.6
+
+eb3 L 8.0
+ea3 M 8.0
+eb3 R 8.0
+
+eb3 L 8.5
+eb3 M 8.5
+ea3 R 8.5
+
+eb3 L 9.0
+eb3 M 9.2
+eb3 R 9.0

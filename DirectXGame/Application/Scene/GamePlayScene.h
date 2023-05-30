@@ -175,6 +175,7 @@ private:
 
 	//倒せない敵
 	Sprite enemyCaution;
+	Sprite enemyCaution_;
 
 	//フィーバー終了(2ページ)
 	Sprite feverEnd_First;
@@ -183,6 +184,7 @@ private:
 	//フィーバー開始(2ページ)
 	Sprite feverMode_First;
 	Sprite feverMode_Second;
+	Sprite feverMode_Third;
 
 	//プレイヤーダメージ(2ページ)
 	Sprite playerDamage_First;
@@ -194,6 +196,8 @@ private:
 
 	//最初の挨拶
 	Sprite welcomeGame;
+
+	Sprite pauseP;
 
 	//---------------------------------//
 

@@ -361,10 +361,10 @@ void Player::OnCollision(const CollisionInfo& info) {
 		}
 		else {
 			if (isHit == false) {
+				hp--;
+				GamePlayScene::SetIsBack(true);
 				isHit = true;
 			}
-			hp--;
-			GamePlayScene::SetIsBack(true);
 		}
 	}
 	if (strcmp(toCollisionName, str2) == 0) {

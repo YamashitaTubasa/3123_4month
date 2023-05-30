@@ -145,6 +145,15 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	// スプライト用パイプライン生成呼び出し
 	PipelineSet spritePipelineSet = sprite->SpriteCreateGraphicsPipeline(dXCommon->GetDevice());
 
+	//
+	feverMode_Third.LoadTexture(spriteCommon_, 0, L"Resources/feverMode_3page.png", dXCommon->GetDevice());
+	feverMode_Third.SpriteCreate(dXCommon->GetDevice(), 720, 240, 0, spriteCommon, Vector2(0.5f, 0.5f), false, false);
+	feverMode_Third.SetPosition(Vector3(650, 600, 0));
+	feverMode_Third.SetScale(Vector2(720, 240));
+	feverMode_Third.SetRotation(0.0f);
+	feverMode_Third.SpriteTransferVertexBuffer(feverMode_Third, spriteCommon, 0);
+	feverMode_Third.SpriteUpdate(feverMode_Third, spriteCommon_);
+
 	// HP
 	for (int i = 0; i < 3; i++) {
 		hP[i].LoadTexture(spriteCommon_, 3, L"Resources/lineHP_03.png", dXCommon->GetDevice());
@@ -282,7 +291,6 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	//攻撃
 	attackMethod_First.LoadTexture(spriteCommon_, 36, L"Resources/attackMethod.png", dXCommon->GetDevice());
 	attackMethod_First.SpriteCreate(dXCommon->GetDevice(), 720, 240, 36, spriteCommon, Vector2(0.5f, 0.5f), false, false);
-	attackMethod_First.SetColor(attackMethod_First, Vector4(1, 1, 1, 1));
 	attackMethod_First.SetPosition(Vector3(650, 600, 0));
 	attackMethod_First.SetScale(Vector2(720, 240));
 	attackMethod_First.SetRotation(0.0f);
@@ -292,7 +300,6 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	//攻撃(2ページ目)
 	attackMethod_Second.LoadTexture(spriteCommon_, 37, L"Resources/attackMethod_2page.png", dXCommon->GetDevice());
 	attackMethod_Second.SpriteCreate(dXCommon->GetDevice(), 720, 240, 37, spriteCommon, Vector2(0.5f, 0.5f), false, false);
-	attackMethod_Second.SetColor(attackMethod_Second, Vector4(1, 1, 1, 1));
 	attackMethod_Second.SetPosition(Vector3(650, 600, 0));
 	attackMethod_Second.SetScale(Vector2(720, 240));
 	attackMethod_Second.SetRotation(0.0f);
@@ -302,7 +309,6 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	//クリア条件
 	clearMethod.LoadTexture(spriteCommon_, 38, L"Resources/clear.png", dXCommon->GetDevice());
 	clearMethod.SpriteCreate(dXCommon->GetDevice(), 720, 240, 38, spriteCommon, Vector2(0.5f, 0.5f), false, false);
-	clearMethod.SetColor(clear, Vector4(1, 1, 1, 1));
 	clearMethod.SetPosition(Vector3(650, 600, 0));
 	clearMethod.SetScale(Vector2(720, 240));
 	clearMethod.SetRotation(0.0f);
@@ -312,17 +318,23 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	//倒せない敵
 	enemyCaution.LoadTexture(spriteCommon_, 39, L"Resources/enemyCaution.png", dXCommon->GetDevice());
 	enemyCaution.SpriteCreate(dXCommon->GetDevice(), 720, 240, 39, spriteCommon, Vector2(0.5f, 0.5f), false, false);
-	enemyCaution.SetColor(clear, Vector4(1, 1, 1, 1));
 	enemyCaution.SetPosition(Vector3(650, 600, 0));
 	enemyCaution.SetScale(Vector2(720, 240));
 	enemyCaution.SetRotation(0.0f);
 	enemyCaution.SpriteTransferVertexBuffer(enemyCaution, spriteCommon, 39);
 	enemyCaution.SpriteUpdate(enemyCaution, spriteCommon_);
 
+	enemyCaution_.LoadTexture(spriteCommon_, 51, L"Resources/enemyCaution_2page.png", dXCommon->GetDevice());
+	enemyCaution_.SpriteCreate(dXCommon->GetDevice(), 720, 240, 51, spriteCommon, Vector2(0.5f, 0.5f), false, false);
+	enemyCaution_.SetPosition(Vector3(650, 600, 0));
+	enemyCaution_.SetScale(Vector2(720, 240));
+	enemyCaution_.SetRotation(0.0f);
+	enemyCaution_.SpriteTransferVertexBuffer(enemyCaution_, spriteCommon, 51);
+	enemyCaution_.SpriteUpdate(enemyCaution_, spriteCommon_);
+
 	//フィーバー終了
 	feverEnd_First.LoadTexture(spriteCommon_, 40, L"Resources/feverEnd.png", dXCommon->GetDevice());
 	feverEnd_First.SpriteCreate(dXCommon->GetDevice(), 720, 240, 40, spriteCommon, Vector2(0.5f, 0.5f), false, false);
-	feverEnd_First.SetColor(clear, Vector4(1, 1, 1, 1));
 	feverEnd_First.SetPosition(Vector3(650, 600, 0));
 	feverEnd_First.SetScale(Vector2(720, 240));
 	feverEnd_First.SetRotation(0.0f);
@@ -332,7 +344,6 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	//フィーバー終了(2ページ)
 	feverEnd_Second.LoadTexture(spriteCommon_, 41, L"Resources/feverEnd_2page.png", dXCommon->GetDevice());
 	feverEnd_Second.SpriteCreate(dXCommon->GetDevice(), 720, 240, 41, spriteCommon, Vector2(0.5f, 0.5f), false, false);
-	feverEnd_Second.SetColor(clear, Vector4(1, 1, 1, 1));
 	feverEnd_Second.SetPosition(Vector3(650, 600, 0));
 	feverEnd_Second.SetScale(Vector2(720, 240));
 	feverEnd_Second.SetRotation(0.0f);
@@ -342,7 +353,6 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	//フィーバー開始
 	feverMode_First.LoadTexture(spriteCommon_, 42, L"Resources/feverMode.png", dXCommon->GetDevice());
 	feverMode_First.SpriteCreate(dXCommon->GetDevice(), 720, 240, 42, spriteCommon, Vector2(0.5f, 0.5f), false, false);
-	feverMode_First.SetColor(clear, Vector4(1, 1, 1, 1));
 	feverMode_First.SetPosition(Vector3(650, 600, 0));
 	feverMode_First.SetScale(Vector2(720, 240));
 	feverMode_First.SetRotation(0.0f);
@@ -352,7 +362,6 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	//フィーバー開始(2ページ)
 	feverMode_Second.LoadTexture(spriteCommon_, 43, L"Resources/feverMode_2page.png", dXCommon->GetDevice());
 	feverMode_Second.SpriteCreate(dXCommon->GetDevice(), 720, 240, 43, spriteCommon, Vector2(0.5f, 0.5f), false, false);
-	feverMode_Second.SetColor(clear, Vector4(1, 1, 1, 1));
 	feverMode_Second.SetPosition(Vector3(650, 600, 0));
 	feverMode_Second.SetScale(Vector2(720, 240));
 	feverMode_Second.SetRotation(0.0f);
@@ -362,7 +371,6 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	//プレイヤーダメージ
 	playerDamage_First.LoadTexture(spriteCommon_, 44, L"Resources/playerDamage.png", dXCommon->GetDevice());
 	playerDamage_First.SpriteCreate(dXCommon->GetDevice(), 720, 240, 44, spriteCommon, Vector2(0.5f, 0.5f), false, false);
-	playerDamage_First.SetColor(clear, Vector4(1, 1, 1, 1));
 	playerDamage_First.SetPosition(Vector3(650, 600, 0));
 	playerDamage_First.SetScale(Vector2(720, 240));
 	playerDamage_First.SetRotation(0.0f);
@@ -372,7 +380,6 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	//プレイヤーダメージ
 	playerDamage_Second.LoadTexture(spriteCommon_, 45, L"Resources/playerDamage_2page.png", dXCommon->GetDevice());
 	playerDamage_Second.SpriteCreate(dXCommon->GetDevice(), 720, 240, 45, spriteCommon, Vector2(0.5f, 0.5f), false, false);
-	playerDamage_Second.SetColor(clear, Vector4(1, 1, 1, 1));
 	playerDamage_Second.SetPosition(Vector3(650, 600, 0));
 	playerDamage_Second.SetScale(Vector2(720, 240));
 	playerDamage_Second.SetRotation(0.0f);
@@ -382,7 +389,6 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	//プレイヤー移動
 	playerMove_First.LoadTexture(spriteCommon_, 46, L"Resources/playerMove.png", dXCommon->GetDevice());
 	playerMove_First.SpriteCreate(dXCommon->GetDevice(), 720, 240, 46, spriteCommon, Vector2(0.5f, 0.5f), false, false);
-	playerMove_First.SetColor(clear, Vector4(1, 1, 1, 1));
 	playerMove_First.SetPosition(Vector3(650, 600, 0));
 	playerMove_First.SetScale(Vector2(720, 240));
 	playerMove_First.SetRotation(0.0f);
@@ -392,7 +398,6 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	//プレイヤー移動
 	playerMove_Second.LoadTexture(spriteCommon_, 47, L"Resources/playerMove_2page.png", dXCommon->GetDevice());
 	playerMove_Second.SpriteCreate(dXCommon->GetDevice(), 720, 240, 47, spriteCommon, Vector2(0.5f, 0.5f), false, false);
-	playerMove_Second.SetColor(clear, Vector4(1, 1, 1, 1));
 	playerMove_Second.SetPosition(Vector3(650, 600, 0));
 	playerMove_Second.SetScale(Vector2(720, 240));
 	playerMove_Second.SetRotation(0.0f);
@@ -402,7 +407,6 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	//挨拶
 	welcomeGame.LoadTexture(spriteCommon_, 48, L"Resources/welcomeGame.png", dXCommon->GetDevice());
 	welcomeGame.SpriteCreate(dXCommon->GetDevice(), 720, 240, 48, spriteCommon, Vector2(0.5f, 0.5f), false, false);
-	welcomeGame.SetColor(clear, Vector4(1, 1, 1, 1));
 	welcomeGame.SetPosition(Vector3(650, 600, 0));
 	welcomeGame.SetScale(Vector2(720, 240));
 	welcomeGame.SetRotation(0.0f);
@@ -412,7 +416,6 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	//テキストボックス
 	textBox.LoadTexture(spriteCommon_, 49, L"Resources/textBox.png", dXCommon->GetDevice());
 	textBox.SpriteCreate(dXCommon->GetDevice(), 720, 240, 49, spriteCommon, Vector2(0.5f, 0.5f), false, false);
-	textBox.SetColor(textBox, Vector4(1, 1, 1, 1));
 	textBox.SetPosition(Vector3(650, 600, 0));
 	textBox.SetScale(Vector2(720, 240));
 	textBox.SetRotation(0.0f);
@@ -421,12 +424,19 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 
 	AorD.LoadTexture(spriteCommon_, 50, L"Resources/AandD.png", dXCommon->GetDevice());
 	AorD.SpriteCreate(dXCommon->GetDevice(), 720, 240, 50, spriteCommon, Vector2(0.5f, 0.5f), false, false);
-	AorD.SetColor(AorD, Vector4(1, 1, 1, 1));
 	AorD.SetPosition(Vector3(545, 720, 0));
 	AorD.SetScale(Vector2(480, 180));
 	AorD.SetRotation(0.0f);
 	AorD.SpriteTransferVertexBuffer(AorD, spriteCommon, 50);
 	AorD.SpriteUpdate(AorD, spriteCommon_);
+
+	pauseP.LoadTexture(spriteCommon_, 52, L"Resources/P.png", dXCommon->GetDevice());
+	pauseP.SpriteCreate(dXCommon->GetDevice(), 720, 240, 52, spriteCommon, Vector2(0.5f, 0.5f), false, false);
+	pauseP.SetPosition(Vector3(1200, 100, 0));
+	pauseP.SetScale(Vector2(360, 120));
+	pauseP.SetRotation(0.0f);
+	pauseP.SpriteTransferVertexBuffer(pauseP, spriteCommon, 52);
+	pauseP.SpriteUpdate(pauseP, spriteCommon_);
 
 	//レールカメラ初期化
 	railCamera->Initialize();
@@ -672,12 +682,13 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 			Vector3 behindVec = (railCamera->GetView()->target - railCamera->GetView()->eye) * -1;
 			behindVec /= 80;
 			railCamera->SetEye(railCamera->GetView()->eye + behindVec);
-			selectPause = 1;
 		}
 		if (cStagingT >= 100) {
 			sceneNum = 3;
 			isClearStaging = false;
 			Reset();
+			selectPause = 1;
+			player->SetPosition(Vector3(0, 0, -790));
 		}
 
 
@@ -712,12 +723,11 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 		player->worldTransform_.rotation_.x = 2;
 		player->worldTransform_.rotation_.y += 0.6;
 		railCamera->GetView()->eye = { -6, 2, -780 };
+		railCamera->GetView()->target = player->GetPosition();
 		railCamera->ViewUpdate();
 
 		//プレイヤー
 		player->Update(points);
-		//カメラ更新
-		railCamera->ViewUpdate();
 		//天球
 		floor->Update();
 		floor->SetPosition({ 0,-200,0 });
@@ -957,12 +967,13 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 				Vector3 behindVec = (railCamera->GetView()->target - railCamera->GetView()->eye) * -1;
 				behindVec /= 80;
 				railCamera->SetEye(railCamera->GetView()->eye + behindVec);
-				selectPause = 1;
 			}
 			if (cStagingT >= 100) {
 				sceneNum = 3;
 				isClearStaging = false;
 				Reset();
+				selectPause = 1;
+				player->SetPosition(Vector3(0, 0, -790));
 			}
 
 
@@ -1239,6 +1250,7 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 			back.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), back.vbView);
 		}
 		HPframe.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), HPframe.vbView);
+		pauseP.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), pauseP.vbView);
 		for (int i = 0; i < player->GetHP(); i++) {
 			hP[i].SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), hP[i].vbView);
 		}
@@ -1275,6 +1287,7 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 			if (isBack == true) {
 				back.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), back.vbView);
 			}
+			pauseP.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), pauseP.vbView);
 			if (railCamera->GetIsEnd() == false) {
 				if (player->GetAttackTime() <= 8 && player->GetIsAttack() == true) {
 					attackEffect[player->GetAttackNum()].SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), attackEffect[player->GetAttackNum()].vbView);
@@ -1393,7 +1406,7 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 			//移動
 			else if (tutorialStep == 6) {
 				if (tutoText == 0) {
-					playerMove_First.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), playerMove_First.vbView);
+					enemyCaution_.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), enemyCaution_.vbView);
 				}
 				else {
 					AorD.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), AorD.vbView);
@@ -1418,7 +1431,7 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 					feverMode_Second.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), feverMode_Second.vbView);
 				}
 				else {
-
+					feverMode_Third.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), feverMode_Third.vbView);
 				}
 			}
 			//フィーバー終わり
