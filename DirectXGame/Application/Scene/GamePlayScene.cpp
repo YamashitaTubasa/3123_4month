@@ -2247,6 +2247,76 @@ void GamePlayScene::LoadBuil(int stageNum)
 			//登録
 			buils_.push_back(std::move(newBuil));
 		}
+		if (stageNum == 10) {
+			// 先頭文字列がbなら頂点座標
+			if (key == "ba10") {
+				//初期化
+				std::unique_ptr<Object3d> newBuil = std::make_unique<Object3d>();
+				newBuil->Initialize();
+				newBuil->SetModel(builModel01);
+				newBuil->SetScale(Vector3{ 10,10,10 });
+				// X,Y,Z座標読み込み
+				Vector3 position{};
+				line_stream >> position.x;
+				line_stream >> position.y;
+				line_stream >> position.z;
+				// 座標データに追加
+				newBuil->SetPosition(position);
+				//登録
+				buils_.push_back(std::move(newBuil));
+			}
+			if (key == "bb10") {
+				//初期化
+				std::unique_ptr<Object3d> newBuil = std::make_unique<Object3d>();
+				newBuil->Initialize();
+				newBuil->SetModel(builModel02);
+				newBuil->SetScale(Vector3{ 12,12,12 });
+				// X,Y,Z座標読み込み
+				Vector3 position{};
+				line_stream >> position.x;
+				line_stream >> position.y;
+				line_stream >> position.z;
+				// 座標データに追加
+				newBuil->SetPosition(position);
+				//登録
+				buils_.push_back(std::move(newBuil));
+			}
+			if (key == "bc10") {
+				//初期化
+				std::unique_ptr<Object3d> newBuil = std::make_unique<Object3d>();
+				newBuil->Initialize();
+				newBuil->SetModel(builModel03);
+				newBuil->SetScale(Vector3{ 10,10,10 });
+				// X,Y,Z座標読み込み
+				Vector3 position{};
+				line_stream >> position.x;
+				line_stream >> position.y;
+				line_stream >> position.z;
+				// 座標データに追加
+				newBuil->SetPosition(position);
+				//登録
+				buils_.push_back(std::move(newBuil));
+			}
+			if (key == "bd10") {
+				//初期化
+				std::unique_ptr<Object3d> newBuil = std::make_unique<Object3d>();
+				newBuil->Initialize();
+				newBuil->SetModel(builModel04);
+				newBuil->SetScale(Vector3{ 3,10,10 });
+				// X,Y,Z座標読み込み
+				Vector3 position{};
+				Vector3 rotation{};
+				line_stream >> position.x;
+				line_stream >> position.y;
+				line_stream >> position.z;
+				line_stream >> rotation.y;
+				// 座標データに追加
+				newBuil->SetPosition(position);
+				newBuil->SetRotation(rotation);
+				//登録
+				buils_.push_back(std::move(newBuil));
+			}
+		}
 	}
 	// ファイルと閉じる
 	file.close();
