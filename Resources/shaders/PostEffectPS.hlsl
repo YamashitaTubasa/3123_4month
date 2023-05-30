@@ -5,35 +5,25 @@ SamplerState smp : register(s0);
 
 float4 main(VSOutput input) : SV_TARGET
 {
-    // UV指定したピクセルの色をサンプリング
-    float4 texcolor = tex.Sample(smp, input.uv) * color;
     float luminance = 1.0f; // 輝度
-    float setU, setV;
+    float shiftWidth = 0.003;
+    float shiftNum = 5;
 
-    //========================= ブラー =========================//
-    if (isBlur == true ) {
-        float blur = 4.0;
-        luminance = 1.0f;
-        if (isBlur == false) {
-            if (blur >= 0.0f) {
-                blur--;
+    float4 col = tex.Sample(smp, input.uv) * color;
+    float num = 0;
+
+    if (isBlur == true)
+    {
+        for (float py = -shiftNum / 2; py <= shiftNum / 2; py++)
+        {
+            for (float px = -shiftNum / 2; px <= shiftNum / 2; px++)
+            {
+                col += tex.Sample(smp, input.uv + float2(px, py) * shiftWidth) * color;
+                num++;
             }
         }
-        setU = blur / 1280.0f;
-        setV = blur / 720.0f;
-
-        texcolor += tex.Sample(smp, input.uv + float2(setU, 0.0f));
-        texcolor += tex.Sample(smp, input.uv + float2(-setU, 0.0f));
-        texcolor += tex.Sample(smp, input.uv + float2(0.0f, -setV));
-        texcolor += tex.Sample(smp, input.uv + float2(0.0f, setV));
-        texcolor += tex.Sample(smp, input.uv + float2(setU, setV));
-        texcolor += tex.Sample(smp, input.uv + float2(setU, -setV));
-        texcolor += tex.Sample(smp, input.uv + float2(-setU, setV));
-        texcolor += tex.Sample(smp, input.uv + float2(-setU, -setV));
-
-        texcolor /= 10.0f;
+        col.rgb /= num;
     }
-
-	// アルファに1を入れて出力
-	return float4(texcolor.rgb * luminance, alpha);
+    
+    return float4(col.rgb * luminance, alpha);
 }
