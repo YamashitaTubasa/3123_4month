@@ -1736,8 +1736,9 @@ void GamePlayScene::CreatThreeLine(std::vector<Vector3>& points) {
 	for (int i = 0; i < 2; i++) {
 		line[i]->worldTransform_.SetParent3d(&line[0]->worldTransform_);
 	}
-	line[1]->SetPosition(Vector3(10, 0, 0));
-	line[2]->SetPosition(Vector3(-10, 0, 0));
+	line[0]->SetPosition(Vector3(0, -0.8, 0));
+	line[1]->SetPosition(Vector3(10, -0.8, 0));
+	line[2]->SetPosition(Vector3(-10, -0.8, 0));
 
 	for (int i = 0; i < 3; i++) {
 		line[i]->Update();
