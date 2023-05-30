@@ -2018,6 +2018,73 @@ void GamePlayScene::LoadEnemy(int stageNum) {
 			//登録
 			invEnemys_.push_back(std::move(newInvEnemy));
 		}
+
+		if (stageNum == 10) {
+			// 先頭文字列がｖなら頂点座標
+			if (key == "ea10") {
+				//敵の生成
+				std::unique_ptr<Enemy> newEnemy = std::make_unique<Enemy>();
+				//敵の初期化
+				newEnemy->EnemyInitialize();
+				//コライダーの追加
+				newEnemy->SetCollider(new SphereCollider(Vector3(0, 0, 0), 2.0f));
+				// X,Y,Z座標読み込み
+				Vector3 position{};
+				float t;
+
+				if (word.find("L") == 0)
+				{
+					line_stream >> t;
+					position = spline.EnemyPosition(pointsL, t);
+				}
+				else if (word.find("M") == 0)
+				{
+					line_stream >> t;
+					position = spline.EnemyPosition(points, t);
+				}
+				else if (word.find("R") == 0)
+				{
+					line_stream >> t;
+					position = spline.EnemyPosition(pointsR, t);
+				}
+
+				// 座標データに追加
+				newEnemy->SetPosition(position);
+				//登録
+				enemys_.push_back(std::move(newEnemy));
+			}
+			// 先頭文字列がｖなら頂点座標
+			if (key == "eb10") {
+				//敵の生成
+				std::unique_ptr<InvisibleEnemy> newInvEnemy = std::make_unique<InvisibleEnemy>();
+				//敵の初期化
+				newInvEnemy->InvEnemyInitialize();
+				//コライダーの追加
+				newInvEnemy->SetCollider(new SphereCollider(Vector3(0, 0, 0), 2.0f));
+				// X,Y,Z座標読み込み
+				Vector3 position{};
+				float t;
+				if (word.find("L") == 0)
+				{
+					line_stream >> t;
+					position = spline.EnemyPosition(pointsL, t);
+				}
+				else if (word.find("M") == 0)
+				{
+					line_stream >> t;
+					position = spline.EnemyPosition(points, t);
+				}
+				else if (word.find("R") == 0)
+				{
+					line_stream >> t;
+					position = spline.EnemyPosition(pointsR, t);
+				}
+				// 座標データに追加
+				newInvEnemy->SetPosition(position);
+				//登録
+				invEnemys_.push_back(std::move(newInvEnemy));
+			}
+		}
 	}
 	// ファイルと閉じる
 	file.close();
