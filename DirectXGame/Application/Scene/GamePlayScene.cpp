@@ -440,16 +440,16 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 
 	rUi.LoadTexture(spriteCommon_, 53, L"Resources/rUi.png", dXCommon->GetDevice());
 	rUi.SpriteCreate(dXCommon->GetDevice(), 128, 128, 53, spriteCommon, Vector2(0.5f, 0.5f), false, false);
-	rUi.SetPosition(Vector3(1100, 600, 0));
-	rUi.SetScale(Vector2(128, 128 * 0.8));
+	rUi.SetPosition(Vector3(930, 600, 0));
+	rUi.SetScale(Vector2(128, 128 * 0.7));
 	rUi.SetRotation(0.0f);
 	rUi.SpriteTransferVertexBuffer(rUi, spriteCommon, 53);
 	rUi.SpriteUpdate(rUi, spriteCommon_);
 
 	lUi.LoadTexture(spriteCommon_, 54, L"Resources/lUi.png", dXCommon->GetDevice());
 	lUi.SpriteCreate(dXCommon->GetDevice(), 128, 128, 54, spriteCommon, Vector2(0.5f, 0.5f), false, false);
-	lUi.SetPosition(Vector3(200, 600, 0));
-	lUi.SetScale(Vector2(128, 128 * 0.8));
+	lUi.SetPosition(Vector3(350, 600, 0));
+	lUi.SetScale(Vector2(128, 128 * 0.7));
 	lUi.SpriteTransferVertexBuffer(lUi, spriteCommon, 54);
 	lUi.SpriteUpdate(lUi, spriteCommon_);
 
