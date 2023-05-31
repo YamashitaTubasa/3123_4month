@@ -431,9 +431,9 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	AorD.SpriteUpdate(AorD, spriteCommon_);
 
 	pauseP.LoadTexture(spriteCommon_, 52, L"Resources/P.png", dXCommon->GetDevice());
-	pauseP.SpriteCreate(dXCommon->GetDevice(), 720, 240, 52, spriteCommon, Vector2(0.5f, 0.5f), false, false);
-	pauseP.SetPosition(Vector3(1200, 100, 0));
-	pauseP.SetScale(Vector2(360, 120));
+	pauseP.SpriteCreate(dXCommon->GetDevice(), 256, 96, 52, spriteCommon, Vector2(0.5f, 0.5f), false, false);
+	pauseP.SetPosition(Vector3(1184, 40, 0));
+	pauseP.SetScale(Vector2(256, 96));
 	pauseP.SetRotation(0.0f);
 	pauseP.SpriteTransferVertexBuffer(pauseP, spriteCommon, 52);
 	pauseP.SpriteUpdate(pauseP, spriteCommon_);
@@ -563,7 +563,6 @@ void GamePlayScene::Update(SpriteCommon& spriteCommon) {
 	case 2:
 		// ゲーム画面フェードアウト演出
 		FadeOut(0.01, 100);
-
 		//デスフラグの立った敵を削除
 		enemys_.remove_if([](std::unique_ptr < Enemy>& enemy_) {
 			return enemy_->GetIsDead();
