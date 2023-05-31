@@ -32,8 +32,8 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	//音
 	titleBGM = Audio::GetInstance();
 	titleBGM->Initialize();
-	titleBGM->LoadWave("BGM.wav");
-	titleBGM->LoopPlayWave("BGM.wav");
+	titleBGM->LoadWave("titleBGM.wav");
+	titleBGM->LoopPlayWave("titleBGM.wav");
 
 	// OBJからモデルデータを読み込む
 	//床
