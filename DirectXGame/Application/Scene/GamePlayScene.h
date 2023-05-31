@@ -158,6 +158,9 @@ private:
 	Sprite spaButton;
 	SpriteCommon spriteCommon_;
 	Sprite attackEffect[8];
+	Sprite lUi;
+	Sprite rUi;
+	Sprite spUi;
 
 
 	//-----チュートリアルスプライト-----//

@@ -438,6 +438,28 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	pauseP.SpriteTransferVertexBuffer(pauseP, spriteCommon, 52);
 	pauseP.SpriteUpdate(pauseP, spriteCommon_);
 
+	rUi.LoadTexture(spriteCommon_, 53, L"Resources/rUi.png", dXCommon->GetDevice());
+	rUi.SpriteCreate(dXCommon->GetDevice(), 128, 128, 53, spriteCommon, Vector2(0.5f, 0.5f), false, false);
+	rUi.SetPosition(Vector3(1100, 600, 0));
+	rUi.SetScale(Vector2(128, 128 * 0.8));
+	rUi.SetRotation(0.0f);
+	rUi.SpriteTransferVertexBuffer(rUi, spriteCommon, 53);
+	rUi.SpriteUpdate(rUi, spriteCommon_);
+
+	lUi.LoadTexture(spriteCommon_, 54, L"Resources/lUi.png", dXCommon->GetDevice());
+	lUi.SpriteCreate(dXCommon->GetDevice(), 128, 128, 54, spriteCommon, Vector2(0.5f, 0.5f), false, false);
+	lUi.SetPosition(Vector3(200, 600, 0));
+	lUi.SetScale(Vector2(128, 128 * 0.8));
+	lUi.SpriteTransferVertexBuffer(lUi, spriteCommon, 54);
+	lUi.SpriteUpdate(lUi, spriteCommon_);
+
+	spUi.LoadTexture(spriteCommon_, 55, L"Resources/spUi.png", dXCommon->GetDevice());
+	spUi.SpriteCreate(dXCommon->GetDevice(), 256, 128, 55, spriteCommon, Vector2(0.5f, 0.5f), false, false);
+	spUi.SetPosition(Vector3(640, 600, 0));
+	spUi.SetScale(Vector2(256 * 1.5, 128));
+	spUi.SpriteTransferVertexBuffer(spUi, spriteCommon, 55);
+	spUi.SpriteUpdate(spUi, spriteCommon_);
+
 	//レールカメラ初期化
 	railCamera->Initialize();
 
@@ -1230,16 +1252,31 @@ void GamePlayScene::Draw(SpriteCommon& spriteCommon) {
 	// スプライト描画前処理
 	Sprite::PreDraw(dXCommon->GetCommandList(), spriteCommon_);
 
-	if (sceneNum == 4) {
-
-	}
-
 	///=== スプライト描画 ===///
 	if (sceneNum == 0) {
 		if (isTitleT == false) {
 			title.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), title.vbView);
 			spaButton.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), spaButton.vbView);
 		}
+	}
+	else if (sceneNum == 1) {
+		if (stageNum != 10) {
+			rUi.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), rUi.vbView);
+		}
+		else {
+			if (isMoveSel == 2) {
+				rUi.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), rUi.vbView);
+			}
+		}
+		if (stageNum != 0) {
+			lUi.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), lUi.vbView);
+		}
+		else {
+			if (isMoveSel == 1) {
+				lUi.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), lUi.vbView);
+			}
+		}
+		spUi.SpriteDraw(dXCommon->GetCommandList(), spriteCommon_, dXCommon->GetDevice(), spUi.vbView);
 	}
 	else if (sceneNum == 2) {
 		if (player->GetFever() == true) {
@@ -1691,6 +1728,7 @@ void GamePlayScene::Reset() {
 	titleBack.SetColor(titleBack, Vector4(0.5, 0.5, 0.5, 0.9));
 	stageBack.SetColor(stageBack, Vector4(0.5, 0.5, 0.5, 0.9));
 	close.SetColor(close, Vector4(1, 1, 0, 1));
+	spUi.SetColor(spUi, { 0.2,0.2,0.2,1 });
 	for (int i = 0; i < 11; i++) {
 		stageObj[i]->SetScale({ 7,7,7 });
 	}
@@ -1797,6 +1835,8 @@ void GamePlayScene::StageSelect() {
 
 	//移動
 	if (isMoveSel == 0) {
+		rUi.SetColor(rUi, { 0.2,0.2,0.2,1 });
+		lUi.SetColor(lUi, { 0.2,0.2,0.2,1 });
 		if (player->worldTransform_.rotation_.y > 0) {
 			player->SetRotation(player->GetRotation() + Vector3(0, -5, 0));
 		}
@@ -1807,6 +1847,7 @@ void GamePlayScene::StageSelect() {
 	}
 	if (isMoveSel > 0 && isMoveSel < 3) {
 		if (isMoveSel == 1) {
+			lUi.SetColor(lUi, { 1,1,1,1 });
 			if (player->worldTransform_.rotation_.y > -90) {
 				player->SetRotation(player->GetRotation() + Vector3(0, -5, 0));
 			}
@@ -1822,6 +1863,7 @@ void GamePlayScene::StageSelect() {
 			}
 		}
 		else if (isMoveSel == 2) {
+			rUi.SetColor(rUi, { 1,1,1,1 });
 			if (player->worldTransform_.rotation_.y < 90) {
 				player->SetRotation(player->GetRotation() + Vector3(0, 5, 0));
 			}
@@ -1845,6 +1887,7 @@ void GamePlayScene::StageSelect() {
 	}
 	else if (isMoveSel == 3) {
 		postEffect_->SetColor(pColor);
+		spUi.SetColor(spUi, { 1,1,1,1 });
 		if (selectTime < 11) {
 			player->worldTransform_.position_.z += MathFunc::easeInSine(selectTime / 10) * 5;
 		}

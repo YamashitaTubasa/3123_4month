@@ -390,9 +390,9 @@ void Sprite::SpriteUpdate(Sprite& sprite, const SpriteCommon& spriteCommon)
 
 	//äeçsóÒåvéZ
 	matRot = Matrix4::identity();
-	matRot *= matRotZ.rotateZ(rotation_.z * 180.0f / 3.1415f);
-	matRot *= matRotX.rotateX(rotation_.x * 180.0f / 3.1415f);
-	matRot *= matRotY.rotateY(rotation_.y * 180.0f / 3.1415f);
+	matRot *= matRotZ.rotateZ(rotation * 180.0f / 3.1415f);
+	matRot *= matRotX.rotateX(rotation * 180.0f / 3.1415f);
+	matRot *= matRotY.rotateY(rotation * 180.0f / 3.1415f);
 	matTrans = Matrix4::identity();
 	matTrans.translate(position);
 
