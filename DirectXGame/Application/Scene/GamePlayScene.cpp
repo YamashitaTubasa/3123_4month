@@ -29,6 +29,12 @@ void GamePlayScene::Initialize(SpriteCommon& spriteCommon) {
 	// ポストエフェクト
 	postEffect_ = PostEffect::GetInstance();
 
+	//音
+	titleBGM = Audio::GetInstance();
+	titleBGM->Initialize();
+	titleBGM->LoadWave("BGM.wav");
+	titleBGM->LoopPlayWave("BGM.wav");
+
 	// OBJからモデルデータを読み込む
 	//床
 	floorModel = Model::LoadFromOBJ("floor");
