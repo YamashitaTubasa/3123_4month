@@ -18,6 +18,7 @@
 #include <sstream>
 #include "Line.h"
 #include "PostEffect.h"
+#include "Audio.h"
 
 //====================//
 // ゲームプレイシーン
@@ -202,6 +203,8 @@ private:
 
 	Sprite pauseP;
 
+	//---------------------------------//
+	Audio* titleBGM = nullptr;
 	//---------------------------------//
 
 	DirectXCommon* dXCommon = nullptr;

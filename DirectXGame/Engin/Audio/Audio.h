@@ -71,7 +71,7 @@ public:
 	static Audio* GetInstance();
 
 	// ‰Šú‰»
-	void Initialize(const std::string& directoryPath = "Resources/BGM/");
+	void Initialize(const std::string& directoryPath = "Resources/sound/");
 	// ‰ğ•ú
 	void Finalize();
 	/// ‰¹ºƒf[ƒ^‚Ì“Ç‚İ‚İ
