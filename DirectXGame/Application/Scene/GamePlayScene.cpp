@@ -2064,7 +2064,7 @@ void GamePlayScene::LoadEnemy(int stageNum) {
 
 		if (stageNum == 10) {
 			// 先頭文字列がｖなら頂点座標
-			if (key == "ea11") {
+			if (key == "ea10") {
 				//敵の生成
 				std::unique_ptr<Enemy> newEnemy = std::make_unique<Enemy>();
 				//敵の初期化
@@ -2097,7 +2097,7 @@ void GamePlayScene::LoadEnemy(int stageNum) {
 				enemys_.push_back(std::move(newEnemy));
 			}
 			// 先頭文字列がｖなら頂点座標
-			if (key == "eb11") {
+			if (key == "eb10") {
 				//敵の生成
 				std::unique_ptr<InvisibleEnemy> newInvEnemy = std::make_unique<InvisibleEnemy>();
 				//敵の初期化
@@ -2169,7 +2169,7 @@ void GamePlayScene::LoadStage(int stageNum) {
 			points.emplace_back(position);
 		}
 		if (stageNum == 10) {
-			if (key == "st11") {
+			if (key == "st10") {
 				// X,Y,Z座標読み込み
 				Vector3 position{};
 				line_stream >> position.x;
@@ -2292,7 +2292,7 @@ void GamePlayScene::LoadBuil(int stageNum)
 		}
 		if (stageNum == 10) {
 			// 先頭文字列がbなら頂点座標
-			if (key == "ba11") {
+			if (key == "ba10") {
 				//初期化
 				std::unique_ptr<Object3d> newBuil = std::make_unique<Object3d>();
 				newBuil->Initialize();
@@ -2308,7 +2308,7 @@ void GamePlayScene::LoadBuil(int stageNum)
 				//登録
 				buils_.push_back(std::move(newBuil));
 			}
-			if (key == "bb11") {
+			if (key == "bb10") {
 				//初期化
 				std::unique_ptr<Object3d> newBuil = std::make_unique<Object3d>();
 				newBuil->Initialize();
@@ -2324,7 +2324,7 @@ void GamePlayScene::LoadBuil(int stageNum)
 				//登録
 				buils_.push_back(std::move(newBuil));
 			}
-			if (key == "bc11") {
+			if (key == "bc10") {
 				//初期化
 				std::unique_ptr<Object3d> newBuil = std::make_unique<Object3d>();
 				newBuil->Initialize();
@@ -2340,7 +2340,7 @@ void GamePlayScene::LoadBuil(int stageNum)
 				//登録
 				buils_.push_back(std::move(newBuil));
 			}
-			if (key == "bd11") {
+			if (key == "bd10") {
 				//初期化
 				std::unique_ptr<Object3d> newBuil = std::make_unique<Object3d>();
 				newBuil->Initialize();
